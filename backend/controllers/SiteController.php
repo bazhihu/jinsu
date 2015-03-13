@@ -55,6 +55,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        $auth = Yii::$app->authManager;
+
         return $this->render('index');
     }
 

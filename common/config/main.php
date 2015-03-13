@@ -19,5 +19,13 @@ return [
         'session' => [
             'class' => 'yii\redis\Session',
         ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=youaiyihu',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+            'tablePrefix' => 'yayh_'
+        ],
     ],
 ];

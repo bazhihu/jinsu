@@ -26,13 +26,6 @@ return [
             'password' => 'root',
             'charset' => 'utf8',
             'tablePrefix' => 'yayh_'
-        ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'itemTable' => 'yayh_auth_item',
-            'assignmentTable' => 'yayh_auth_assignment',
-            'itemChildTable' => 'yayh_auth_item_child',
-            'defaultRoles' => ['guest']
-        ],
+        ]
     ],
 ];

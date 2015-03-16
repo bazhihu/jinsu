@@ -1,10 +1,11 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\AdminUser;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use common\models\LoginForm;
+use backend\models\LoginForm;
 use yii\filters\VerbFilter;
 
 /**
@@ -62,6 +63,7 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
+        //$this->layout = "none.php";
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -81,5 +83,20 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionTest(){
+        $user = new AdminUser();
+        $user->username = 'admin';
+        $user->email = 'admin@youaiyihu.com';
+        $user->created_at = $user->updated_at = time();
+        $user->setPassword('123456');
+        $user->generateAuthKey();
+        if ($user->save()) {
+            print_r($user);
+        }else{
+            $error = $user->getErrors();
+            print_r($error);
+        }
     }
 }

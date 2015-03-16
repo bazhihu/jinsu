@@ -1,12 +1,12 @@
 <?php
-use backend\assets\AppAsset;
+use backend\assets\guestAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::register($this);
+guestAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

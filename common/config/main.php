@@ -21,9 +21,9 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=youaiyihu',
-            'username' => 'root',
-            'password' => 'root',
+            'dsn' => 'mysql:host=192.168.1.20;dbname=youaiyihu',
+            'username' => 'youaiyihu',
+            'password' => '12345678',
             'charset' => 'utf8',
             'tablePrefix' => 'yayh_'
         ]

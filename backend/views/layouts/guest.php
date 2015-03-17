@@ -18,7 +18,7 @@ guestAsset::register($this);
 
 
 </head>
-<body class="bg-white" style="min-height: 790px">
+<body>
 <?php $this->beginBody() ?>
 <?= $content ?>
 <?php $this->endBody() ?>

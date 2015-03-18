@@ -41,6 +41,8 @@ class OrderMaster extends \yii\db\ActiveRecord
     const ORDER_STATUS_CANCEL = 'cancel'; //取消订单
     const ORDER_STATUS_WAIT_EVALUATE = 'wait_evaluate'; //待评价
 
+    public $patients_name;
+    public $patients_gender;
     /**
      * @inheritdoc
      */
@@ -98,5 +100,13 @@ class OrderMaster extends \yii\db\ActiveRecord
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',
         ];
+    }
+    /**
+     * 获取患者数据
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderPatients()
+    {
+        return $this->hasMany(OrderPatient::className(), ['order_id' => 'id']);
     }
 }

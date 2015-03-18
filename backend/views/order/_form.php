@@ -16,24 +16,112 @@ use kartik\datecontrol\DateControl;
 
     <?php
     $form = ActiveForm::begin([
-        'type'=>ActiveForm::TYPE_HORIZONTAL
+        'type'=>ActiveForm::TYPE_HORIZONTAL,
     ]);
+    ?>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">用户信息</h3>
+        </div>
+        <div class="panel-body">
+            <?php echo Form::widget([
+                'model' => $model,
+                'form' => $form,
+                'columns' => 1,
+
+                'attributes' => [
+                    'mobile'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入手机号...',
+                            'maxlength'=>11,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                ]
+            ]);?>
+        </div>
+    </div>
+
+    <!--患者信息-->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">患者信息</h3>
+        </div>
+        <div class="panel-body">
+            <?php echo Form::widget([
+                'model' => $model,
+                'form' => $form,
+                'columns' => 1,
+                'attributes' => [
+                    'patients_name'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入姓名...',
+                            'maxlength'=>4,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                    'patients_gender'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入性别...',
+                            'maxlength'=>4,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                ]
+            ]);?>
+        </div>
+    </div>
+
+    <!--订单信息-->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">订单信息</h3>
+        </div>
+        <div class="panel-body">
+            <?php echo Form::widget([
+                'model' => $model,
+                'form' => $form,
+                'columns' => 1,
+                'attributeDefaults'=>[
+                    'type'=>Form::INPUT_TEXT,
+                    'inputContainer'=>['class'=>'col-md-3'],
+                    //'container'=>['class'=>'form-group'],
+                ],
+                'attributes' => [
+                    'mobile'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入手机号...',
+                            'maxlength'=>11,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                ]
+            ]);?>
+        </div>
+    </div>
+
+    <?php
     echo Form::widget([
         'model' => $model,
         'form' => $form,
         'columns' => 1,
         'attributes' => [
-            'mobile'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号...', 'maxlength'=>11]],
+
 
             'worker_level'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 护工等级...']],
 
-            'service_start_time'=>[
+            'start_time'=>[
                 'type'=> Form::INPUT_WIDGET,
                 'widgetClass'=>DateControl::classname(),
                 'options'=>['type'=>DateControl::FORMAT_DATETIME]
             ],
 
-            'service_end_time'=>[
+            'end_time'=>[
                 'type'=> Form::INPUT_WIDGET,
                 'widgetClass'=>DateControl::classname(),
                 'options'=>['type'=>DateControl::FORMAT_DATETIME]

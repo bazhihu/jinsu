@@ -1,6 +1,4 @@
-html,
 body {
-    height: 100%;
     padding-top: 50px;
 }
 
@@ -138,7 +136,7 @@ a.desc:after {
         padding-right: 40px;
     }
 }
-.main .page-header {
+.page-header {
     margin-top: 0;
 }
 .placeholders {

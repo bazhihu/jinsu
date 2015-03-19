@@ -26,6 +26,9 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public $pwd;//用户密码
+    public $pwd_repeat;//重复密码
+
     /**
      * @inheritdoc
      */
@@ -50,12 +53,26 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            ['username', 'filter', 'filter' => 'trim'],
+            ['username', 'required'],
+            ['username','unique','targetClass' => '\backend\models\AdminUser', 'message' => '帐号已存在'],
+            ['username', 'string', 'min' => 2, 'max' => 255],
+
+            ['pwd', 'required'],
+            ['pwd','compare','compareAttribute' => 'pwd'],
+            ['pwd', 'string', 'min' => 6],
+            ['pwd_repeat','safe'],
+
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            [['role', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
-            [['auth_key'], 'string', 'max' => 32]
+
+            [['staff_id','staff_name','staff_role','hospital','phone'], 'required'],
+            [['staff_id','staff_name'],'string', 'max' => 32],
+
+            //[['role', 'status', 'created_at', 'updated_at'], 'integer'],
+            //[['username', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
+           // [['auth_key'], 'string', 'max' => 32],
+
         ];
     }
 
@@ -64,16 +81,22 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            'id' => 'ID',
-            'username' => 'Username',
+            'admin_uid' => 'ID',
+            'username' => '帐号',
             'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
+            'pwd'=>'密码',
+            'pwd_repeat'=>'重复密码',
+            'password_hash' => '密码',
             'password_reset_token' => 'Password Reset Token',
-            'email' => 'Email',
-            'role' => 'Role',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'staff_id' => '员工号',
+            'staff_name'=>'员工姓名',
+            'staff_role' => '员工职位',
+            'hospital'=>'所属医院',
+            'phone'=>'手机号',
+            'created_at'=>'创建时间',
+            'updated_at'=>'修改时间',
+            'status' => '状态',
+            'created' => '创建者',
         ];
     }
     /**
@@ -81,7 +104,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['admin_uid' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**

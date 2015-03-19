@@ -42,9 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'customer_service_id', 
 //            'operator_id', 
             [
-                'attribute'=>'service_start_time',
+                'attribute'=>'start_time',
                 'format'=>['datetime',
-                    (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'
+                    (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'Y-m-d H:i:s'
                 ]
             ],
 //            ['attribute'=>'service_end_time','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 

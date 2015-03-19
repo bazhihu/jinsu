@@ -16,7 +16,7 @@ class OrderSearch extends OrderMaster
     {
         return [
             [['id', 'uid', 'patient_state', 'worker_level', 'customer_service_id', 'operator_id'], 'integer'],
-            [['order_no', 'mobile', 'service_start_time', 'service_end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'cancel_time', 'order_status', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'safe'],
+            [['order_no', 'mobile', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'cancel_time', 'order_status', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'safe'],
             [['base_price', 'disabled_amount', 'holiday_amount', 'total_amount'], 'number'],
         ];
     }
@@ -50,8 +50,8 @@ class OrderSearch extends OrderMaster
             'worker_level' => $this->worker_level,
             'customer_service_id' => $this->customer_service_id,
             'operator_id' => $this->operator_id,
-            'service_start_time' => $this->service_start_time,
-            'service_end_time' => $this->service_end_time,
+            'start_time' => $this->service_start_time,
+            'end_time' => $this->service_end_time,
             'reality_end_time' => $this->reality_end_time,
             'create_time' => $this->create_time,
             'pay_time' => $this->pay_time,

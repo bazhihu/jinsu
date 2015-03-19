@@ -99,6 +99,8 @@ class OrderMaster extends \yii\db\ActiveRecord
             'create_order_ip' => '创建订单的IP',
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',
+
+            'patients_name' =>'患者姓名'
         ];
     }
     /**

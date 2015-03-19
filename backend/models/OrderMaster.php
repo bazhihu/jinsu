@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "{{%order_master}}".
  *
- * @property string $id
+ * @property string $order_id
  * @property string $order_no
  * @property string $uid
  * @property string $mobile
@@ -75,13 +75,13 @@ class OrderMaster extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'order_id' => 'ID',
             'order_no' => '订单编号',
             'uid' => '用户ID',
             'mobile' => '联系人手机号码',
             'base_price' => '护工的基础价格',
             'disabled_amount' => '不能自理所加金额',
-            'holiday_amount' => '节假日所加金额',
+            'holidays' => '节假日',
             'total_amount' => '订单总金额',
             'patient_state' => '患者健康情况',
             'worker_level' => '护工等级',

@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a('Create Order Master', ['create'], ['class' => 'btn btn-success'])*/  ?>
@@ -43,7 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'operator_id', 
             [
                 'attribute'=>'start_time',
-                'format'=>['datetime',
+                'format'=>[
+                    'datetime',
                     (isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'Y-m-d H:i:s'
                 ]
             ],
@@ -74,9 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'hover'=>true,
         'condensed'=>true,
         'floatHeader'=>true,
-
-
-
 
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',

@@ -96,14 +96,7 @@ class OrderMaster extends \yii\db\ActiveRecord
             'begin_service_time' => '开始服务时间',
             'evaluate_time' => '评价时间',
             'cancel_time' => '订单取消时间',
-            'order_status' => '订单状态(
-wait_pay:待支付;
-wait_confirm:待确认;
-wait_service:待服务;
-in_service:服务中;
-end_service:结束服务;
-cancel:取消订单;
-end_evaluate:结束评价)',
+            'order_status' => '订单状态',
             'create_order_ip' => '创建订单的IP',
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',

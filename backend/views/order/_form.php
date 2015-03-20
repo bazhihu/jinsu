@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
+use kartik\widgets\Select2;
 
 /**
  * @var yii\web\View $this
@@ -125,26 +126,16 @@ use kartik\datecontrol\DateControl;
             <h3 class="panel-title">订单信息</h3>
         </div>
         <div class="panel-body">
-            <?php echo Form::widget([
-                'model' => $model,
-                'form' => $form,
-                'columns' => 1,
-                'attributeDefaults'=>[
-                    'type'=>Form::INPUT_TEXT,
-                    'inputContainer'=>['class'=>'col-md-3'],
-                    //'container'=>['class'=>'form-group'],
+            <?php
+            echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
+                'data' => ['1'=>'1','2'=>'3','3'=>'北京儿童医院','4'=>'北京天坛医院'],
+                'options' => ['placeholder' => '请选择医院','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
                 ],
-                'attributes' => [
-                    'mobile'=>[
-                        'type'=> Form::INPUT_TEXT,
-                        'options'=>[
-                            'placeholder'=>'请输入手机号...',
-                            'maxlength'=>11,
-                            'style'=>'width:25%'
-                        ],
-                    ],
-                ]
-            ]);?>
+            ])->label('医院');
+
+            ?>
         </div>
     </div>
 

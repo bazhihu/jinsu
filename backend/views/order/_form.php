@@ -96,7 +96,25 @@ use kartik\datecontrol\DateControl;
                     ['inline'=>true]
                 );
             echo $form->field($orderPatientModel, 'in_hospital_reason')
-            ->input('text', ['placeholder'=>'请输入住院原因...','wrapper'=>'col-md-3']);
+            ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:25%']);
+
+            echo $form->field($orderPatientModel, 'admission_date')->widget(DateControl::classname(),[
+                'type'=>DateControl::FORMAT_DATE,
+                'options'=>[
+                    'readonly'=>true,
+                    'options'=>['placeholder' => '请输入住院日期','style'=>'width:19%'],
+                    'convertFormat'=>true,
+                    'pluginOptions'=>[
+                        'format' => 'yyyy-MM-dd',
+                        'todayHighlight' => true,
+                        'autoclose' => true
+                    ]
+                ]
+            ]);
+            echo $form->field($orderPatientModel, 'room_no')
+                ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:25%']);
+            echo $form->field($orderPatientModel, 'bed_no')
+                ->input('text', ['placeholder'=>'请输入床号...', 'style'=>'width:25%']);
             ?>
         </div>
     </div>
@@ -131,34 +149,8 @@ use kartik\datecontrol\DateControl;
     </div>
 
     <?php
-    echo Form::widget([
-        'model' => $model,
-        'form' => $form,
-        'columns' => 1,
-        'attributes' => [
 
-
-            'worker_level'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 护工等级...']],
-
-            'start_time'=>[
-                'type'=> Form::INPUT_WIDGET,
-                'widgetClass'=>DateControl::classname(),
-                'options'=>['type'=>DateControl::FORMAT_DATETIME]
-            ],
-
-            'end_time'=>[
-                'type'=> Form::INPUT_WIDGET,
-                'widgetClass'=>DateControl::classname(),
-                'options'=>['type'=>DateControl::FORMAT_DATETIME]
-            ],
-
-            'patient_state'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 患者健康情况...']],
-
-    ]
-
-
-    ]);
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '创建') : Yii::t('app', '更新'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    echo Html::submitButton($model->isNewRecord ? '创建订单' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
-
+    <div style="margin-bottom: 15px"></div>
 </div>

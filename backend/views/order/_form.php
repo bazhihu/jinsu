@@ -5,6 +5,7 @@ use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
+use backend\models\Hospitals;
 
 /**
  * @var yii\web\View $this
@@ -128,12 +129,19 @@ use kartik\widgets\Select2;
         <div class="panel-body">
             <?php
             echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-                'data' => \backend\models\Hospitals::getList(),
-                'options' => ['placeholder' => '请选择医院','style'=>'width:25%'],
+                'data' => Hospitals::getList(),
+                'options' => ['placeholder' => '请选择医院...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('医院');
+            ]);
+            echo $form->field($model, 'department_id')->widget(Select2::classname(), [
+                'data' => Hospitals::getList(),
+                'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
 
             ?>
         </div>

@@ -43,10 +43,10 @@ class Hospitals extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'province_id' => 'Province ID',
-            'city_id' => 'City ID',
-            'area_id' => 'Area ID',
+            'name' => '医院名称',
+            'province_id' => '所属省份',
+            'city_id' => '所属城市',
+            'area_id' => '所属区（县）',
         ];
     }
 

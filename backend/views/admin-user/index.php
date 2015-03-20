@@ -23,7 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php /* echo Html::a('Create Admin User', ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
 
-    <?php Pjax::begin(); echo GridView::widget([
+<?php
+/*Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -31,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'username',
-            'auth_key',
+            'auth_key'
             'password_hash',
             //'password_reset_token',
 //            'email:email', 
@@ -65,6 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
-    ]); Pjax::end(); ?>
+    ]); Pjax::end();*/ ?>
 
 </div>

@@ -30,22 +30,21 @@ use kartik\datecontrol\DateControl;
     'columns' => 1,
     'attributes' => [
 
-'username'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入帐号', 'maxlength'=>255,'id'=>'admin_username']],
+'username'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入帐号', 'maxlength'=>255,'id'=>'admin_username','readonly'=>'readonly']],
 
-'password'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'请输入密码', 'maxlength'=>255,'minlength'=>6]],
+//'password'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'请输入密码', 'maxlength'=>255,'minlength'=>6 ,'readonly'=>'readonly','value'=>'******']],
 
-'pwd'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'请再次输入密码', 'maxlength'=>255,'minlength'=>6]],
+//'staff_id'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入员工号', 'maxlength'=>255 ,'readonly'=>'readonly']],
 
-//'staff_id'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入员工号', 'maxlength'=>255]],
-
-'staff_name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入员工姓名', 'maxlength'=>255]],
+'staff_name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入员工姓名', 'maxlength'=>255 ,'readonly'=>'readonly']],
 
 'staff_role'=>['type'=> Form::INPUT_DROPDOWN_LIST,'items'=>$staff_role,'options'=>['prompt'=>'选择']],
 
-'hospital'=>['type'=> Form::INPUT_DROPDOWN_LIST,'items'=>$hospital,'options'=>['prompt'=>'选择']],
+'hospital'=>['type'=> Form::INPUT_DROPDOWN_LIST,'items'=>$hospital,'options'=>['prompt'=>'选择','disabled'=>'false']],
 
-'phone'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号', 'maxlength'=>255]],
+'phone'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号', 'maxlength'=>255 ]],
 
+'created_id'=>['type'=> Form::INPUT_TEXT, 'options'=>['maxlength'=>255 ,'readonly'=>'readonly']],
     ]
 
     ]);

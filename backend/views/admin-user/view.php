@@ -29,25 +29,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'type'=>DetailView::TYPE_INFO,
         ],
         'attributes' => [
-            'id',
+            //'admin_uid',
             'username',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
-            'email:email',
-            'role',
-            'status',
+            ['label'=>'密码','value'=>'******'],
+            'staff_role',
+            ['label'=>'状态','value'=>$model->status?'正常':'关闭'],
             'created_at',
-            'updated_at',
+            //'updated_at',
+            'created_id',
         ],
         'deleteOptions'=>[
-        'url'=>['delete', 'id' => $model->id],
-        'data'=>[
-        'confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'),
-        'method'=>'post',
+            'url'=>['delete', 'id' => $model->id],
+            'data'=>[
+            'confirm'=>Yii::t('app', '确定要操作这个用户的权限？'),
+            'method'=>'post',
+            ],
         ],
-        ],
-        'enableEditMode'=>true,
+        'enableEditMode'=>false,
     ]) ?>
 
 </div>

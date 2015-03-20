@@ -50,12 +50,15 @@ use kartik\datecontrol\DateControl;
             <h3 class="panel-title">患者信息</h3>
         </div>
         <div class="panel-body">
-            <?php echo Form::widget([
-                'model' => $model,
+
+            <?php
+
+            echo Form::widget([
+                'model' => $orderPatientModel,
                 'form' => $form,
                 'columns' => 1,
                 'attributes' => [
-                    'patients_name'=>[
+                    'name'=>[
                         'type'=> Form::INPUT_TEXT,
                         'options'=>[
                             'placeholder'=>'请输入姓名...',
@@ -63,16 +66,38 @@ use kartik\datecontrol\DateControl;
                             'style'=>'width:25%'
                         ],
                     ],
-                    'patients_gender'=>[
+                    'gender'=>[
+                        'type'=> Form::INPUT_RADIO_LIST,
+                        'items'=>['1'=>'男','2'=>'女'],
+                        'options'=>[
+                            'inline'=>true
+                        ]
+                    ],
+                    'age'=>[
                         'type'=> Form::INPUT_TEXT,
                         'options'=>[
-                            'placeholder'=>'请输入性别...',
-                            'maxlength'=>4,
+                            'placeholder'=>'请输入年龄...',
+                            'maxlength'=>3,
                             'style'=>'width:25%'
                         ],
                     ],
                 ]
-            ]);?>
+            ]);
+
+            echo $form->field($orderPatientModel, 'height', [
+                'addon' => ['append' => ['content'=>'cm'],'groupOptions'=>['class'=>'col-md-3']]
+            ]);
+            echo $form->field($orderPatientModel, 'weight', [
+                'addon' => ['append' => ['content'=>'kg'],'groupOptions'=>['class'=>'col-md-3']]
+            ]);
+            echo $form->field($orderPatientModel, 'patient_state')
+                ->radioList(
+                    ['0'=>'不能自理','1'=>'能自理'],
+                    ['inline'=>true]
+                );
+            echo $form->field($orderPatientModel, 'in_hospital_reason')
+            ->input('text', ['placeholder'=>'请输入住院原因...','wrapper'=>'col-md-3']);
+            ?>
         </div>
     </div>
 

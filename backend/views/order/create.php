@@ -17,6 +17,7 @@ $this->title = '新增订单';
     </div>
     <?= $this->render('_form', [
         'model' => $model,
+        'orderPatientModel' =>$orderPatientModel
     ]) ?>
 
 </div>

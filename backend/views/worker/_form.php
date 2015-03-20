@@ -37,11 +37,11 @@ use kartik\datecontrol\DateControl;
     'birth_place'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 户口所在地...', 'maxlength'=>50]],
 
 
-    'native_province'=>[
+   /* 'native_province'=>[
             'type'=> Form::INPUT_WIDGET,'widgetClass'=>Select2::classname(),
             'options'=>['placeholder'=>'Enter 籍贯...', 'maxlength'=>50,'data' => \backend\models\Hospitals::getList()],
             'pluginOptions' => ['allowClear' => true]
-    ],
+    ],*/
 
 
     'place'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 居住地...', 'maxlength'=>255]],

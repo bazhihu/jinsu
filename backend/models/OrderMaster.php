@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "{{%order_master}}".
  *
- * @property string $order_id
+ * @property string $id
  * @property string $order_no
  * @property string $uid
  * @property string $mobile
@@ -41,8 +41,6 @@ class OrderMaster extends \yii\db\ActiveRecord
     const ORDER_STATUS_CANCEL = 'cancel'; //取消订单
     const ORDER_STATUS_WAIT_EVALUATE = 'wait_evaluate'; //待评价
 
-    public $patients_name;
-    public $patients_gender;
     /**
      * @inheritdoc
      */
@@ -99,8 +97,6 @@ class OrderMaster extends \yii\db\ActiveRecord
             'create_order_ip' => '创建订单的IP',
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',
-
-            'patients_name' =>'患者姓名'
         ];
     }
     /**

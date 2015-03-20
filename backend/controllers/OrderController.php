@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\OrderPatient;
 use Yii;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
@@ -65,12 +66,14 @@ class OrderController extends Controller
     public function actionCreate()
     {
         $model = new OrderMaster;
+        $orderPatientModel = new OrderPatient();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'orderPatientModel' => $orderPatientModel
             ]);
         }
     }

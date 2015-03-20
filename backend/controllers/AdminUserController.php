@@ -46,7 +46,6 @@ class AdminUserController extends Controller
     {
         $searchModel = new AdminUserSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -60,13 +59,15 @@ class AdminUserController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel(['admin_uid'=>$id]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-        return $this->render('view', ['model' => $model]);
-}
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+        else
+        {
+            return $this->render('view', ['model' => $model]);
+        }
     }
 
     /**
@@ -77,14 +78,23 @@ class AdminUserController extends Controller
     public function actionCreate()
     {
         $model = new AdminUser;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+
+        #员工职位
+        $staff_role = yii::$app->authManager->getRoles();
+
+        foreach($staff_role as $key=>$val)
+        {
+            $staff_role[$key]=$key;
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'staff_role'=>$staff_role,
+        ]);
+
     }
 
     /**
@@ -97,7 +107,7 @@ class AdminUserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -133,5 +143,17 @@ class AdminUserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * @desc 判断当前登录用户是否有操作权限
+     * @param $admin_uid 管理员id
+     * @param $name 操作权限名
+     * @return bool
+     */
+    protected function ispermission($admin_uid,$name){
+
+
+        return true;
     }
 }

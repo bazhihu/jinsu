@@ -26,8 +26,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
-    public $pwd;//用户密码
-    public $pwd_repeat;//重复密码
+    public $password;//密码
+    public $pwd;//重复密码
 
     /**
      * @inheritdoc
@@ -53,26 +53,24 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
-            ['username','unique','targetClass' => '\backend\models\AdminUser', 'message' => '帐号已存在'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username','filter','filter'=>'trim'],
+            ['username','unique','targetClass'=>'\backend\models\AdminUser', 'message' => '帐号已存在'],
+            [['username','staff_name',],'string','min'=>2,'max'=>20],
 
-            ['pwd', 'required'],
-            ['pwd','compare','compareAttribute' => 'pwd'],
-            ['pwd', 'string', 'min' => 6],
-            ['pwd_repeat','safe'],
+            [['password','pwd','username','staff_name','staff_role','hospital','phone'],'required'],
+            [['password','pwd'],'string','min' => 6,'max'=>20],
+            ['pwd','compare','compareAttribute'=>'password'],
+            ['pwd','safe'],
+
+            [['hospital'], 'integer'],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
-            [['staff_id','staff_name','staff_role','hospital','phone'], 'required'],
-            [['staff_id','staff_name'],'string', 'max' => 32],
-
+            //[['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
             //[['role', 'status', 'created_at', 'updated_at'], 'integer'],
-            //[['username', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
-           // [['auth_key'], 'string', 'max' => 32],
-
+            //[['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+            //[['auth_key'], 'string', 'max' => 32]
         ];
     }
 
@@ -81,24 +79,66 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            'admin_uid' => 'ID',
+            'admin_uid' => '管理用户id',
             'username' => '帐号',
             'auth_key' => 'Auth Key',
-            'pwd'=>'密码',
-            'pwd_repeat'=>'重复密码',
+            'password'=>'密码',
+            'pwd'=>'重复密码',
             'password_hash' => '密码',
             'password_reset_token' => 'Password Reset Token',
             'staff_id' => '员工号',
-            'staff_name'=>'员工姓名',
+            'staff_name' => '员工姓名',
             'staff_role' => '员工职位',
-            'hospital'=>'所属医院',
-            'phone'=>'手机号',
-            'created_at'=>'创建时间',
-            'updated_at'=>'修改时间',
+            'hospital' => '所属医院',
+            'phone' => '电话号码',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
             'status' => '状态',
-            'created' => '创建者',
+            'created_id' => '创建人',
+            'modifier_id' => '修改人',
         ];
     }
+
+    /**
+     * @desc 用于注册数据补充和操作记录
+     * @return bool
+     */
+    public function create()
+    {
+        #权限验证
+        $admin_uid = yii::$app->user->identity->getId();
+        if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
+        {
+            $this->created_at = date('Y-m-d H:i:s');
+            $this->setAttribute('created_id',yii::$app->user->identity->getId());
+
+            #保存信息
+            if($this->save())
+            {
+                #授予权限
+                $info = $this->findOne(['username'=>$this->username]);
+                yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+                #添加操作记录
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @注册时密码转换hash
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+
+        if(empty($this->staff_id))
+            $this->staff_id = $this->staff_name;
+        if(isset($this->password))
+            $this->password_hash = \yii::$app->Security->generatePasswordHash($this->password);
+        return parent::beforeSave($insert);
+    }
+
     /**
      * @inheritdoc
      */

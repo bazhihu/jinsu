@@ -62,9 +62,10 @@ return [
             // automatically use kartik\widgets for each of the above formats
             'autoWidget' => true,
             'autoWidgetSettings' => [
-                'date' => ['type'=>2, 'pluginOptions'=>['autoclose'=>true]], // example
-                'time' => ['pluginOptions'=>['autoclose'=>true]], // setup if needed
-                'datetime' => ['pluginOptions'=>['autoclose'=>true]], // setup if needed
+                'date' => ['type'=>2, 'pluginOptions'=>['autoclose'=>true,'todayHighlight' => true]], // example
+                'time' => ['pluginOptions'=>['autoclose'=>true,'todayHighlight' => true]], // setup if needed
+                'datetime' => ['pluginOptions'=>['autoclose'=>true,'todayHighlight' => true]], // setup if needed
+
             ],
 
         ]

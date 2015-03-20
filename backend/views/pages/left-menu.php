@@ -20,3 +20,8 @@ $route = $controller->route;
 <ul class="nav nav-sidebar">
     <li><a href="">用户管理</a></li>
 </ul>
+
+<ul class="nav nav-sidebar">
+    <li <?php if($route == 'admin-user/create'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('admin-user/create');?>">新增账号</a></li>
+    <li <?php if($route == 'admin-user/index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('admin-user/index');?>">帐号列表</a></li>
+</ul>

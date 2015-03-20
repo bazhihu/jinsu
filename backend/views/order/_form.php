@@ -128,7 +128,7 @@ use kartik\widgets\Select2;
         <div class="panel-body">
             <?php
             echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-                'data' => ['1'=>'1','2'=>'3','3'=>'北京儿童医院','4'=>'北京天坛医院'],
+                'data' => \backend\models\Hospitals::getList(),
                 'options' => ['placeholder' => '请选择医院','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true

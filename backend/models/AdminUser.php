@@ -57,7 +57,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             ['username','unique','targetClass'=>'\backend\models\AdminUser', 'message' => '帐号已存在'],
             [['username','staff_name',],'string','min'=>2,'max'=>20],
 
-            [['password','pwd','username','staff_name','staff_role','hospital','phone'],'required'],
+            [['username','staff_name','staff_role','hospital','phone'],'required'],
+            [['password','pwd'],'required','on'=>['create']],
             [['password','pwd'],'string','min' => 6,'max'=>20],
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
@@ -91,7 +92,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'staff_role' => '员工职位',
             'hospital' => '所属医院',
             'phone' => '电话号码',
-            'created_at' => 'Created At',
+            'created_at' => '创建时间',
             'updated_at' => 'Updated At',
             'status' => '状态',
             'created_id' => '创建人',
@@ -101,6 +102,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
     /**
      * @desc 用于注册数据补充和操作记录
+     * @author 2015-3-20 hu
      * @return bool
      */
     public function create()
@@ -119,9 +121,41 @@ class AdminUser extends ActiveRecord implements IdentityInterface
                 $info = $this->findOne(['username'=>$this->username]);
                 yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
                 #添加操作记录
+
                 return true;
             }
         }
+        $this->addError('staff_role','权限不足');
+        return false;
+    }
+
+    /**
+     * @desc 编辑用户
+     * @author 2015-3-20 hu
+     * @return bool
+     */
+    public function up()
+    {
+        #权限验证
+        $admin_uid = yii::$app->user->identity->getId();
+        if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
+        {
+            $this->updated_at = date('Y-m-d H:i:s');
+            $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
+
+            #保存信息
+            if($this->save())
+            {
+                #授予权限
+                $info = $this->findOne(['username'=>$this->username]);
+                yii::$app->authManager->revokeAll($info->getId());
+                yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+                #添加操作记录
+
+                return true;
+            }
+        }
+        $this->addError('staff_role','权限不足');
         return false;
     }
 

@@ -53,6 +53,26 @@ class AdminUserController extends Controller
     }
 
     /**
+     * Deletes an existing AdminUser model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        if (Yii::$app->getRequest()->isAjax) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => ModelName::find(),
+                'sort' => false
+            ]);
+            return $this->renderPartial('index', [
+                'dataProvider' => $dataProvider
+            ]);
+        }
+        return $this->redirect(['index']);
+    }
+    /**
      * Displays a single AdminUser model.
      * @param integer $id
      * @return mixed
@@ -107,26 +127,22 @@ class AdminUserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+        if ($model->load(Yii::$app->request->post()) && $model->up()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+
+            #员工职位
+            $staff_role = yii::$app->authManager->getRoles();
+
+            foreach($staff_role as $key=>$val)
+            {
+                $staff_role[$key]=$key;
+            }
             return $this->render('update', [
                 'model' => $model,
+                'staff_role'=>$staff_role,
             ]);
         }
-    }
-
-    /**
-     * Deletes an existing AdminUser model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**
@@ -156,4 +172,5 @@ class AdminUserController extends Controller
 
         return true;
     }
+
 }

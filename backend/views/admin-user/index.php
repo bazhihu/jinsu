@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
  * @var backend\models\AdminUserSearch $searchModel
  */
 
-$this->title = 'Admin Users';
+$this->title = '帐号列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="admin-user-index">
@@ -25,45 +25,57 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
+        'hover'=>true,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'admin_uid',
             'username',
-            'auth_key',
-            'password_hash',
-            //'password_reset_token',
-//            'email:email', 
-//            'role', 
-//            'status', 
-//            'created_at', 
-//            'updated_at', 
-
+            //'password_hash',
+            ['attribute'=>'密码','value'=>function(){return '******';}],
+            'staff_id',
+            'staff_name',
+            'staff_role',
+            'hospital',
+            'created_id',
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class'=>'kartik\grid\BooleanColumn',
+                'attribute'=>'status',
+                'vAlign'=>'middle',
+            ],
+            ['class' => 'yii\grid\ActionColumn',
+                'header'=>'操作',
                 'buttons' => [
-                'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['admin-user/view','id' => $model->id,'edit'=>'t']), [
-                                                    'title' => Yii::t('yii', 'Edit'),
-                                                  ]);}
-
+                    'update' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil "></span>', $url, [
+                            'title' => Yii::t('yii', '修改'),
+                            'data-pjax'=>'w0',
+                        ]);
+                    },
+                    'delete' => function ($url, $model) {
+                        return $model->status?Html::a('<span class="glyphicon col-md-offset-4 glyphicon-remove"></span>', $url, [
+                            'title' => Yii::t('yii', '关闭'),
+                            'data-pjax'=>'w0',
+                        ]):Html::a('<span class="glyphicon col-md-offset-4 glyphicon-ok"></span>',
+                            $url, ['title' => Yii::t('yii', '恢复'),
+                            'data-pjax'=>'w0',
+                        ]);
+                    },
                 ],
+                'template'=>'{update}{delete}',
             ],
         ],
-        'responsive'=>true,
-        'hover'=>true,
-        'condensed'=>true,
-        'floatHeader'=>true,
-
-
-
+        //'responsive'=>true,
+        //'hover'=>true,
+        //'condensed'=>true,
+        //'floatHeader'=>true,
 
         'panel' => [
-            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
-            'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
-            'showFooter'=>false
+            //'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
+            //'type'=>'info',
+            //'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            //'showFooter'=>false
         ],
     ]); Pjax::end(); ?>
 

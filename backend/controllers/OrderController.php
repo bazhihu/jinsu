@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Hospitals;
 use backend\models\OrderPatient;
 use Yii;
 use backend\models\OrderMaster;

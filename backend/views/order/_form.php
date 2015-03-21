@@ -7,6 +7,7 @@ use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use backend\models\Hospitals;
 use backend\models\Departments;
+use backend\Models\Worker;
 
 /**
  * @var yii\web\View $this
@@ -105,7 +106,7 @@ use backend\models\Departments;
                 'type'=>DateControl::FORMAT_DATE,
                 'options'=>[
                     'readonly'=>true,
-                    'options'=>['placeholder' => '请输入住院日期','style'=>'width:19%'],
+                    'options'=>['placeholder' => '请选择住院日期','style'=>'width:19%'],
                     'convertFormat'=>true,
                     'pluginOptions'=>[
                         'format' => 'yyyy-MM-dd',
@@ -143,6 +144,43 @@ use backend\models\Departments;
                     'allowClear' => true
                 ],
             ]);
+            echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
+                'hideSearch' => true,
+                'data' => Worker::getWorkerLevel(),
+                'options' => ['placeholder' => '请选择护工等级...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+
+            echo $form->field($model, 'start_time')->widget(DateControl::classname(),[
+                'type'=>DateControl::FORMAT_DATE,
+                'options'=>[
+                    'readonly'=>true,
+                    'options'=>['placeholder' => '请选择开始时间','style'=>'width:19%'],
+                    'convertFormat'=>true,
+                    'pluginOptions'=>[
+                        'format' => 'yyyy-MM-dd',
+                        'todayHighlight' => true,
+                        'autoclose' => true
+                    ]
+                ]
+            ]);
+            echo $form->field($model, 'end_time')->widget(DateControl::classname(),[
+                'type'=>DateControl::FORMAT_DATE,
+                'options'=>[
+                    'readonly'=>true,
+                    'options'=>['placeholder' => '请选择结束时间','style'=>'width:19%'],
+                    'convertFormat'=>true,
+                    'pluginOptions'=>[
+                        'format' => 'yyyy-MM-dd',
+                        'todayHighlight' => true,
+                        'autoclose' => true
+                    ]
+                ]
+            ]);
+
+            echo $form->field($model, 'remark')->textarea(['rows'=>3]);
 
             ?>
         </div>

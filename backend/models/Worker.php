@@ -43,6 +43,13 @@ use Yii;
 class Worker extends \yii\db\ActiveRecord
 {
     /**
+     * 护工等级
+     */
+    const WORKER_LEVEL_MEDIUM = 1; //中级
+    const WORKER_LEVEL_HIGH = 2; //高级
+    const WORKER_LEVEL_SUPER = 3; //特级
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -56,11 +63,11 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gender', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
+            [['gender', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date'], 'safe'],
             [['price', 'good_rate'], 'number'],
-            [['name', 'idcard','native_province'], 'string', 'max' => 20],
-            [['birth_place','hospital_id', 'office_id', 'good_at'], 'string', 'max' => 50],
+            [['name', 'idcard','native_province', 'nation'], 'string', 'max' => 20],
+           // [['birth_place', 'office_id', 'good_at'], 'string', 'max' => 50],
             [['place'], 'string', 'max' => 255]
         ];
     }
@@ -75,7 +82,7 @@ class Worker extends \yii\db\ActiveRecord
             'name' => '姓名',
             'gender' => '性别',
             'birth' => '出生日期',
-            'birth_place' => '户口所在地',
+            'birth_place_province' => '户口所在地',
             'native_province' => '籍贯',
             'nation' => '民族',
             'marriage' => '婚姻状况',
@@ -86,6 +93,8 @@ class Worker extends \yii\db\ActiveRecord
             'certificate' => '资质证书',
             'start_work' => '入行时间',
             'place' => '居住地',
+            'subcat_id' => '出生日期',
+            'subsubcat' => '出生日期',
             'phone1' => '手机号',
             'phone2' => '手机号',
             'price' => '服务价格',
@@ -151,16 +160,31 @@ class Worker extends \yii\db\ActiveRecord
     }
 
     /**
-     * @worker_level :护工等级
+     * 护工等级
+     * @param null $level
+     * @return array
      */
-    public function worker_level($level=3){
-        if($level==1){
-            $level_str = '中级';
-        }elseif($level==2){
-            $level_str = '高级';
-        }elseif($level==3){
-            $level_str = '特级';
-        }
-        return $level_str;
+    static public function getWorkerLevel($level = null){
+        $workerLevel = [
+            self::WORKER_LEVEL_MEDIUM => '中级',
+            self::WORKER_LEVEL_HIGH => '高级',
+            self::WORKER_LEVEL_SUPER => '特级'
+        ];
+
+        return isset($workerLevel[$level]) ? $workerLevel[$level] : $workerLevel;
     }
+
+    public function beforeSave($insert)
+    {var_dump(Yii::$app->request->post(hospital_id));
+        parent::beforeSave($insert);
+
+        if($this->hospital_id){
+            $this->hospital_id =implode(',',$this->hospital_id);
+        }
+       // var_dump( $this->hospital_id );
+        die();
+        return true;
+    }
+
+
 }

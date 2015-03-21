@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%city}}".
@@ -58,4 +59,18 @@ class City extends \yii\db\ActiveRecord
             'continent_id' => 'Continent ID',
         ];
     }
+
+    /**
+     * 获取省份城市列表
+     * @param int $parent_id 省ID 市ID 区县ID
+     * @return static[]
+     */
+    static public function getList($parent_id = 1){
+        $findArr = ['parent_id' => $parent_id];
+
+        return ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+    }
+
+
+
 }

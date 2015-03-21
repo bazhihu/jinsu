@@ -43,6 +43,13 @@ use Yii;
 class Worker extends \yii\db\ActiveRecord
 {
     /**
+     * 护工等级
+     */
+    const WORKER_LEVEL_MEDIUM = 1; //中级
+    const WORKER_LEVEL_HIGH = 2; //高级
+    const WORKER_LEVEL_SUPER = 3; //特级
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -151,16 +158,17 @@ class Worker extends \yii\db\ActiveRecord
     }
 
     /**
-     * @worker_level :护工等级
+     * 护工等级
+     * @param null $level
+     * @return array
      */
-    public function worker_level($level=3){
-        if($level==1){
-            $level_str = '中级';
-        }elseif($level==2){
-            $level_str = '高级';
-        }elseif($level==3){
-            $level_str = '特级';
-        }
-        return $level_str;
+    static public function getWorkerLevel($level = null){
+        $workerLevel = [
+            self::WORKER_LEVEL_MEDIUM => '中级',
+            self::WORKER_LEVEL_HIGH => '高级',
+            self::WORKER_LEVEL_SUPER => '特级'
+        ];
+
+        return isset($workerLevel[$level]) ? $workerLevel[$level] : $workerLevel;
     }
 }

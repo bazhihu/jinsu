@@ -84,7 +84,7 @@ class OrderMaster extends \yii\db\ActiveRecord
             'uid' => '用户ID',
             'worker_no' => '护工编号',
             'worker_name' => '护工姓名',
-            'worker_level' => '护工等级（5：中级；6：高级；7：特级；8：金牌）',
+            'worker_level' => '护工等级',
             'mobile' => '下单手机号',
             'base_price' => '护工的基础价格（金额/天）',
             'disabled_amount' => '不能自理每天所加金额',

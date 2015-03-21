@@ -143,6 +143,13 @@ use backend\models\Departments;
                     'allowClear' => true
                 ],
             ]);
+            echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
+                'data' => Departments::getList(),
+                'options' => ['placeholder' => '请选择护工等级...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
 
             ?>
         </div>

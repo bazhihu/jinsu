@@ -6,6 +6,7 @@ use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use backend\models\Hospitals;
+use backend\models\Departments;
 
 /**
  * @var yii\web\View $this
@@ -136,7 +137,7 @@ use backend\models\Hospitals;
                 ],
             ]);
             echo $form->field($model, 'department_id')->widget(Select2::classname(), [
-                'data' => Hospitals::getList(),
+                'data' => Departments::getList(),
                 'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true

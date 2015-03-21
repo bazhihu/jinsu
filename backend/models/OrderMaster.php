@@ -39,6 +39,14 @@ use Yii;
  */
 class OrderMaster extends \yii\db\ActiveRecord
 {
+    const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
+    const ORDER_STATUS_WAIT_CONFIRM = 'wait_confirm'; //待确认
+    const ORDER_STATUS_WAIT_SERVICE = 'wait_service'; //待服务
+    const ORDER_STATUS_IN_SERVICE = 'in_service'; //服务中
+    const ORDER_STATUS_END_SERVICE = 'end_service'; //结束服务
+    const ORDER_STATUS_CANCEL = 'cancel'; //取消订单
+    const ORDER_STATUS_WAIT_EVALUATE = 'wait_evaluate'; //待评价
+
     /**
      * @inheritdoc
      */

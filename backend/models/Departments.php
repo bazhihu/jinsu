@@ -69,6 +69,14 @@ class Departments extends \yii\db\ActiveRecord
         return $list;
     }
 
+    /**
+     * 格式化成树形格式数据
+     * @param array $items 数据项
+     * @param int $level 层级
+     * @param int $parentId 父级ID
+     * @param array $list 最终格式化的结果
+     * @return bool
+     */
     static public function formatItems($items, $level, $parentId, &$list){
         $level += 1;
         $tree = str_repeat('--', $level);
@@ -89,8 +97,6 @@ class Departments extends \yii\db\ActiveRecord
                 }
             }
         }
-
     }
-
 
 }

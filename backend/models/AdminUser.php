@@ -121,12 +121,22 @@ class AdminUser extends ActiveRecord implements IdentityInterface
                 $info = $this->findOne(['username'=>$this->username]);
                 yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
                 #添加操作记录
-
+                //yii::$app->log->getLogger();
                 return true;
             }
         }
         $this->addError('staff_role','权限不足');
         return false;
+    }
+
+    /**
+     * @desc 获取用户的信息
+     * @author 2015-3-20 hu
+     * @return $info
+     */
+    public static function getInfo($id)
+    {
+        return self::findOne(['admin_uid'=>$id])->username;
     }
 
     /**

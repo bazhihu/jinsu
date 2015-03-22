@@ -57,9 +57,10 @@ class Hospitals extends \yii\db\ActiveRecord
      * @param int $areaId 区县ID
      * @return static[]
      */
-    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0){
+    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0)
+    {
         $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
-        if($areaId > 0){
+        if ($areaId > 0) {
             $findArr['area_id'] = $areaId;
         }
 

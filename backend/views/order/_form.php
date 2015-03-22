@@ -102,19 +102,25 @@ use backend\Models\Worker;
             echo $form->field($orderPatientModel, 'in_hospital_reason')
             ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:25%']);
 
-            echo $form->field($orderPatientModel, 'admission_date')->widget(DateControl::classname(),[
-                'type'=>DateControl::FORMAT_DATE,
-                'options'=>[
-                    'readonly'=>true,
-                    'options'=>['placeholder' => '请选择住院日期','style'=>'width:19%'],
-                    'convertFormat'=>true,
-                    'pluginOptions'=>[
-                        'format' => 'yyyy-MM-dd',
-                        'todayHighlight' => true,
-                        'autoclose' => true
-                    ]
+            echo Form::widget([
+                'model' => $orderPatientModel,
+                'form' => $form,
+                'columns' => 1,
+                'attributes' => [
+                    'admission_date'=>[
+                        'type'=> Form::INPUT_WIDGET,
+                        'widgetClass'=>DateControl::classname(),
+                        'options'=>[
+                            'type'=>DateControl::FORMAT_DATE,
+                            'options'=>[
+                                'options'=>['placeholder'=>'请选择住院日期...','style'=>'width:19%']
+                            ],
+                            'displayFormat' => 'yyyy-MM-dd',
+                        ]
+                    ],
                 ]
             ]);
+
             echo $form->field($orderPatientModel, 'room_no')
                 ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:25%']);
             echo $form->field($orderPatientModel, 'bed_no')
@@ -130,9 +136,11 @@ use backend\Models\Worker;
         </div>
         <div class="panel-body">
             <?php
+
             echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                 'data' => Hospitals::getList(),
-                'options' => ['placeholder' => '请选择医院...','style'=>'width:25%'],
+
+                'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
@@ -153,35 +161,47 @@ use backend\Models\Worker;
                 ],
             ]);
 
-            echo $form->field($model, 'start_time')->widget(DateControl::classname(),[
-                'type'=>DateControl::FORMAT_DATE,
-                'options'=>[
-                    'readonly'=>true,
-                    'options'=>['placeholder' => '请选择开始时间','style'=>'width:19%'],
-                    'convertFormat'=>true,
-                    'pluginOptions'=>[
-                        'format' => 'yyyy-MM-dd',
-                        'todayHighlight' => true,
-                        'autoclose' => true
-                    ]
-                ]
-            ]);
-            echo $form->field($model, 'end_time')->widget(DateControl::classname(),[
-                'type'=>DateControl::FORMAT_DATE,
-                'options'=>[
-                    'readonly'=>true,
-                    'options'=>['placeholder' => '请选择结束时间','style'=>'width:19%'],
-                    'convertFormat'=>true,
-                    'pluginOptions'=>[
-                        'format' => 'yyyy-MM-dd',
-                        'todayHighlight' => true,
-                        'autoclose' => true
-                    ]
-                ]
-            ]);
+            echo Form::widget([ // nesting attributes together (without labels for children)
+                'model'=>$model,
+                'form'=>$form,
+                'columns'=>1,
+                'attributeDefaults' => [
+                    'type' => Form::INPUT_TEXT,
+                    'labelOptions' => ['class'=>'col-md-2'],
+                    'inputContainer' => ['class'=>'col-md-10'],
+                ],
+                'attributes'=>[
+                    'date_range' => [
+                        'label' => '时间段',
+                        'attributes'=>[
+                            'start_time' => [
+                                'type'=> Form::INPUT_WIDGET,
+                                'widgetClass'=>DateControl::classname(),
+                                'options'=>[
+                                    'type'=>DateControl::FORMAT_DATE,
+                                    'options'=>[
+                                        'options'=>['placeholder'=>'开始时间...']
+                                    ],
+                                    'displayFormat' => 'yyyy-MM-dd',
+                                ]
+                            ],
+                            'end_time'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>DateControl::classname(),
+                                'options'=>[
+                                    'type'=>DateControl::FORMAT_DATE,
+                                    'options'=>[
+                                        'options'=>['placeholder'=>'结束时间...']
+                                    ],
+                                    'displayFormat' => 'yyyy-MM-dd',
+                                ]
+                            ],
+                        ]
+                    ],
 
+                ]
+            ]);
             echo $form->field($model, 'remark')->textarea(['rows'=>3]);
-
             ?>
         </div>
     </div>

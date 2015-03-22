@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\models\Hospitals;
 use backend\models\OrderPatient;
 use Yii;
 use backend\models\OrderMaster;
@@ -10,6 +9,7 @@ use backend\models\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\Order;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.
@@ -68,8 +68,19 @@ class OrderController extends Controller
     {
         $model = new OrderMaster;
         $orderPatientModel = new OrderPatient();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $params = Yii::$app->request->post();
+
+            //检查手机号是否注册@TODO...
+            $mobile = $params['OrderMaster']['mobile'];
+
+            $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
+
+
+
+            $order = new Order();
+            $order->createOrder($params);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

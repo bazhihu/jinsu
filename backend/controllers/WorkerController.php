@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+
 /**
  * WorkerController implements the CRUD actions for Worker model.
  */
@@ -65,7 +66,7 @@ class WorkerController extends Controller
     public function actionCreate()
     {
         $model = new Worker;
-
+        //var_dump(Yii::$app->request->post());
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->worker_id]);
         } else {
@@ -151,5 +152,48 @@ class WorkerController extends Controller
         foreach($data as $value=>$name){
             echo Html::tag('option',array('value'=>$value),Html::encode($name),true);
         }
+    }
+
+
+    // 获取选定省份下的城市
+    public function actionGetcity() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $birth_place_province = $parents[0];
+                $out = City::getList($birth_place_province);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    //获取选定城市下的区县
+    public function actionGetArea() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $subcat_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+                $data = self::getProdList($cat_id, $subcat_id);
+                /**
+                 * the getProdList function will query the database based on the
+                 * cat_id and sub_cat_id and return an array like below:
+                 * [
+                 * 'out'=>[
+                 * ['id'=>'<prod-id-1>', 'name'=>'<prod-name1>'],
+                 * ['id'=>'<prod_id_2>', 'name'=>'<prod-name2>']
+                 * ],
+                 * 'selected'=>'<prod-id-1>'
+                 * ]
+                 */
+                echo Json::encode(['output'=>$data['out'], 'selected'=>$data['selected']]);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
     }
 }

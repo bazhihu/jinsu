@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use backend\models\City;
+use backend\models\Hospitals;
 use Yii;
 use backend\models\AdminUser;
 use backend\models\AdminUserSearch;
@@ -46,6 +48,7 @@ class AdminUserController extends Controller
     {
         $searchModel = new AdminUserSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -59,16 +62,22 @@ class AdminUserController extends Controller
      * @return mixed
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+        $ispass = yii::$app->authManager->checkAccess(yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
 
-        if (Yii::$app->getRequest()->isAjax) {
-            $dataProvider = new ActiveDataProvider([
-                'query' => ModelName::find(),
-                'sort' => false
-            ]);
-            return $this->renderPartial('index', [
-                'dataProvider' => $dataProvider
-            ]);
+        if($ispass)
+        {
+            $value = $this->findModel($id)->status?0:10;
+            if($this->findModel($id)->updateAttributes(['status'=>$value]))
+            return $this->redirect(['index']);
+//            if (Yii::$app->getRequest()->isAjax) {
+//                $dataProvider = new ActiveDataProvider([
+//                    'query' => ModelName::find(),
+//                    'sort' => false
+//                ]);
+//                return $this->renderPartial('index', [
+//                    'dataProvider' => $dataProvider
+//                ]);
+//            }
         }
         return $this->redirect(['index']);
     }
@@ -126,7 +135,6 @@ class AdminUserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->up()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -138,9 +146,17 @@ class AdminUserController extends Controller
             {
                 $staff_role[$key]=$key;
             }
+
+            $hospitals = \backend\models\Hospitals::find();
+            foreach($hospitals->all() as $val){
+                $hospital[$val->id] = $val->name;
+            }
+
+            $model->created_id = \backend\models\AdminUser::findOne(["admin_uid"=>$model->created_id])->username;
             return $this->render('update', [
                 'model' => $model,
                 'staff_role'=>$staff_role,
+                'hospital'=>$hospital,
             ]);
         }
     }
@@ -160,17 +176,4 @@ class AdminUserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-    /**
-     * @desc 判断当前登录用户是否有操作权限
-     * @param $admin_uid 管理员id
-     * @param $name 操作权限名
-     * @return bool
-     */
-    protected function ispermission($admin_uid,$name){
-
-
-        return true;
-    }
-
 }

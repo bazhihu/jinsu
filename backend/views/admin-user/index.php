@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php  echo Html::a('新增帐号', ['create'], ['class' => 'btn btn-success'])  ?>
+        <?php  //echo Html::a('新增帐号', ['create'], ['class' => 'btn btn-success'])  ?>
     </p>
 
     <?php Pjax::begin(); echo GridView::widget([
@@ -98,10 +98,10 @@ $this->params['breadcrumbs'][] = $this->title;
         //'floatHeader'=>true,
 
         'panel' => [
-            //'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
-            //'type'=>'info',
-            //'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
-            //'showFooter'=>false
+            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
+            'type'=>'info',
+            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 新增帐号', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'showFooter'=>true
         ],
     ]); Pjax::end(); ?>
 

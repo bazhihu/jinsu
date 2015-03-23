@@ -386,6 +386,7 @@ class User extends ActiveRecord implements IdentityInterface
         ];
 
         $this->setAttributes($attributes, false);
+
         //print_r($this->attributes);exit;
         if(!$this->save()){
             throw new ErrorException(print_r($this->getErrors(), true));

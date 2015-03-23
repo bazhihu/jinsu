@@ -46,7 +46,7 @@ class Order extends \yii\db\ActiveRecord{
             [['base_price', 'disabled_amount', 'total_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
-            [['worker_name', 'contact_name', 'contact_telephone', 'holidays', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
+            [['worker_name', 'contact_name', 'contact_telephone', 'holidays', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
 
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
             [['contact_address','create_order_user_agent'], 'string', 'max' => 500],

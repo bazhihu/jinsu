@@ -67,8 +67,10 @@ class AdminUserController extends Controller
         if($ispass)
         {
             $value = $this->findModel($id)->status?0:10;
-            if($this->findModel($id)->updateAttributes(['status'=>$value]))
-            return $this->redirect(['index']);
+            if($this->findModel($id)->updateAttributes(['status'=>$value])){
+                return $this->redirect(['index']);
+            }
+
 //            if (Yii::$app->getRequest()->isAjax) {
 //                $dataProvider = new ActiveDataProvider([
 //                    'query' => ModelName::find(),
@@ -141,15 +143,15 @@ class AdminUserController extends Controller
         } else {
 
             #员工职位
-            $staff_role = yii::$app->authManager->getRoles();
+            $staff_role = Yii::$app->authManager->getRoles();
 
             foreach($staff_role as $key=>$val)
             {
                 $staff_role[$key]=$key;
             }
 
-            $hospitals = \backend\models\Hospitals::find();
-            foreach($hospitals->all() as $val){
+            $hospitals = \backend\models\Hospitals::find()->all();
+            foreach($hospitals as $val){
                 $hospital[$val->id] = $val->name;
             }
 

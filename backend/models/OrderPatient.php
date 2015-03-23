@@ -28,7 +28,7 @@ class OrderPatient extends \yii\db\ActiveRecord
      * 患者健康状态
      */
     const PATIENT_STATE_OK = 1; //能自理
-    const PATIENT_STATE_DISABLED = 0; //不能自理
+    const PATIENT_STATE_DISABLED = 2; //不能自理
 
     /**
      * @inheritdoc

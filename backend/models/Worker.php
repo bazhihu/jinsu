@@ -49,6 +49,23 @@ class Worker extends \yii\db\ActiveRecord
     const WORKER_LEVEL_HIGH = 2; //高级
     const WORKER_LEVEL_SUPER = 3; //特级
 
+    /**
+     * 护工等级标签
+     */
+    static public $workerLevelLabel = [
+        self::WORKER_LEVEL_MEDIUM => '中级',
+        self::WORKER_LEVEL_HIGH   => '高级',
+        self::WORKER_LEVEL_SUPER  => '特级'
+    ];
+
+    /**
+     * 护工价格
+     */
+    static public $workerPrice = [
+        self::WORKER_LEVEL_MEDIUM => 150,
+        self::WORKER_LEVEL_HIGH   => 200,
+        self::WORKER_LEVEL_SUPER  => 300
+    ];
 
     /**
      * @inheritdoc
@@ -131,7 +148,6 @@ class Worker extends \yii\db\ActiveRecord
         return $age;
     }
 
-
     /**
      * @worker_age :星级
      */
@@ -167,13 +183,7 @@ class Worker extends \yii\db\ActiveRecord
      * @author zhangbo
      */
     static public function getWorkerLevel($level = null){
-        $workerLevel = [
-            self::WORKER_LEVEL_MEDIUM => '中级',
-            self::WORKER_LEVEL_HIGH => '高级',
-            self::WORKER_LEVEL_SUPER => '特级'
-        ];
-
-        return isset($workerLevel[$level]) ? $workerLevel[$level] : $workerLevel;
+        return isset(self::$workerLevelLabel[$level]) ? self::$workerLevelLabel[$level] : self::$workerLevelLabel;
     }
 
     /**
@@ -183,12 +193,7 @@ class Worker extends \yii\db\ActiveRecord
      * @author zhangbo
      */
     static public function getWorkerPrice($level){
-        $workerPrice = [
-            self::WORKER_LEVEL_MEDIUM => 150,
-            self::WORKER_LEVEL_HIGH => 200,
-            self::WORKER_LEVEL_SUPER => 300
-        ];
-        return isset($workerPrice[$level]) ? $workerPrice[$level] : null;
+        return isset(self::$workerPrice[$level]) ? self::$workerPrice[$level] : null;
 
     }
 

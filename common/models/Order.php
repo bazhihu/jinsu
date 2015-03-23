@@ -5,9 +5,7 @@
  * Date: 2015/3/21
  * Time: 18:25
  */
-
 namespace common\models;
-
 
 use backend\models\OrderIncrement;
 use backend\models\OrderPatient;
@@ -127,7 +125,6 @@ class Order extends \yii\db\ActiveRecord{
             [patient_state] => 0
             [create_order_sources] => service
         )
-
         [OrderPatient] => Array(
             [name] => 李国
             [gender] => 1

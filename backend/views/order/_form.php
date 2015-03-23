@@ -8,6 +8,7 @@ use kartik\widgets\Select2;
 use backend\models\Hospitals;
 use backend\models\Departments;
 use backend\Models\Worker;
+use backend\models\OrderPatient;
 
 /**
  * @var yii\web\View $this
@@ -118,7 +119,10 @@ use backend\Models\Worker;
             ]);
             echo $form->field($orderPatientModel, 'patient_state')
                 ->radioList(
-                    ['0'=>'不能自理','1'=>'能自理'],
+                    [
+                        OrderPatient::PATIENT_STATE_DISABLED=>'不能自理',
+                        OrderPatient::PATIENT_STATE_OK=>'能自理'
+                    ],
                     ['inline'=>true]
                 );
             echo $form->field($orderPatientModel, 'in_hospital_reason')

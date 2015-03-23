@@ -4,6 +4,8 @@ namespace common\models;
 use yii\base\Model;
 use Yii;
 
+use amnah\yii2\user\models\User;
+
 /**
  * Signup form
  */
@@ -26,7 +28,7 @@ class SignupForm extends Model
 
             ['mobile', 'filter', 'filter' => 'trim'],
             ['mobile', 'required'],
-            ['mobile', 'unique', 'targetClass' => 'User', 'message' => '手机号已注册.'],
+            ['mobile', 'unique', 'targetClass' => 'amnah\yii2\user\models\User', 'message' => '手机号已注册.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],

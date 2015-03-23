@@ -25,6 +25,12 @@ use Yii;
 class OrderPatient extends \yii\db\ActiveRecord
 {
     /**
+     * 患者健康状态
+     */
+    const PATIENT_STATE_OK = 1; //能自理
+    const PATIENT_STATE_DISABLED = 0; //不能自理
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -39,7 +45,8 @@ class OrderPatient extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'gender', 'age', 'height', 'weight', 'patient_state'], 'integer'],
-            [['order_no', 'patient_state'], 'required'],
+            [['order_no','patient_state'], 'required'],
+            [['patient_state'], 'in', 'range' => [self::PATIENT_STATE_DISABLED,self::PATIENT_STATE_OK]],
             [['admission_date', 'create_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
             [['name', 'in_hospital_reason', 'room_no', 'bed_no'], 'string', 'max' => 255],

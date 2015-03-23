@@ -2,16 +2,17 @@
 
 namespace backend\controllers;
 
-use backend\models\OrderPatient;
-use common\models\User;
 use Yii;
-use backend\models\OrderMaster;
-use backend\models\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Order;
-use common\models\SignupForm;
+
+use backend\models\OrderPatient;
+use backend\models\OrderMaster;
+use backend\models\OrderSearch;
+
+use amnah\yii2\user\models\User;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.
@@ -77,20 +78,23 @@ class OrderController extends Controller
             //检查手机号是否注册
             $userModel = new User();
             $user = $userModel->findByMobile($params['OrderMaster']['mobile']);
-            if($user->id){
+            if($user && isset($user->id)){
                 $params['OrderMaster']['uid'] = $user->id;
             }else{
                 //注册手机号
-                $signUpModel = new SignupForm();
-                $signUpModel->mobile = $params['OrderMaster']['mobile'];
-                $signUpModel->username = $params['OrderMaster']['contact_name'];
-                if ($user = $signUpModel->signup()) {
+                $userModel->setScenario('register'); //设置为注册场景
+                $userModel->mobile = $params['OrderMaster']['mobile'];
+                $userModel->username = $params['OrderMaster']['contact_name'];
+
+                if ($user = $userModel->SystemSignUp()) {
                     $params['OrderMaster']['uid'] = $user->id;
                 }
             }
-
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
             $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;
+
+            //判断是否挑选护工
+
 
             $order = new Order();
             $order->createOrder($params);

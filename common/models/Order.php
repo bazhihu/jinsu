@@ -10,6 +10,7 @@ namespace common\models;
 
 
 use backend\models\OrderIncrement;
+use backend\models\OrderPatient;
 use backend\Models\Worker;
 use yii\web\HttpException;
 
@@ -42,15 +43,15 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'worker_level', 'mobile', 'contact_name', 'hospital_id', 'department_id', 'base_price', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
+            [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id'], 'integer'],
             [['base_price', 'disabled_amount', 'total_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
-            [['worker_name', 'holidays', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
+            [['worker_name', 'contact_name', 'contact_telephone', 'holidays', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
 
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
-            [['create_order_user_agent'], 'string', 'max' => 500],
+            [['contact_address','create_order_user_agent'], 'string', 'max' => 500],
             [['order_no'], 'unique']
         ];
     }
@@ -107,28 +108,86 @@ class Order extends \yii\db\ActiveRecord{
         $orderIncrement->insert();
         return date("Ymd").$orderIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
     }
+
+    /**
+     * 创建订单
+     * Array(
+        [OrderMaster] => Array(
+            [mobile] => 13520895446
+            [contact_name] => 张三
+            [contact_telephone] => 123456789
+            [contact_address] => 北京
+            [hospital_id] => 2
+            [department_id] => 5
+            [worker_level] => 2
+            [start_time] => 2015-03-24
+            [end_time] => 2015-03-30
+            [remark] => 快一点
+            [uid] => 7
+            [patient_state] => 0
+            [create_order_sources] => service
+        )
+
+        [OrderPatient] => Array(
+            [name] => 李国
+            [gender] => 1
+            [age] => 33
+            [height] => 178
+            [weight] => 68
+            [patient_state] => 0
+            [in_hospital_reason] => 被K了
+            [admission_date] => 2015-03-21
+            [room_no] => 201
+            [bed_no] => 3
+        )
+      )
+     * @param array $params
+     * @return bool
+     * @throws HttpException
+     */
     public function createOrder($params){
+        //生成订单编号
+        $orderNo = $this->_generateOrderNo();
+
         //主订单表数据
         $orderMasterData = $params['OrderMaster'];
-        $orderMasterData['order_no'] = $this->_generateOrderNo();
+        $orderMasterData['order_no'] = $orderNo;
         $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
         $orderMasterData['create_time'] = date('Y-m-d H:i:s');
         $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
         $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
-
-        //
-
-
+        $orderMasterData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
         $this->attributes = $orderMasterData;
-        if($this->save()){
-            return true;
-        }else{
+        if(!$this->save()){
             throw new HttpException(400, print_r($this->getErrors(), true));
         }
-        //print_r($params);exit;
-        //
+
+        //保存患者信息
+        $orderPatient = array_filter($params['OrderPatient']);
+        if(!empty($orderPatient)){
+            $orderPatient['order_id'] = $this->order_id;
+            $orderPatient['order_no'] = $orderNo;
+            $orderPatient['create_time'] = date('Y-m-d H:i:s');
+            $this->saveOrderPatient($orderPatient);
+        }
+        return true;
     }
 
+    /**
+     * 保存订单患者数据
+     * @param $params
+     * @return bool
+     * @throws HttpException
+     */
+    protected function saveOrderPatient($params){
+        $orderPatient = new OrderPatient();
+        $orderPatient->attributes = $params;
+        if($orderPatient->save()){
+            return true;
+        }else{
+            throw new HttpException(400, print_r($orderPatient->getErrors(), true));
+        }
+    }
 
 }

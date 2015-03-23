@@ -100,6 +100,7 @@ class AdminUserController extends Controller
         $model = new AdminUser;
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['view', 'id' => $model->id]);
+
         }
 
         #员工职位

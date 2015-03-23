@@ -20,7 +20,7 @@ return [
     'components' => [
         'user' => [
             'class' => 'amnah\yii2\user\components\User',
-            //'identityClass' => 'common\models\User',
+            'identityClass' => 'amnah\yii2\models\User',
             //'enableAutoLogin' => true,
         ],
         'log' => [

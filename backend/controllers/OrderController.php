@@ -2,14 +2,17 @@
 
 namespace backend\controllers;
 
-use backend\models\Hospitals;
-use backend\models\OrderPatient;
 use Yii;
-use backend\models\OrderMaster;
-use backend\models\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\Order;
+
+use backend\models\OrderPatient;
+use backend\models\OrderMaster;
+use backend\models\OrderSearch;
+
+use amnah\yii2\user\models\User;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.
@@ -68,9 +71,34 @@ class OrderController extends Controller
     {
         $model = new OrderMaster;
         $orderPatientModel = new OrderPatient();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $params = Yii::$app->request->post();
+
+            //检查手机号是否注册
+            $userModel = new User();
+            $user = $userModel->findByMobile($params['OrderMaster']['mobile']);
+            if($user && isset($user->id)){
+                $params['OrderMaster']['uid'] = $user->id;
+            }else{
+                //注册手机号
+                $userModel->setScenario('register'); //设置为注册场景
+                $userModel->mobile = $params['OrderMaster']['mobile'];
+                $userModel->username = $params['OrderMaster']['contact_name'];
+
+                if ($user = $userModel->SystemSignUp()) {
+                    $params['OrderMaster']['uid'] = $user->id;
+                }
+            }
+            $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
+            $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;
+
+            //判断是否挑选护工
+
+
+            $order = new Order();
+            $order->createOrder($params);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,

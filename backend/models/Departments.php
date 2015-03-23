@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%departments}}".
@@ -47,17 +48,55 @@ class Departments extends \yii\db\ActiveRecord
 
     /**
      * 获取科室列表
-     * @param int $provinceId 省ID
-     * @param int $cityId 市ID
-     * @param int $areaId 区县ID
+     * @param int $hospitalId 医院ID
      * @return static[]
      */
-    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0){
-        $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
-        if($areaId > 0){
-            $findArr['area_id'] = $areaId;
+    static public function getList($hospitalId = null){
+        $result = array();
+        if(empty($hospitalId)){
+            $result = self::find()->all();
+        }else{
+            //通过医院选择科室@TODO...
+        }
+        if(empty($result)){
+            return $result;
         }
 
-        return ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+        $list = array();
+        self::formatItems($result, 0, 0, $list);
+
+
+        return $list;
     }
+
+    /**
+     * 格式化成树形格式数据
+     * @param array $items 数据项
+     * @param int $level 层级
+     * @param int $parentId 父级ID
+     * @param array $list 最终格式化的结果
+     * @return bool
+     */
+    static public function formatItems($items, $level, $parentId, &$list){
+        $level += 1;
+        $tree = str_repeat('--', $level);
+        foreach ($items as $key => $item) {
+            if($item['parent_id'] == $parentId){
+                if($level > 1){
+                    $value = '|'.$tree.$item['name'];
+                }else{
+                    $value = $item['name'];
+                }
+                $list[$key] = $value;
+                unset($items[$key]);
+
+                if(empty($items)){
+                    return false;
+                }else{
+                    self::formatItems($items, $level, $item['id'], $list);
+                }
+            }
+        }
+    }
+
 }

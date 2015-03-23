@@ -29,14 +29,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'type'=>DetailView::TYPE_INFO,
         ],
         'attributes' => [
-            //'admin_uid',
             'username',
             ['label'=>'密码','value'=>'******'],
             'staff_role',
             ['label'=>'状态','value'=>$model->status?'正常':'关闭'],
-            'created_at',
-            //'updated_at',
-            'created_id',
+            [
+                'attribute'=>'created_at',
+                'value'=>date("Y-m-d H:i:s",$model->created_at),
+            ],
+            [
+                'attribute'=>'created_id',
+                'label'=>'创建人',
+                'value'=>\backend\models\AdminUser::findOne(['admin_uid'=>$model->created_id])->username,
+            ]
         ],
         'deleteOptions'=>[
             'url'=>['delete', 'id' => $model->id],

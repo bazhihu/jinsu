@@ -3,6 +3,7 @@
 namespace amnah\yii2\user\models;
 
 use Yii;
+use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\swiftmailer\Mailer;
@@ -16,6 +17,7 @@ use ReflectionClass;
  * @property string    $id
  * @property string    $role_id
  * @property integer   $status
+ * @property string    $mobile
  * @property string    $email
  * @property string    $new_email
  * @property string    $username
@@ -53,6 +55,16 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_UNCONFIRMED_EMAIL = 2;
 
     /**
+     * @var string 系统注册类型
+     */
+    const REGISTER_TYPE_SYSTEM = 'system';
+
+    /**
+     * @var string 用户注册类型
+     */
+    const REGISTER_TYPE_USER = 'user';
+
+    /**
      * @var string Current password - for account page updates
      */
     public $currentPassword;
@@ -88,14 +100,20 @@ class User extends ActiveRecord implements IdentityInterface
         // set initial rules
         $rules = [
             // general email and username rules
-            [['email', 'username'], 'string', 'max' => 255],
-            [['email', 'username'], 'unique'],
-            [['email', 'username'], 'filter', 'filter' => 'trim'],
-            [['email'], 'email'],
-            [['username'], 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t('user', '{attribute} can contain only letters, numbers, and "_"')],
+//            [['email', 'username'], 'string', 'max' => 255],
+//            [['email', 'username'], 'unique'],
+//            [['email', 'username'], 'filter', 'filter' => 'trim'],
+//            [['email'], 'email'],
+//            [['username'], 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t('user', '{attribute} can contain only letters, numbers, and "_"')],
+
+            // mobile rules
+            [['mobile'], 'filter', 'filter' => 'trim'],
+            [['mobile'], 'required', 'on' => ['register', 'reset']],
+            [['mobile'], 'unique', 'message' => '手机号已注册.', 'on' => ['register', 'reset']],
+            [['mobile'], 'string', 'min' => 11, 'max' => 11],
 
             // password rules
-            [['newPassword'], 'string', 'min' => 3],
+            [['newPassword'], 'string', 'min' => 6],
             [['newPassword'], 'filter', 'filter' => 'trim'],
             [['newPassword'], 'required', 'on' => ['register', 'reset']],
             [['newPasswordConfirm'], 'required', 'on' => ['reset']],
@@ -110,16 +128,13 @@ class User extends ActiveRecord implements IdentityInterface
             [['role_id', 'status'], 'integer', 'on' => ['admin']],
             [['ban_time'], 'integer', 'on' => ['admin']],
             [['ban_reason'], 'string', 'max' => 255, 'on' => 'admin'],
+
+            //注册类型
+            [['type'], 'required'],
+            [['type'], 'in', 'range' => [self::REGISTER_TYPE_SYSTEM,self::REGISTER_TYPE_USER]]
+
         ];
 
-        // add required rules for email/username depending on module properties
-        $requireFields = ["requireEmail", "requireUsername"];
-        foreach ($requireFields as $requireField) {
-            if (Yii::$app->getModule("user")->$requireField) {
-                $attribute = strtolower(substr($requireField, 7)); // "email" or "username"
-                $rules[]   = [$attribute, "required"];
-            }
-        }
 
         return $rules;
     }
@@ -142,18 +157,20 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id'          => Yii::t('user', 'ID'),
             'role_id'     => Yii::t('user', 'Role ID'),
-            'status'      => Yii::t('user', 'Status'),
-            'email'       => Yii::t('user', 'Email'),
-            'new_email'   => Yii::t('user', 'New Email'),
-            'username'    => Yii::t('user', 'Username'),
-            'password'    => Yii::t('user', 'Password'),
+            'type'        => '注册类型',
+            'status'      => '用户状态',
+            'mobile'      => '手机号',
+            'email'       => '邮件地址',
+            'new_email'   => '新邮件地址',
+            'username'    => '用户名',
+            'password'    => '密码',
             'auth_key'    => Yii::t('user', 'Auth Key'),
             'api_key'     => Yii::t('user', 'Api Key'),
-            'login_ip'    => Yii::t('user', 'Login Ip'),
-            'login_time'  => Yii::t('user', 'Login Time'),
-            'create_ip'   => Yii::t('user', 'Create Ip'),
-            'create_time' => Yii::t('user', 'Create Time'),
-            'update_time' => Yii::t('user', 'Update Time'),
+            'login_ip'    => '登录IP',
+            'login_time'  => '登录时间',
+            'create_ip'   => '注册IP',
+            'create_time' => '注册时间',
+            'update_time' => '更新时间',
             'ban_time'    => Yii::t('user', 'Ban Time'),
             'ban_reason'  => Yii::t('user', 'Ban Reason'),
 
@@ -239,6 +256,14 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
+    public static function findByMobile($mobile)
+    {
+        return static::findOne(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(["api_key" => $token]);
@@ -309,12 +334,14 @@ class User extends ActiveRecord implements IdentityInterface
      * @param int    $roleId
      * @param string $userIp
      * @param string $status
+     * @param string $type
      * @return static
      */
-    public function setRegisterAttributes($roleId, $userIp, $status = null)
+    public function setRegisterAttributes($roleId, $userIp, $status = null, $type = self::REGISTER_TYPE_USER)
     {
         // set default attributes
         $attributes = [
+            'type'      => $type,
             "role_id"   => $roleId,
             "create_ip" => $userIp,
             "auth_key"  => Yii::$app->security->generateRandomString(),
@@ -339,6 +366,32 @@ class User extends ActiveRecord implements IdentityInterface
         // set attributes and return
         $this->setAttributes($attributes, false);
         return $this;
+    }
+
+    /**
+     * 系统自动注册
+     * @param $params
+     * @return $this
+     * @throws ErrorException
+     */
+    public function SystemSignUp(){
+        $this->newPassword = 'youaiyihu';
+        $attributes = [
+            'type'      => self::REGISTER_TYPE_SYSTEM,
+            "role_id"   => Role::ROLE_USER,
+            "create_ip" => Yii::$app->request->userIP,
+            "auth_key"  => Yii::$app->security->generateRandomString(),
+            "api_key"   => Yii::$app->security->generateRandomString(),
+            "status"    => static::STATUS_ACTIVE,
+        ];
+
+        $this->setAttributes($attributes, false);
+        //print_r($this->attributes);exit;
+        if(!$this->save()){
+            throw new ErrorException(print_r($this->getErrors(), true));
+        }
+        return $this;
+
     }
 
     /**

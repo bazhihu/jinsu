@@ -6,6 +6,9 @@ use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use backend\models\Hospitals;
+use backend\models\Departments;
+use backend\Models\Worker;
+use backend\models\OrderPatient;
 
 /**
  * @var yii\web\View $this
@@ -38,6 +41,28 @@ use backend\models\Hospitals;
                         'options'=>[
                             'placeholder'=>'请输入手机号...',
                             'maxlength'=>11,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                    'contact_name'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入联系人姓名...',
+                            'maxlength'=>4,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                    'contact_telephone'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入备用电话...',
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                    'contact_address'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入住址...',
                             'style'=>'width:25%'
                         ],
                     ],
@@ -94,25 +119,34 @@ use backend\models\Hospitals;
             ]);
             echo $form->field($orderPatientModel, 'patient_state')
                 ->radioList(
-                    ['0'=>'不能自理','1'=>'能自理'],
+                    [
+                        OrderPatient::PATIENT_STATE_DISABLED=>'不能自理',
+                        OrderPatient::PATIENT_STATE_OK=>'能自理'
+                    ],
                     ['inline'=>true]
                 );
             echo $form->field($orderPatientModel, 'in_hospital_reason')
             ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:25%']);
 
-            echo $form->field($orderPatientModel, 'admission_date')->widget(DateControl::classname(),[
-                'type'=>DateControl::FORMAT_DATE,
-                'options'=>[
-                    'readonly'=>true,
-                    'options'=>['placeholder' => '请输入住院日期','style'=>'width:19%'],
-                    'convertFormat'=>true,
-                    'pluginOptions'=>[
-                        'format' => 'yyyy-MM-dd',
-                        'todayHighlight' => true,
-                        'autoclose' => true
-                    ]
+            echo Form::widget([
+                'model' => $orderPatientModel,
+                'form' => $form,
+                'columns' => 1,
+                'attributes' => [
+                    'admission_date'=>[
+                        'type'=> Form::INPUT_WIDGET,
+                        'widgetClass'=>DateControl::classname(),
+                        'options'=>[
+                            'type'=>DateControl::FORMAT_DATE,
+                            'options'=>[
+                                'options'=>['placeholder'=>'请选择住院日期...','style'=>'width:19%']
+                            ],
+                            'displayFormat' => 'yyyy-MM-dd',
+                        ]
+                    ],
                 ]
             ]);
+
             echo $form->field($orderPatientModel, 'room_no')
                 ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:25%']);
             echo $form->field($orderPatientModel, 'bed_no')
@@ -128,28 +162,79 @@ use backend\models\Hospitals;
         </div>
         <div class="panel-body">
             <?php
+
             echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                 'data' => Hospitals::getList(),
-                'options' => ['placeholder' => '请选择医院...','style'=>'width:25%'],
+
+                'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
             ]);
             echo $form->field($model, 'department_id')->widget(Select2::classname(), [
-                'data' => Hospitals::getList(),
+                'data' => Departments::getList(),
                 'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
             ]);
+            echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
+                'hideSearch' => true,
+                'data' => Worker::getWorkerLevel(),
+                'options' => ['placeholder' => '请选择护工等级...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
 
+            echo Form::widget([ // nesting attributes together (without labels for children)
+                'model'=>$model,
+                'form'=>$form,
+                'columns'=>1,
+                'attributeDefaults' => [
+                    'type' => Form::INPUT_TEXT,
+                    'labelOptions' => ['class'=>'col-md-2'],
+                    'inputContainer' => ['class'=>'col-md-10'],
+                ],
+                'attributes'=>[
+                    'date_range' => [
+                        'label' => '时间段',
+                        'attributes'=>[
+                            'start_time' => [
+                                'type'=> Form::INPUT_WIDGET,
+                                'widgetClass'=>DateControl::classname(),
+                                'options'=>[
+                                    'type'=>DateControl::FORMAT_DATE,
+                                    'options'=>[
+                                        'options'=>['placeholder'=>'开始时间...']
+                                    ],
+                                    'displayFormat' => 'yyyy-MM-dd',
+                                ]
+                            ],
+                            'end_time'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>DateControl::classname(),
+                                'options'=>[
+                                    'type'=>DateControl::FORMAT_DATE,
+                                    'options'=>[
+                                        'options'=>['placeholder'=>'结束时间...']
+                                    ],
+                                    'displayFormat' => 'yyyy-MM-dd',
+                                ]
+                            ],
+                        ]
+                    ],
+
+                ]
+            ]);
+            echo $form->field($model, 'remark')->textarea(['rows'=>3]);
             ?>
         </div>
     </div>
 
     <?php
-
-    echo Html::submitButton($model->isNewRecord ? '创建订单' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';
+    echo Html::submitButton($model->isNewRecord ? '快速下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
     ActiveForm::end(); ?>
     <div style="margin-bottom: 15px"></div>
 </div>

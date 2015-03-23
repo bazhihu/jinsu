@@ -43,6 +43,28 @@ use backend\Models\Worker;
                             'style'=>'width:25%'
                         ],
                     ],
+                    'contact_name'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入联系人姓名...',
+                            'maxlength'=>4,
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                    'contact_telephone'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入备用电话...',
+                            'style'=>'width:25%'
+                        ],
+                    ],
+                    'contact_address'=>[
+                        'type'=> Form::INPUT_TEXT,
+                        'options'=>[
+                            'placeholder'=>'请输入住址...',
+                            'style'=>'width:25%'
+                        ],
+                    ],
                 ]
             ]);?>
         </div>

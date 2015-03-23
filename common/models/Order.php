@@ -42,7 +42,7 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
+            [['order_no', 'worker_level', 'mobile', 'contact_name', 'hospital_id', 'department_id', 'base_price', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id'], 'integer'],
             [['base_price', 'disabled_amount', 'total_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
@@ -50,7 +50,6 @@ class Order extends \yii\db\ActiveRecord{
             [['worker_name', 'holidays', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
 
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
-            [['mobile'], 'string', 'max' => 11],
             [['create_order_user_agent'], 'string', 'max' => 500],
             [['order_no'], 'unique']
         ];
@@ -65,6 +64,9 @@ class Order extends \yii\db\ActiveRecord{
             'order_id' => 'Order ID',
             'order_no' => '订单编号',
             'uid' => '用户ID',
+            'contact_name' => '联系人姓名',
+            'contact_address' => '联系人地址',
+            'contact_telephone' => '备用电话',
             'worker_no' => '护工编号',
             'worker_name' => '护工姓名',
             'worker_level' => '护工等级',
@@ -103,7 +105,7 @@ class Order extends \yii\db\ActiveRecord{
     private function _generateOrderNo(){
         $orderIncrement = new OrderIncrement();
         $orderIncrement->insert();
-        return date("Ymd").str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT).$orderIncrement->id;
+        return date("Ymd").$orderIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
     }
     public function createOrder($params){
         //主订单表数据
@@ -113,7 +115,6 @@ class Order extends \yii\db\ActiveRecord{
         $orderMasterData['create_time'] = date('Y-m-d H:i:s');
         $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
         $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $orderMasterData['create_order_sources'] = $_SERVER['HTTP_USER_AGENT'];
         $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
 
         //

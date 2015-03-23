@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\OrderPatient;
+use common\models\User;
 use Yii;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
@@ -10,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Order;
+use common\models\SignupForm;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.
@@ -72,8 +74,20 @@ class OrderController extends Controller
 
             $params = Yii::$app->request->post();
 
-            //检查手机号是否注册@TODO...
-            $mobile = $params['OrderMaster']['mobile'];
+            //检查手机号是否注册
+            $userModel = new User();
+            $user = $userModel->findByMobile($params['OrderMaster']['mobile']);
+            if($user->id){
+                $params['OrderMaster']['uid'] = $user->id;
+            }else{
+                //注册手机号
+                $signUpModel = new SignupForm();
+                $signUpModel->mobile = $params['OrderMaster']['mobile'];
+                $signUpModel->username = $params['OrderMaster']['contact_name'];
+                if ($user = $signUpModel->signup()) {
+                    $params['OrderMaster']['uid'] = $user->id;
+                }
+            }
 
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
             $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;

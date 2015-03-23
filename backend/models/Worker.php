@@ -164,6 +164,7 @@ class Worker extends \yii\db\ActiveRecord
      * 护工等级
      * @param null $level
      * @return array
+     * @author zhangbo
      */
     static public function getWorkerLevel($level = null){
         $workerLevel = [
@@ -179,6 +180,7 @@ class Worker extends \yii\db\ActiveRecord
      * 根据等级获取护工价格
      * @param int $level 护工等级
      * @return null|int
+     * @author zhangbo
      */
     static public function getWorkerPrice($level){
         $workerPrice = [

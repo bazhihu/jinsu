@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            'order_id',
             'order_no',
             'uid',
             'mobile',
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'update' => function ($url, $model) {
                     return Html::a(
                         '<span class="glyphicon glyphicon-pencil"></span>',
-                        Yii::$app->urlManager->createUrl(['order/view','id' => $model->id,'edit'=>'t']), ['title' => Yii::t('yii', 'Edit'),]
+                        Yii::$app->urlManager->createUrl(['order/view','id' => $model->order_id,'edit'=>'t']), ['title' => Yii::t('yii', 'Edit'),]
                     );
                 }
                 ],

@@ -207,8 +207,8 @@ use backend\Models\Worker;
     </div>
 
     <?php
-
-    echo Html::submitButton($model->isNewRecord ? '创建订单' : '更新', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';
+    echo Html::submitButton($model->isNewRecord ? '快速下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
     ActiveForm::end(); ?>
     <div style="margin-bottom: 15px"></div>
 </div>

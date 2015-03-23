@@ -76,11 +76,11 @@ class OrderController extends Controller
             $mobile = $params['OrderMaster']['mobile'];
 
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
-
+            $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;
 
             $order = new Order();
             $order->createOrder($params);
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,

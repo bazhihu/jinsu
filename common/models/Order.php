@@ -10,13 +10,14 @@ namespace common\models;
 
 
 use backend\models\OrderIncrement;
+use backend\Models\Worker;
 use yii\web\HttpException;
 
 class Order extends \yii\db\ActiveRecord{
     //订单来源
     const ORDER_SOURCES_WEB = 'web'; //web网站
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
-    const ORDER_SOURCES_ = 'service'; //客服
+    const ORDER_SOURCES_SERVICE = 'service'; //客服
 
     //订单状态
     const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
@@ -108,16 +109,19 @@ class Order extends \yii\db\ActiveRecord{
         //主订单表数据
         $orderMasterData = $params['OrderMaster'];
         $orderMasterData['order_no'] = $this->_generateOrderNo();
-        $orderMasterData['reality_end_time'] = $params['end_time'];
+        $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
         $orderMasterData['create_time'] = date('Y-m-d H:i:s');
-        $orderMasterData['create_order_ip'] = $_SERVER["HTTP_VIA"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
+        $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
         $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $orderMasterData['create_order_sources'] = $_SERVER['HTTP_USER_AGENT'];
+        $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
+
+        //
 
 
         $this->attributes = $orderMasterData;
         if($this->save()){
-            echo 'OK';
+            return true;
         }else{
             throw new HttpException(400, print_r($this->getErrors(), true));
         }

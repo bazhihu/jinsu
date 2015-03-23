@@ -78,7 +78,6 @@ class OrderController extends Controller
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
 
 
-
             $order = new Order();
             $order->createOrder($params);
             return $this->redirect(['view', 'id' => $model->id]);

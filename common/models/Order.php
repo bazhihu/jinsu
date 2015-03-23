@@ -10,8 +10,15 @@ namespace common\models;
 
 
 use backend\models\OrderIncrement;
+use yii\web\HttpException;
 
 class Order extends \yii\db\ActiveRecord{
+    //订单来源
+    const ORDER_SOURCES_WEB = 'web'; //web网站
+    const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
+    const ORDER_SOURCES_ = 'service'; //客服
+
+    //订单状态
     const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
     const ORDER_STATUS_WAIT_CONFIRM = 'wait_confirm'; //待确认
     const ORDER_STATUS_WAIT_SERVICE = 'wait_service'; //待服务
@@ -87,12 +94,34 @@ class Order extends \yii\db\ActiveRecord{
         ];
     }
 
-    static public function generateOrderNo(){
+    /**
+     * 生成订单号
+     * @return string
+     * @throws \Exception
+     */
+    private function _generateOrderNo(){
         $orderIncrement = new OrderIncrement();
         $orderIncrement->insert();
-        return date("Ymd").str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT).$orderIncrement->id;;
+        return date("Ymd").str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT).$orderIncrement->id;
     }
     public function createOrder($params){
+        //主订单表数据
+        $orderMasterData = $params['OrderMaster'];
+        $orderMasterData['order_no'] = $this->_generateOrderNo();
+        $orderMasterData['reality_end_time'] = $params['end_time'];
+        $orderMasterData['create_time'] = date('Y-m-d H:i:s');
+        $orderMasterData['create_order_ip'] = $_SERVER["HTTP_VIA"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
+        $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $orderMasterData['create_order_sources'] = $_SERVER['HTTP_USER_AGENT'];
+
+
+        $this->attributes = $orderMasterData;
+        if($this->save()){
+            echo 'OK';
+        }else{
+            throw new HttpException(400, print_r($this->getErrors(), true));
+        }
+        //print_r($params);exit;
         //
     }
 

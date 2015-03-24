@@ -3,6 +3,7 @@
 namespace backend\Models;
 
 use Yii;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "{{%worker}}".
@@ -67,6 +68,91 @@ class Worker extends \yii\db\ActiveRecord
         self::WORKER_LEVEL_SUPER  => 300
     ];
 
+
+    /**
+     * 文化程度
+     */
+
+    const EDUCATION_1 = 1; //文盲
+    const EDUCATION_2 = 2; //小学
+    const EDUCATION_3 = 3; //初中
+    const EDUCATION_4 = 4; //高中
+    const EDUCATION_5 = 5; //中技
+    const EDUCATION_6 = 6; //中专
+    const EDUCATION_7 = 7; //大专
+    const EDUCATION_8 = 8; //本科
+    const EDUCATION_9 = 9; //硕士
+    const EDUCATION_10 = 10; //博士
+
+
+    static public $educationLabel = [
+        self::EDUCATION_1 => '文盲',
+        self::EDUCATION_2 => '小学',
+        self::EDUCATION_3 => '初中',
+        self::EDUCATION_4 => '高中',
+        self::EDUCATION_5 => '中技',
+        self::EDUCATION_6 => '中专',
+        self::EDUCATION_7 => '大专',
+        self::EDUCATION_8 => '本科',
+        self::EDUCATION_9 => '硕士',
+        self::EDUCATION_10 => '博士',
+    ];
+
+    /**
+     * 政治面貌politics
+     */
+
+    const POLITICS_1 = 1;
+    const POLITICS_2 = 2;
+    const POLITICS_3 = 3;
+    const POLITICS_4 = 4;
+    const POLITICS_5 = 5;
+    const POLITICS_6 = 6;
+
+    static public $politicsLabel = [
+        self::POLITICS_1 => '群众',
+        self::POLITICS_2 => '团员',
+        self::POLITICS_3 => '中共党员',
+        self::POLITICS_4 => '民主党派',
+        self::POLITICS_5 => '无党派人士',
+        self::POLITICS_6 => '其他'
+    ];
+
+
+
+    /**
+     * 普通话水平chinese_level
+     */
+
+    const CHINESELEVEL_1 = 1;
+    const CHINESELEVEL_2 = 2;
+    const CHINESELEVEL_3 = 3;
+
+    static public $chineselevelLabel = [
+        self::CHINESELEVEL_1 => '一般',
+        self::CHINESELEVEL_2 => '良好',
+        self::CHINESELEVEL_3 => '熟练',
+    ];
+
+
+    /**
+     *资质证书certificate  '1'=>'健康证','2'=>'护理证','3'=>'暂住证'
+     */
+
+    const CERTIFICATE_1 = 1;
+    const CERTIFICATE_2 = 2;
+    const CERTIFICATE_3 = 3;
+
+    static public $certificateLabel = [
+        self::CERTIFICATE_1 => '健康证',
+        self::CERTIFICATE_2 => '护理证',
+        self::CERTIFICATE_3 => '暂住证',
+    ];
+
+
+    public $birth_place_city;
+    public $birth_place_area;
+
     /**
      * @inheritdoc
      */
@@ -81,12 +167,14 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gender', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
-            [['birth', 'start_work', 'add_date', 'edit_date'], 'safe'],
+            [['name','idcard'], 'required'],
+            [['gender'],'string', 'max' => 1],
+            [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
+            [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
             [['price', 'good_rate'], 'number'],
-            [['name', 'idcard','native_province', 'nation'], 'string', 'max' => 20],
-           // [['birth_place', 'office_id', 'good_at'], 'string', 'max' => 50],
-            [['place'], 'string', 'max' => 255]
+            [['name', 'birth_place','idcard','native_province', 'nation', 'phone1', 'phone2','certificate'], 'string', 'max' => 20],
+            [['place'], 'string', 'max' => 255],
+
         ];
     }
 
@@ -100,7 +188,7 @@ class Worker extends \yii\db\ActiveRecord
             'name' => '姓名',
             'gender' => '性别',
             'birth' => '出生日期',
-            'birth_place_province' => '户口所在地',
+            'birth_place' => '户口所在地',
             'native_province' => '籍贯',
             'nation' => '民族',
             'marriage' => '婚姻状况',
@@ -196,17 +284,73 @@ class Worker extends \yii\db\ActiveRecord
         return isset(self::$workerPrice[$level]) ? self::$workerPrice[$level] : null;
 
     }
+    /**
+    * @param array $params
+    * @return bool
+    * @throws HttpException
+    */
+    public function createWorker($params){
+        $params['add_date'] =date('Y-m-d H:i:s');
+      //  $params['adder'] = $_SESSION['admin_uid'];
 
-    public function beforeSave($insert)
-    {var_dump(Yii::$app->request->post(hospital_id));
-        parent::beforeSave($insert);
-
-        if($this->hospital_id){
-            $this->hospital_id =implode(',',$this->hospital_id);
+        $this->attributes = $params['Worker'];
+        if(!$this->save()){
+            throw new HttpException(400, print_r($this->getErrors(), true));
         }
-       // var_dump( $this->hospital_id );
-        die();
         return true;
+    }
+
+
+    /**
+     * 文化程度
+     * @param null $level
+     * @return array
+     * @author tiancq
+     */
+    static public function getEducationLevel($education = null){
+        return isset(self::$educationLabel[$education]) ? self::$educationLabel[$education] : self::$educationLabel;
+    }
+
+
+    /**
+     * 政治面貌
+     * @param null $level
+     * @return array
+     * @author tiancq
+     */
+    static public function getPoliticsLevel($politics = null){
+        return isset(self::$politicsLabel[$politics]) ? self::$politicsLabel[$politics] : self::$politicsLabel;
+    }
+
+
+    /**
+     * 普通话水平
+     * @param null $chineselevel
+     * @return array
+     * @author tiancq
+     */
+    static public function getChineseLevel($chineselevel = null){
+        return isset(self::$chineselevelLabel[$chineselevel]) ? self::$chineselevelLabel[$chineselevel] : self::$chineselevelLabel;
+    }
+
+    /**
+     * 资质证书
+     * @param null $chineselevel
+     * @return array
+     * @author tiancq
+     */
+    static public function getertificate($chineselevel = null){
+        return isset(self::$certificateLabel[$chineselevel]) ? self::$certificateLabel[$chineselevel] : self::$certificateLabel;
+    }
+
+    /**
+     * 资质证书
+     * @param null $chineselevel
+     * @return array
+     * @author tiancq
+     */
+    static public function getCertificate($chineselevel = null){
+        return isset(self::$certificateLabel[$chineselevel]) ? self::$certificateLabel[$chineselevel] : self::$certificateLabel;
     }
 
 

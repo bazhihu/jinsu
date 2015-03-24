@@ -31,28 +31,29 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'worker_id',
             'name',
+            'idcard',
             'gender',
             [
                 'attribute'=>'birth',
-                'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'd-m-Y'],
+                'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'yyyy-MM-dd'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
                     'type'=>DateControl::FORMAT_DATE
                 ]
             ],
+
             'birth_place',
             'native_province',
             'nation',
             'marriage',
             'education',
             'politics',
-            'idcard',
             'chinese_level',
             'certificate',
             [
                 'attribute'=>'start_work',
-                'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'd-m-Y'],
+                'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'yyyy-MM-dd'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -68,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'good_at',
             [
                 'attribute'=>'add_date',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
+                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -78,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'adder',
             [
                 'attribute'=>'edit_date',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
+                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),

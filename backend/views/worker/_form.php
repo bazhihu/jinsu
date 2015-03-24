@@ -25,52 +25,58 @@ use kartik\widgets\DepDrop;
     'form' => $form,
     'columns' => 1,
     'attributes' => [
+        'name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:50%']],
 
-        'name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 姓名...', 'maxlength'=>20,'style'=>'width:50%']],
+        'idcard'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:50%']],
 
-        'gender'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 性别...'], 'items'=>['1'=>'男','2'=>'女'], 'options'=>['inline'=>true]],
+        'gender'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]],
 
         'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
             'options'=>[
+                'options'=>[
+                    'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:30%']
+                ],
                 'type'=>DateControl::FORMAT_DATE,
                 'displayFormat' => 'yyyy-MM-dd',
                 'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
             ],
         ],
 
+        'marriage'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择婚姻状况...'], 'items'=>['1'=>'已婚','2'=>'未婚'], 'options'=>['inline'=>true]],
 
+        'education'=>
+            [
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择文化程度...'],
+                'items'=>\backend\Models\Worker::getEducationLevel($model->education),
+                'options'=>['inline'=>true]
+            ],
 
-       /* 'native_province'=>[
-                'type'=> Form::INPUT_WIDGET,'widgetClass'=>Select2::classname(),
-                'options'=>['placeholder'=>'Enter 籍贯...', 'maxlength'=>50,'data' => \backend\models\Hospitals::getList()],
-                'pluginOptions' => ['allowClear' => true]
-        ],*/
+        'politics'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择政治面貌...'], 'items'=>\backend\Models\Worker::getPoliticsLevel($model->politics), 'options'=>['inline'=>true]],
 
-        'marriage'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 婚姻状况...'], 'items'=>['1'=>'已婚','2'=>'未婚'], 'options'=>['inline'=>true]],
+        'chinese_level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择普通话水平...'], 'items'=>\backend\Models\Worker::getChineseLevel($model->chinese_level), 'options'=>['inline'=>true]],
 
-        'education'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 文化程度...'], 'items'=>['1'=>'男','2'=>'女'], 'options'=>['inline'=>true]],
+        'certificate'=>['type'=> Form::INPUT_CHECKBOX_LIST, 'options'=>['placeholder'=>'请选择资质证书...'],'items'=>\backend\Models\Worker::getCertificate($model->certificate), 'options'=>['inline'=>true], 'maxlength'=>10],
 
-        'politics'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 政治面貌...'], 'items'=>['1'=>'群众','2'=>'团员','3'=>'中共党员','4'=>'民主党派','5'=>'无党派人士','6'=>'其他'], 'options'=>['inline'=>true]],
+        'phone1'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']],
 
-        'idcard'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 身份证号...', 'maxlength'=>20,'style'=>'width:50%']],
+        'phone2'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']],
 
-        'chinese_level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 普通话水平...'], 'items'=>['1'=>'一般','2'=>'良好','3'=>'熟练'], 'options'=>['inline'=>true]],
+        'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
 
-        'certificate'=>['type'=> Form::INPUT_CHECKBOX_LIST, 'options'=>['placeholder'=>'Enter 资质证书...'],'items'=>['1'=>'健康证','2'=>'护理证','3'=>'暂住证'], 'options'=>['inline'=>true], 'maxlength'=>10],
+        'price'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:50%']],
 
-        'phone1'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 手机号1...', 'maxlength'=>12,'style'=>'width:50%']],
+        'status'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]],
 
-        'phone2'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 手机号2...', 'maxlength'=>11,'style'=>'width:50%']],
-
-        'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 护工等级...'],'items'=>['1'=>'中级','2'=>'高级','3'=>'特级'], 'options'=>['inline'=>true]],
-
-        'price'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter 服务价格...','style'=>'width:50%']],
-
-        'status'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'Enter 工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]],
-
-        'start_work'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-            'options'=>['type'=>DateControl::FORMAT_DATE,'displayFormat' => 'yyyy-MM-dd',
-            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
+        'start_work'=>[
+            'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
+            'options'=>[
+                'options'=>[
+                    'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:30%']
+                ],
+                'type'=>DateControl::FORMAT_DATE,
+                'displayFormat' => 'yyyy-MM-dd',
+                'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
             ],
         ]]
     ]);
@@ -96,15 +102,15 @@ use kartik\widgets\DepDrop;
     ])->label('民族');
 
     //户口所在地
-    /*echo $form->field($model, 'birth_place_province')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place_province','style'=>'width:30%']);
+    echo $form->field($model, 'birth_place')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place','style'=>'width:30%']);
 
     // 户口所在地 Child # 1
     echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
         'options'=>['id'=>'birth_place_city','style'=>'width:30%'],
         'pluginOptions'=>[
-            'depends'=>['birth_place_province'],
-            'placeholder'=>'Select...',
-            'url'=>Url::to(['/worker/getcity'])
+            'depends'=>['birth_place'],
+            'placeholder'=>'请选择',
+            'url'=>Url::to(['worker/getcity'])
         ]
     ])->label('');
 
@@ -112,12 +118,12 @@ use kartik\widgets\DepDrop;
     echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
         'options'=>['style'=>'width:30%'],
         'pluginOptions'=>[
-            'depends'=>['birth_place_province', 'birth_place_city'],
-            'placeholder'=>'Select...',
-            'url'=>Url::to(['/site/subsubcat'])
+            'depends'=>[ 'birth_place_city'],
+            'placeholder'=>'请选择',
+            'url'=>Url::to(['worker/getarea'])
         ]
     ])->label('');
-*/
+
 
 
 

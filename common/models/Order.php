@@ -27,6 +27,16 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_STATUS_CANCEL = 'cancel'; //取消订单
     const ORDER_STATUS_WAIT_EVALUATE = 'wait_evaluate'; //待评价
 
+    static public $orderStatusLabels = [
+        self::ORDER_STATUS_WAIT_PAY => '待支付',
+        self::ORDER_STATUS_WAIT_CONFIRM => '待确认',
+        self::ORDER_STATUS_WAIT_SERVICE => '待服务',
+        self::ORDER_STATUS_IN_SERVICE => '服务中',
+        self::ORDER_STATUS_END_SERVICE => '结束服务',
+        self::ORDER_STATUS_CANCEL => '取消订单',
+        self::ORDER_STATUS_WAIT_EVALUATE => '待评价'
+    ];
+
     /**
      * @inheritdoc
      */

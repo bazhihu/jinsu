@@ -30,6 +30,11 @@ class OrderPatient extends \yii\db\ActiveRecord
     const PATIENT_STATE_OK = 1; //能自理
     const PATIENT_STATE_DISABLED = 2; //不能自理
 
+    static public $patientStateLabels = [
+        self::PATIENT_STATE_OK => '能自理',
+        self::PATIENT_STATE_DISABLED => '不能自理'
+    ];
+
     /**
      * @inheritdoc
      */

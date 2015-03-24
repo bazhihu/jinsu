@@ -56,10 +56,10 @@ class OrderController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
-        return $this->render('view', ['model' => $model]);
-}
+            return $this->render('view', ['model' => $model]);
+        }
     }
 
     /**
@@ -134,8 +134,18 @@ class OrderController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
+        //$this->findModel($id)->delete();
+        if (Yii::$app->getRequest()->isAjax) {
+            echo 33;exit;
+            $dataProvider = new ActiveDataProvider([
+                'query' => OrderMaster::find(),
+                'sort' => false
+            ]);
+            return $this->renderPartial('index', [
+                'dataProvider' => $dataProvider
+            ]);
+        }
         return $this->redirect(['index']);
     }
 

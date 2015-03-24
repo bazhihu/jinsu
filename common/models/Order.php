@@ -76,7 +76,7 @@ class Order extends \yii\db\ActiveRecord{
             'department_id' => '科室',
             'holidays' => '节假日',
             'total_amount' => '订单总金额',
-            'patient_state' => '患者健康情况（0：不能自理；1：能自理）',
+            'patient_state' => '患者健康情况',
             'customer_service_id' => '下单客服ID',
             'operator_id' => '订单操作者ID',
             'remark' => '订单备注',

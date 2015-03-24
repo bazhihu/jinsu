@@ -9,9 +9,9 @@ use kartik\datecontrol\DateControl;
  * @var backend\models\OrderMaster $model
  */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Order Masters', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = '查看订单';
+//$this->params['breadcrumbs'][] = ['label' => 'Order Masters', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-master-view">
     <div class="page-header">
@@ -29,20 +29,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'type'=>DetailView::TYPE_INFO,
         ],
         'attributes' => [
-            'id',
+            'order_id',
             'order_no',
             'uid',
             'mobile',
             'base_price',
             'disabled_amount',
-            'holiday_amount',
             'total_amount',
             'patient_state',
             'worker_level',
             'customer_service_id',
             'operator_id',
             [
-                'attribute'=>'service_start_time',
+                'attribute'=>'start_time',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
@@ -51,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'attribute'=>'service_end_time',
+                'attribute'=>'end_time',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
@@ -110,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'create_order_user_agent',
         ],
         'deleteOptions'=>[
-        'url'=>['delete', 'id' => $model->id],
+        'url'=>['delete', 'id' => $model->order_id],
         'data'=>[
         'confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'),
         'method'=>'post',

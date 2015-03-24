@@ -33,6 +33,9 @@ class OrderSearch extends OrderMaster
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 2,
+            ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {
@@ -49,8 +52,8 @@ class OrderSearch extends OrderMaster
             'worker_level' => $this->worker_level,
             'customer_service_id' => $this->customer_service_id,
             'operator_id' => $this->operator_id,
-            'start_time' => $this->service_start_time,
-            'end_time' => $this->service_end_time,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
             'reality_end_time' => $this->reality_end_time,
             'create_time' => $this->create_time,
             'pay_time' => $this->pay_time,

@@ -43,6 +43,9 @@ use yii\web\HttpException;
  */
 class Worker extends \yii\db\ActiveRecord
 {
+
+
+
     /**
      * 护工等级
      */
@@ -149,9 +152,69 @@ class Worker extends \yii\db\ActiveRecord
         self::CERTIFICATE_3 => '暂住证',
     ];
 
+    static public  $nation = array (
+        1=>'汉族',
+        2=>'壮族',
+        3=>'满族',
+        4=>'回族',
+        5=>'苗族',
+        6=>'维吾尔族',
+        7=>'土家族',
+        8=>'彝族',
+        9=>'蒙古族',
+        10=>'藏族',
+        11=>'布依族',
+        12=>'侗族',
+        13=>'瑶族',
+        14=>'朝鲜族',
+        15=>'白族',
+        16=>'哈尼族',
+        17=>'哈萨克族',
+        18=>'黎族',
+        19=>'傣族',
+        20=>'畲族',
+        21=>'傈僳族',
+        22=>'仡佬族',
+        23=>'东乡族',
+        24=>'高山族',
+        25=>'拉祜族',
+        26=>'水族',
+        27=>'佤族',
+        28=>'纳西族',
+        29=>'羌族',
+        30=>'土族',
+        31=>'仫佬族',
+        32=>'锡伯族',
+        33=>'柯尔克孜族',
+        34=>'达斡尔族',
+        35=>'景颇族',
+        36=>'毛南族',
+        37=>'撒拉族',
+        38=>'布朗族',
+        39=>'塔吉克族',
+        40=>'阿昌族',
+        41=>'普米族',
+        42=>'鄂温克族',
+        43=>'怒族',
+        44=>'京族',
+        45=>'基诺族',
+        46=>'德昂族',
+        47=>'保安族',
+        48=>'俄罗斯族',
+        49=>'裕固族',
+        50=>'乌兹别克族',
+        51=>'门巴族',
+        52=>'鄂伦春族',
+        53=>'独龙族',
+        54=>'塔塔尔族',
+        55=>'赫哲族',
+        56=>'珞巴族'
+    );
 
     public $birth_place_city;
     public $birth_place_area;
+
+
 
     /**
      * @inheritdoc
@@ -224,7 +287,7 @@ class Worker extends \yii\db\ActiveRecord
     /**
      * @worker_age :通过护工出生日期换算年龄
      */
-    public function worker_age($birth=''){
+    public function workerAge($birth=''){
         $age = date('Y', time()) - date('Y', strtotime($birth)) - 1;
         if (date('m', time()) == date('m', strtotime($birth))){
             if (date('d', time()) > date('d', strtotime($birth))){
@@ -239,7 +302,7 @@ class Worker extends \yii\db\ActiveRecord
     /**
      * @worker_age :星级
      */
-    public function worker_star($star=5){
+    public function workerStar($star=5){
         if($star>=4.5){
             $star_str = '5';
         }elseif(4.5>$star && $star>=4){
@@ -354,4 +417,16 @@ class Worker extends \yii\db\ActiveRecord
     }
 
 
+
+
+
+    /**
+     * 民族
+     * @param null $chineselevel
+     * @return array
+     * @author tiancq
+     */
+    static public function getNation($nationLevel=null){
+       return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
+    }
 }

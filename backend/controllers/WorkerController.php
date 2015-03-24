@@ -90,6 +90,10 @@ class WorkerController extends Controller
                 $params['Worker']['birth_place'] =$params['Worker']['birth_place'].",".$params['Worker']['birth_place_city'].",".$params['Worker']['birth_place_area'];
             }
 
+            //添加时间
+            $params['Worker']['add_date'] = date('Y-m-d H:i:s');
+            $params['Worker']['adder'] = yii::$app->user->getId();
+
             $worker = new Worker();
 
             $worker->createWorker($params);
@@ -110,6 +114,31 @@ class WorkerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        var_dump($model->certificate);
+        die();
+
+        if($params['Worker']['certificate']){
+            $params['Worker']['certificate'] =implode(',', $params['Worker']['certificate']);
+        }
+        if ($params['Worker']['hospital_id']) {
+            $params['Worker']['hospital_id'] = implode(',', $params['Worker']['hospital_id']);
+        }
+        if ($params['Worker']['office_id']) {
+            $params['Worker']['office_id'] = implode(',', $params['Worker']['office_id']);
+        }
+
+        if($params['Worker']['good_at']) {
+            $params['Worker']['good_at'] = implode(',', $params['Worker']['good_at']);
+        }
+
+        //户口所在地
+        if($params['Worker']['birth_place']){
+            $params['Worker']['birth_place'] =$params['Worker']['birth_place'].",".$params['Worker']['birth_place_city'].",".$params['Worker']['birth_place_area'];
+        }
+
+        //添加时间
+        $params['Worker']['add_date'] = date('Y-m-d H:i:s');
+        $params['Worker']['adder'] = yii::$app->user->getId();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->worker_id]);

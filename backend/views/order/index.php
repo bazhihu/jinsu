@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use common\models\Order;
+use backend\models\OrderPatient;
 
 /**
  * @var yii\web\View $this
@@ -39,9 +41,8 @@ $this->title = '订单管理';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'order_id',
+            //'order_id',
             'order_no',
-
 //            'uid',
             [
                 'attribute'=>'start_time',
@@ -67,23 +68,54 @@ $this->title = '订单管理';
             'worker_name',
 //            'base_price',
 //            'disabled_amount', 
-//            'holiday_amount', 
-//            'total_amount', 
-            'patient_state',
-//            'worker_level', 
-//            'customer_service_id', 
-//            'operator_id', 
+//            'holiday_amount',
 
+            [
+                'attribute'=>'patient_state',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>OrderPatient::$patientStateLabels,
+                'filterInputOptions'=>['placeholder'=>'请选择'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                    'hideSearch'=>true,
+                ],
+                'value'=>function($model){
+                    return OrderPatient::$patientStateLabels[$model->patient_state];
+                },
+                'format'=>'raw'
+            ],
+            [
+                'attribute'=>'total_amount',
+                'options' => [
+                    'style' => 'width:110px',
+                ]
+            ],
+//            'worker_level',
+//            'customer_service_id', 
+//            'operator_id',
 //            ['attribute'=>'reality_end_time','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
 //            ['attribute'=>'create_time','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
 //            ['attribute'=>'pay_time','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
 //            ['attribute'=>'confirm_time','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
 //            ['attribute'=>'cancel_time','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'order_status', 
+
+            [
+                'attribute'=>'order_status',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>Order::$orderStatusLabels,
+                'filterInputOptions'=>['placeholder'=>'请选择'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                    'hideSearch'=>true,
+                ],
+                'value'=>function($model){
+                    return Order::$orderStatusLabels[$model->order_status];
+                },
+                'format'=>'raw'
+            ],
 //            'create_order_ip', 
 //            'create_order_sources', 
-//            'create_order_user_agent', 
-
+//            'create_order_user_agent',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
@@ -98,7 +130,8 @@ $this->title = '订单管理';
                             'title' => Yii::t('yii', 'Delete'),
                             'data-confirm' => Yii::t('yii', '你确定要删除此项吗?'),
                             'data-method' => 'post',
-                            'data-pjax' => 'w1',
+                            'data-pjax' => 'w0',
+
                         ]);
                     }
                 ],

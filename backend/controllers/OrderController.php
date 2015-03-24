@@ -135,9 +135,8 @@ class OrderController extends Controller
     public function actionDelete($id)
     {
 
-        //$this->findModel($id)->delete();
+        $this->findModel($id)->delete();
         if (Yii::$app->getRequest()->isAjax) {
-            echo 33;exit;
             $dataProvider = new ActiveDataProvider([
                 'query' => OrderMaster::find(),
                 'sort' => false

@@ -5,9 +5,11 @@ namespace backend\controllers;
 use Yii;
 use backend\Models\Worker;
 use backend\Models\WorkerSearch;
+use backend\Models\City;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 
 /**
@@ -66,9 +68,32 @@ class WorkerController extends Controller
     public function actionCreate()
     {
         $model = new Worker;
-        //var_dump(Yii::$app->request->post());
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->worker_id]);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $params = Yii::$app->request->post();
+            if($params['Worker']['certificate']){
+                $params['Worker']['certificate'] =implode(',', $params['Worker']['certificate']);
+            }
+            if ($params['Worker']['hospital_id']) {
+                $params['Worker']['hospital_id'] = implode(',', $params['Worker']['hospital_id']);
+            }
+            if ($params['Worker']['office_id']) {
+                $params['Worker']['office_id'] = implode(',', $params['Worker']['office_id']);
+             }
+
+            if($params['Worker']['good_at']) {
+                $params['Worker']['good_at'] = implode(',', $params['Worker']['good_at']);
+            }
+
+            //户口所在地
+            if($params['Worker']['birth_place']){
+                $params['Worker']['birth_place'] =$params['Worker']['birth_place'].",".$params['Worker']['birth_place_city'].",".$params['Worker']['birth_place_area'];
+            }
+
+            $worker = new Worker();
+
+            $worker->createWorker($params);
+            return $this->redirect(['view', 'id' => $worker->worker_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -161,8 +186,8 @@ class WorkerController extends Controller
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
-                $birth_place_province = $parents[0];
-                $out = City::getList($birth_place_province);
+                $birth_place = $parents[0];
+                $out = City::getListPlace($birth_place);
                 echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }
@@ -171,26 +196,13 @@ class WorkerController extends Controller
     }
 
     //获取选定城市下的区县
-    public function actionGetArea() {
-        $out = [];
+    public function actionGetarea() {
         if (isset($_POST['depdrop_parents'])) {
-            $ids = $_POST['depdrop_parents'];
-            $cat_id = empty($ids[0]) ? null : $ids[0];
-            $subcat_id = empty($ids[1]) ? null : $ids[1];
-            if ($cat_id != null) {
-                $data = self::getProdList($cat_id, $subcat_id);
-                /**
-                 * the getProdList function will query the database based on the
-                 * cat_id and sub_cat_id and return an array like below:
-                 * [
-                 * 'out'=>[
-                 * ['id'=>'<prod-id-1>', 'name'=>'<prod-name1>'],
-                 * ['id'=>'<prod_id_2>', 'name'=>'<prod-name2>']
-                 * ],
-                 * 'selected'=>'<prod-id-1>'
-                 * ]
-                 */
-                echo Json::encode(['output'=>$data['out'], 'selected'=>$data['selected']]);
+            $parents = $_POST['depdrop_parents'];
+            $birth_place_city = $parents[0];
+            if ($birth_place_city != null) {
+                $out = City::getListPlace($birth_place_city);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }
         }

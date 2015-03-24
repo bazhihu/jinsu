@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'level',
                 'value'=>function ($model){
-                    return $model->worker_level($model->level);
+                    return $model->getWorkerLevel($model->level);
                 }
             ],
 

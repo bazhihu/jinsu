@@ -7,8 +7,8 @@ $route = $controller->route;
 
 ?>
 <ul class="nav nav-sidebar">
-    <li <?php if($route == 'worker/create'):?>class="active"<?php endif;?>><a href="#">添加护工</a></li>
-    <li <?php if($route == 'worker/index'):?>class="active"<?php endif;?>><a href="#">护工管理</a></li>
+    <li <?php if($route == 'worker/create'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('worker/create');?>">添加护工</a></li>
+    <li <?php if($route == 'worker/index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('worker/index');?>">护工管理</a></li>
 
 </ul>
 

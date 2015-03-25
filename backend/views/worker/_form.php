@@ -25,11 +25,20 @@ use kartik\widgets\DepDrop;
     'form' => $form,
     'columns' => 1,
     'attributes' => [
-        'name'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:50%']],
+        'name'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:50%']
+        ],
 
-        'idcard'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:50%']],
+        'idcard'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:50%']
+        ],
 
-        'gender'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]],
+        'gender'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]
+        ],
 
         'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
             'options'=>[
@@ -42,31 +51,60 @@ use kartik\widgets\DepDrop;
             ],
         ],
 
-        'marriage'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择婚姻状况...'], 'items'=>['1'=>'已婚','2'=>'未婚'], 'options'=>['inline'=>true]],
+        'marriage'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择婚姻状况...'],
+            'items'=>['1'=>'已婚','2'=>'未婚'], 'options'=>['inline'=>true]
+        ],
 
-        'education'=>
-            [
-                'type'=> Form::INPUT_RADIO_LIST,
-                'options'=>['placeholder'=>'请选择文化程度...'],
-                'items'=>\backend\Models\Worker::getEducationLevel($model->education),
-                'options'=>['inline'=>true]
-            ],
+        'education'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择文化程度...'],
+            'items'=>\backend\Models\Worker::getEducationLevel(),
+            'options'=>['inline'=>true]
+        ],
 
-        'politics'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择政治面貌...'], 'items'=>\backend\Models\Worker::getPoliticsLevel($model->politics), 'options'=>['inline'=>true]],
+        'politics'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择政治面貌...'],
+            'items'=>\backend\Models\Worker::getPoliticsLevel(),
+            'options'=>['inline'=>true]
+        ],
 
-        'chinese_level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择普通话水平...'], 'items'=>\backend\Models\Worker::getChineseLevel($model->chinese_level), 'options'=>['inline'=>true]],
+       'chinese_level'=>[
+           'type'=> Form::INPUT_RADIO_LIST,
+           'options'=>['placeholder'=>'请选择普通话水平...'],
+           'items'=>\backend\Models\Worker::getChineseLevel(), 'options'=>['inline'=>true]
+       ],
 
-        'certificate'=>['type'=> Form::INPUT_CHECKBOX_LIST, 'options'=>['placeholder'=>'请选择资质证书...'],'items'=>\backend\Models\Worker::getCertificate($model->certificate), 'options'=>['inline'=>true], 'maxlength'=>10],
+       'certificate'=>[
+           'type'=> Form::INPUT_CHECKBOX_LIST,
+           'options'=>['placeholder'=>'请选择资质证书...'],
+           'items'=>\backend\Models\Worker::getCertificate(),
+           'options'=>['inline'=>true], 'maxlength'=>10
+       ],
 
-        'phone1'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']],
+        'phone1'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']
+        ],
 
-        'phone2'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']],
+        'phone2'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
+        ],
 
-        'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
+       // 'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
 
-        'price'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:50%']],
+        'price'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:50%']
+        ],
 
-        'status'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]],
+        'status'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]
+        ],
 
         'start_work'=>[
             'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
@@ -98,8 +136,10 @@ use kartik\widgets\DepDrop;
         'pluginOptions'=>[
             'depends'=>['birth_place'],
             'placeholder'=>'请选择',
-            'url'=>Url::to(['worker/getcity'])
+            'url'=>Url::to(['worker/getcity']),
+            'initialize' => true
         ]
+
     ])->label('');
 
     //户口所在地 Child # 2
@@ -108,12 +148,10 @@ use kartik\widgets\DepDrop;
         'pluginOptions'=>[
             'depends'=>[ 'birth_place_city'],
             'placeholder'=>'请选择',
-            'url'=>Url::to(['worker/getarea'])
+            'url'=>Url::to(['worker/getarea']),
+            'initialize' => true
         ]
     ])->label('');
-
-
-
 
     //籍贯
     echo $form->field($model, 'native_province')->widget(Select2::classname(), [
@@ -161,3 +199,14 @@ use kartik\widgets\DepDrop;
     ActiveForm::end(); ?>
 
 </div>
+<?php
+/*?$js = <<<EOF
+var birth_place_city = $model->birth_place_city;
+    jQuery(document).ready(function () {
+        jQuery("#birth_place_city").val(birth_place_city);
+        console.log(jQuery("#birth_place_city").val());
+    });
+EOF;
+
+$this->registerJs($js, \yii\web\View::POS_READY);*/
+?>

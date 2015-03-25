@@ -353,9 +353,6 @@ class Worker extends \yii\db\ActiveRecord
     * @throws HttpException
     */
     public function createWorker($params){
-        $params['add_date'] =date('Y-m-d H:i:s');
-      //  $params['adder'] = $_SESSION['admin_uid'];
-
         $this->attributes = $params['Worker'];
         if(!$this->save()){
             throw new HttpException(400, print_r($this->getErrors(), true));

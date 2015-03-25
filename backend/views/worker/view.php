@@ -44,12 +44,33 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             'birth_place',
-            'native_province',
-            'nation',
-            'marriage',
-            'education',
-            'politics',
-            'chinese_level',
+
+            //[
+              //  'attribute'=>'native_province',
+            [
+                'attribute'=>'nation',
+                'value'=>\backend\Models\Worker::getNation($model->nation)
+            ],
+            [
+                'attribute'=>'marriage',
+                'value'=>$model->marriage==1?'已婚':'未婚'
+            ],
+
+            [
+                'attribute'=>'education',
+                'value'=>\backend\Models\Worker::getEducationLevel($model->education)
+            ],
+
+            [
+                'attribute'=>'politics',
+                'value'=>\backend\Models\Worker::getPoliticsLevel($model->politics)
+            ],
+
+            [
+                'attribute'=>'chinese_level',
+                'value'=>\backend\Models\Worker::getChineseLevel($model->chinese_level)
+            ],
+
             'certificate',
             [
                 'attribute'=>'start_work',
@@ -76,7 +97,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
             ],
-            'adder',
+
+            [
+                'attribute'=>'adder',
+                'value'=>yii::$app->user->identity->username
+            ],
+
             [
                 'attribute'=>'edit_date',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
@@ -92,8 +118,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'total_order',
             'good_rate',
             'total_comment',
-            'level',
-            'status',
+
+            [
+                'attribute'=>'level',
+                'value'=>\backend\Models\Worker::getWorkerLevel($model->level)
+            ],
+
+            [
+                'attribute'=>'status',
+                'value'=>$model->status==1?'在职':'离职'
+            ],
         ],
         'deleteOptions'=>[
         'url'=>['delete', 'id' => $model->worker_id],

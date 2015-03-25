@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use backend\Models\Worker;
 
 /**
  * @var yii\web\View $this
@@ -11,7 +12,7 @@ use yii\widgets\Pjax;
  */
 
 $this->title = '护工管理';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="worker-index">
     <div class="page-header">
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'birth',
                 'label' => '年龄',
                 'value'=> function ($model){
-                    return $model->worker_age($model->birth);
+                    return $model->workerAge($model->birth);
                 }
             ],
             'native_province',
@@ -54,7 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'star',
                 'value'=>function ($model){
-                    return $model->worker_star($model->star);
+
+                    return $model->workerStar($model->star);
                 }
             ],
             'total_order',
@@ -63,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'level',
                 'value'=>function ($model){
-                    return $model->getWorkerLevel($model->level);
+                    return $model->level ? Worker::getWorkerLevel($model->level) : null;
                 }
             ],
 
@@ -99,9 +101,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['worker/view','id' => $model->worker_id,'edit'=>'t']), [
-                                                    'title' => Yii::t('yii', 'Edit'),
-                                                  ]);}
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['worker/view','id' => $model->worker_id,'edit'=>'t']), [
+                                    'title' => Yii::t('yii', 'Edit'),
+                                  ]);}
 
                 ],
             ],

@@ -1,18 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace app\controllers;
 
 use Yii;
-use backend\models\WalletUserDetail;
-use backend\models\WalletUserDetailSearch;
+use backend\models\User;
+use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * WalletUserDetailController implements the CRUD actions for WalletUserDetail model.
+ * UserController implements the CRUD actions for User model.
  */
-class WalletUserDetailController extends Controller
+class UserController extends Controller
 {
     public function behaviors()
     {
@@ -27,43 +27,47 @@ class WalletUserDetailController extends Controller
     }
 
     /**
-     * Lists all WalletUserDetail models.
+     * Lists all User models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new WalletUserDetailSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new UserSearch;
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
     /**
-     * Displays a single WalletUserDetail model.
+     * Displays a single User model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+        return $this->render('view', ['model' => $model]);
+}
     }
 
     /**
-     * Creates a new WalletUserDetail model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new WalletUserDetail();
+        $model = new User;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->detail_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -71,32 +75,8 @@ class WalletUserDetailController extends Controller
         }
     }
 
-    public function actionPayCreate()
-    {
-
-        $uid=Yii::$app->request->get("uid");
-        $userRow=array();
-        $userRow=array("uid"=>$uid,"tel"=>"1381111111");
-
-        $model = new WalletUserDetail();
-        //print_r($_REQUEST);
-        //exit();
-        if ($model->load(Yii::$app->request->post())) {
-
-            print_r($_POST);
-
-            $model->save();
-            //return $this->redirect(['view', 'id' => $model->detail_id]);
-        } else {
-            //print_r($_GET);
-            return $this->render('pay_create', [
-                'model' => $model,
-                'userRow' => $userRow,
-            ]);
-        }
-    }
     /**
-     * Updates an existing WalletUserDetail model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -106,7 +86,7 @@ class WalletUserDetailController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->detail_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -115,7 +95,7 @@ class WalletUserDetailController extends Controller
     }
 
     /**
-     * Deletes an existing WalletUserDetail model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -128,15 +108,15 @@ class WalletUserDetailController extends Controller
     }
 
     /**
-     * Finds the WalletUserDetail model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return WalletUserDetail the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = WalletUserDetail::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

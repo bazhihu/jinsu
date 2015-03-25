@@ -8,6 +8,7 @@ use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use kartik\widgets\DepDrop;
+use backend\models\Departments;
 
 
 /**
@@ -94,7 +95,7 @@ use kartik\widgets\DepDrop;
             'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
         ],
 
-       // 'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
+        'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
 
         'price'=>[
             'type'=> Form::INPUT_TEXT,
@@ -128,7 +129,7 @@ use kartik\widgets\DepDrop;
     ])->label('民族');
 
     //户口所在地
-    echo $form->field($model, 'birth_place')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place','style'=>'width:30%']);
+    echo $form->field($model, 'birth_place')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place','style'=>'width:30%','placeholder'=>'请选择',]);
 
     // 户口所在地 Child # 1
     echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
@@ -175,7 +176,7 @@ use kartik\widgets\DepDrop;
 
     // 常驻科室
     echo $form->field($model, 'office_id')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Hospitals::getList('110000'),
+        'data' =>   \backend\models\Departments::getList(),
         'addon' => 1,
         'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [
@@ -186,7 +187,7 @@ use kartik\widgets\DepDrop;
 
     // 擅长护理的疾病
     echo $form->field($model, 'good_at')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Hospitals::getList('110000'),
+        'data' =>   \backend\models\Departments::getList(),
         'addon' => 1,
         'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [

@@ -37,6 +37,46 @@ class Order extends \yii\db\ActiveRecord{
         self::ORDER_STATUS_WAIT_EVALUATE => '待评价'
     ];
 
+    //订单状态动作配置
+    static public $orderStatusActions = [
+        //支付
+        'pay' => [
+            self::ORDER_STATUS_WAIT_PAY
+        ],
+        //更新
+        'update' => [
+            self::ORDER_STATUS_WAIT_CONFIRM,
+            self::ORDER_STATUS_WAIT_SERVICE,
+            self::ORDER_STATUS_IN_SERVICE
+        ],
+        //确认
+        'confirm' => [
+            self::ORDER_STATUS_WAIT_CONFIRM
+        ],
+        //开始服务
+        'begin_service' => [
+            self::ORDER_STATUS_WAIT_SERVICE
+        ],
+        //完成
+        'finish' => [
+            self::ORDER_STATUS_IN_SERVICE
+        ],
+        //续单
+        'continue' => [
+            self::ORDER_STATUS_IN_SERVICE
+        ],
+        //取消
+        'cancel' => [
+            self::ORDER_STATUS_WAIT_PAY,
+            self::ORDER_STATUS_WAIT_SERVICE,
+            self::ORDER_STATUS_WAIT_CONFIRM
+        ],
+        //评价
+        'evaluate' => [
+            self::ORDER_STATUS_WAIT_EVALUATE
+        ]
+    ];
+
     /**
      * @inheritdoc
      */
@@ -200,6 +240,21 @@ class Order extends \yii\db\ActiveRecord{
             return true;
         }else{
             throw new HttpException(400, print_r($orderPatient->getErrors(), true));
+        }
+    }
+
+    /**
+     * 检查订单状态动作
+     * @param string $status 订单状态
+     * @param string $action 动作
+     * @return bool
+     * @author zhangbo
+     */
+    static public function checkOrderStatusAction($status, $action){
+        if(in_array($status, self::$orderStatusActions[$action])){
+            return true;
+        }else{
+            return false;
         }
     }
 

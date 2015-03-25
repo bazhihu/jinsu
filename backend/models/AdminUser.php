@@ -149,8 +149,9 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function up()
     {
         #权限验证
-        $admin_uid = yii::$app->user->identity->getId();
-        if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
+        $admin_uid = Yii::$app->user->identity->getId();
+        #当前用户没有权限操作自己
+        if($admin_uid!==$this->getAttribute('admin_uid') && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
         {
             $this->updated_at = date('Y-m-d H:i:s');
             $this->setAttribute('modifier_id',yii::$app->user->identity->getId());

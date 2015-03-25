@@ -12,9 +12,6 @@ use kartik\widgets\Growl;
  */
 
 $this->title = '编辑用户: ' . ' ' . $model->username;
-$this->params['breadcrumbs'][] = ['label' => 'Admin Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
 ?>
 
 <div class="panel panel-info col-xs-8">
@@ -28,7 +25,9 @@ $this->params['breadcrumbs'][] = 'Update';
             <div class="admin-user-form">
 
                 <?php
-                $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);
+                $form = ActiveForm::begin([
+                    'type'=>ActiveForm::TYPE_HORIZONTAL
+                ]);
                 echo Form::widget([
                     'model'         => $model,
                     'form'          => $form,
@@ -53,17 +52,18 @@ $this->params['breadcrumbs'][] = 'Update';
                         ],
                         'staff_role'=>[
                             'type'=> Form::INPUT_DROPDOWN_LIST,
-                            'items'=>$staff_role,
+                            'items'=>\backend\models\AdminUser::getRoles(),
                             'options'=>[
                                 'prompt'=>'选择'
                             ]
                         ],
                         'hospital'=>[
                             'type'=> Form::INPUT_DROPDOWN_LIST,
-                            'items'=>$hospital,
+                            'items'=>\backend\models\Hospitals::getList(),
                             'options'=>[
                                 'prompt'=>'选择',
-                                'readonly'=>'readonly']],
+                            ]
+                        ],
 
                         //'phone'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号', 'maxlength'=>255 ]],
                         //'password'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'请输入密码', 'maxlength'=>255,'minlength'=>6 ,'readonly'=>'readonly','value'=>'******']],

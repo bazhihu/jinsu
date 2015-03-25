@@ -69,7 +69,7 @@ class AdminUserController extends Controller
             #操作的id
             $id = Yii::$app->request->post()['id'];
             if($id){
-                $ispass = yii::$app->authManager->checkAccess(yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
+                $ispass = yii::$app->authManager->checkAccess(Yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
                 if($ispass)
                 {
                     $value = $this->findModel($id)->status?0:10;

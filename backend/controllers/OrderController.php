@@ -37,9 +37,6 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
-        $orderModel = new OrderMaster();
-        $orderModel->calculateTotalPrice(2015032321576);
-
         $searchModel = new OrderSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 

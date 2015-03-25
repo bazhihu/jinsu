@@ -86,7 +86,6 @@ class Order extends \yii\db\ActiveRecord{
         ]
     ];
 
-
     /**
      * @inheritdoc
      */
@@ -160,6 +159,7 @@ class Order extends \yii\db\ActiveRecord{
      * 生成订单号
      * @return string
      * @throws \Exception
+     * @author zhangbo
      */
     private function _generateOrderNo(){
         $orderIncrement = new OrderIncrement();
@@ -201,6 +201,7 @@ class Order extends \yii\db\ActiveRecord{
      * @param array $params
      * @return bool
      * @throws HttpException
+     * @author zhangbo
      */
     public function createOrder($params){
         $transaction = \Yii::$app->db->beginTransaction();
@@ -233,7 +234,6 @@ class Order extends \yii\db\ActiveRecord{
             $transaction->rollBack();
             throw new HttpException(400, print_r($e, true));
         }
-
         return true;
     }
 
@@ -242,6 +242,7 @@ class Order extends \yii\db\ActiveRecord{
      * @param $params
      * @return bool
      * @throws HttpException
+     * @author zhangbo
      */
     protected function saveOrderPatient($params){
         $orderPatient = new OrderPatient();
@@ -275,6 +276,7 @@ class Order extends \yii\db\ActiveRecord{
      * @return array|int|mixed
      * @throws ErrorException
      * @throws NotFoundHttpException
+     * @author zhangbo
      */
     public function calculateTotalPrice($orderNo, $returnDetail = false){
         $order = $this->findOne(['order_no' => $orderNo]);
@@ -323,15 +325,12 @@ class Order extends \yii\db\ActiveRecord{
         return $totalPrice;
     }
 
-    public function getDatePriceDetail(){
-
-    }
-
     /**
      * 获取日期列表
      * @param string $startDate
      * @param string $endDate
      * @return array
+     * @author zhangbo
      */
     public function getDateList($startDate, $endDate){
         $dateList = [];

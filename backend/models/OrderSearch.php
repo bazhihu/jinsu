@@ -29,12 +29,12 @@ class OrderSearch extends OrderMaster
 
     public function search($params)
     {
-        $query = OrderMaster::find();
+        $query = OrderMaster::find()->orderBy('order_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 2,
+                'pageSize' => 10,
             ],
         ]);
 
@@ -68,6 +68,7 @@ class OrderSearch extends OrderMaster
             ->andFilterWhere(['like', 'create_order_sources', $this->create_order_sources])
             ->andFilterWhere(['like', 'create_order_user_agent', $this->create_order_user_agent]);
 
+        $query->orderBy('order_id DESC');
         return $dataProvider;
     }
 }

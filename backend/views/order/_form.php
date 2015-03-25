@@ -18,7 +18,6 @@ use backend\models\OrderPatient;
 ?>
 
 <div class="order-master-form">
-
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
@@ -34,7 +33,6 @@ use backend\models\OrderPatient;
                 'model' => $model,
                 'form' => $form,
                 'columns' => 1,
-
                 'attributes' => [
                     'mobile'=>[
                         'type'=> Form::INPUT_TEXT,
@@ -234,7 +232,7 @@ use backend\models\OrderPatient;
 
     <?php
     $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';
-    echo Html::submitButton($model->isNewRecord ? '快速下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
+    echo Html::submitButton($model->isNewRecord ? '下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
     ActiveForm::end(); ?>
     <div style="margin-bottom: 15px"></div>
 </div>

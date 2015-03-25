@@ -37,6 +37,47 @@ class Order extends \yii\db\ActiveRecord{
         self::ORDER_STATUS_WAIT_EVALUATE => '待评价'
     ];
 
+    //订单状态动作配置
+    static public $orderStatusActions = [
+        //支付
+        'pay' => [
+            self::ORDER_STATUS_WAIT_PAY
+        ],
+        //更新
+        'update' => [
+            self::ORDER_STATUS_WAIT_CONFIRM,
+            self::ORDER_STATUS_WAIT_SERVICE,
+            self::ORDER_STATUS_IN_SERVICE
+        ],
+        //确认
+        'confirm' => [
+            self::ORDER_STATUS_WAIT_CONFIRM
+        ],
+        //开始服务
+        'begin_service' => [
+            self::ORDER_STATUS_WAIT_SERVICE
+        ],
+        //完成
+        'finish' => [
+            self::ORDER_STATUS_IN_SERVICE
+        ],
+        //续单
+        'continue' => [
+            self::ORDER_STATUS_IN_SERVICE
+        ],
+        //取消
+        'cancel' => [
+            self::ORDER_STATUS_WAIT_PAY,
+            self::ORDER_STATUS_WAIT_SERVICE,
+            self::ORDER_STATUS_WAIT_CONFIRM
+        ],
+        //评价
+        'evaluate' => [
+            self::ORDER_STATUS_WAIT_EVALUATE
+        ]
+    ];
+
+
     /**
      * @inheritdoc
      */
@@ -79,14 +120,14 @@ class Order extends \yii\db\ActiveRecord{
             'worker_no' => '护工编号',
             'worker_name' => '护工姓名',
             'worker_level' => '护工等级',
-            'mobile' => '下单手机号',
+            'mobile' => '用户帐号',
             'base_price' => '护工的基础价格（金额/天）',
             'disabled_amount' => '不能自理每天所加金额',
             'hospital_id' => '医院',
             'department_id' => '科室',
             'holidays' => '节假日',
             'total_amount' => '订单总金额',
-            'patient_state' => '患者健康情况',
+            'patient_state' => '患者健康状况',
             'customer_service_id' => '下单客服ID',
             'operator_id' => '订单操作者ID',
             'remark' => '订单备注',
@@ -153,31 +194,37 @@ class Order extends \yii\db\ActiveRecord{
      * @throws HttpException
      */
     public function createOrder($params){
-        //生成订单编号
-        $orderNo = $this->_generateOrderNo();
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            //生成订单编号
+            $orderNo = $this->_generateOrderNo();
 
-        //主订单表数据
-        $orderMasterData = $params['OrderMaster'];
-        $orderMasterData['order_no'] = $orderNo;
-        $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
-        $orderMasterData['create_time'] = date('Y-m-d H:i:s');
-        $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
-        $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
-        $orderMasterData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
-        $this->attributes = $orderMasterData;
-        if(!$this->save()){
-            throw new HttpException(400, print_r($this->getErrors(), true));
-        }
+            //主订单表数据
+            $orderMasterData = $params['OrderMaster'];
+            $orderMasterData['order_no'] = $orderNo;
+            $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
+            $orderMasterData['create_time'] = date('Y-m-d H:i:s');
+            $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
+            $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+            $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
+            $orderMasterData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
+            $this->attributes = $orderMasterData;
+            if (!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
+            }
 
-        //保存患者信息
-        $orderPatient = array_filter($params['OrderPatient']);
-        if(!empty($orderPatient)){
+            //保存患者信息
+            $orderPatient = $params['OrderPatient'];
             $orderPatient['order_id'] = $this->order_id;
             $orderPatient['order_no'] = $orderNo;
             $orderPatient['create_time'] = date('Y-m-d H:i:s');
             $this->saveOrderPatient($orderPatient);
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            throw new HttpException(400, print_r($e, true));
         }
+
         return true;
     }
 
@@ -195,6 +242,35 @@ class Order extends \yii\db\ActiveRecord{
         }else{
             throw new HttpException(400, print_r($orderPatient->getErrors(), true));
         }
+    }
+
+    /**
+     * 检查订单状态动作
+     * @param string $status 订单状态
+     * @param string $action 动作
+     * @return bool
+     * @author zhangbo
+     */
+    static public function checkOrderStatusAction($status, $action){
+        if(in_array($status, self::$orderStatusActions[$action])){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function calculateTotalPrice($orderNo){
+        $order = $this->findOne(['order_no' => $orderNo]);
+        //护工的基础价格（金额/天）
+        $basePrice = $order->base_price;
+
+        //能否自理（金额/天）
+        $ratio = OrderPatient::$patientStatePrice[$order->patient_state];
+        $disabledPrice = $basePrice+($basePrice*$ratio);
+
+        //节假日（金额/天）
+
+
     }
 
 }

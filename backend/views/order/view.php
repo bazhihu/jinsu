@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
+use backend\models\OrderPatient;
 
 /**
  * @var yii\web\View $this
@@ -23,7 +24,7 @@ $this->title = '查看订单';
             'model' => $model,
             'condensed'=>false,
             'hover'=>true,
-            'mode'=>Yii::$app->request->get('edit')=='t' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
+            'mode'=>DetailView::MODE_VIEW,
             'panel'=>[
             'heading'=>$this->title,
             'type'=>DetailView::TYPE_INFO,
@@ -36,13 +37,16 @@ $this->title = '查看订单';
             'base_price',
             'disabled_amount',
             'total_amount',
-            'patient_state',
+            [
+                'attribute'=>'patient_state',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>OrderPatient::$patientStateLabels[$model->patient_state]
+            ],
             'worker_level',
             'customer_service_id',
             'operator_id',
             [
                 'attribute'=>'start_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -51,7 +55,6 @@ $this->title = '查看订单';
             ],
             [
                 'attribute'=>'end_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -60,7 +63,6 @@ $this->title = '查看订单';
             ],
             [
                 'attribute'=>'reality_end_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -69,7 +71,6 @@ $this->title = '查看订单';
             ],
             [
                 'attribute'=>'create_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -78,7 +79,6 @@ $this->title = '查看订单';
             ],
             [
                 'attribute'=>'pay_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -87,7 +87,6 @@ $this->title = '查看订单';
             ],
             [
                 'attribute'=>'confirm_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -96,7 +95,6 @@ $this->title = '查看订单';
             ],
             [
                 'attribute'=>'cancel_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
                     'class'=>DateControl::classname(),
@@ -108,14 +106,14 @@ $this->title = '查看订单';
             'create_order_sources',
             'create_order_user_agent',
         ],
-        'deleteOptions'=>[
-        'url'=>['delete', 'id' => $model->order_id],
-        'data'=>[
-        'confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'),
-        'method'=>'post',
-        ],
-        ],
-        'enableEditMode'=>true,
+//        'deleteOptions'=>[
+//            'url'=>['delete', 'id' => $model->order_id],
+//            'data'=>[
+//                'confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'),
+//                'method'=>'post',
+//            ],
+//        ],
+        'enableEditMode'=>false,
     ]) ?>
 
 </div>

@@ -119,7 +119,7 @@ class Order extends \yii\db\ActiveRecord{
             'worker_no' => '护工编号',
             'worker_name' => '护工姓名',
             'worker_level' => '护工等级',
-            'mobile' => '下单手机号',
+            'mobile' => '用户帐号',
             'base_price' => '护工的基础价格（金额/天）',
             'disabled_amount' => '不能自理每天所加金额',
             'hospital_id' => '医院',

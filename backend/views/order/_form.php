@@ -18,7 +18,6 @@ use backend\models\OrderPatient;
 ?>
 
 <div class="order-master-form">
-
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
@@ -34,7 +33,6 @@ use backend\models\OrderPatient;
                 'model' => $model,
                 'form' => $form,
                 'columns' => 1,
-
                 'attributes' => [
                     'mobile'=>[
                         'type'=> Form::INPUT_TEXT,

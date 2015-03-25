@@ -59,6 +59,11 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
             ],
             [
                 'attribute'=>'mobile',
+                'format'=>'raw',
+                'value'=>function ($model) {
+                    return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id' => $model->uid]));
+
+                },
                 'options' => [
                     'style' => 'width:110px',
                 ]

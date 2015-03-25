@@ -116,12 +116,13 @@ class OrderController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $orderPatientModel = OrderPatient::findOne(['order_id'=>$id]);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'orderPatientModel' => $orderPatientModel
             ]);
         }
     }

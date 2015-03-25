@@ -86,7 +86,7 @@ class Order extends \yii\db\ActiveRecord{
             'department_id' => '科室',
             'holidays' => '节假日',
             'total_amount' => '订单总金额',
-            'patient_state' => '患者健康情况',
+            'patient_state' => '患者健康状况',
             'customer_service_id' => '下单客服ID',
             'operator_id' => '订单操作者ID',
             'remark' => '订单备注',
@@ -153,31 +153,37 @@ class Order extends \yii\db\ActiveRecord{
      * @throws HttpException
      */
     public function createOrder($params){
-        //生成订单编号
-        $orderNo = $this->_generateOrderNo();
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            //生成订单编号
+            $orderNo = $this->_generateOrderNo();
 
-        //主订单表数据
-        $orderMasterData = $params['OrderMaster'];
-        $orderMasterData['order_no'] = $orderNo;
-        $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
-        $orderMasterData['create_time'] = date('Y-m-d H:i:s');
-        $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
-        $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
-        $orderMasterData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
-        $this->attributes = $orderMasterData;
-        if(!$this->save()){
-            throw new HttpException(400, print_r($this->getErrors(), true));
-        }
+            //主订单表数据
+            $orderMasterData = $params['OrderMaster'];
+            $orderMasterData['order_no'] = $orderNo;
+            $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
+            $orderMasterData['create_time'] = date('Y-m-d H:i:s');
+            $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
+            $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+            $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
+            $orderMasterData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
+            $this->attributes = $orderMasterData;
+            if (!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
+            }
 
-        //保存患者信息
-        $orderPatient = array_filter($params['OrderPatient']);
-        if(!empty($orderPatient)){
+            //保存患者信息
+            $orderPatient = $params['OrderPatient'];
             $orderPatient['order_id'] = $this->order_id;
             $orderPatient['order_no'] = $orderNo;
             $orderPatient['create_time'] = date('Y-m-d H:i:s');
             $this->saveOrderPatient($orderPatient);
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            throw new HttpException(400, print_r($e, true));
         }
+
         return true;
     }
 

@@ -74,7 +74,7 @@ class OrderPatient extends \yii\db\ActiveRecord
             'age' => '年龄',
             'height' => '身高',
             'weight' => '体重',
-            'patient_state' => '患者健康情况',
+            'patient_state' => '患者健康状况',
             'in_hospital_reason' => '因何病入院',
             'admission_date' => '住院日期',
             'room_no' => '病房号',

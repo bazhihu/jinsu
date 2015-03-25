@@ -7,10 +7,16 @@
  */
 namespace common\models;
 
+use backend\models\Holidays;
+use backend\models\Hospitals;
 use backend\models\OrderIncrement;
 use backend\models\OrderPatient;
 use backend\Models\Worker;
+use yii\base\ErrorException;
+use yii\base\InvalidParamException;
+use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class Order extends \yii\db\ActiveRecord{
     //订单来源
@@ -36,6 +42,9 @@ class Order extends \yii\db\ActiveRecord{
         self::ORDER_STATUS_CANCEL => '取消订单',
         self::ORDER_STATUS_WAIT_EVALUATE => '待评价'
     ];
+
+    //节假日价格
+    const HOLIDAY_PRICE_MULTIPLIER = 3;
 
     //订单状态动作配置
     static public $orderStatusActions = [
@@ -259,18 +268,88 @@ class Order extends \yii\db\ActiveRecord{
         }
     }
 
-    public function calculateTotalPrice($orderNo){
+    /**
+     * 计算价格
+     * @param $orderNo
+     * @param bool $returnDetail 是否返回价格明细
+     * @return array|int|mixed
+     * @throws ErrorException
+     * @throws NotFoundHttpException
+     */
+    public function calculateTotalPrice($orderNo, $returnDetail = false){
         $order = $this->findOne(['order_no' => $orderNo]);
+        if(empty($order)){
+            throw new NotFoundHttpException('The requested order does not exist.');
+        }
+
+        if(strtotime($order->start_time) >= strtotime($order->end_time)){
+            throw new ErrorException('开始时间不能大于结束时间');
+        }
+
+        $totalPrice = 0;
+
         //护工的基础价格（金额/天）
         $basePrice = $order->base_price;
 
+        //获取节假日日期
+        $holidaysList = ArrayHelper::map(Holidays::find()->all(), 'id', 'date');
+
+        //获取日期列表
+        $dates = $this->getDateList($order->start_time, $order->end_time);
+        //print_r($dates);exit;
+
+        //价格明细
+        $priceDetail = [];
+
         //能否自理（金额/天）
         $ratio = OrderPatient::$patientStatePrice[$order->patient_state];
-        $disabledPrice = $basePrice+($basePrice*$ratio);
+        $disabledPrice = $basePrice*$ratio;
 
-        //节假日（金额/天）
+        $dayPrice = 0;
+        foreach($dates as $date){
+            //节假日（金额/天）
+            $holidayPrice = 0;
+            if(in_array($date, $holidaysList)){
+                $holidayPrice = $basePrice * self::HOLIDAY_PRICE_MULTIPLIER - $basePrice;
+            }
 
+            $dayPrice = $basePrice + $disabledPrice + $holidayPrice;
+            $priceDetail[$date] = $dayPrice;
+            $totalPrice += $dayPrice;
+        }
+        if($returnDetail){
+            return ['totalPrice' => $totalPrice, 'PriceDetail' => $priceDetail];
+        }
+        return $totalPrice;
+    }
 
+    public function getDatePriceDetail(){
+
+    }
+
+    /**
+     * 获取日期列表
+     * @param string $startDate
+     * @param string $endDate
+     * @return array
+     */
+    public function getDateList($startDate, $endDate){
+        $dateList = [];
+        $number = 1;
+        $startDay = date("d", strtotime($startDate));
+        $startMonth = date("m", strtotime($startDate));
+        $startYear = date("Y", strtotime($startDate));
+        $endTime = strtotime($endDate);
+        while(true){
+            $time = mktime(0, 0, 0, $startMonth, $startDay+$number, $startYear);
+            if($time <= $endTime){
+                $dateList[] = date('Y-m-d', $time);;
+                $number++;
+            }else{
+                break;
+            }
+        }
+        return $dateList;
     }
 
 }

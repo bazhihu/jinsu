@@ -33,7 +33,9 @@ AppAsset::register($this);
             'class' => 'navbar navbar-inverse navbar-fixed-top',
         ],
     ]);
+
     $menuItems = [
+        ['label' => '节假日管理', 'url' => ['/holidays/index']],
         ['label' => '首页', 'url' => ['/site/index']],
     ];
     if (Yii::$app->user->isGuest) {

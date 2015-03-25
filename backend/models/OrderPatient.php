@@ -30,9 +30,22 @@ class OrderPatient extends \yii\db\ActiveRecord
     const PATIENT_STATE_OK = 1; //能自理
     const PATIENT_STATE_DISABLED = 2; //不能自理
 
+    /**
+     * 患者健康状态标签
+     * @var array
+     */
     static public $patientStateLabels = [
         self::PATIENT_STATE_OK => '能自理',
         self::PATIENT_STATE_DISABLED => '不能自理'
+    ];
+
+    /**
+     * 患者健康状态对应价格
+     * @var array
+     */
+    static public $patientStatePrice = [
+        self::PATIENT_STATE_OK => 0,
+        self::PATIENT_STATE_DISABLED => 0.3
     ];
 
     /**

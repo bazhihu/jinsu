@@ -77,6 +77,7 @@ class Order extends \yii\db\ActiveRecord{
         ]
     ];
 
+
     /**
      * @inheritdoc
      */
@@ -256,6 +257,20 @@ class Order extends \yii\db\ActiveRecord{
         }else{
             return false;
         }
+    }
+
+    public function calculateTotalPrice($orderNo){
+        $order = $this->findOne(['order_no' => $orderNo]);
+        //护工的基础价格（金额/天）
+        $basePrice = $order->base_price;
+
+        //能否自理（金额/天）
+        $ratio = OrderPatient::$patientStatePrice[$order->patient_state];
+        $disabledPrice = $basePrice+($basePrice*$ratio);
+
+        //节假日（金额/天）
+
+
     }
 
 }

@@ -37,6 +37,9 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
+        $orderModel = new OrderMaster();
+        $orderModel->calculateTotalPrice(2015032321576);
+
         $searchModel = new OrderSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
@@ -125,28 +128,6 @@ class OrderController extends Controller
                 'orderPatientModel' => $orderPatientModel
             ]);
         }
-    }
-
-    /**
-     * Deletes an existing OrderMaster model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-
-        $this->findModel($id)->delete();
-        if (Yii::$app->getRequest()->isAjax) {
-            $dataProvider = new ActiveDataProvider([
-                'query' => OrderMaster::find(),
-                'sort' => false
-            ]);
-            return $this->renderPartial('index', [
-                'dataProvider' => $dataProvider
-            ]);
-        }
-        return $this->redirect(['index']);
     }
 
     /**

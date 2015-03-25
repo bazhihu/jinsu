@@ -232,7 +232,7 @@ use backend\models\OrderPatient;
 
     <?php
     $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';
-    echo Html::submitButton($model->isNewRecord ? '快速下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
+    echo Html::submitButton($model->isNewRecord ? '下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
     ActiveForm::end(); ?>
     <div style="margin-bottom: 15px"></div>
 </div>

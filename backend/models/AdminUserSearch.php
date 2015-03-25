@@ -15,8 +15,31 @@ class AdminUserSearch extends AdminUser
     public function rules()
     {
         return [
-            [['admin_uid', 'hospital', 'phone', 'created_at', 'updated_at', 'status', 'created_id', 'modifier_id'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'staff_id', 'staff_name', 'staff_role'], 'safe'],
+            [
+                [
+                    'admin_uid',
+                    'phone',
+                    'created_at',
+                    'updated_at',
+                    'status',
+                    'modifier_id'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'username',
+                    'auth_key',
+                    'hospital',
+                    'password_hash',
+                    'password_reset_token',
+                    'staff_id',
+                    'staff_name',
+                    'staff_role',
+                    'created_id',
+                ],
+                'safe'
+            ],
         ];
     }
 
@@ -47,7 +70,7 @@ class AdminUserSearch extends AdminUser
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'status' => $this->status,
-            'created_id' => $this->created_id,
+            'created_id' => $this->created_id?$this->findOne(['username'=>$this->created_id])->admin_uid:"",
             'modifier_id' => $this->modifier_id,
         ]);
 

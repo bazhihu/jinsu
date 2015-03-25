@@ -8,6 +8,7 @@ use Yii;
 use backend\models\AdminUser;
 use backend\models\AdminUserSearch;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -61,27 +62,25 @@ class AdminUserController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
-        $ispass = yii::$app->authManager->checkAccess(yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
+    public function actionDelete($id="") {
 
-        if($ispass)
+        if(Yii::$app->request->isAjax)
         {
-            $value = $this->findModel($id)->status?0:10;
-            if($this->findModel($id)->updateAttributes(['status'=>$value])){
-                return $this->redirect(['index']);
+            #操作的id
+            $id = Yii::$app->request->post()['id'];
+            if($id){
+                $ispass = yii::$app->authManager->checkAccess(yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
+                if($ispass)
+                {
+                    $value = $this->findModel($id)->status?0:10;
+                    if($this->findModel($id)->updateAttributes(['status'=>$value]))
+                        echo Json::encode(['code'=>1,'message'=>'success']);
+                    exit;
+                }
             }
-
-//            if (Yii::$app->getRequest()->isAjax) {
-//                $dataProvider = new ActiveDataProvider([
-//                    'query' => ModelName::find(),
-//                    'sort' => false
-//                ]);
-//                return $this->renderPartial('index', [
-//                    'dataProvider' => $dataProvider
-//                ]);
-//            }
         }
-        return $this->redirect(['index']);
+        echo Json::encode(['code'=>0,'message'=>'操作失败']);
+        exit;
     }
     /**
      * Displays a single AdminUser model.
@@ -108,25 +107,14 @@ class AdminUserController extends Controller
      */
     public function actionCreate()
     {
+        //Yii::$app->log->getLogger()->log('系统操作',Logger::LEVEL_ERROR);exit;
         $model = new AdminUser;
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['view', 'id' => $model->id]);
-
         }
-
-        #员工职位
-        $staff_role = yii::$app->authManager->getRoles();
-
-        foreach($staff_role as $key=>$val)
-        {
-            $staff_role[$key]=$key;
-        }
-
         return $this->render('create', [
             'model' => $model,
-            'staff_role'=>$staff_role,
         ]);
-
     }
 
     /**
@@ -143,15 +131,15 @@ class AdminUserController extends Controller
         } else {
 
             #员工职位
-            $staff_role = Yii::$app->authManager->getRoles();
+            $staff_role = yii::$app->authManager->getRoles();
 
             foreach($staff_role as $key=>$val)
             {
                 $staff_role[$key]=$key;
             }
 
-            $hospitals = \backend\models\Hospitals::find()->all();
-            foreach($hospitals as $val){
+            $hospitals = \backend\models\Hospitals::find();
+            foreach($hospitals->all() as $val){
                 $hospital[$val->id] = $val->name;
             }
 

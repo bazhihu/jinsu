@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\helpers\ArrayHelper;
 
 /**
  * User model
@@ -121,6 +122,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
                 $info = $this->findOne(['username'=>$this->username]);
                 yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
                 #添加操作记录
+                Yii::getLogger()->log('系统操作',Logger::LEVEL_ERROR);
                 //yii::$app->log->getLogger();
                 return true;
             }
@@ -312,5 +314,17 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * @desc 获取所有职位
+     * @return $return[]
+     */
+    static function getRoles(){
+        $staff_role = Yii::$app->authManager->getRoles();
+        foreach(ArrayHelper::toArray($staff_role) as $val){
+            $return[$val['name']] = $val['name'];
+        }
+        return $return;
     }
 }

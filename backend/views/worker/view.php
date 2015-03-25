@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
               //  'attribute'=>'native_province',
             [
                 'attribute'=>'nation',
-                'value'=>\backend\Models\Worker::getNation($model->nation)
+                'value'=>\backend\Models\Worker::getNation($model->nation,'view')
             ],
             [
                 'attribute'=>'marriage',
@@ -58,17 +58,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute'=>'education',
-                'value'=>\backend\Models\Worker::getEducationLevel($model->education)
+                'value'=>\backend\Models\Worker::getEducationLevel($model->education,'view')
             ],
 
             [
                 'attribute'=>'politics',
-                'value'=>\backend\Models\Worker::getPoliticsLevel($model->politics)
+                'value'=>\backend\Models\Worker::getPoliticsLevel($model->politics,'view')
             ],
 
             [
                 'attribute'=>'chinese_level',
-                'value'=>\backend\Models\Worker::getChineseLevel($model->chinese_level)
+                'value'=>\backend\Models\Worker::getChineseLevel($model->chinese_level,'view')
             ],
 
             'certificate',
@@ -121,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute'=>'level',
-                'value'=>\backend\Models\Worker::getWorkerLevel($model->level)
+                'value'=>\backend\Models\Worker::getWorkerLevel($model->level,'view')
             ],
 
             [

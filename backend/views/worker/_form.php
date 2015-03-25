@@ -94,7 +94,7 @@ use kartik\widgets\DepDrop;
             'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
         ],
 
-       // 'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
+        'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
 
         'price'=>[
             'type'=> Form::INPUT_TEXT,
@@ -128,7 +128,7 @@ use kartik\widgets\DepDrop;
     ])->label('民族');
 
     //户口所在地
-    echo $form->field($model, 'birth_place')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place','style'=>'width:30%']);
+    echo $form->field($model, 'birth_place')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place','style'=>'width:30%','placeholder'=>'请选择',]);
 
     // 户口所在地 Child # 1
     echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [

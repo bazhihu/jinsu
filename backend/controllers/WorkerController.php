@@ -71,33 +71,8 @@ class WorkerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
-            if($params['Worker']['certificate']){
-                $params['Worker']['certificate'] =implode(',', $params['Worker']['certificate']);
-            }
-            if ($params['Worker']['hospital_id']) {
-                $params['Worker']['hospital_id'] = implode(',', $params['Worker']['hospital_id']);
-            }
-            if ($params['Worker']['office_id']) {
-                $params['Worker']['office_id'] = implode(',', $params['Worker']['office_id']);
-             }
-
-            if($params['Worker']['good_at']) {
-                $params['Worker']['good_at'] = implode(',', $params['Worker']['good_at']);
-            }
-
-            //户口所在地
-            if($params['Worker']['birth_place']){
-                $params['Worker']['birth_place'] =$params['Worker']['birth_place'].",".$params['Worker']['birth_place_city'].",".$params['Worker']['birth_place_area'];
-            }
-
-            //添加时间
-            $params['Worker']['add_date'] = date('Y-m-d H:i:s');
-            $params['Worker']['adder'] = yii::$app->user->getId();
-
-            $worker = new Worker();
-
-            $worker->createWorker($params);
-            return $this->redirect(['view', 'id' => $worker->worker_id]);
+            $model->saveData($params['Worker'],'create');
+            return $this->redirect(['view', 'id' => $model->worker_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -114,7 +89,6 @@ class WorkerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         //户口所在地
         if($model['birth_place']){
             $place = explode(',',$model['birth_place']);
@@ -136,41 +110,13 @@ class WorkerController extends Controller
         if($model['office_id']){
             $model['office_id']= explode(',',$model['office_id']);
         }
-
         if($model['good_at']){
             $model['good_at']= explode(',',$model['good_at']);
         }
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
-
-            if($params['Worker']['certificate']){
-                $params['Worker']['certificate'] =implode(',', $params['Worker']['certificate']);
-            }
-            if ($params['Worker']['hospital_id']) {
-                $params['Worker']['hospital_id'] = implode(',', $params['Worker']['hospital_id']);
-            }
-            if ($params['Worker']['office_id']) {
-                $params['Worker']['office_id'] = implode(',', $params['Worker']['office_id']);
-            }
-
-            if($params['Worker']['good_at']) {
-                $params['Worker']['good_at'] = implode(',', $params['Worker']['good_at']);
-            }
-
-            //户口所在地
-            if($params['Worker']['birth_place']){
-                $params['Worker']['birth_place'] =$params['Worker']['birth_place'].",".$params['Worker']['birth_place_city'].",".$params['Worker']['birth_place_area'];
-            }
-
-            //修改时间
-            $params['Worker']['edit_date'] = date('Y-m-d H:i:s');
-            $params['Worker']['editer'] = yii::$app->user->getId();
-
-            $worker = new Worker();
-
-            $worker->createWorker($params);
-
+            $model->saveData($params['Worker'],'update');
             return $this->redirect(['view', 'id' => $id]);
         } else {
             return $this->render('update', [

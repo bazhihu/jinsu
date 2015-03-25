@@ -288,13 +288,17 @@ class Worker extends \yii\db\ActiveRecord
      * @worker_age :通过护工出生日期换算年龄
      */
     public function workerAge($birth=''){
-        $age = date('Y', time()) - date('Y', strtotime($birth)) - 1;
-        if (date('m', time()) == date('m', strtotime($birth))){
-            if (date('d', time()) > date('d', strtotime($birth))){
+        if($birth){
+            $age = date('Y', time()) - date('Y', strtotime($birth)) - 1;
+            if (date('m', time()) == date('m', strtotime($birth))){
+                if (date('d', time()) > date('d', strtotime($birth))){
+                    $age++;
+                }
+            }elseif (date('m', time()) > date('m', strtotime($birth))){
                 $age++;
             }
-        }elseif (date('m', time()) > date('m', strtotime($birth))){
-            $age++;
+        }else{
+            $age = null;
         }
         return $age;
     }
@@ -321,8 +325,10 @@ class Worker extends \yii\db\ActiveRecord
             $star_str = '1.5';
         }elseif(1>$star && $star>=0.5){
             $star_str = '1';
-        }elseif(0.5>$star){
+        }elseif(0.5>$star && $star>0){
             $star_str = '0.5';
+        }else{
+            $star_str = null;
         }
         return $star_str;
     }
@@ -333,8 +339,13 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author zhangbo
      */
-    static public function getWorkerLevel($level = null){
-        return isset(self::$workerLevelLabel[$level]) ? self::$workerLevelLabel[$level] : self::$workerLevelLabel;
+    static public function getWorkerLevel($level = null,$op='')
+    {
+        if ($op && $level == null) {
+            return null;
+        } else {
+            return isset(self::$workerLevelLabel[$level]) ? self::$workerLevelLabel[$level] : self::$workerLevelLabel;
+        }
     }
 
     /**
@@ -343,8 +354,13 @@ class Worker extends \yii\db\ActiveRecord
      * @return null|int
      * @author zhangbo
      */
-    static public function getWorkerPrice($level){
-        return isset(self::$workerPrice[$level]) ? self::$workerPrice[$level] : null;
+    static public function getWorkerPrice($level,$op='')
+    {
+        if ($op && $level == null) {
+            return null;
+        } else {
+            return isset(self::$workerPrice[$level]) ? self::$workerPrice[$level] : null;
+        }
 
     }
     /**
@@ -359,16 +375,63 @@ class Worker extends \yii\db\ActiveRecord
         }
         return true;
     }
-
-
     /**
+     * @param int $params
+     * @return bool
+     * @throws HttpException
+     */
+    public function saveData($params,$op='create')
+    {
+        if ($params['certificate']) {
+            $params['certificate'] = implode(',', $params['certificate']);
+        }
+
+        if ($params['hospital_id']) {
+            $params['hospital_id'] = implode(',', $params['hospital_id']);
+        }
+
+        if ($params['office_id']) {
+            $params['office_id'] = implode(',', $params['office_id']);
+        }
+
+        if ($params['good_at']) {
+            $params['good_at'] = implode(',', $params['good_at']);
+        }
+
+        //户口所在地
+        if ($params['birth_place']) {
+            $params['birth_place'] = $params['birth_place'] . "," . $params['birth_place_city'] . "," . $params['birth_place_area'];
+        }
+
+        if ($op == 'create') {
+            //添加时间
+            $params['add_date'] = date('Y-m-d H:i:s');
+            $params['adder'] = yii::$app->user->getId();
+        } else {
+            //修改时间
+            $params['edit_date'] = date('Y-m-d H:i:s');
+            $params['editer'] = yii::$app->user->getId();
+        }
+
+        $this->attributes = $params;
+        if(!$this->save()){
+            throw new HttpException(400, print_r($this->getErrors(), true));
+        }
+    }
+
+/**
      * 文化程度
      * @param null $level
      * @return array
      * @author tiancq
      */
-    static public function getEducationLevel($education = null){
-        return isset(self::$educationLabel[$education]) ? self::$educationLabel[$education] : self::$educationLabel;
+    static public function getEducationLevel($education = null,$op='')
+    {
+        if ($op && $education == null) {
+            return null;
+        } else {
+            return isset(self::$educationLabel[$education]) ? self::$educationLabel[$education] : self::$educationLabel;
+         }
     }
 
 
@@ -378,8 +441,13 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author tiancq
      */
-    static public function getPoliticsLevel($politics = null){
-        return isset(self::$politicsLabel[$politics]) ? self::$politicsLabel[$politics] : self::$politicsLabel;
+    static public function getPoliticsLevel($politics = null,$op='')
+    {
+        if ($op && $politics == null) {
+            return null;
+        } else {
+            return isset(self::$politicsLabel[$politics]) ? self::$politicsLabel[$politics] : self::$politicsLabel;
+        }
     }
 
 
@@ -389,9 +457,15 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author tiancq
      */
-    static public function getChineseLevel($chineselevel = null){
-        return isset(self::$chineselevelLabel[$chineselevel]) ? self::$chineselevelLabel[$chineselevel] : self::$chineselevelLabel;
+    static public function getChineseLevel($chineselevel = null,$op='')
+    {
+        if ($op && $chineselevel == null) {
+            return null;
+        } else {
+            return isset(self::$chineselevelLabel[$chineselevel]) ? self::$chineselevelLabel[$chineselevel] : self::$chineselevelLabel;
+        }
     }
+
 
     /**
      * 资质证书
@@ -399,18 +473,13 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author tiancq
      */
-    static public function getertificate($chineselevel = null){
-        return isset(self::$certificateLabel[$chineselevel]) ? self::$certificateLabel[$chineselevel] : self::$certificateLabel;
-    }
-
-    /**
-     * 资质证书
-     * @param null $chineselevel
-     * @return array
-     * @author tiancq
-     */
-    static public function getCertificate($chineselevel = null){
-        return isset(self::$certificateLabel[$chineselevel]) ? self::$certificateLabel[$chineselevel] : self::$certificateLabel;
+    static public function getCertificate($certificate = null,$op='')
+    {
+        if ($op && $certificate == null) {
+            return null;
+        } else {
+            return isset(self::$certificateLabel[$certificate]) ? self::$certificateLabel[$certificate] : self::$certificateLabel;
+        }
     }
 
 
@@ -423,7 +492,13 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author tiancq
      */
-    static public function getNation($nationLevel=null){
-       return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
+    static public function getNation($nationLevel=null,$op='')
+    {
+        if ($op && $nationLevel == null) {
+            return null;
+        } else {
+            return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
+        }
     }
+
 }

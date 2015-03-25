@@ -101,7 +101,7 @@ $this->title = '护工管理';
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                 'update' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['worker/view','id' => $model->worker_id,'edit'=>'t']), [
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['worker/update','id' => $model->worker_id]), [
                                     'title' => Yii::t('yii', 'Edit'),
                                   ]);}
 

@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'condensed'=>false,
             'hover'=>true,
-            'mode'=>Yii::$app->request->get('edit')=='t' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
+            'mode'=>DetailView::MODE_VIEW,
             'panel'=>[
             'heading'=>$this->title,
             'type'=>DetailView::TYPE_INFO,
@@ -132,11 +132,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'deleteOptions'=>[
         'url'=>['delete', 'id' => $model->worker_id],
         'data'=>[
-        'confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'),
+        'confirm'=>Yii::t('app', '确定要删除吗?'),
         'method'=>'post',
         ],
         ],
-        'enableEditMode'=>true,
+        'enableEditMode'=>false,
     ]) ?>
 
 </div>

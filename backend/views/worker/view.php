@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute'=>'adder',
-                'value'=>yii::$app->user->identity->username
+                'value'=>($model->adder)? \backend\models\AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
 
             [
@@ -112,7 +112,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
             ],
-            'editer',
+
+            [
+                'attribute'=>'editer',
+                'value'=>($model->editer)? \backend\models\AdminUser::findOne(['admin_uid',$model->editer])->username : null,
+            ],
+
             'total_score',
             'star',
             'total_order',

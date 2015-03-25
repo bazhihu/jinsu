@@ -8,6 +8,7 @@ use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use kartik\widgets\DepDrop;
+use backend\models\Departments;
 
 
 /**
@@ -175,7 +176,7 @@ use kartik\widgets\DepDrop;
 
     // 常驻科室
     echo $form->field($model, 'office_id')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Hospitals::getList('110000'),
+        'data' =>   \backend\models\Departments::getList(),
         'addon' => 1,
         'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [
@@ -186,7 +187,7 @@ use kartik\widgets\DepDrop;
 
     // 擅长护理的疾病
     echo $form->field($model, 'good_at')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Hospitals::getList('110000'),
+        'data' =>   \backend\models\Departments::getList(),
         'addon' => 1,
         'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [

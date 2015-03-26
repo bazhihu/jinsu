@@ -81,10 +81,10 @@ class WalletController extends Controller
         {
             $model = new WalletUserDetail(['scenario' => 'pay_create']);
             if ($model->load(Yii::$app->request->post()) && $model->recharge($uid)) {
-                return $this->redirect(['pay_index', 'uid' => $model->uid]);
+                return $this->redirect(['pay-index', 'uid' => $model->uid]);
             } else {
                 $userRow=array();
-                $mobile = User::findOne(['id'=>$uid])->mobile;
+                $mobile = User::findOne(['id'=>$uid])->username;
                 $admin_name = Yii::$app->user->identity->username;
 
                 if($mobile && $admin_name){

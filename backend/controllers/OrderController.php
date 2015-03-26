@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\WalletUser;
 use Yii;
+use yii\base\ErrorException;
 use yii\web\Controller;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Order;
@@ -93,9 +96,6 @@ class OrderController extends Controller
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
             $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;
 
-            //判断是否挑选护工
-
-
             $order = new Order();
             $order->createOrder($params);
             return $this->redirect(['index']);
@@ -125,6 +125,37 @@ class OrderController extends Controller
                 'orderPatientModel' => $orderPatientModel
             ]);
         }
+    }
+
+    /**
+     * 订单支付
+     * @param $id
+     * @return array
+     */
+    public function actionPay($id){
+        $response = [
+            'code' => '200',
+            'msg' => ''
+        ];
+        $orderModel = $this->findModel($id);
+        if(!OrderMaster::checkOrderStatusAction($orderModel->order_status, 'pay')){
+            $response['code'] = '412';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        $uid = $orderModel->uid;
+        //判断金额是否足够
+        $wallet = WalletUser::findOne($uid);
+        $orderTotalAmount = $orderModel->total_amount;
+        if(isset($wallet->money) && $orderTotalAmount > $wallet->money){
+            $response['code'] = '412';
+            $response['msg'] = '余额不足';
+            return $response;
+        }
+
+        $wallet->money = $wallet->money-$orderTotalAmount;
+
     }
 
     /**

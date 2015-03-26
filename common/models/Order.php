@@ -8,12 +8,11 @@
 namespace common\models;
 
 use backend\models\Holidays;
-use backend\models\Hospitals;
 use backend\models\OrderIncrement;
 use backend\models\OrderPatient;
 use backend\Models\Worker;
 use yii\base\ErrorException;
-use yii\base\InvalidParamException;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -43,7 +42,7 @@ class Order extends \yii\db\ActiveRecord{
         self::ORDER_STATUS_WAIT_EVALUATE => '待评价'
     ];
 
-    //节假日价格
+    //节假日价格倍数
     const HOLIDAY_PRICE_MULTIPLIER = 3;
 
     //订单状态动作配置
@@ -102,10 +101,10 @@ class Order extends \yii\db\ActiveRecord{
         return [
             [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id'], 'integer'],
-            [['base_price', 'disabled_amount', 'total_amount'], 'number'],
+            [['base_price', 'patient_state_coefficient', 'total_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
-            [['worker_name', 'contact_name', 'contact_telephone', 'holidays', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
+            [['worker_name', 'contact_name', 'contact_telephone', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
 
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
             [['contact_address','create_order_user_agent'], 'string', 'max' => 500],
@@ -130,10 +129,9 @@ class Order extends \yii\db\ActiveRecord{
             'worker_level' => '护工等级',
             'mobile' => '用户帐号',
             'base_price' => '护工的基础价格（金额/天）',
-            'disabled_amount' => '不能自理每天所加金额',
+            'patient_state_coefficient' => '患者状态价格系数',
             'hospital_id' => '医院',
             'department_id' => '科室',
-            'holidays' => '节假日',
             'total_amount' => '订单总金额',
             'patient_state' => '患者健康状况',
             'customer_service_id' => '下单客服ID',
@@ -210,15 +208,19 @@ class Order extends \yii\db\ActiveRecord{
             $orderNo = $this->_generateOrderNo();
 
             //主订单表数据
-            $orderMasterData = $params['OrderMaster'];
-            $orderMasterData['order_no'] = $orderNo;
-            $orderMasterData['reality_end_time'] = $orderMasterData['end_time'];
-            $orderMasterData['create_time'] = date('Y-m-d H:i:s');
-            $orderMasterData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
-            $orderMasterData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-            $orderMasterData['base_price'] = Worker::getWorkerPrice($orderMasterData['worker_level']);
-            $orderMasterData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
-            $this->attributes = $orderMasterData;
+            $orderData = $params['OrderMaster'];
+            $orderData['order_no'] = $orderNo;
+            $orderData['reality_end_time'] = $orderData['end_time'];
+            $orderData['create_time'] = date('Y-m-d H:i:s');
+            $orderData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
+            $orderData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+
+            //选护工时要用护工的价格@todo...
+            $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+
+            $orderData['patient_state_coefficient'] = OrderPatient::$patientStatePrice[$orderData['patient_state']];
+            $orderData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
+            $this->attributes = $orderData;
             if (!$this->save()) {
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -304,8 +306,7 @@ class Order extends \yii\db\ActiveRecord{
         $priceDetail = [];
 
         //能否自理（金额/天）
-        $ratio = OrderPatient::$patientStatePrice[$order->patient_state];
-        $disabledPrice = $basePrice*$ratio;
+        $disabledPrice = $basePrice*$order->patient_state_coefficient;
 
         $dayPrice = 0;
         foreach($dates as $date){

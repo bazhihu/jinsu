@@ -74,31 +74,28 @@ class Wallet extends \yii\db\ActiveRecord
     }
 
     /**
-     * @desc 获取用户的钱包信息
-     * @param $uid
-     * @return array 返回用户信息
+     * 获取用户钱包信息
+     * @param int $uid 用户ID
+     * @return WalletUser|null|static
+     * @throws HttpException
      */
     public function getUserWallet($uid){
+
         $walletUser = WalletUser::findOne(['uid'=>$uid]);
-        #用户账户余额
-        $param = array();
-        if($walletUser)
-        {
-            $param = ArrayHelper::toArray($walletUser);
-            return $param;
-        }else{
+        if(empty($walletUser)){
             $walletUser = new WalletUser();
-            $walletUser->setAttribute('uid',$uid);
-            if($walletUser->save()){
-                $param['uid'] = $uid;
-                $param['money'] = '0';
-                $param['money_pay'] = '0';
-                $param['money_pay_s'] = '0';
-                $param['money_consumption'] = '0';
-                $param['money_extract'] = '0';
-                return $param;
+            $param['uid'] = $uid;
+            $param['money'] = '0';
+            $param['money_pay'] = '0';
+            $param['money_pay_s'] = '0';
+            $param['money_consumption'] = '0';
+            $param['money_extract'] = '0';
+            $walletUser->attributes = $param;
+            if(!$walletUser->save()){
+                throw new HttpException(400, print_r($walletUser->getErrors(), true));
             }
         }
+        return $walletUser;
     }
 
     /**

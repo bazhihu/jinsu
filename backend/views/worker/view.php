@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
+use backend\models\Hospitals;
 
 /**
  * @var yii\web\View $this
@@ -43,7 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
 
-            'birth_place',
+
+            [
+                'attribute'=>'birth_place',
+                'value'=>\backend\models\City::getCityName($model->birth_place)
+            ],
 
             //[
               //  'attribute'=>'native_province',
@@ -71,7 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>\backend\Models\Worker::getChineseLevel($model->chinese_level,'view')
             ],
 
-            'certificate',
+            [
+                'attribute'=>'certificate',
+                'value'=>\backend\Models\Worker::getCertificateName($model->certificate)
+            ],
+
             [
                 'attribute'=>'start_work',
                 'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'yyyy-MM-dd'],
@@ -85,7 +94,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone1',
             'phone2',
             'price',
-            'hospital_id',
+
+            [
+                'attribute'=>'hospital_id',
+                'value'=>Hospitals::getHospitalsName($model->hospital_id)
+            ],
             'office_id',
             'good_at',
             [

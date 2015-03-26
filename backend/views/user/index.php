@@ -10,14 +10,14 @@ use yii\widgets\Pjax;
  * @var backend\Models\UserSearch $searchModel
  */
 
-$this->title = 'Users';
+$this->title = '用户管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
     <div class="page-header">
             <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a('Create User', ['create'], ['class' => 'btn btn-success'])*/  ?>
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 用户注册', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
     ]); Pjax::end(); ?>

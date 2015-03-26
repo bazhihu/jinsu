@@ -50,7 +50,7 @@ use kartik\datecontrol\DateControl;
     ]
 
     ]);
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '添加') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
 
 </div>

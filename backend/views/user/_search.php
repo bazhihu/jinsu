@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var app\models\UserSearch $model
+ * @var backend\Models\UserSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
@@ -19,39 +19,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'role_id') ?>
+    <?= $form->field($model, 'nickname') ?>
+
+    <?= $form->field($model, 'type') ?>
 
     <?= $form->field($model, 'status') ?>
 
-    <?= $form->field($model, 'mobile') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
-
-    <?php // echo $form->field($model, 'new_email') ?>
-
-    <?php // echo $form->field($model, 'username') ?>
-
-    <?php // echo $form->field($model, 'password') ?>
-
-    <?php // echo $form->field($model, 'auth_key') ?>
-
-    <?php // echo $form->field($model, 'api_key') ?>
-
     <?php // echo $form->field($model, 'login_ip') ?>
 
-    <?php // echo $form->field($model, 'login_time') ?>
+    <?php // echo $form->field($model, 'login_date') ?>
 
-    <?php // echo $form->field($model, 'create_ip') ?>
+    <?php // echo $form->field($model, 'add_date') ?>
 
-    <?php // echo $form->field($model, 'create_time') ?>
+    <?php // echo $form->field($model, 'adder') ?>
 
-    <?php // echo $form->field($model, 'update_time') ?>
+    <?php // echo $form->field($model, 'edit_date') ?>
 
-    <?php // echo $form->field($model, 'ban_time') ?>
-
-    <?php // echo $form->field($model, 'ban_reason') ?>
+    <?php // echo $form->field($model, 'editer') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

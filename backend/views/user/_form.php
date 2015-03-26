@@ -7,7 +7,7 @@ use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
- * @var backend\models\User $model
+ * @var backend\Models\User $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
@@ -20,46 +20,32 @@ use kartik\datecontrol\DateControl;
     'form' => $form,
     'columns' => 1,
     'attributes' => [
+        'username'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>[
+                'placeholder'=>'请输入用户名（用户名即手机号）...',
+                'maxlength'=>32,
+                'style'=>'width:50%'
+            ]
+        ],
 
-'role_id'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Role ID...']], 
+        'name'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>[
+                'placeholder'=>'请输入姓名...',
+                'maxlength'=>50,
+                'style'=>'width:50%'
+            ]
+        ],
 
-'status'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Status...']], 
-
-'login_time'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),'options'=>['type'=>DateControl::FORMAT_DATETIME]], 
-
-'create_time'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),'options'=>['type'=>DateControl::FORMAT_DATETIME]], 
-
-'update_time'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),'options'=>['type'=>DateControl::FORMAT_DATETIME]], 
-
-'ban_time'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),'options'=>['type'=>DateControl::FORMAT_DATETIME]], 
-
-'type'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Type...', 'maxlength'=>255]], 
-
-'email'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Email...', 'maxlength'=>255]], 
-
-'new_email'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter New Email...', 'maxlength'=>255]], 
-
-'username'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Username...', 'maxlength'=>255]], 
-
-'password'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'Enter Password...', 'maxlength'=>255]], 
-
-'auth_key'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Auth Key...', 'maxlength'=>255]], 
-
-'api_key'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Api Key...', 'maxlength'=>255]], 
-
-'login_ip'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Login Ip...', 'maxlength'=>255]], 
-
-'create_ip'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Create Ip...', 'maxlength'=>255]], 
-
-'ban_reason'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Ban Reason...', 'maxlength'=>255]], 
-
-'mobile'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Mobile...', 'maxlength'=>11]], 
-
+        'gender'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]
+        ],
     ]
 
-
     ]);
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
 
 </div>

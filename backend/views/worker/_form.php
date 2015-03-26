@@ -95,7 +95,10 @@ use backend\models\Departments;
             'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
         ],
 
-        'level'=>['type'=> Form::INPUT_RADIO_LIST, 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel($model->level), 'options'=>['inline'=>true]],
+        'level'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel(), 'options'=>['inline'=>true]
+        ],
 
         'price'=>[
             'type'=> Form::INPUT_TEXT,
@@ -117,7 +120,13 @@ use backend\models\Departments;
                 'displayFormat' => 'yyyy-MM-dd',
                 'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
             ],
-        ]]
+        ],
+
+        'place'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'请输入户口所在地...', 'maxlength'=>255,'style'=>'width:50%']
+        ]
+    ]
     ]);
 
     echo $form->field($model, 'nation')->widget(Select2::classname(), [

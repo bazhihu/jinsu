@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use backend\Models\Worker;
+use backend\models\Hospitals;
 
 /**
  * @var yii\web\View $this
@@ -18,7 +19,7 @@ $this->title = '护工管理';
     <div class="page-header">
             <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a('Create Worker', ['create'], ['class' => 'btn btn-success'])*/  ?>
@@ -31,8 +32,11 @@ $this->title = '护工管理';
             ['class' => 'yii\grid\SerialColumn'],
 
             'worker_id',
+
             'name',
+
             'gender',
+
             [
                 'attribute'=>'birth',
                 'label' => '年龄',
@@ -40,28 +44,16 @@ $this->title = '护工管理';
                     return $model->workerAge($model->birth);
                 }
             ],
-            'native_province',
-            'hospital_id',
-            [
-                'attribute'=>  'status',
-                'value'=> function ($model) {
-                    if ($model->status==1)
-                        return '在职';
-                    elseif ($model->status==2)
-                        return '离职';
-                }
-            ],
-            'total_score',
-            [
-                'attribute'=>'star',
-                'value'=>function ($model){
 
-                    return $model->workerStar($model->star);
+            //'native_province',
+
+            [
+                'attribute'=>'hospital_id',
+                'value'=> function ($model){
+                    return Hospitals::getHospitalsName($model->hospital_id);
                 }
             ],
-            'total_order',
-            'good_rate',
-            'total_comment',
+
             [
                 'attribute'=>'level',
                 'value'=>function ($model){
@@ -69,33 +61,31 @@ $this->title = '护工管理';
                 }
             ],
 
-//            'native_province',
-//            'nation',
-//            'marriage', 
-//            'education', 
-//            'politics', 
-//            'idcard', 
-//            'chinese_level', 
-//            'certificate', 
-//            ['attribute'=>'start_work','format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'd-m-Y']], 
-//            'place', 
-//            'phone1', 
-//            'phone2', 
-//            'price', 
-//            'hospital_id', 
-//            'office_id', 
-//            'good_at', 
-//            ['attribute'=>'add_date','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'adder', 
-//            ['attribute'=>'edit_date','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'editer', 
-//            'total_score', 
-//            'star', 
-//            'total_order', 
-//            'good_rate', 
-//            'total_comment', 
-//            'level', 
-//            'status', 
+            /*[
+                'attribute'=>  'status',
+                'value'=> function ($model) {
+                    if ($model->status==1)
+                        return '在职';
+                    elseif ($model->status==2)
+                        return '离职';
+                }
+            ],*/
+
+            'total_score',
+
+            [
+                'attribute'=>'star',
+                'value'=>function ($model){
+
+                    return $model->workerStar($model->star);
+                }
+            ],
+
+            'total_order',
+
+            'good_rate',
+
+            'total_comment',
 
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -112,10 +102,6 @@ $this->title = '护工管理';
         'hover'=>true,
         'condensed'=>true,
         'floatHeader'=>true,
-
-
-
-
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',

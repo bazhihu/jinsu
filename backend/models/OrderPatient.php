@@ -40,7 +40,7 @@ class OrderPatient extends \yii\db\ActiveRecord
     ];
 
     /**
-     * 患者健康状态对应价格
+     * 患者健康状态对应价格系数
      * @var array
      */
     static public $patientStatePrice = [

@@ -357,7 +357,12 @@ class Order extends \yii\db\ActiveRecord{
             'code' => '200',
             'msg' => ''
         ];
-        $order = self::findOne(['order_no' => $orderNo]);
+        if($orderNo !== null){
+            $order = self::findOne(['order_no' => $orderNo]);
+        }else{
+            $order = $this;
+        }
+
         $orderTotalAmount = $order->total_amount;
         if(empty($orderTotalAmount)){
             //计算订单总价

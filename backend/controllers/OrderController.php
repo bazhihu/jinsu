@@ -133,7 +133,7 @@ class OrderController extends Controller
      */
     public function actionPay($id){
         $orderModel = $this->findModel($id);
-        $orderModel->pay();
+        $response = $orderModel->pay();
         echo Json::encode($response);
     }
 

@@ -44,7 +44,7 @@ class Wallet extends \yii\db\ActiveRecord
      * @pay_from 支付渠道
      * @return bool
      */
-    public function  recharge($uid,$pay_from = self::WALLET_PAY_FROM_BACKSTAGE)
+    public function recharge($uid,$pay_from = self::WALLET_PAY_FROM_BACKSTAGE)
     {
         #充值金额
         $money = $this->detail_money;
@@ -123,6 +123,40 @@ class Wallet extends \yii\db\ActiveRecord
      * @return string
      */
     private function _generateDetailNo($uid){
-        return date("YmdHis").$uid.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
+        return date("YmdHis").$uid.str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT);
+    }
+
+    /**
+     * 扣款
+     * @param int $uid 用户
+     * @param number $amount 金额
+     * @return array
+     * @author zhangbo
+     */
+    public function deduction($uid, $amount){
+        $response = [
+            'code' => '200',
+            'msg' => ''
+        ];
+        //判断金额是否足够
+        $wallet = WalletUser::findOne($uid);
+        if(empty($wallet->money) || $amount >= $wallet->money){
+            $response['code'] = '412';
+            $response['msg'] = '余额不足';
+            return $response;
+        }
+
+        $wallet->money = $wallet->money-$amount;
+        if(!$wallet->save()){
+            $response['code'] = '412';
+            $response['msg'] = '支付失败：'.print_r($wallet->getErrors(), true);
+            return $response;
+        }
+
+        //扣款记录@Todo...志强抓紧
+
+        $response['msg'] = '支付成功';
+
+        return $response;
     }
 }

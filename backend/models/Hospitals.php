@@ -66,4 +66,24 @@ class Hospitals extends \yii\db\ActiveRecord
 
         return ArrayHelper::map(self::findAll($findArr), 'id', 'name');
     }
+
+    /**
+     * 根据ID获取医院的NAME
+     * @param int $IdStr
+     * @return static[]
+     */
+
+    static public  function  getHospitalsName($IdStr=''){
+        $ids = explode(',',$IdStr);
+        $data = null;
+        if($ids) {
+            foreach ($ids as $id) {
+                $findArr = ['id' => $id];
+                $result = self::findOne($findArr);
+
+                $data .= $result->name." ";
+            }
+        }
+        return $data;
+    }
 }

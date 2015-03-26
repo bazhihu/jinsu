@@ -35,7 +35,7 @@ $this->title = '查看订单';
             'uid',
             'mobile',
             'base_price',
-            'disabled_amount',
+            'patient_state_coefficient',
             'total_amount',
             [
                 'attribute'=>'patient_state',

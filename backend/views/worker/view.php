@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
+use backend\models\Hospitals;
 
 /**
  * @var yii\web\View $this
@@ -30,8 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'attributes' => [
             'worker_id',
+
             'name',
+
             'idcard',
+
             'gender',
             [
                 'attribute'=>'birth',
@@ -43,14 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
 
-            'birth_place',
-
-            //[
-              //  'attribute'=>'native_province',
-            [
-                'attribute'=>'nation',
-                'value'=>\backend\Models\Worker::getNation($model->nation,'view')
-            ],
             [
                 'attribute'=>'marriage',
                 'value'=>$model->marriage==1?'已婚':'未婚'
@@ -71,7 +67,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>\backend\Models\Worker::getChineseLevel($model->chinese_level,'view')
             ],
 
-            'certificate',
+            [
+                'attribute'=>'certificate',
+                'value'=>\backend\Models\Worker::getCertificateName($model->certificate)
+            ],
+
+            'phone1',
+
+            'phone2',
+
+            [
+                'attribute'=>'level',
+                'value'=>\backend\Models\Worker::getWorkerLevel($model->level,'view')
+            ],
+
+            'price',
+
+            [
+                'attribute'=>'status',
+                'value'=>$model->status==1?'在职':'离职'
+            ],
+
             [
                 'attribute'=>'start_work',
                 'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'yyyy-MM-dd'],
@@ -81,13 +97,45 @@ $this->params['breadcrumbs'][] = $this->title;
                     'type'=>DateControl::FORMAT_DATE
                 ]
             ],
+
             'place',
-            'phone1',
-            'phone2',
-            'price',
-            'hospital_id',
-            'office_id',
-            'good_at',
+
+            [
+                'attribute'=>'nation',
+                'value'=>\backend\Models\Worker::getNation($model->nation,'view')
+            ],
+
+            [
+                'attribute'=>'birth_place',
+                'value'=>\backend\models\City::getCityName($model->birth_place)
+            ],
+
+            [
+                'attribute'=>'hospital_id',
+                'value'=>Hospitals::getHospitalsName($model->hospital_id)
+            ],
+
+            [
+                'attribute'=>'office_id',
+                'value'=>\backend\models\Departments::getDepartmentName($model->office_id)
+            ],
+
+
+            [
+                'attribute'=>'good_at',
+                'value'=>\backend\models\Departments::getDepartmentName($model->good_at)
+            ],
+
+            'total_score',
+
+            'star',
+
+            'total_order',
+
+            'good_rate',
+
+            'total_comment',
+
             [
                 'attribute'=>'add_date',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
@@ -116,22 +164,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'editer',
                 'value'=>($model->editer)? \backend\models\AdminUser::findOne(['admin_uid',$model->editer])->username : null,
-            ],
-
-            'total_score',
-            'star',
-            'total_order',
-            'good_rate',
-            'total_comment',
-
-            [
-                'attribute'=>'level',
-                'value'=>\backend\Models\Worker::getWorkerLevel($model->level,'view')
-            ],
-
-            [
-                'attribute'=>'status',
-                'value'=>$model->status==1?'在职':'离职'
             ],
         ],
         'deleteOptions'=>[

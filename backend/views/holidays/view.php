@@ -13,12 +13,14 @@ $this->title = '查看节假日';
 //$this->params['breadcrumbs'][] = ['label' => 'Holidays', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="holidays-view">
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-
-
+    <div style="display: table;margin-bottom: 15px;">
+    <?php echo Html::a('继续添加', Yii::$app->urlManager->createUrl('holidays/create'), ['class'=>'btn btn-primary active','style'=>'float:right']);?>
+    </div>
     <?= DetailView::widget([
             'model' => $model,
             'condensed'=>false,
@@ -49,5 +51,4 @@ $this->title = '查看节假日';
         ],
         'enableEditMode'=>true,
     ]) ?>
-
 </div>

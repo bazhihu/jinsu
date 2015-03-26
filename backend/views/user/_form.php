@@ -42,6 +42,11 @@ use kartik\datecontrol\DateControl;
             'type'=> Form::INPUT_RADIO_LIST,
             'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]
         ],
+
+        'status'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择账号状态...'], 'items'=>['1'=>'正常','2'=>'禁用'], 'options'=>['inline'=>true]
+        ],
     ]
 
     ]);

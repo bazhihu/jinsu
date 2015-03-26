@@ -66,7 +66,16 @@ class UserController extends Controller
     {
         $model = new User;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $params_all = Yii::$app->request->post();
+            $params = $params_all['User'];
+            $params['type'] = 'system';
+            //添加时间
+            $params['add_date'] = date('Y-m-d H:i:s');
+            $params['adder'] = yii::$app->user->getId();
+            $model->attributes = $params;
+        }
+        if($model->save()){
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -85,9 +94,18 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post())) {
+            $params_all = Yii::$app->request->post();
+            $params = $params_all['User'];
+
+            //编辑时间
+            $params['edit_date'] = date('Y-m-d H:i:s');
+            $params['editer'] = yii::$app->user->getId();
+            $model->attributes = $params;
+            if($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }else {
             return $this->render('update', [
                 'model' => $model,
             ]);

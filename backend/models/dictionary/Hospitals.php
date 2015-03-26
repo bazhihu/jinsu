@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\dictionary;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+use Yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%hospitals}}".
@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property string $province_id
  * @property string $city_id
  * @property string $area_id
+ * @property string $phone
  */
 class Hospitals extends \yii\db\ActiveRecord
 {
@@ -32,7 +33,8 @@ class Hospitals extends \yii\db\ActiveRecord
         return [
             [['province_id'], 'required'],
             [['province_id', 'city_id', 'area_id'], 'integer'],
-            [['name'], 'string', 'max' => 255]
+            [['name'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 11]
         ];
     }
 
@@ -42,11 +44,12 @@ class Hospitals extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '编号',
             'name' => '医院名称',
             'province_id' => '所属省份',
-            'city_id' => '所属城市',
-            'area_id' => '所属区（县）',
+            'city_id' => '所属市',
+            'area_id' => '所属区',
+            'phone' => '医院电话',
         ];
     }
 

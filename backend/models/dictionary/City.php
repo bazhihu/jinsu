@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\dictionary;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+use Yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%city}}".
@@ -48,15 +48,15 @@ class City extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'type' => 'Type',
-            'name' => 'Name',
-            'parent_id' => 'Parent ID',
-            'zip' => 'Zip',
-            'group_id' => 'Group ID',
-            'wcode' => 'Wcode',
-            'display' => 'Display',
-            'continent_id' => 'Continent ID',
+            'id' => '编码',
+            'type' => '区域类型',
+            'name' => '地域名称',
+            'parent_id' => '父亲编号',
+            'zip' => '邮编',
+            'group_id' => '所属地区',
+            'wcode' => '天气',
+            'display' => '状态',
+            'continent_id' => '所属洲',
         ];
     }
 
@@ -109,5 +109,4 @@ class City extends \yii\db\ActiveRecord
         }
         return $data;
     }
-
 }

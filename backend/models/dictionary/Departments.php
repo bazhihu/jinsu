@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\dictionary;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -42,7 +42,7 @@ class Departments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => '科室名称',
-            'parent_id' => 'Parent ID',
+            'parent_id' => '父亲科室',
         ];
     }
 
@@ -68,7 +68,15 @@ class Departments extends \yii\db\ActiveRecord
 
         return $list;
     }
+    static public function getParent(){
+        $list = array('0'=>'选择');
+        $result = self::findAll(['parent_id'=>'0']);
 
+        foreach($result as $key=>$val){
+            $list[$val['id']]=$val['name'];
+        }
+        return $list;
+    }
     /**
      * 根据ID获取医院的NAME
      * @param int $IdStr

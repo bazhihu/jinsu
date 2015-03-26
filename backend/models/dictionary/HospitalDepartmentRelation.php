@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\dictionary;
 
 use Yii;
 
@@ -38,9 +38,9 @@ class HospitalDepartmentRelation extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'hospital_id' => 'Hospital ID',
-            'department_id' => 'Department ID',
+            'id' => '编号',
+            'hospital_id' => '医院编号',
+            'department_id' => '科室编号',
         ];
     }
 }

@@ -2,8 +2,10 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\User */
+/**
+ * @var yii\web\View $this
+ * @var backend\Models\User $model
+ */
 
 $this->title = 'Update User: ' . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];

@@ -1,33 +1,26 @@
 <?php
 
-namespace backend\models;
+namespace backend\Models;
 
 use Yii;
+use yii\validators\EmailValidator;
 
 /**
  * This is the model class for table "{{%user}}".
  *
  * @property integer $id
- * @property string $type
- * @property integer $role_id
- * @property integer $status
- * @property string $mobile
- * @property string $email
- * @property string $new_email
  * @property string $username
- * @property string $password
- * @property string $auth_key
- * @property string $api_key
+ * @property string $nickname
+ * @property string $type
+ * @property integer $status
  * @property string $login_ip
- * @property string $login_time
- * @property string $create_ip
- * @property string $create_time
- * @property string $update_time
- * @property string $ban_time
- * @property string $ban_reason
+ * @property string $login_date
+ * @property string $add_date
+ * @property integer $adder
+ * @property string $edit_date
+ * @property integer $editer
  *
  * @property Profile[] $profiles
- * @property Role $role
  * @property UserAuth[] $userAuths
  * @property UserKey[] $userKeys
  */
@@ -47,12 +40,13 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['role_id', 'status'], 'required'],
-            [['role_id', 'status'], 'integer'],
-            [['login_time', 'create_time', 'update_time', 'ban_time'], 'safe'],
-            [['type', 'email', 'new_email', 'username', 'password', 'auth_key', 'api_key', 'login_ip', 'create_ip', 'ban_reason'], 'string', 'max' => 255],
-            [['mobile'], 'string', 'max' => 11],
-            [['mobile'], 'unique']
+            [['username'],'required'],
+            [['status', 'adder', 'editer'], 'integer'],
+            [['login_date', 'add_date', 'edit_date'], 'safe'],
+            [['username'], 'string', 'max' => 32],
+            [['nickname'], 'string', 'max' => 255],
+            [['type'], 'string', 'max' => 20],
+            [['name','login_ip'], 'string', 'max' => 50]
         ];
     }
 
@@ -63,23 +57,18 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'type' => 'Type',
-            'role_id' => 'Role ID',
-            'status' => 'Status',
-            'mobile' => 'Mobile',
-            'email' => 'Email',
-            'new_email' => 'New Email',
-            'username' => 'Username',
-            'password' => 'Password',
-            'auth_key' => 'Auth Key',
-            'api_key' => 'Api Key',
-            'login_ip' => 'Login Ip',
-            'login_time' => 'Login Time',
-            'create_ip' => 'Create Ip',
-            'create_time' => 'Create Time',
-            'update_time' => 'Update Time',
-            'ban_time' => 'Ban Time',
-            'ban_reason' => 'Ban Reason',
+            'username' => '用户名',
+            'nickname' => '昵称',
+            'name' => '姓名',
+            'gender' => '性别',
+            'type' => '注册类型',
+            'status' => '状态',
+            'login_ip' => '登陆IP',
+            'login_date' => '登陆时间',
+            'add_date' => '注册时间',
+            'adder' => '注册人',
+            'edit_date' => '编辑时间',
+            'editer' => '编辑人',
         ];
     }
 
@@ -89,14 +78,6 @@ class User extends \yii\db\ActiveRecord
     public function getProfiles()
     {
         return $this->hasMany(Profile::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRole()
-    {
-        return $this->hasOne(Role::className(), ['id' => 'role_id']);
     }
 
     /**

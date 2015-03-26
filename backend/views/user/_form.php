@@ -1,39 +1,51 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+use kartik\datecontrol\DateControl;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\User */
-/* @var $form yii\widgets\ActiveForm */
+/**
+ * @var yii\web\View $this
+ * @var backend\Models\User $model
+ * @var yii\widgets\ActiveForm $form
+ */
 ?>
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]); echo Form::widget([
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => 255]) ?>
+    'model' => $model,
+    'form' => $form,
+    'columns' => 1,
+    'attributes' => [
+        'username'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>[
+                'placeholder'=>'请输入用户名（用户名即手机号）...',
+                'maxlength'=>32,
+                'style'=>'width:50%'
+            ]
+        ],
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => 32]) ?>
+        'name'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>[
+                'placeholder'=>'请输入姓名...',
+                'maxlength'=>50,
+                'style'=>'width:50%'
+            ]
+        ],
 
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => 255]) ?>
+        'gender'=>[
+            'type'=> Form::INPUT_RADIO_LIST,
+            'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]
+        ],
+    ]
 
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'role')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    ]);
+    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    ActiveForm::end(); ?>
 
 </div>

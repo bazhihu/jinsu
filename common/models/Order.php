@@ -352,4 +352,47 @@ class Order extends \yii\db\ActiveRecord{
         return $dateList;
     }
 
+    public function pay($orderNo = null){
+        $response = [
+            'code' => '200',
+            'msg' => ''
+        ];
+        if($orderNo !== null){
+            $order = self::findOne(['order_no' => $orderNo]);
+        }else{
+            $order = $this;
+        }
+
+        $orderTotalAmount = $order->total_amount;
+        if(empty($orderTotalAmount)){
+            //计算订单总价
+            $order->total_amount = $this->calculateTotalPrice($order->order_no);
+            $orderTotalAmount = $order->total_amount;
+        }
+
+        $uid = $order->uid;
+        //判断金额是否足够
+        $wallet = WalletUser::findOne($uid);
+        if(isset($wallet->money) && $orderTotalAmount > $wallet->money){
+            $response['code'] = '412';
+            $response['msg'] = '余额不足';
+            return $response;
+        }
+
+        $wallet->money = $wallet->money-$orderTotalAmount;
+        if(!$wallet->save()){
+            $response['code'] = '412';
+            $response['msg'] = '支付失败：'.print_r($order->getErrors(), true);
+            return $response;
+        }
+
+        //修改订单状态
+        $order->order_status = OrderMaster::ORDER_STATUS_WAIT_CONFIRM;
+        if($order->save()) {
+            $response['msg'] = '支付成功';
+        }
+
+        return $response;
+    }
+
 }

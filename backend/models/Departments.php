@@ -70,6 +70,27 @@ class Departments extends \yii\db\ActiveRecord
     }
 
     /**
+     * 根据ID获取医院的NAME
+     * @param int $IdStr
+     * @return static[]
+     */
+
+    static public  function  getDepartmentName($IdStr=''){
+        $ids = explode(',',$IdStr);
+        $data = null;
+        if($ids) {
+            foreach ($ids as $id) {
+                $findArr = ['id' => $id];
+                $result = self::findOne($findArr);
+
+                $data .= $result->name." ";
+            }
+        }
+        return $data;
+    }
+
+
+    /**
      * 格式化成树形格式数据
      * @param array $items 数据项
      * @param int $level 层级

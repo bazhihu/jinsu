@@ -90,7 +90,24 @@ class City extends \yii\db\ActiveRecord
         }
         return $data;
     }
+    /**
+     * 根据ID获取省份、城市、地区的NAME
+     * @param int $IdStr 省ID 市ID 区县ID
+     * @return static[]
+     */
 
+    static public  function  getCityName($IdStr=''){
+        $ids = explode(',',$IdStr);
+        $data = null;
+        if($ids) {
+            foreach ($ids as $id) {
+                $findArr = ['id' => $id];
+                $result = self::findOne($findArr);
 
+                $data .= $result->name." ";
+            }
+        }
+        return $data;
+    }
 
 }

@@ -482,6 +482,22 @@ class Worker extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 根据ID获取省份、城市、地区的NAME
+     * @param int $IdStr 省ID 市ID 区县ID
+     * @return static[]
+     */
+
+    static public  function  getCertificateName($certificateStr=''){
+        $certificates = explode(',',$certificateStr);
+        $data = null;
+        if($certificates) {
+            foreach ($certificates as $certificate) {
+                $data.= self::getCertificate($certificate)." ";
+            }
+        }
+        return $data;
+    }
 
 
 
@@ -500,5 +516,6 @@ class Worker extends \yii\db\ActiveRecord
             return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
         }
     }
+
 
 }

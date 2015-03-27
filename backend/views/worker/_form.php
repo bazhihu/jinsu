@@ -138,7 +138,9 @@ use backend\models\Departments;
     ])->label('民族');
 
     //户口所在地
-    echo $form->field($model, 'birth_place')->dropDownList( \backend\models\City::getList(1), ['id'=>'birth_place','style'=>'width:30%','placeholder'=>'请选择',]);
+    echo $form->field($model, 'birth_place')->dropDownList(
+        \backend\models\City::getList(1),
+        ['id'=>'birth_place','style'=>'width:30%','prompt'=>'请选择']);
 
     // 户口所在地 Child # 1
     echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [

@@ -235,8 +235,8 @@ class Worker extends \yii\db\ActiveRecord
             [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
             [['price', 'good_rate'], 'number'],
-            [['name', 'birth_place','idcard','native_province', 'nation', 'phone1', 'phone2','certificate'], 'string', 'max' => 20],
-            [['place'], 'string', 'max' => 255],
+            [['name', 'idcard','native_province', 'nation', 'phone1', 'phone2','certificate'], 'string', 'max' => 20],
+            [['place','birth_place'], 'string', 'max' => 255],
 
         ];
     }
@@ -306,7 +306,7 @@ class Worker extends \yii\db\ActiveRecord
     /**
      * @worker_age :星级
      */
-    public function workerStar($star=5){
+    static public function workerStar($star=5){
         if($star>=4.5){
             $star_str = '5';
         }elseif(4.5>$star && $star>=4){
@@ -383,24 +383,24 @@ class Worker extends \yii\db\ActiveRecord
     public function saveData($params,$op='create')
     {
         if ($params['certificate']) {
-            $params['certificate'] = implode(',', $params['certificate']);
+            $params['certificate'] = ','.implode(',', $params['certificate']).',';
         }
 
         if ($params['hospital_id']) {
-            $params['hospital_id'] = implode(',', $params['hospital_id']);
+            $params['hospital_id'] = ','.implode(',', $params['hospital_id']).',';
         }
 
         if ($params['office_id']) {
-            $params['office_id'] = implode(',', $params['office_id']);
+            $params['office_id'] = ','.implode(',', $params['office_id']).',';
         }
 
         if ($params['good_at']) {
-            $params['good_at'] = implode(',', $params['good_at']);
+            $params['good_at'] = ','.implode(',', $params['good_at']).',';
         }
 
         //户口所在地
         if ($params['birth_place']) {
-            $params['birth_place'] = $params['birth_place'] . "," . $params['birth_place_city'] . "," . $params['birth_place_area'];
+            $params['birth_place'] = ','.$params['birth_place'] . "," . $params['birth_place_city'] . "," . $params['birth_place_area'].',';
         }
 
         if ($op == 'create') {
@@ -489,11 +489,14 @@ class Worker extends \yii\db\ActiveRecord
      */
 
     static public  function  getCertificateName($certificateStr=''){
-        $certificates = explode(',',$certificateStr);
         $data = null;
-        if($certificates) {
-            foreach ($certificates as $certificate) {
-                $data.= self::getCertificate($certificate)." ";
+        if($certificateStr){
+            $certificates = explode(',',$certificateStr);
+            if($certificates) {
+                foreach ($certificates as $certificate) {
+                    if($certificate)
+                        $data.= self::getCertificate($certificate)." ";
+                }
             }
         }
         return $data;

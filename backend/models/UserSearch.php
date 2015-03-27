@@ -15,8 +15,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'adder', 'editer'], 'integer'],
-            [['username', 'nickname', 'type', 'login_ip', 'login_date', 'add_date', 'edit_date'], 'safe'],
+            [['status'], 'integer'],
+            [['username', 'nickname', 'name'], 'safe'],
         ];
     }
 
@@ -28,7 +28,6 @@ class UserSearch extends User
 
     public function search($params)
     {
-        echo 'dddd';
         $query = User::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -40,19 +39,12 @@ class UserSearch extends User
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
             'status' => $this->status,
-            'login_date' => $this->login_date,
-            'add_date' => $this->add_date,
-            'adder' => $this->adder,
-            'edit_date' => $this->edit_date,
-            'editer' => $this->editer,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'nickname', $this->nickname])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'login_ip', $this->login_ip]);
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

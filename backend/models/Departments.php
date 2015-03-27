@@ -76,14 +76,15 @@ class Departments extends \yii\db\ActiveRecord
      */
 
     static public  function  getDepartmentName($IdStr=''){
-        $ids = explode(',',$IdStr);
         $data = null;
-        if($ids) {
-            foreach ($ids as $id) {
-                $findArr = ['id' => $id];
-                $result = self::findOne($findArr);
-
-                $data .= $result->name." ";
+        if($IdStr){
+            $ids = explode(',',$IdStr);
+            if($ids) {
+                foreach ($ids as $id) {
+                    $findArr = ['id' => $id];
+                    $result = self::findOne($findArr);
+                    $data .= $result['name']." ";
+                }
             }
         }
         return $data;

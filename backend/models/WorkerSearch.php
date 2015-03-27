@@ -40,14 +40,18 @@ class WorkerSearch extends Worker
         }
 
         $query->andFilterWhere([
-            'worker_id' => $this->worker_id,
             'gender' => $this->gender,
             'birth' => $this->birth,
-            'nation' => $this->nation,
+            'native_province' => $this->native_province,
+            'level' => $this->level,
+            'status' => $this->status,
+            'chinese_level' => $this->chinese_level,
+            'star' => $this->star,
+            /*
             'marriage' => $this->marriage,
             'education' => $this->education,
             'politics' => $this->politics,
-            'chinese_level' => $this->chinese_level,
+
             'start_work' => $this->start_work,
             'phone1' => $this->phone1,
             'phone2' => $this->phone2,
@@ -61,19 +65,23 @@ class WorkerSearch extends Worker
             'total_order' => $this->total_order,
             'good_rate' => $this->good_rate,
             'total_comment' => $this->total_comment,
-            'level' => $this->level,
-            'status' => $this->status,
+*/
+
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'birth_place', $this->birth_place])
+        $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':''])
+            ->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':''])
+          //  ->andFilterWhere(["($this->hospital_id,", "find_in_set", "hospital_id)"])
+            /*->andFilterWhere(['like', 'birth_place', $this->birth_place])
             ->andFilterWhere(['like', 'native_province', $this->native_province])
             ->andFilterWhere(['like', 'idcard', $this->idcard])
             ->andFilterWhere(['like', 'certificate', $this->certificate])
             ->andFilterWhere(['like', 'place', $this->place])
             ->andFilterWhere(['like', 'hospital_id', $this->hospital_id])
             ->andFilterWhere(['like', 'office_id', $this->office_id])
-            ->andFilterWhere(['like', 'good_at', $this->good_at]);
+            ->andFilterWhere(['like', 'good_at', $this->good_at])*/;
 
         return $dataProvider;
     }

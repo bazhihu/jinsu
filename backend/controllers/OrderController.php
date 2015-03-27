@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\models\WalletUser;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -132,8 +131,8 @@ class OrderController extends Controller
      * @return array
      */
     public function actionPay($id){
-        $orderModel = $this->findModel($id);
-        $response = $orderModel->pay();
+        $order = $this->findModel($id);
+        $response = $order->pay();
         echo Json::encode($response);
     }
 

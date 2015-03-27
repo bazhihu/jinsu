@@ -48,11 +48,11 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                 'options' => [
                     'style' => 'width:100px',
                 ],
-                'format'=>['datetime','Y-MM-d']
+                'format'=>['datetime','yyyy-MM-dd']
             ],
             [
                 'attribute'=>'end_time',
-                'format'=>['datetime','Y-MM-d'],
+                'format'=>['datetime','yyyy-MM-dd'],
                 'options' => [
                     'style' => 'width:100px',
                 ]
@@ -119,7 +119,7 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                     'confirm' => function ($url, $model) {
                             if(OrderMaster::checkOrderStatusAction($model->order_status, 'confirm')){
                                 return Html::button('确认', [
-                                    'data-url'=>$url, 'class'=>'jsPayOrder'
+                                    'data-url'=>$url, 'class'=>'jsConfirmOrder'
                                 ]);
                             }
                     },

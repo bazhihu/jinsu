@@ -99,7 +99,7 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
+            [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
@@ -215,10 +215,17 @@ class Order extends \yii\db\ActiveRecord{
             $orderData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
             $orderData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
-            //选护工时要用护工的价格@todo...
-            $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+            //获取护工价格
+            if(isset($orderData['worker_no'])){
+                $worker = Worker::findOne($orderData['worker_no']);
+                $orderData['base_price'] = $worker->price;
+            }elseif(isset($orderData['worker_level'])){
+                $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+            }
+            if(empty($orderData['base_price'])){
+                throw new HttpException(400, '无法获取护工价格');
+            }
 
-            $orderData['patient_state_coefficient'] = OrderPatient::$patientStatePrice[$orderData['patient_state']];
             $orderData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
             $this->attributes = $orderData;
             if (!$this->save()) {
@@ -273,40 +280,35 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 计算价格
-     * @param $orderNo
      * @param bool $returnDetail 是否返回价格明细
      * @return array|int|mixed
      * @throws ErrorException
      * @throws NotFoundHttpException
      * @author zhangbo
      */
-    public function calculateTotalPrice($orderNo, $returnDetail = false){
-        $order = $this->findOne(['order_no' => $orderNo]);
-        if(empty($order)){
-            throw new NotFoundHttpException('The requested order does not exist.');
-        }
+    public function calculateTotalPrice($returnDetail = false){
 
-        if(strtotime($order->start_time) >= strtotime($order->end_time)){
+        if(strtotime($this->start_time) >= strtotime($this->end_time)){
             throw new ErrorException('开始时间不能大于结束时间');
         }
 
         $totalPrice = 0;
 
         //护工的基础价格（金额/天）
-        $basePrice = $order->base_price;
+        $basePrice = $this->base_price;
 
         //获取节假日日期
         $holidaysList = ArrayHelper::map(Holidays::find()->all(), 'id', 'date');
 
         //获取日期列表
-        $dates = $this->getDateList($order->start_time, $order->end_time);
+        $dates = $this->getDateList($this->start_time, $this->end_time);
         //print_r($dates);exit;
 
         //价格明细
         $priceDetail = [];
 
         //能否自理（金额/天）
-        $disabledPrice = $basePrice*$order->patient_state_coefficient;
+        $disabledPrice = $basePrice*$this->patient_state_coefficient;
 
         $dayPrice = 0;
         foreach($dates as $date){
@@ -352,44 +354,41 @@ class Order extends \yii\db\ActiveRecord{
         return $dateList;
     }
 
-    public function pay($orderNo = null){
-        $response = [
-            'code' => '200',
-            'msg' => ''
-        ];
-        if($orderNo !== null){
-            $order = self::findOne(['order_no' => $orderNo]);
-        }else{
-            $order = $this;
-        }
+    /**
+     * 订单支付
+     * @return array
+     * @throws ErrorException
+     * @throws HttpException
+     * @throws \yii\db\Exception
+     */
+    public function pay(){
+        //计算订单总价
+        $totalPrice = $this->calculateTotalPrice();
 
-        $orderTotalAmount = $order->total_amount;
-        if(empty($orderTotalAmount)){
-            //计算订单总价
-            $order->total_amount = $this->calculateTotalPrice($order->order_no);
-            $orderTotalAmount = $order->total_amount;
-        }
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $wallet = new Wallet();
+            $response = $wallet->deduction($this->uid, $totalPrice);
+            if($response['code'] == '200'){
+                //扣款成功，修改订单信息
+                $this->total_amount = $totalPrice;
+                $this->patient_state_coefficient = OrderPatient::$patientStatePrice[$this->patient_state];
+                $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
+                $this->pay_time = date('Y-m-d H:i:s');
+                if($this->save()) {
+                    $response['msg'] = '支付成功';
+                }else{
+                    $response['code'] = '412';
+                    $response['msg'] = '支付失败';
+                }
 
-        $uid = $order->uid;
-        //判断金额是否足够
-        $wallet = WalletUser::findOne($uid);
-        if(isset($wallet->money) && $orderTotalAmount > $wallet->money){
-            $response['code'] = '412';
-            $response['msg'] = '余额不足';
-            return $response;
-        }
+                //记录操作
 
-        $wallet->money = $wallet->money-$orderTotalAmount;
-        if(!$wallet->save()){
-            $response['code'] = '412';
-            $response['msg'] = '支付失败：'.print_r($order->getErrors(), true);
-            return $response;
-        }
-
-        //修改订单状态
-        $order->order_status = OrderMaster::ORDER_STATUS_WAIT_CONFIRM;
-        if($order->save()) {
-            $response['msg'] = '支付成功';
+            }
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            throw new HttpException(400, print_r($e, true));
         }
 
         return $response;

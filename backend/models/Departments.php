@@ -108,7 +108,7 @@ class Departments extends \yii\db\ActiveRecord
                 }else{
                     $value = $item['name'];
                 }
-                $list[$key] = $value;
+                $list[$item['id']] = $value;
                 unset($items[$key]);
 
                 if(empty($items)){

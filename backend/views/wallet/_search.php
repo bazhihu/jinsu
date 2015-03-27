@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
+use kartik\widgets\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\WalletUserDetailSearch */
@@ -11,41 +12,60 @@ use yii\widgets\ActiveForm;
 <div class="wallet-user-detail-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['pay-index'],
         'method' => 'get',
+
+        'type' => ActiveForm::TYPE_INLINE,
+        'formConfig'=>[
+            'labelSpan'=>1
+        ],
     ]); ?>
+    <?php
+    echo $form->field(
+        $model,
+        'fromDate',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->widget(
+        DateTimePicker::classname(),
+        [
+            'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
+            'pluginOptions' => ['autoclose' => true]
+        ]
+    )->label('起始时间');
+    echo $form->field(
+        $model,
+        'toDate',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->widget(
+        DateTimePicker::classname(),
+        [
+            'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
+            'pluginOptions' => ['autoclose' => true]
+        ]
+    )->label('结束时间');
+    ?>
+    <?= $form->field(
+        $model,
+        'uid',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
+    <?= $form->field(
+        $model,
+        'pay_from',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->dropDownList(['Backstage'=>'线下支付','weixin'=>'微信支付','zhifubao'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
 
-    <?= $form->field($model, 'detail_id') ?>
-
-    <?= $form->field($model, 'detail_id_no') ?>
-
-    <?= $form->field($model, 'order_id') ?>
-
-    <?= $form->field($model, 'order_no') ?>
-
-    <?= $form->field($model, 'worker_id') ?>
-
-    <?php // echo $form->field($model, 'uid') ?>
-
-    <?php // echo $form->field($model, 'detail_money') ?>
-
-    <?php // echo $form->field($model, 'detail_type') ?>
-
-    <?php // echo $form->field($model, 'wallet_money') ?>
-
-    <?php // echo $form->field($model, 'detail_time') ?>
-
-    <?php // echo $form->field($model, 'remark') ?>
-
-    <?php // echo $form->field($model, 'pay_from') ?>
-
-    <?php // echo $form->field($model, 'extract_to') ?>
-
-    <?php // echo $form->field($model, 'admin_uid') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="form-group" style="padding-top: 25px">
+        <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

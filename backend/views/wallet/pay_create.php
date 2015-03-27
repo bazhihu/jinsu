@@ -54,8 +54,7 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
                             alert('请输入充值金额！');
                             return false;
                         }
-                        alert('确认给用户'+name+'：充值'+value+'人民币？');
-                        return true;
+                        confirm('确认给用户'+name+'：充值'+value+'人民币？');
                     ",
                 ]
             ) ?>

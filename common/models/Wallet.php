@@ -2,15 +2,14 @@
 
 namespace common\models;
 
+use backend\models\WalletIncrement;
 use Yii;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
-use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
-use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%wallet_user_detail}}".
+ * @author zhiqiang
  *
  * @property integer $detail_id 交易流水ID
  * @property string $detail_id_no 交易流水编号
@@ -27,100 +26,79 @@ use yii\db\ActiveRecord;
  * @property string $extract_to 提现渠道
  * @property integer $admin_uid 管理员ID
  */
-class Wallet extends \yii\db\ActiveRecord
+class Wallet
 {
-    #明细类型
-    const WALLET_TYPE_CONSUME = 1; //消费
-    const WALLET_TYPE_RECHARGE = 2; //充值
-    const WALLET_TYPE_WITHDRAWALS = 3; //提现
-
-    #支付渠道
-    const WALLET_PAY_FROM_BACKSTAGE = 'Backstage';//后台
-    const WALLET_PAY_FROM_APP = 'App';//app
-
     /**
-     * @desc 用户充值
-     * @uid
-     * @pay_from 支付渠道
+     * 用户充值
+     * @param int uid 用户id
+     * @param string pay_from 支付渠道 1 backstage(后台)|2 other
+     * @param int top 充值类型 0为正充值|1为负充值
+     * @param string detail_money 充值金额
      * @return bool
-     */
-    public function recharge($uid,$pay_from = self::WALLET_PAY_FROM_BACKSTAGE)
-    {
-        #充值金额
-        $money = $this->detail_money;
-        #用户余额
-        $walletUser = $this->getUserWallet($uid);
-
-        $param['wallet_user_detail']['detail_id_no']    = self::_generateDetailNo($uid); //'交易流水编号',
-        $param['wallet_user_detail']['uid']             = $uid; //'用户ID',
-        $param['wallet_user_detail']['detail_type']     = self::WALLET_TYPE_RECHARGE; //'交易类型',
-        $param['wallet_user_detail']['wallet_money']    = $walletUser['money']+$money; //'账户余额',
-        $param['wallet_user_detail']['detail_time']     = date('Y-m-d H:i:s'); //'交易时间',
-        $param['wallet_user_detail']['pay_from']        = self::WALLET_PAY_FROM_BACKSTAGE; //'支付渠道',
-        $param['wallet_user_detail']['admin_uid']       = Yii::$app->user->identity->getId(); //'管理员ID',
-
-        $param['wallet_user']['uid']                    = $uid;
-        $param['wallet_user']['money']                  = $param['wallet_user_detail']['wallet_money'];
-        $param['wallet_user']['money_pay']              = $walletUser['money_pay']+$money;
-
-        $this->setAttributes($param['wallet_user_detail'], false);
-        if(!$this->save())
-        {
-            throw new HttpException(400, print_r($this->getErrors(), true));
-        }
-
-        if($this->saveWalletUser($param['wallet_user']))
-            return true;
-    }
-
-    /**
-     * 获取用户钱包信息
-     * @param int $uid 用户ID
-     * @return WalletUser|null|static
      * @throws HttpException
      */
-    public function getUserWallet($uid){
+    public function recharge($param)
+    {
+        $walletUser = new WalletUser();
 
-        $walletUser = WalletUser::findOne(['uid'=>$uid]);
+        $walletUser = WalletUser::findOne(['uid'=>$param['uid']]);
         if(empty($walletUser)){
             $walletUser = new WalletUser();
-            $param['uid'] = $uid;
-            $param['money'] = '0';
-            $param['money_pay'] = '0';
-            $param['money_pay_s'] = '0';
-            $param['money_consumption'] = '0';
-            $param['money_extract'] = '0';
-            $walletUser->attributes = $param;
+            $wallet['uid'] = $param['uid'];
+
+            $walletUser->attributes = $wallet;
             if(!$walletUser->save()){
                 throw new HttpException(400, print_r($walletUser->getErrors(), true));
             }
         }
-        return $walletUser;
-    }
 
-    /**
-     * @desc 保存用户钱包信息
-     * @param $params
-     * @return bool
-     * @throws HttpException
-     */
-    public function saveWalletUser($params){
-        $walletUser = new WalletUser();
-        $walletUser->setAttributes($params,false);
-        if($walletUser->updateAll($params,$params['uid'])){
-            return true;
+        $param['wallet_user_detail']['detail_no']    = self::_generateWalletNo(); //'交易流水编号',
+        $param['wallet_user_detail']['uid']             = $param['uid']; //'用户ID',
+        $param['wallet_user_detail']['detail_type']     = WalletUserDetail::WALLET_TYPE_RECHARGE; //'交易类型',
+        $param['wallet_user_detail']['detail_money']    = $param['detail_money']; //'交易类型',
+        $param['wallet_user_detail']['detail_time']     = date('Y-m-d H:i:s'); //'交易时间',
+        $param['wallet_user_detail']['pay_from']        = WalletUserDetail::$payFrom[$param['pay_from']]; //'支付渠道',
+        $param['wallet_user_detail']['admin_uid']       = Yii::$app->user->identity->getId(); //'管理员ID',
+
+        #判断充值正负
+        if(!$param['top']){
+            $param['wallet_user_detail']['wallet_money']= $walletUser['money']+$param['detail_money']; //'账户余额',
+
+            $param['wallet_user']['money_pay']          = $walletUser['money_pay']+$param['detail_money'];
         }else{
-            throw new HttpException(400, print_r($walletUser->getErrors(), true));
-        }
-    }
+            $param['wallet_user_detail']['wallet_money']= $walletUser['money']-$param['detail_money']; //'账户余额',
 
-    /**
-     * @desc 生成交易流水编号
-     * @param $uid
-     * @return string
-     */
-    private function _generateDetailNo($uid){
-        return date("YmdHis").$uid.str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT);
+            $param['wallet_user']['money_pay']          = $walletUser['money_pay']-$param['detail_money'];
+            $param['wallet_user']['money_pay_s']        = $walletUser['money_pay_s']+$param['detail_money'];//累积充值负金额
+
+            if($param['wallet_user']['money_pay']<0){
+                throw new HttpException(400, print_r(("充值错误!"), true));
+            }
+        }
+        $param['wallet_user']['uid']                = $param['uid'];
+        $param['wallet_user']['money']              = $param['wallet_user_detail']['wallet_money'];
+
+        #事务-START
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            $walletUserDetail = new WalletUserDetail(['scenario' => 'pay_create']);
+            $walletUserDetail->setAttributes($param['wallet_user_detail'],false);
+            if (!$walletUserDetail->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
+            }
+
+            $walletUser->attributes = $param['wallet_user'];
+            if (!$walletUser->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
+            }
+
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            throw new HttpException(400, print_r($e, true));
+        }
+        #事务-END
+        return true;
     }
 
     /**
@@ -155,5 +133,59 @@ class Wallet extends \yii\db\ActiveRecord
         $response['msg'] = '支付成功';
 
         return $response;
+    }
+
+    /**
+     * 消费记录
+     * @author HZQ
+     * @param $param
+     * [
+     *      'order_id'      int  订单ID
+     *      'order_no'   string  订单编号
+     *      'uid'           int  用户id
+     *      'detail_money'  int  交易金额
+     *      'wallet_money'  int  当前账户余额
+     *      'detail_type'   int  交易类型 默认 1 (1消费,2充值,3提现)
+     *      'pay_from'      int  支付渠道 默认 1 (1后台,2 app)
+     * ]
+     * @return array
+     */
+    public function addConRecords($param){
+        $response = [
+            'code' => '200',
+            'msg' => ''
+        ];
+        $walletUserDetail = new WalletUserDetail(['scenario' => 'consume']);
+        $userDetail = [
+            'detail_no'  =>self::_generateWalletNo(),
+            'order_id'      =>$param['order_id'],
+            'order_no'      =>$param['order_no'],
+            'uid'           =>$param['uid'],
+            'detail_money'  =>$param['detail_money'],
+            'detail_type'   =>$param['detail_type'],//默认为1
+            'wallet_money'  =>$param['wallet_money'],//当前账户余额
+            'detail_time'   =>date('Y-m-d H:i:s'),
+            'pay_from'      =>WalletUserDetail::$payFrom[$param['pay_from']],//后台为 1
+        ];
+        $walletUserDetail->setAttributes($userDetail);
+        if(!$walletUserDetail->save())
+        {
+            $response['code'] = '412';
+            $response['msg'] = '记录失败'.print_r($walletUserDetail->getErrors(), true);
+            return $response;
+        }
+        $response['msg'] = '记录成功';
+        return $response;
+    }
+    /**
+     * 生成钱包流水号
+     * @return string
+     * @throws \Exception
+     * @author HZQ
+     */
+    private function _generateWalletNo(){
+        $walletIncrement = new WalletIncrement();
+        $walletIncrement->insert();
+        return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
     }
 }

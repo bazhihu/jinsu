@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\User;
+use common\models\Wallet;
 use Yii;
 use backend\models\WalletUserDetail;
 use backend\models\WalletUser;
@@ -30,15 +31,48 @@ class WalletController extends Controller
     }
 
     /**
-     * Lists all WalletUserDetail models.
+     * 充值记录.
      * @return mixed
      */
     public function actionPayIndex()
     {
         $searchModel = new WalletUserDetailSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $queryParams = Yii::$app->request->queryParams;
+
+        if(isset($queryParams['WalletUserDetailSearch']['uid']) && $queryParams['WalletUserDetailSearch']['uid']){
+            $user = new User();
+            $queryParams['WalletUserDetailSearch']['id'] =
+                $user->findOne(['username'=>$queryParams['WalletUserDetailSearch']['uid']])->id;
+        }
+        #指向充值
+        $queryParams['WalletUserDetailSearch']['detail_type'] = 2;
+        $dataProvider = $searchModel->search($queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * 扣款明细
+     * @return string
+     */
+    public function actionDeductionIndex()
+    {
+        $searchModel = new WalletUserDetailSearch();
+        $queryParams = Yii::$app->request->queryParams;
+
+        if(isset($queryParams['WalletUserDetailSearch']['uid']) && $queryParams['WalletUserDetailSearch']['uid']){
+            $user = new User();
+            $queryParams['WalletUserDetailSearch']['id'] =
+                $user->findOne(['username'=>$queryParams['WalletUserDetailSearch']['uid']])->id;
+        }
+        #指向充值
+        $queryParams['WalletUserDetailSearch']['detail_type'] = 1;
+        $dataProvider = $searchModel->search($queryParams);
+
+        return $this->render('deduction', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -74,6 +108,10 @@ class WalletController extends Controller
         }
     }
 
+    /**
+     * 充值
+     * @return string|\yii\web\Response
+     */
     public function actionPayCreate()
     {
         $uid=Yii::$app->request->get("uid");

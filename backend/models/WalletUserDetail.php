@@ -23,9 +23,11 @@ use common\models\Wallet;
  * @property string $extract_to
  * @property integer $admin_uid
  */
-class WalletUserDetail extends Wallet
+class WalletUserDetail extends \yii\db\ActiveRecord
 {
     public $mobile;//电话号码
+    public $fromDate;
+    public $toDate;
 
     #明细类型
     const WALLET_TYPE_CONSUME = 1; //消费
@@ -33,8 +35,10 @@ class WalletUserDetail extends Wallet
     const WALLET_TYPE_WITHDRAWALS = 3; //提现
 
     #支付渠道
-    const WALLET_PAY_FROM_BACKSTAGE = 'Backstage';//后台
-    const WALLET_PAY_FROM_APP = 'App';//app
+    static public $payFrom = [
+        '1'=>'Backstage',
+        '2'=>'App',
+    ];
 
     /**
      * @inheritdoc
@@ -53,10 +57,12 @@ class WalletUserDetail extends Wallet
             ['detail_money','required','on'=>'pay_create'],
             ['detail_money','number','on'=>'pay_create'],
 
+            [['detail_no','order_id','order_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from'],'required','on'=>'consume'],
+
             [['order_id', 'worker_id', 'uid', 'detail_type', 'admin_uid'], 'integer'],
             [['wallet_money'], 'number'],
             // [['detail_time'], 'safe'],
-            [['detail_id_no', 'order_no', 'pay_from', 'extract_to'], 'string', 'max' => 50],
+            [['detail_no', 'order_no', 'pay_from', 'extract_to'], 'string', 'max' => 50],
             [['remark'], 'string', 'max' => 255]
         ];
     }
@@ -64,6 +70,7 @@ class WalletUserDetail extends Wallet
     {
         return[
             'pay_create'=>['detail_money'],
+            'consume'=>['detail_no','order_id','order_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from']
         ];
     }
     /**
@@ -73,19 +80,39 @@ class WalletUserDetail extends Wallet
     {
         return [
             'detail_id' => '交易流水ID',
-            'detail_id_no' => '交易流水编号',
+            'detail_no' => '交易流水',
             'order_id' => '订单ID',
             'order_no' => '订单编号',
             'worker_id' => '护工ID',
-            'uid' => '用户ID',
-            'detail_money' => '交易金额',
+            'uid' => '用户帐号',
+            'detail_money' => '充值金额(元)',
             'detail_type' => '交易类型',
             'wallet_money' => '账户余额',
             'detail_time' => '交易时间',
             'remark' => '备注',
             'pay_from' => '支付渠道',
             'extract_to' => '提现渠道',
-            'admin_uid' => '管理员ID',
+            'admin_uid' => '经办人',
         ];
+    }
+    public function recharge($uid)
+    {
+        $param = array();
+        #正充值
+        $param['top'] = 0;
+        if($this->detail_money<0){
+            $param['top'] = 1;
+        }
+
+        $param['detail_money']  = abs($this->detail_money);
+        $param['pay_from']      = 1;
+        $param['uid']           = $uid;
+
+        $wallet = new Wallet();
+        if($wallet->recharge($param))
+        {
+            return true;
+        }
+        return false;
     }
 }

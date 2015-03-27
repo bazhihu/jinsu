@@ -46,6 +46,7 @@ class User extends \yii\db\ActiveRecord
             [['username'], 'string', 'max' => 32],
             [['nickname'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
+            [['gender'], 'string', 'max' => 1],
             [['name','login_ip'], 'string', 'max' => 50]
         ];
     }
@@ -62,7 +63,8 @@ class User extends \yii\db\ActiveRecord
             'name' => '姓名',
             'gender' => '性别',
             'type' => '注册类型',
-            'status' => '状态',
+            'status' => '账号状态',
+           // 'finance_status' => '财务状态',
             'login_ip' => '登陆IP',
             'login_date' => '登陆时间',
             'add_date' => '注册时间',

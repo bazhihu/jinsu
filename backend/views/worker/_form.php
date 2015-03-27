@@ -205,7 +205,7 @@ use backend\models\Departments;
         ],
     ])->label('擅长护理的疾病');
 
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '添加') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
 
 </div>

@@ -18,7 +18,8 @@ $route = $controller->route;
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li><a href="">用户管理</a></li>
+    <li <?php if($route == 'user/create'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('user/create');?>">用户注册</a></li>
+    <li <?php if($route == 'user/index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('user/index');?>">用户管理</a></li>
 </ul>
 
 <ul class="nav nav-sidebar">

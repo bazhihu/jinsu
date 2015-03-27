@@ -32,8 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'nickname',
+            'name',
+            'gender',
             'type',
-            'status',
+            [
+                'attribute'=>'status',
+                'value'=> ($model->status==1) ? '正常':'禁用',
+            ],
             'login_ip',
             [
                 'attribute'=>'login_date',
@@ -53,7 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
             ],
-            'adder',
+            [
+                'attribute'=>'adder',
+                'value'=>($model->adder)? \backend\models\AdminUser::findOne(['admin_uid',$model->adder])->username :null,
+            ],
             [
                 'attribute'=>'edit_date',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
@@ -63,7 +71,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
             ],
-            'editer',
+            [
+                'attribute'=>'editer',
+                'value'=>($model->editer)? \backend\models\AdminUser::findOne(['admin_uid',$model->editer])->username : null,
+            ],
         ],
         'deleteOptions'=>[
         'url'=>['delete', 'id' => $model->id],

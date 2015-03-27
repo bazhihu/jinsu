@@ -10,14 +10,14 @@ use yii\widgets\Pjax;
  * @var backend\Models\UserSearch $searchModel
  */
 
-$this->title = 'Users';
+$this->title = '用户管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
     <div class="page-header">
             <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?php /* echo Html::a('Create User', ['create'], ['class' => 'btn btn-success'])*/  ?>
@@ -32,20 +32,43 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'nickname',
+            'name',
+            'gender',
             'type',
-            'status',
-//            'login_ip', 
-//            ['attribute'=>'login_date','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            ['attribute'=>'add_date','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'adder', 
-//            ['attribute'=>'edit_date','format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A']], 
-//            'editer', 
-
+            [
+                'attribute'=>'status',
+                'value'=>function($model) {
+                    return ($model->status) ? '正常':'禁用';
+                }
+            ],
+            //'finance_status',
+            /*[
+                'attribute'=>'finance_status',
+                'value'=>function ($model){
+                    return $model->level ? Worker::getWorkerLevel($model->level) : null;
+                }
+            ],*/
+            'login_ip',
+            'login_date',
+            'add_date',
+            [
+                'attribute'=>'adder',
+                'value'=>function($model) {
+                    return ($model->adder) ? \backend\models\AdminUser::findOne(['admin_uid', $model->adder])->username : null;
+                }
+            ],
+            'edit_date',
+            [
+                'attribute'=>'editer',
+                'value'=>function($model) {
+                    return ($model->editer) ? \backend\models\AdminUser::findOne(['admin_uid', $model->editer])->username : null;
+                }
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['user/view','id' => $model->id,'edit'=>'t']), [
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['user/update','id' => $model->id]), [
                                                     'title' => Yii::t('yii', 'Edit'),
                                                   ]);}
 
@@ -63,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 用户注册', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
     ]); Pjax::end(); ?>

@@ -30,7 +30,8 @@
         "amnah/yii2-user": "dev-master",
         "warrence/yii2-kartikgii": "dev-master",
         "almasaeed2010/adminlte": "~2.0",
-        "kartik-v/yii2-widget-select2": "*"
+        "kartik-v/yii2-widget-select2": "*",
+        "yiisoft/yii2-redis": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

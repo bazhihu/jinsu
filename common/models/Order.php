@@ -9,8 +9,10 @@ namespace common\models;
 
 use backend\models\Holidays;
 use backend\models\OrderIncrement;
+use backend\models\OrderOperatorLog;
 use backend\models\OrderPatient;
 use backend\Models\Worker;
+use backend\models\WorkerSchedule;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
@@ -356,19 +358,24 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单支付
+     * @param string $remark 备注
      * @return array
      * @throws ErrorException
      * @throws HttpException
      * @throws \yii\db\Exception
      */
-    public function pay(){
+    public function pay($remark = null){
+
         //计算订单总价
         $totalPrice = $this->calculateTotalPrice();
-
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $wallet = new Wallet();
             $response = $wallet->deduction($this->uid, $totalPrice);
+
+            //添加支付记录@todo...
+            $wallet;
+
             if($response['code'] == '200'){
                 //扣款成功，修改订单信息
                 $this->total_amount = $totalPrice;
@@ -382,14 +389,20 @@ class Order extends \yii\db\ActiveRecord{
                     $response['msg'] = '支付失败';
                 }
 
-                //记录操作
-
+                //添加护工排期时间
+                if(!empty($this->worker_no)){
+                    $workerSchedule = new WorkerSchedule();
+                    $workerSchedule->addSchedule($this->order_no, $this->worker_no, $this->start_time, $this->end_time);
+                }
             }
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
-            throw new HttpException(400, print_r($e, true));
         }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'pay', $response, $remark);
 
         return $response;
     }

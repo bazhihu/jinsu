@@ -12,8 +12,11 @@ $('body').on('click', 'button.jsPayOrder', function () {
     $.ajax({
         type: "POST",
         dataType: "json",
+        async:false,
+        cache:false,
+        timeout:30000,
         url: url,
-        //data: "name=John&location=Boston",
+        data: "name=bobo",
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){

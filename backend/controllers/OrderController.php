@@ -131,9 +131,11 @@ class OrderController extends Controller
      * @return array
      */
     public function actionPay($id){
+
         $order = $this->findModel($id);
         $response = $order->pay();
         echo Json::encode($response);
+        return false;
     }
 
     /**

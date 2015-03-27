@@ -77,16 +77,20 @@ class Hospitals extends \yii\db\ActiveRecord
      */
 
     static public  function  getHospitalsName($IdStr=''){
-        $ids = explode(',',$IdStr);
         $data = null;
-        if($ids) {
-            foreach ($ids as $id) {
-                $findArr = ['id' => $id];
-                $result = self::findOne($findArr);
-
-                $data .= $result->name." ";
-            }
+        if($IdStr) {
+            $ids = explode(',', $IdStr);
+               if ($ids) {
+                    foreach ($ids as $id) {
+                        if($id){
+                            $findArr = ['id' => $id];
+                            $result = self::findOne($findArr);
+                            $data .= $result['name'] . "<br>";
+                        }
+                    }
+                }
         }
+
         return $data;
     }
 }

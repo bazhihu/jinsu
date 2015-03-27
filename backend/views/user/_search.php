@@ -1,8 +1,11 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+use kartik\datecontrol\DateControl;
+use kartik\widgets\Select2;
+use kartik\widgets\Growl;
 /**
  * @var yii\web\View $this
  * @var backend\Models\UserSearch $model
@@ -15,33 +18,47 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'type' => ActiveForm::TYPE_INLINE,
+        'formConfig'=>[
+            'labelSpan'=>1
+        ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'username') ?>
+    <?= $form->field(
+        $model,
+        'username',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->input('text',['placeholder'=>'请输入用户名...'])->label("用户名") ?>
 
-    <?= $form->field($model, 'nickname') ?>
+    <?= $form->field(
+        $model,
+        'nickname',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->input('text',['placeholder'=>'请输入昵称...'])->label("昵称") ?>
 
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field(
+        $model,
+        'name',
+        [
+            'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+        ]
+    )->input('text',['placeholder'=>'请输入姓名...'])->label("姓名") ?>
 
-    <?= $form->field($model, 'status') ?>
+    <?= $form->field(
+        $model,
+        'status',
+        [
+            'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
+        ]
+    )->dropDownList(['1'=>'正常','2'=>'禁用'],['prompt'=>'请选择'])->label("状态") ?>
 
-    <?php // echo $form->field($model, 'login_ip') ?>
-
-    <?php // echo $form->field($model, 'login_date') ?>
-
-    <?php // echo $form->field($model, 'add_date') ?>
-
-    <?php // echo $form->field($model, 'adder') ?>
-
-    <?php // echo $form->field($model, 'edit_date') ?>
-
-    <?php // echo $form->field($model, 'editer') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="form-group" style="padding-top: 25px">
+        <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

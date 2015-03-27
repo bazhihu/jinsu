@@ -115,23 +115,28 @@ class Wallet
         ];
         //判断金额是否足够
         $wallet = WalletUser::findOne($uid);
-        if(empty($wallet->money) || $amount >= $wallet->money){
+        if(empty($wallet->money)){
+            $money = 0;
+        }else{
+            $money = $wallet->money;
+        }
+
+        $response['money'] = $money;
+        if($amount >= $money){
             $response['code'] = '412';
-            $response['msg'] = '余额不足';
+            $response['msg'] = '余额不足,当前余额：'.$money;
             return $response;
         }
 
         $wallet->money = $wallet->money-$amount;
+        $wallet->money_consumption = $wallet->money_consumption+$amount;
         if(!$wallet->save()){
             $response['code'] = '412';
             $response['msg'] = '支付失败：'.print_r($wallet->getErrors(), true);
             return $response;
         }
 
-        //扣款记录@Todo...志强抓紧
-
         $response['msg'] = '支付成功';
-
         return $response;
     }
 

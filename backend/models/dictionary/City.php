@@ -97,14 +97,16 @@ class City extends \yii\db\ActiveRecord
      */
 
     static public  function  getCityName($IdStr=''){
-        $ids = explode(',',$IdStr);
         $data = null;
-        if($ids) {
-            foreach ($ids as $id) {
-                $findArr = ['id' => $id];
-                $result = self::findOne($findArr);
+        if($IdStr){
+            $ids = explode(',',$IdStr);
+            if($ids) {
+                foreach ($ids as $id) {
+                    $findArr = ['id' => $id];
+                    $result = self::findOne($findArr);
 
-                $data .= $result->name." ";
+                    $data .= $result['name']." ";
+                }
             }
         }
         return $data;

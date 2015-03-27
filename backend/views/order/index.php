@@ -61,7 +61,7 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                 'attribute'=>'mobile',
                 'format'=>'raw',
                 'value'=>function ($model) {
-                    return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id' => $model->uid]));
+                    return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id'=>$model->uid]));
 
                 },
                 'options' => [
@@ -117,11 +117,17 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                         }
                     },
                     'confirm' => function ($url, $model) {
-                            if(OrderMaster::checkOrderStatusAction($model->order_status, 'confirm')){
-                                return Html::button('确认', [
-                                    'data-url'=>$url, 'class'=>'jsConfirmOrder'
-                                ]);
-                            }
+                        if(OrderMaster::checkOrderStatusAction($model->order_status, 'confirm')){
+                            return Html::button('确认', [
+                                'data-url'=>$url,
+                                'class'=>'jsConfirmOrder',
+                                'select-worker-url'=>Yii::$app->urlManager->createUrl([
+                                    'worker/select',
+                                    'order_id' => $model->order_id,
+                                    'start_time' => $model->start_time
+                                ])
+                            ]);
+                        }
                     },
                     'finish' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'finish')){

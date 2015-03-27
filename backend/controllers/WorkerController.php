@@ -213,4 +213,25 @@ class WorkerController extends Controller
         }
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
+
+    /**
+     * 选择护工
+     * @return string
+     * @throws NotFoundHttpException
+     * @author zhangbo
+     */
+    public function actionSelect(){
+        $orderId = $_GET['order_id'];
+        if(empty($orderId)){
+            throw new NotFoundHttpException('订单编号为空.');
+        }
+        $searchModel = new WorkerSearch;
+        $dataProvider = $searchModel->select(Yii::$app->request->getQueryParams());
+
+        return $this->render('select', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'orderId' => $orderId
+        ]);
+    }
 }

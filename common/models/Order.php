@@ -346,8 +346,8 @@ class Order extends \yii\db\ActiveRecord{
         $endTime = strtotime($endDate);
         while(true){
             $time = mktime(0, 0, 0, $startMonth, $startDay+$number, $startYear);
-            if($time <= $endTime){
-                $dateList[] = date('Y-m-d', $time);;
+            if($time < $endTime){
+                $dateList[] = date('Y-m-d', $time);
                 $number++;
             }else{
                 break;
@@ -404,6 +404,36 @@ class Order extends \yii\db\ActiveRecord{
         $orderOperatorLog = new OrderOperatorLog();
         $orderOperatorLog->addLog($this->order_no, 'pay', $response, $remark);
 
+        return $response;
+    }
+
+    /**
+     * 订单确认
+     * @param null $remark
+     * @return array
+     */
+    public function confirm($remark = null){
+        $response = ['code' => '200'];
+
+        if(empty($this->worker_no)){
+            $response['code'] = '202';
+            $response['msg'] = '没有选护工，请择护工';
+            $response['start_time'] = $this->start_time;
+            return $response;
+        }
+
+        $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
+        $this->confirm_time = date('Y-m-d H:i:s');
+        if($this->save()) {
+            $response['msg'] = '确认成功';
+        }else{
+            $response['code'] = '412';
+            $response['msg'] = '确认失败';
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
         return $response;
     }
 

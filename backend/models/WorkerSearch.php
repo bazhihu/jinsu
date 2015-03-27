@@ -85,4 +85,52 @@ class WorkerSearch extends Worker
 
         return $dataProvider;
     }
+
+    /**
+     * 护工选择
+     * @param $params
+     * @return ActiveDataProvider
+     * @author zhangbo
+     */
+    public function select($params){
+        //获取在工作中的护工
+        $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
+
+        $query = Worker::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $birth = null;
+        if(!empty($params['birth'])){
+            $birth = date('Y')-$params['birth'];
+        }
+        if(!empty($workerIds)){
+            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+        }
+
+        if (!$this->load($params)) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'gender' => $this->gender,
+            'birth' => $birth,
+            'native_province' => $this->native_province,
+            'level' => $this->level,
+            'status' => $this->status,
+            'chinese_level' => $this->chinese_level,
+            'star' => $this->star,
+
+        ]);
+
+        $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':''])
+            ->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':'']);
+
+
+        return $dataProvider;
+    }
 }

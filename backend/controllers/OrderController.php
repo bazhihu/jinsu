@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\WorkerSchedule;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -131,11 +132,20 @@ class OrderController extends Controller
      * @return array
      */
     public function actionPay($id){
-
         $order = $this->findModel($id);
         $response = $order->pay();
         echo Json::encode($response);
-        return false;
+    }
+
+    /**
+     * 订单确认
+     * @param $id
+     * @throws NotFoundHttpException
+     */
+    public function actionConfirm($id){
+        $order = $this->findModel($id);
+        $response = $order->confirm();
+        echo Json::encode($response);
     }
 
     /**

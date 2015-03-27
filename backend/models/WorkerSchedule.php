@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%worker_schedule}}".
@@ -68,5 +69,19 @@ class WorkerSchedule extends \yii\db\ActiveRecord
         ];
         $this->setAttributes($data);
         return $this->save();
+    }
+
+    /**
+     * 获取给予日期在工作中的护工
+     * @param string $date
+     * @return array
+     * @author zhangbo
+     */
+    static public function getWorkingByDate($date){
+        $sql = 'SELECT id,worker_id FROM '.self::tableName();
+        $sql .= "WHERE UNIX_TIMESTAMP(start_date)<=UNIX_TIMESTAMP('$date') AND UNIX_TIMESTAMP('$date')<UNIX_TIMESTAMP(end_date)";
+        $workers = self::findBySql($sql)->all();
+
+        return ArrayHelper::map($workers, 'id', 'worker_id');
     }
 }

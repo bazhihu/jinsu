@@ -27,7 +27,7 @@ $this->title = '护工管理';
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -105,7 +105,8 @@ $this->title = '护工管理';
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 添加护工', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 添加护工', ['create'], ['class' => 'btn btn-success']),
+            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
     ]); Pjax::end(); ?>

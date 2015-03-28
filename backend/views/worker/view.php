@@ -175,5 +175,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'enableEditMode'=>false,
     ]) ?>
-
+    <iframe src="?r=workerother/view&worker_id=<?=$model->worker_id?>" width="100%" height="700"></iframe>
 </div>

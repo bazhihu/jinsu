@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\models\WorkerSchedule;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -13,6 +12,7 @@ use common\models\Order;
 use backend\models\OrderPatient;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
+use backend\models\WalletUserDetail;
 
 use amnah\yii2\user\models\User;
 
@@ -133,7 +133,7 @@ class OrderController extends Controller
      */
     public function actionPay($id){
         $order = $this->findModel($id);
-        $response = $order->pay();
+        $response = $order->pay(WalletUserDetail::PAY_FROM_BACKEND);
         echo Json::encode($response);
     }
 

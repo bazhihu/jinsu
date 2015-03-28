@@ -7,17 +7,18 @@
  */
 namespace common\models;
 
+use yii\base\ErrorException;
+use yii\base\Exception;
+use yii\helpers\ArrayHelper;
+use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 use backend\models\Holidays;
 use backend\models\OrderIncrement;
 use backend\models\OrderOperatorLog;
 use backend\models\OrderPatient;
 use backend\Models\Worker;
 use backend\models\WorkerSchedule;
-use yii\base\ErrorException;
-use yii\base\Exception;
-use yii\helpers\ArrayHelper;
-use yii\web\HttpException;
-use yii\web\NotFoundHttpException;
+use backend\models\WalletUserDetail;
 
 class Order extends \yii\db\ActiveRecord{
     //订单来源
@@ -358,13 +359,14 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单支付
+     * @param string $payFrom 支付渠道
      * @param string $remark 备注
      * @return array
      * @throws ErrorException
      * @throws HttpException
      * @throws \yii\db\Exception
      */
-    public function pay($remark = null){
+    public function pay($payFrom, $remark = null){
 
         //计算订单总价
         $totalPrice = $this->calculateTotalPrice();
@@ -372,10 +374,6 @@ class Order extends \yii\db\ActiveRecord{
         try{
             $wallet = new Wallet();
             $response = $wallet->deduction($this->uid, $totalPrice);
-
-            //添加支付记录@todo...
-            $wallet;
-
             if($response['code'] == '200'){
                 //扣款成功，修改订单信息
                 $this->total_amount = $totalPrice;
@@ -394,6 +392,19 @@ class Order extends \yii\db\ActiveRecord{
                     $workerSchedule = new WorkerSchedule();
                     $workerSchedule->addSchedule($this->order_no, $this->worker_no, $this->start_time, $this->end_time);
                 }
+
+                //添加消费记录
+                $params = [
+                    'order_id' => $this->order_id,
+                    'order_no' => $this->order_no,
+                    'uid' => $this->uid,
+                    'detail_money' => $totalPrice,
+                    'detail_type' => WalletUserDetail::WALLET_TYPE_CONSUME,
+                    'wallet_money' => $response['money'],
+                    'pay_from' => $payFrom
+                ];
+                $wallet = new Wallet();
+                $wallet->addConRecords($params);
             }
             $transaction->commit();
         }catch (Exception $e){

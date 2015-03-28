@@ -94,6 +94,7 @@ class OrderController extends Controller
             }
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
             $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;
+            $params['OrderMaster']['customer_service_id'] = \Yii::$app->user->id;
 
             $order = new Order();
             $order->createOrder($params);
@@ -144,7 +145,39 @@ class OrderController extends Controller
      */
     public function actionConfirm($id){
         $order = $this->findModel($id);
-        $response = $order->confirm();
+        $response = $order->confirm('后台选择护工下单');
+        echo Json::encode($response);
+    }
+    /**
+     * 开始服务
+     * @param $id
+     * @throws NotFoundHttpException
+     */
+    public function actionBegin_service($id){
+        $order = $this->findModel($id);
+        $response = $order->beginService();
+        echo Json::encode($response);
+    }
+
+    /**
+     * 订单完成
+     * @param $id
+     * @throws NotFoundHttpException
+     */
+    public function actionFinish($id){
+        $order = $this->findModel($id);
+        $response = $order->finish();
+        echo Json::encode($response);
+    }
+
+    /**
+     * 订单取消
+     * @param $id
+     * @throws NotFoundHttpException
+     */
+    public function actionCancel($id){
+        $order = $this->findModel($id);
+        $response = $order->cancel();
         echo Json::encode($response);
     }
 

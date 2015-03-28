@@ -25,6 +25,11 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_SOURCES_WEB = 'web'; //web网站
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
     const ORDER_SOURCES_SERVICE = 'service'; //客服
+    static $orderSources = [
+        self::ORDER_SOURCES_WEB => '网站',
+        self::ORDER_SOURCES_MOBILE => '移动客户端',
+        self::ORDER_SOURCES_SERVICE => '客服电话',
+    ];
 
     //订单状态
     const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
@@ -380,6 +385,7 @@ class Order extends \yii\db\ActiveRecord{
                 $this->patient_state_coefficient = OrderPatient::$patientStatePrice[$this->patient_state];
                 $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
                 $this->pay_time = date('Y-m-d H:i:s');
+                $this->operator_id = \Yii::$app->user->id;
                 if($this->save()) {
                     $response['msg'] = '支付成功';
                 }else{
@@ -404,7 +410,7 @@ class Order extends \yii\db\ActiveRecord{
                     'pay_from' => $payFrom
                 ];
                 $wallet = new Wallet();
-                $response = $wallet->addConRecords($params);
+                $wallet->addConRecords($params);
             }
             $transaction->commit();
         }catch (Exception $e){
@@ -422,5 +428,217 @@ class Order extends \yii\db\ActiveRecord{
 
         return $response;
     }
+
+    /**
+     * 订单确认
+     * @param null $remark
+     * @return array
+     */
+    public function confirm($remark = null){
+        $response = ['code' => '200'];
+
+        if(empty($this->worker_no)){
+            $response['code'] = '202';
+            $response['msg'] = '没有选护工，请选择护工';
+            $response['start_time'] = $this->start_time;
+            return $response;
+        }
+
+        if(!self::checkOrderStatusAction($this->order_status, 'confirm')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
+        $this->confirm_time = date('Y-m-d H:i:s');
+        $this->operator_id = \Yii::$app->user->id;
+        if($this->save()) {
+            $response['msg'] = '确认成功';
+        }else{
+            $response['code'] = '412';
+            $response['msg'] = '确认失败';
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
+        return $response;
+    }
+
+    /**
+     * 订单开始服务
+     * @return array
+     */
+    public function beginService(){
+        $response = ['code' => '200'];
+        if(!self::checkOrderStatusAction($this->order_status, 'begin_service')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+        $this->order_status = self::ORDER_STATUS_IN_SERVICE;
+        $this->begin_service_time = date('Y-m-d H:i:s');
+        $this->operator_id = \Yii::$app->user->id;
+        if($this->save()) {
+            $response['msg'] = '开始服务成功';
+        }else{
+            $response['code'] = '412';
+            $response['msg'] = '开始服务失败';
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'begin_service', $response);
+        return $response;
+    }
+
+    /**
+     * 订单完成
+     * @return array
+     */
+    public function finish(){
+        $response = ['code' => '200'];
+        if(!self::checkOrderStatusAction($this->order_status, 'finish')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
+        $this->reality_end_time = date('Y-m-d H:i:s');
+        $this->operator_id = \Yii::$app->user->id;
+        if($this->save()) {
+            $response['msg'] = '完成订单成功';
+        }else{
+            $response['code'] = '412';
+            $response['msg'] = '完成订单失败';
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'finish', $response);
+        return $response;
+    }
+
+    /**
+     * 订单评价
+     * @return array
+     */
+    public function evaluate(){
+        $response = ['code' => '200'];
+        if(!self::checkOrderStatusAction($this->order_status, 'evaluate')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+        $this->order_status = self::ORDER_STATUS_END_SERVICE;
+        $this->evaluate_time = date('Y-m-d H:i:s');
+        $this->operator_id = \Yii::$app->user->id;
+        if($this->save()) {
+            $response['msg'] = '评价成功';
+        }else{
+            $response['code'] = '412';
+            $response['msg'] = '评价失败';
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'evaluate', $response);
+        return $response;
+    }
+
+    /**
+     * 订单取消
+     * @return array
+     */
+    public function cancel(){
+        $response = ['code' => '200'];
+        if(!self::checkOrderStatusAction($this->order_status, 'cancel')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        $this->order_status = self::ORDER_STATUS_CANCEL;
+        $this->cancel_time = date('Y-m-d H:i:s');
+        $this->operator_id = \Yii::$app->user->id;
+        if($this->save()) {
+            $response['msg'] = '取消成功';
+        }else{
+            $response['code'] = '412';
+            $response['msg'] = '取消失败';
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
+        return $response;
+    }
+
+    /**
+     * 续单
+     * @return array
+     */
+    public function continueOrder(){
+        $response = ['code' => '200'];
+        if(!self::checkOrderStatusAction($this->order_status, 'continue')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'continue', $response);
+        return $response;
+    }
+
+
+    /**
+     * 设置选择的护工
+     * @param $orderId
+     * @param $workerId
+     * @param $workerName
+     * @return array
+     */
+    static public function setWorker($orderId, $workerId, $workerName){
+        $response = ['code' => '200', 'msg' => ''];
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $order = self::findOne($orderId);
+            if(empty($order)){
+                $response['code'] = '404';
+                $response['msg'] = '找不到订单';
+                return $response;
+            }
+            //判断是是否已选择护工
+            if(!empty($order->worker_no)){
+                $response['code'] = '200';
+                $response['msg'] = '已选择护工';
+                return $response;
+            }
+
+            $order->worker_no = $workerId;
+            $order->worker_name = $workerName;
+            $order->save();
+
+            //添加护工排期时间
+            $workerSchedule = new WorkerSchedule();
+            $workerSchedule->addSchedule($order->order_no, $order->worker_no, $order->start_time, $order->end_time);
+
+            $transaction->commit();
+            $response['msg'] = '选择护工成功';
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '500',
+                'msg' => '选择的护工失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
+        }
+        return $response;
+    }
+
 
 }

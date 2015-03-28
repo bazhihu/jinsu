@@ -120,7 +120,7 @@ class Wallet
         }
 
         $response['money'] = $money;
-        if($amount >= $money){
+        if($amount > $money){
             $response['code'] = '412';
             $response['msg'] = '余额不足,当前余额：'.$money;
             return $response;

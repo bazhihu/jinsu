@@ -40,64 +40,6 @@ use common\models\Order;
  */
 class OrderMaster extends Order
 {
-    /**
-     * 订单确认
-     * @param null $remark
-     * @return array
-     */
-    public function confirm($remark = null){
-        $response = ['code' => '200'];
 
-        if(empty($this->worker_no)){
-            $response['code'] = '202';
-            $response['msg'] = '没有选护工，请选择护工';
-            $response['start_time'] = $this->start_time;
-            return $response;
-        }
-
-        $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
-        $this->confirm_time = date('Y-m-d H:i:s');
-        if($this->save()) {
-            $response['msg'] = '确认成功';
-        }else{
-            $response['code'] = '412';
-            $response['msg'] = '确认失败';
-        }
-
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
-        return $response;
-    }
-
-    /**
-     * 设置选择的护工
-     * @param $orderId
-     * @param $workerId
-     * @param $workerName
-     * @return array
-     */
-    static public function setWorker($orderId, $workerId, $workerName){
-        $response = ['code' => '200', 'msg' => ''];
-        $order = OrderMaster::findOne($orderId);
-        if(empty($order)){
-            $response['code'] = '404';
-            $response['msg'] = '找不到订单';
-            return $response;
-        }
-        $order->worker_no = $workerId;
-        $order->worker_name = $workerName;
-        if($order->save()){
-            //改变订单状态为开始服务
-            $order->confirm('后台选择护工下单');
-
-            $response['msg'] = '选择护工成功';
-            return $response;
-        }else{
-            $response['code'] = '500';
-            $response['msg'] = '选择护工失败：'.print_r($order->getErrors());
-            return $response;
-        }
-    }
 
 }

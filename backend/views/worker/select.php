@@ -129,10 +129,13 @@ $this->title = '选择护工';
         var order_id = '<?php echo $orderId;?>';
         var startTime = '<?php echo $startTime;?>';
         var url = '<?php echo Yii::$app->urlManager->createUrl('worker/select')?>';
-        var orderViewUrl = '<?php echo  Yii::$app->urlManager->createUrl('order/view')?>';
+        var orderViewUrl = '<?php echo  Yii::$app->urlManager->createUrl(['order/view', 'id'=>$orderId])?>';
         $.ajax({
             type: "POST",
             dataType: "json",
+            async:false,
+            cache:false,
+            timeout:30000,
             url: url,
             data: "order_id="+order_id+"&worker_id="+worker_id+"&start_time="+startTime,
             success: function(json){

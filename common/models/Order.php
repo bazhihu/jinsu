@@ -404,11 +404,16 @@ class Order extends \yii\db\ActiveRecord{
                     'pay_from' => $payFrom
                 ];
                 $wallet = new Wallet();
-                $wallet->addConRecords($params);
+                $response = $wallet->addConRecords($params);
             }
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
+            $response = [
+                'code' => '400',
+                'msg' => '支付失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
         }
 
         //记录操作
@@ -428,7 +433,7 @@ class Order extends \yii\db\ActiveRecord{
 
         if(empty($this->worker_no)){
             $response['code'] = '202';
-            $response['msg'] = '没有选护工，请择护工';
+            $response['msg'] = '没有选护工，请选择护工';
             $response['start_time'] = $this->start_time;
             return $response;
         }

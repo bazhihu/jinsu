@@ -10,7 +10,7 @@ use backend\models\OrderPatient;
  * @var backend\models\OrderMaster $model
  */
 
-$this->title = '查看订单';
+$this->title = '订单详情';
 //$this->params['breadcrumbs'][] = ['label' => 'Order Masters', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -18,7 +18,6 @@ $this->title = '查看订单';
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-
 
     <?= DetailView::widget([
             'model' => $model,

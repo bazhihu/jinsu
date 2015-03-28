@@ -3,7 +3,6 @@
 namespace backend\models;
 
 use Yii;
-use common\models\Wallet;
 
 /**
  * This is the model class for table "{{%wallet_user}}".
@@ -15,7 +14,7 @@ use common\models\Wallet;
  * @property string $money_consumption
  * @property string $money_extract
  */
-class WalletUser extends Wallet
+class WalletUser extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

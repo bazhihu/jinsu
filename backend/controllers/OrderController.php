@@ -133,7 +133,7 @@ class OrderController extends Controller
      */
     public function actionPay($id){
         $order = $this->findModel($id);
-        $response = $order->pay(WalletUserDetail::PAY_FROM_BACKEND);
+        $response = $order->pay(WalletUserDetail::PAY_FROM_BACKEND, '后台支付');
         echo Json::encode($response);
     }
 

@@ -16,7 +16,6 @@ $('body').on('click', 'button.jsPayOrder', function () {
         cache:false,
         timeout:30000,
         url: url,
-        data: "name=bobo",
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){

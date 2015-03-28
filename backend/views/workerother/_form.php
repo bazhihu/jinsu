@@ -3,19 +3,18 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
+
 
 /**
  * @var yii\web\View $this
  * @var backend\Models\Workerother $model
  * @var yii\widgets\ActiveForm $form
  */
+$act = (int)$_GET['act'];
 ?>
-
 <div class="workerother-form">
-
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);?>
-    <form action="" method="post">
+    <input type="hidden" name="worker_id" value="<?=(int)$_GET['worker_id']?>">
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">工作经验</h3>
@@ -29,27 +28,27 @@ use kartik\datecontrol\DateControl;
                     <td><b>主要职责与成绩</b><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_1"><td>
-                    <td><input name="ext2_1"><td>
-                    <td><input name="ext3_1"><td>
-                    <td><input name="ext4_1"><td>
+                    <td><input name="ext1_1[]" value="<?=$act ?"":$model[0]['ext1']?>"><td>
+                    <td><input name="ext2_1[]" value="<?=$act ?"":$model[0]['ext2']?>"><td>
+                    <td><input name="ext3_1[]" value="<?=$act ?"":$model[0]['ext3']?>"><td>
+                    <td><input name="ext4_1[]" value="<?=$act ?"":$model[0]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_1"><td>
-                    <td><input name="ext2_1"><td>
-                    <td><input name="ext3_1"><td>
-                    <td><input name="ext4_1"><td>
+                    <td><input name="ext1_1[]" value="<?=$act ?"":$model[1]['ext1']?>"><td>
+                    <td><input name="ext2_1[]" value="<?=$act ?"":$model[1]['ext2']?>"><td>
+                    <td><input name="ext3_1[]" value="<?=$act ?"":$model[1]['ext3']?>"><td>
+                    <td><input name="ext4_1[]" value="<?=$act ?"":$model[1]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_1"><td>
-                    <td><input name="ext2_1"><td>
-                    <td><input name="ext3_1"><td>
-                    <td><input name="ext4_1"><td>
+                    <td><input name="ext1_1[]" value="<?=$act ?"":$model[2]['ext1']?>"><td>
+                    <td><input name="ext2_1[]" value="<?=$act ?"":$model[2]['ext2']?>"><td>
+                    <td><input name="ext3_1[]" value="<?=$act ?"":$model[2]['ext3']?>"><td>
+                    <td><input name="ext4_1[]" value="<?=$act ?"":$model[2]['ext4']?>"><td>
                 </tr>
-
             </table>
         </div>
     </div>
+
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">自我介绍</h3>
@@ -58,7 +57,7 @@ use kartik\datecontrol\DateControl;
             <table class="table table-striped">
                 <tr>
                     <td>
-                        <textarea style="width: 100%;height: 200px" name="ext1_2"></textarea>
+                        <textarea style="width: 100%;height: 200px" name="ext1_2[]" value="<?=$act ?"":$model[3]['ext1']?>"></textarea>
                     <td>
                 </tr>
             </table>
@@ -78,22 +77,22 @@ use kartik\datecontrol\DateControl;
                     <td><b>联系电话</b><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_3[]" value=""><td>
-                    <td><input name="ext2_3[]"><td>
-                    <td><input name="ext3_3[]"><td>
-                    <td><input name="ext4_3[]"><td>
+                    <td><input name="ext1_3[]" value="<?=$act ?"":$model[4]['ext1']?>"><td>
+                    <td><input name="ext2_3[]" value="<?=$act ?"":$model[4]['ext2']?>"><td>
+                    <td><input name="ext3_3[]" value="<?=$act ?"":$model[4]['ext3']?>"><td>
+                    <td><input name="ext4_3[]" value="<?=$act ?"":$model[4]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_3[]"><td>
-                    <td><input name="ext2_3[]"><td>
-                    <td><input name="ext3_3[]"><td>
-                    <td><input name="ext4_3[]"><td>
+                    <td><input name="ext1_3[]"  value="<?=$act ?"":$model[5]['ext1']?>"><td>
+                    <td><input name="ext2_3[]"  value="<?=$act ?"":$model[5]['ext2']?>"><td>
+                    <td><input name="ext3_3[]"  value="<?=$act ?"":$model[5]['ext3']?>"><td>
+                    <td><input name="ext4_3[]"  value="<?=$act ?"":$model[5]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_3[]"><td>
-                    <td><input name="ext2_3[]"><td>
-                    <td><input name="ext3_3[]"><td>
-                    <td><input name="ext4_3[]"><td>
+                    <td><input name="ext1_3[]"  value="<?=$act ?"":$model[6]['ext1']?>"><td>
+                    <td><input name="ext2_3[]"  value="<?=$act ?"":$model[6]['ext2']?>"><td>
+                    <td><input name="ext3_3[]"  value="<?=$act ?"":$model[6]['ext3']?>"><td>
+                    <td><input name="ext4_3[]"  value="<?=$act ?"":$model[6]['ext4']?>"><td>
                 </tr>
             </table>
         </div>
@@ -112,15 +111,15 @@ use kartik\datecontrol\DateControl;
                     <td><b>联系方式</b><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_4"><td>
-                    <td><input name="ext2_4"><td>
-                    <td><input name="ext3_4"><td>
-                    <td><input name="ext4_4"><td>
+                    <td><input name="ext1_4[]" value="<?=$act ?"":$model[7]['ext1']?>"><td>
+                    <td><input name="ext2_4[]" value="<?=$act ?"":$model[7]['ext2']?>"><td>
+                    <td><input name="ext3_4[]" value="<?=$act ?"":$model[7]['ext3']?>"><td>
+                    <td><input name="ext4_4[]" value="<?=$act ?"":$model[7]['ext4']?>"><td>
                 </tr>
             </table>
         </div>
     </div>
-    <?php echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存') : Yii::t('app', '保存'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+        <input type="submit" class="btn btn-success" value="保存">
+    <?//php echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存') : Yii::t('app', '保存'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
-    </form>
 </div>

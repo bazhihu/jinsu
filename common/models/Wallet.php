@@ -130,11 +130,11 @@ class Wallet
         $wallet->money_consumption = $wallet->money_consumption+$amount;
         if(!$wallet->save()){
             $response['code'] = '412';
-            $response['msg'] = '支付失败：'.print_r($wallet->getErrors(), true);
+            $response['msg'] = '扣款失败：'.print_r($wallet->getErrors(), true);
             return $response;
         }
 
-        $response['msg'] = '支付成功';
+        $response['msg'] = '扣款成功';
         return $response;
     }
 

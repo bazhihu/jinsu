@@ -97,7 +97,6 @@ class WorkerSearch extends Worker
         $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
 
         $query = Worker::find();
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

@@ -7,16 +7,10 @@ use yii\helpers\Html;
  * @var backend\Models\Workerother $model
  */
 
-$this->title = 'Create Workerother';
+$this->title = '护工其他信息';
 $this->params['breadcrumbs'][] = ['label' => 'Workerothers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="workerother-create">
-    <div class="page-header">
-        <h1><?= Html::encode($this->title) ?></h1>
-    </div>
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+<?= $this->render('_form', [
+    'model' => $model,
+]) ?>

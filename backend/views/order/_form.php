@@ -7,7 +7,7 @@ use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use backend\models\Hospitals;
 use backend\models\Departments;
-use backend\Models\Worker;
+use backend\models\Worker;
 use backend\models\OrderPatient;
 
 /**

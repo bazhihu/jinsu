@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\dictionary;
+namespace backend\models;
 
 use Yii;
 use Yii\helpers\ArrayHelper;

@@ -35,10 +35,9 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const WALLET_TYPE_WITHDRAWALS = 3; //提现
 
     #支付渠道
-    static public $payFrom = [
-        '1'=>'Backstage',
-        '2'=>'App',
-    ];
+    const PAY_FROM_BACKEND = 'backend'; //后台
+    const PAY_FROM_APP = 'app'; //手机应用
+
 
     /**
      * @inheritdoc

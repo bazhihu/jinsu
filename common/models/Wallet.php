@@ -39,8 +39,6 @@ class Wallet
      */
     public function recharge($param)
     {
-        $walletUser = new WalletUser();
-
         $walletUser = WalletUser::findOne(['uid'=>$param['uid']]);
         if(empty($walletUser)){
             $walletUser = new WalletUser();
@@ -57,7 +55,7 @@ class Wallet
         $param['wallet_user_detail']['detail_type']     = WalletUserDetail::WALLET_TYPE_RECHARGE; //'交易类型',
         $param['wallet_user_detail']['detail_money']    = $param['detail_money']; //'交易类型',
         $param['wallet_user_detail']['detail_time']     = date('Y-m-d H:i:s'); //'交易时间',
-        $param['wallet_user_detail']['pay_from']        = WalletUserDetail::$payFrom[$param['pay_from']]; //'支付渠道',
+        $param['wallet_user_detail']['pay_from']        = $param['pay_from']; //'支付渠道',
         $param['wallet_user_detail']['admin_uid']       = Yii::$app->user->identity->getId(); //'管理员ID',
 
         #判断充值正负
@@ -143,7 +141,7 @@ class Wallet
     /**
      * 消费记录
      * @author HZQ
-     * @param $param
+     * @param $params
      * [
      *      'order_id'      int  订单ID
      *      'order_no'   string  订单编号
@@ -155,22 +153,22 @@ class Wallet
      * ]
      * @return array
      */
-    public function addConRecords($param){
+    public function addConRecords($params){
         $response = [
             'code' => '200',
             'msg' => ''
         ];
         $walletUserDetail = new WalletUserDetail(['scenario' => 'consume']);
         $userDetail = [
-            'detail_no'  =>self::_generateWalletNo(),
-            'order_id'      =>$param['order_id'],
-            'order_no'      =>$param['order_no'],
-            'uid'           =>$param['uid'],
-            'detail_money'  =>$param['detail_money'],
-            'detail_type'   =>$param['detail_type'],//默认为1
-            'wallet_money'  =>$param['wallet_money'],//当前账户余额
-            'detail_time'   =>date('Y-m-d H:i:s'),
-            'pay_from'      =>WalletUserDetail::$payFrom[$param['pay_from']],//后台为 1
+            'detail_no'  => self::_generateWalletNo(),
+            'order_id'      => $params['order_id'],
+            'order_no'      => $params['order_no'],
+            'uid'           => $params['uid'],
+            'detail_money'  => $params['detail_money'],
+            'detail_type'   => $params['detail_type'],//默认为1
+            'wallet_money'  => $params['wallet_money'],//当前账户余额
+            'detail_time'   => date('Y-m-d H:i:s'),
+            'pay_from'      => $params['pay_from'],//后台为 1
         ];
         $walletUserDetail->setAttributes($userDetail);
         if(!$walletUserDetail->save())

@@ -50,4 +50,14 @@ class Workerother extends \yii\db\ActiveRecord
             'info_type' => '类型：1工作经历 2：家庭成员 3：自我介绍 4：紧急联系人',
         ];
     }
+
+    /**
+     * 添加护工其他信息
+     * @param $sql
+     */
+    static  public function workerOtherAdd($sql){
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand($sql);
+        $command->query();
+    }
 }

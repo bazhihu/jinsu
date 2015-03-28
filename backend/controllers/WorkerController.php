@@ -2,10 +2,13 @@
 
 namespace backend\controllers;
 
+use backend\models\OrderMaster;
+use backend\models\WorkerSchedule;
 use Yii;
 use backend\Models\Worker;
 use backend\Models\WorkerSearch;
 use backend\Models\City;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -216,22 +219,49 @@ class WorkerController extends Controller
 
     /**
      * 选择护工
-     * @return string
+     * @return bool|string|\yii\web\Response
+     * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      * @author zhangbo
      */
     public function actionSelect(){
-        $orderId = $_GET['order_id'];
-        if(empty($orderId)){
-            throw new NotFoundHttpException('订单编号为空.');
+        //设置已选择的护工
+        if(isset($_POST['order_id']) && isset($_POST['worker_id'])){
+            $orderId = $_POST['order_id'];
+            $workerId = $_POST['worker_id'];
+            $startTime = $_POST['start_time'];
+
+            $worker = Worker::findOne($workerId);
+            if(empty($worker)){
+                throw new NotFoundHttpException('找不到护工');
+            }
+
+            //判断护工是否在工作中
+            if(WorkerSchedule::isWorking($workerId, $startTime)){
+                $response = ['code' => '412', 'msg' => '此护工已被预定，请选择其他护工'];
+                echo Json::encode($response);
+                return false;
+            }
+
+            $response = OrderMaster::setWorker($orderId, $workerId, $worker->name);
+            echo Json::encode($response);
+            return false;
         }
+
+        if(empty($_GET['order_id']) || empty($_GET['start_time'])){
+            throw new BadRequestHttpException('请求参数错误');
+        }
+
+        $orderId = $_GET['order_id'];
+        $startTime = $_GET['start_time'];
         $searchModel = new WorkerSearch;
         $dataProvider = $searchModel->select(Yii::$app->request->getQueryParams());
 
         return $this->render('select', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            'orderId' => $orderId
+            'orderId' => $orderId,
+            'startTime' => $startTime
         ]);
     }
 }

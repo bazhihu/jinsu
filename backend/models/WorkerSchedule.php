@@ -84,4 +84,19 @@ class WorkerSchedule extends \yii\db\ActiveRecord
 
         return ArrayHelper::map($workers, 'id', 'worker_id');
     }
+
+    /**
+     * 判断某护工在给予的日期是否在工作中
+     * @param $workerId
+     * @param $date
+     * @return bool
+     */
+    static public function isWorking($workerId, $date){
+        $workerIds = self::getWorkingByDate($date);
+        if(in_array($workerId, $workerIds)){
+            return true;
+        }
+        return false;
+
+    }
 }

@@ -101,8 +101,7 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                 ],
                 'value'=>function($model){
                     return OrderMaster::$orderStatusLabels[$model->order_status];
-                },
-                'format'=>'raw'
+                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

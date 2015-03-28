@@ -126,7 +126,21 @@ $this->title = '选择护工';
             return false;
         }
         var worker_id = $(this).attr('worker_id');
-        var url = '<?php echo Yii::$app->urlManager->createUrl(['order/view','id'=>$orderId])?>';
-        location.href=url+'&worker_id='+worker_id;
+        var order_id = '<?php echo $orderId;?>';
+        var startTime = '<?php echo $startTime;?>';
+        var url = '<?php echo Yii::$app->urlManager->createUrl('worker/select')?>';
+        var orderViewUrl = '<?php echo  Yii::$app->urlManager->createUrl('order/view')?>';
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data: "order_id="+order_id+"&worker_id="+worker_id+"&start_time="+startTime,
+            success: function(json){
+                alert(json.msg);
+                if(json.code == '200'){
+                    location.href=orderViewUrl;
+                }
+            }
+        });
     });
 </script>

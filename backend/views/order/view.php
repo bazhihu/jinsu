@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
+use kartik\grid\GridView;
 use kartik\datecontrol\DateControl;
+use backend\models\OrderMaster;
 use backend\models\OrderPatient;
 
 /**
@@ -31,6 +33,12 @@ $this->title = '订单详情';
         'attributes' => [
             'order_id',
             'order_no',
+            [
+                'attribute'=>'order_status',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>OrderMaster::$orderStatusLabels[$model->order_status]
+
+            ],
             'uid',
             'mobile',
             'base_price',
@@ -100,7 +108,7 @@ $this->title = '订单详情';
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
             ],
-            'order_status',
+
             'create_order_ip',
             'create_order_sources',
             'create_order_user_agent',

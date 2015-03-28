@@ -45,6 +45,9 @@ class WalletUserSearch extends WalletUser
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         $this->load($params);

@@ -65,6 +65,11 @@ class WalletUserDetail extends \yii\db\ActiveRecord
             [['remark'], 'string', 'max' => 255]
         ];
     }
+
+    /**
+     * 定义场景
+     * @return array
+     */
     public function scenarios()
     {
         return[

@@ -2,13 +2,12 @@
 
 namespace backend\controllers;
 
-use backend\models\User;
-use common\models\Wallet;
 use Yii;
+use backend\models\User;
+use backend\models\WalletWithdrawcash;
 use backend\models\WalletUserDetail;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetailSearch;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -91,23 +90,30 @@ class WalletController extends Controller
     }
 
     /**
+     * 申请提现
      * Creates a new WalletUserDetail model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionApplyCash()
     {
-        $model = new WalletUserDetail();
+        $uid = Yii::$app->request->get('uid');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->detail_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($uid)
+        {
+            $user = WalletUser::findOne(['uid'=>$uid]);
+
+            $model = new WalletWithdrawcash(['scenario' => 'pay_create']);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->detail_id]);
+            } else {
+                return $this->render('applyCash', [
+                    'model' => $model,
+                    'user'  => $user,
+                ]);
+            }
         }
     }
-
     /**
      * 充值
      * @return string|\yii\web\Response
@@ -139,6 +145,8 @@ class WalletController extends Controller
             }
         }
     }
+
+
     /**
      * Updates an existing WalletUserDetail model.
      * If update is successful, the browser will be redirected to the 'view' page.

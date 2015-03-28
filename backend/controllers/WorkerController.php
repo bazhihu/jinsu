@@ -8,6 +8,7 @@ use Yii;
 use backend\Models\Worker;
 use backend\Models\WorkerSearch;
 use backend\Models\City;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -75,7 +76,7 @@ class WorkerController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
             $model->saveData($params['Worker'],'create');
-            return $this->redirect(['view', 'id' => $model->worker_id]);
+            $this->redirect("?r=workerother/create&worker_id=".$model->worker_id."&act=1");
         } else {
             return $this->render('create', [
                 'model' => $model,

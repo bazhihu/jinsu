@@ -64,9 +64,7 @@ class OrderController extends Controller
         if ($model->load_TQ($LoginForm) && $model->login()) {
             $this->redirect(['/order/index']);
         } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            $this->redirect(['/site/login']);
         }
     }
     /**

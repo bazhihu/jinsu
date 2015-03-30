@@ -41,7 +41,6 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                     'class'=>'btn btn-warning jsPayOrder'
                 ]);
             }
-
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'confirm')){
                 echo Html::button('确认', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/confirm', 'id'=>$model->order_id]),
@@ -53,7 +52,6 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                     ])
                 ]);
             }
-
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'begin_service')){
                 echo Html::button('开始服务', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/begin_service', 'id'=>$model->order_id]),
@@ -197,68 +195,20 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                 'type'=>DetailView::INPUT_WIDGET,
                 'value'=>Departments::getName($model->department_id)
             ],
-            [
-                'attribute'=>'start_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
-            [
-                'attribute'=>'end_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
-            [
-                'attribute'=>'reality_end_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
+            'start_time',
+            'end_time',
+            'reality_end_time',
             [
                 'label'=>'订单周期',
                 'attribute'=>'orderCycle',
                 'type'=>DetailView::INPUT_WIDGET,
                 'value'=>OrderMaster::getOrderCycle($model->start_time, $model->reality_end_time).'天'
             ],
-            [
-                'attribute'=>'create_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
-            [
-                'attribute'=>'pay_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
-            [
-                'attribute'=>'confirm_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
-            [
-                'attribute'=>'cancel_time',
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
+            'create_time',
+            'pay_time',
+            'confirm_time',
+            'begin_service_time',
+            'cancel_time',
             'customer_service_id',
             'operator_id',
             'create_order_ip',
@@ -302,8 +252,10 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                 </tr>
                 <?php endforeach;?>
                 <tr class="warning">
-                    <td>总额</td>
-                    <td colspan="4" style="text-align: right"><?php echo $details['totalPrice'];?></td>
+                    <td><h4>总额（元）</h4></td>
+                    <td colspan="4" style="text-align: right">
+                        <h4><span class="label label-danger"><?php echo $details['totalPrice'];?></span></h4>
+                    </td>
                 </tr>
                 </tbody>
             </table>

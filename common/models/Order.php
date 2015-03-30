@@ -61,9 +61,9 @@ class Order extends \yii\db\ActiveRecord{
         ],
         //更新
         'update' => [
-            self::ORDER_STATUS_WAIT_CONFIRM,
-            self::ORDER_STATUS_WAIT_SERVICE,
-            self::ORDER_STATUS_IN_SERVICE
+            //self::ORDER_STATUS_WAIT_CONFIRM,
+            //self::ORDER_STATUS_WAIT_SERVICE,
+            //self::ORDER_STATUS_IN_SERVICE
         ],
         //确认
         'confirm' => [
@@ -337,19 +337,19 @@ class Order extends \yii\db\ActiveRecord{
             $holidayPrice = 0;
             if(in_array($date, $holidaysList)){
                 $holidayPrice = $basePrice * self::HOLIDAY_PRICE_MULTIPLIER - $basePrice;
-                $detailArr['holidayPrice'] = $holidayPrice;
+                $detailArr['holidayPrice'] = number_format($holidayPrice, 2);
             }
             //能否自理（金额/天）
             if($disabledPrice > 0){
-                $detailArr['disabledPrice'] = $disabledPrice;
+                $detailArr['disabledPrice'] = number_format($disabledPrice, 2);
             }
             $dayPrice = $basePrice + $disabledPrice + $holidayPrice;
-            $detailArr['dayPrice'] = $dayPrice;
+            $detailArr['dayPrice'] = number_format($dayPrice, 2);
             $priceDetail[$date] = $detailArr;
             $totalPrice += $dayPrice;
         }
         if($returnDetail){
-            return ['totalPrice' => $totalPrice, 'PriceDetail' => $priceDetail];
+            return ['totalPrice' => number_format($totalPrice, 2), 'PriceDetail' => $priceDetail];
         }
         return $totalPrice;
     }
@@ -504,6 +504,13 @@ class Order extends \yii\db\ActiveRecord{
         if(!self::checkOrderStatusAction($this->order_status, 'begin_service')){
             $response['code'] = '212';
             $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        //判断时间
+        if(strtotime($this->start_time) > strtotime(date('Y-m-d'))){
+            $response['code'] = '212';
+            $response['msg'] = '开始时间未到';
             return $response;
         }
         $this->order_status = self::ORDER_STATUS_IN_SERVICE;

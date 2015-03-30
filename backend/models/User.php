@@ -9,7 +9,7 @@ use yii\validators\EmailValidator;
  * This is the model class for table "{{%user}}".
  *
  * @property integer $id
- * @property string $username
+ * @property string $mobile
  * @property string $nickname
  * @property string $type
  * @property integer $status
@@ -40,10 +40,10 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username'],'required'],
+            [['mobile'],'required'],
             [['status', 'adder', 'editer'], 'integer'],
             [['login_date', 'add_date', 'edit_date'], 'safe'],
-            [['username'], 'string', 'max' => 32],
+            [['mobile'], 'string', 'max' => 32],
             [['nickname'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
             [['gender'], 'string', 'max' => 1],
@@ -58,7 +58,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => '用户名',
+            'mobile' => '手机号',
             'nickname' => '昵称',
             'name' => '姓名',
             'gender' => '性别',

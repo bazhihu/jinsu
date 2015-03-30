@@ -20,7 +20,7 @@ use kartik\datecontrol\DateControl;
     'form' => $form,
     'columns' => 1,
     'attributes' => [
-        'username'=>[
+        'mobile'=>[
             'type'=> Form::INPUT_TEXT,
             'options'=>[
                 'placeholder'=>'请输入用户名（用户名即手机号）...',

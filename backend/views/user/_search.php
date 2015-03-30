@@ -27,7 +27,7 @@ use kartik\widgets\Growl;
 
     <?= $form->field(
         $model,
-        'username',
+        'mobile',
         [
             'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
         ]

@@ -179,14 +179,12 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                 'buttons' => [
                     'user' => function ($url, $model) {
                         return Html::button('用户', [
-                            'title' => '用户',
+                            'title' => '用户','class' => 'jsUser','callid' =>$model->mobile
                         ]);
                     },
                     'office' => function ($url, $model) {
                         return Html::button('办公室', [
-                            'title' => '办公室',
-
-
+                            'title' => '办公室','class'=>'jsBan','callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
                         ]);
                     },
                 ]

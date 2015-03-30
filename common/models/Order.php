@@ -25,6 +25,11 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_SOURCES_WEB = 'web'; //web网站
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
     const ORDER_SOURCES_SERVICE = 'service'; //客服
+
+    //是否续单
+    const IS_CONTINUE_YES = 1;
+    const IS_CONTINUE_NO = 0;
+
     static $orderSources = [
         self::ORDER_SOURCES_WEB => '网站',
         self::ORDER_SOURCES_MOBILE => '移动客户端',
@@ -110,8 +115,8 @@ class Order extends \yii\db\ActiveRecord{
     {
         return [
             [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
-            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id'], 'integer'],
-            [['base_price', 'patient_state_coefficient', 'total_amount'], 'number'],
+            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id', 'is_continue'], 'integer'],
+            [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
             [['worker_name', 'contact_name', 'contact_telephone', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
@@ -143,6 +148,7 @@ class Order extends \yii\db\ActiveRecord{
             'hospital_id' => '医院',
             'department_id' => '科室',
             'total_amount' => '订单总金额',
+            'real_amount' => '实收金额',
             'patient_state' => '患者健康状况',
             'customer_service_id' => '下单客服ID',
             'operator_id' => '订单操作者ID',
@@ -160,6 +166,7 @@ class Order extends \yii\db\ActiveRecord{
             'create_order_ip' => '创建订单的IP',
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',
+            'is_continue' => '是否为续单（1：是；0：否）'
         ];
     }
 
@@ -226,12 +233,15 @@ class Order extends \yii\db\ActiveRecord{
             $orderData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
             //获取护工价格
-            if(isset($orderData['worker_no'])){
-                $worker = Worker::findOne($orderData['worker_no']);
-                $orderData['base_price'] = $worker->price;
-            }elseif(isset($orderData['worker_level'])){
-                $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+            if($orderData['is_continue'] != self::IS_CONTINUE_YES){
+                if(isset($orderData['worker_no'])){
+                    $worker = Worker::findOne($orderData['worker_no']);
+                    $orderData['base_price'] = $worker->price;
+                }elseif(!empty($orderData['worker_level'])){
+                    $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+                }
             }
+
             if(empty($orderData['base_price'])){
                 throw new HttpException(400, '无法获取护工价格');
             }
@@ -541,14 +551,27 @@ class Order extends \yii\db\ActiveRecord{
             return $response;
         }
 
-        $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
-        $this->reality_end_time = date('Y-m-d H:i:s');
-        $this->operator_id = \Yii::$app->user->id;
-        if($this->save()) {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
+            $this->reality_end_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            $this->save();
+
+            //删除护工排期时间
+            WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
+
+            //退款@Todo...
+
             $response['msg'] = '完成订单成功';
-        }else{
-            $response['code'] = '412';
-            $response['msg'] = '完成订单失败';
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '400',
+                'msg' => '完成订单处理失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
         }
 
         //记录操作
@@ -596,14 +619,26 @@ class Order extends \yii\db\ActiveRecord{
             return $response;
         }
 
-        $this->order_status = self::ORDER_STATUS_CANCEL;
-        $this->cancel_time = date('Y-m-d H:i:s');
-        $this->operator_id = \Yii::$app->user->id;
-        if($this->save()) {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            $this->order_status = self::ORDER_STATUS_CANCEL;
+            $this->cancel_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            $this->save();
+
+            //删除护工排期时间
+            WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
+
+            //退款操作@TODO...
+
             $response['msg'] = '取消成功';
-        }else{
-            $response['code'] = '412';
-            $response['msg'] = '取消失败';
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '400',
+                'msg' => '取消失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
         }
 
         //记录操作

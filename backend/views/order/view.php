@@ -74,7 +74,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'continue')){
                 echo Html::button('续单', [
-                    'data-url'=>Yii::$app->urlManager->createUrl(['order/continueOrder', 'id'=>$model->order_id]),
+                    'data-url'=>Yii::$app->urlManager->createUrl(['order/continue', 'id'=>$model->order_id]),
                     'class'=>'btn btn-primary jsContinueOrder'
                 ]);
             }

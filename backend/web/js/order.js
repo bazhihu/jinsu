@@ -149,6 +149,15 @@ $('body').on('click', 'button.jsCancelOrder', function () {
         }
     });
 });
+//续单
+$('body').on('click', 'button.jsContinueOrder', function () {
+    var button = $(this);
+    button.text('处理中...');
+    button.attr('disabled', true);
+    var url = $(this).attr('data-url');
+    location.href=url;
+
+});
 //外呼
 $('body').on('click','button.jsUser',function(){
     var button = $(this);

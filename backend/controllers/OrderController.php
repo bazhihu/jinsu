@@ -129,6 +129,44 @@ class OrderController extends Controller
         }
     }
 
+    public function actionContinue($id){
+        $oldOrder = OrderMaster::findOne($id);
+        $oldOrderPatient = OrderPatient::findOne(['order_id' => $id]);
+
+        $model = new OrderMaster;
+        $model->mobile = $oldOrder->mobile;
+        $model->contact_name = $oldOrder->contact_name;
+        $model->contact_telephone = $oldOrder->contact_telephone;
+        $model->contact_address = $oldOrder->contact_address;
+        $model->hospital_id = $oldOrder->hospital_id;
+        $model->department_id = $oldOrder->department_id;
+        $model->worker_no = $oldOrder->worker_no;
+        $model->worker_name = $oldOrder->worker_name;
+        $model->worker_level = $oldOrder->worker_level;
+        $model->base_price = $oldOrder->base_price;
+        $model->start_time = date('Y-m-d',strtotime($oldOrder->reality_end_time));
+        $model->remark = $oldOrder->remark;
+        $model->is_continue = OrderMaster::IS_CONTINUE_YES;
+
+        $orderPatientModel = new OrderPatient();
+        $orderPatientModel->name = $oldOrderPatient->name;
+        $orderPatientModel->gender = $oldOrderPatient->gender;
+        $orderPatientModel->age = $oldOrderPatient->age;
+        $orderPatientModel->height = $oldOrderPatient->height;
+        $orderPatientModel->weight = $oldOrderPatient->weight;
+        $orderPatientModel->patient_state = $oldOrderPatient->patient_state;
+        $orderPatientModel->in_hospital_reason = $oldOrderPatient->in_hospital_reason;
+        $orderPatientModel->admission_date = date('Y-m-d',strtotime($oldOrderPatient->admission_date));
+        $orderPatientModel->room_no = $oldOrderPatient->room_no;
+        $orderPatientModel->bed_no = $oldOrderPatient->bed_no;
+
+        return $this->render('create', [
+            'model' => $model,
+            'orderPatientModel' => $orderPatientModel
+        ]);
+
+    }
+
     /**
      * Updates an existing OrderMaster model.
      * If update is successful, the browser will be redirected to the 'view' page.

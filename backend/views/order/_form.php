@@ -9,6 +9,7 @@ use backend\models\Hospitals;
 use backend\models\Departments;
 use backend\models\Worker;
 use backend\models\OrderPatient;
+use backend\models\OrderMaster;
 
 /**
  * @var yii\web\View $this
@@ -21,6 +22,7 @@ use backend\models\OrderPatient;
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
+        'action'=>Yii::$app->urlManager->createUrl('order/create')
     ]);
     ?>
 
@@ -132,14 +134,15 @@ use backend\models\OrderPatient;
                 'columns' => 1,
                 'attributes' => [
                     'admission_date'=>[
-                        'type'=> Form::INPUT_WIDGET,
-                        'widgetClass'=>DateControl::classname(),
+                        'type'=>Form::INPUT_WIDGET,
+                        'widgetClass'=>'\kartik\widgets\DatePicker',
                         'options'=>[
-                            'type'=>DateControl::FORMAT_DATE,
-                            'options'=>[
-                                'options'=>['placeholder'=>'请选择住院日期...','style'=>'width:19%']
-                            ],
-                            'displayFormat' => 'yyyy-MM-dd',
+                            'options'=>['placeholder'=>'请选择住院日期...','style'=>'width:19%'],
+                            'pluginOptions'=>[
+                                'todayHighlight' => true,
+                                'autoclose' => true,
+                                'format' => 'yyyy-mm-dd'
+                            ]
                         ]
                     ],
                 ]
@@ -163,7 +166,6 @@ use backend\models\OrderPatient;
 
             echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                 'data' => Hospitals::getList(),
-
                 'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true
@@ -176,6 +178,15 @@ use backend\models\OrderPatient;
                     'allowClear' => true
                 ],
             ]);
+
+            //续单
+            if($model->is_continue == OrderMaster::IS_CONTINUE_YES){
+                echo $form->field($model, 'is_continue', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'worker_no', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'worker_name', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'base_price', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+            }
+
             echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
                 'hideSearch' => true,
                 'data' => Worker::getWorkerLevel(),
@@ -199,25 +210,29 @@ use backend\models\OrderPatient;
                         'label' => '时间段',
                         'attributes'=>[
                             'start_time' => [
-                                'type'=> Form::INPUT_WIDGET,
-                                'widgetClass'=>DateControl::classname(),
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\DatePicker',
+                                'hint'=>'请输入开始时间(yyyy-mm-dd)',
                                 'options'=>[
-                                    'type'=>DateControl::FORMAT_DATE,
-                                    'options'=>[
-                                        'options'=>['placeholder'=>'开始时间...']
-                                    ],
-                                    'displayFormat' => 'yyyy-MM-dd',
+                                    'options'=>['placeholder'=>'开始时间...'],
+                                    'pluginOptions'=>[
+                                        'todayHighlight' => true,
+                                        'autoclose' => true,
+                                        'format' => 'yyyy-mm-dd'
+                                    ]
                                 ]
                             ],
                             'end_time'=>[
                                 'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>DateControl::classname(),
+                                'widgetClass'=>'\kartik\widgets\DatePicker',
+                                'hint'=>'请输入结束时间(yyyy-mm-dd)',
                                 'options'=>[
-                                    'type'=>DateControl::FORMAT_DATE,
-                                    'options'=>[
-                                        'options'=>['placeholder'=>'结束时间...']
-                                    ],
-                                    'displayFormat' => 'yyyy-MM-dd',
+                                    'options'=>['placeholder'=>'结束时间...'],
+                                    'pluginOptions'=>[
+                                        'todayHighlight' => true,
+                                        'autoclose' => true,
+                                        'format' => 'yyyy-mm-dd'
+                                    ]
                                 ]
                             ],
                         ]

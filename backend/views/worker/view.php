@@ -13,6 +13,8 @@ use backend\models\Hospitals;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Workers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_id]);
+
 ?>
 <div class="worker-view">
     <div class="page-header">
@@ -175,5 +177,112 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'enableEditMode'=>false,
     ]) ?>
-    <iframe src="?r=workerother/view&worker_id=<?=$model->worker_id?>" width="100%" height="700"></iframe>
-</div>
+
+<!--其他信息-->
+    <div class="workerother-form">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">工作经验</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td><b>起止时间</b></td>
+                        <td><b>工作单位</b></td>
+                        <td><b>职务</b></td>
+                        <td><b>主要职责与成绩</b></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[0]['ext1']?$modelOther[0]['ext1']:""?></td>
+                        <td><?=$modelOther[0]['ext2']?$modelOther[0]['ext2']:""?></td>
+                        <td><?=$modelOther[0]['ext3']?$modelOther[0]['ext3']:""?></td>
+                        <td><?=$modelOther[0]['ext4']?$modelOther[0]['ext4']:""?></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[1]['ext1']?></td>
+                        <td><?=$modelOther[1]['ext2']?></td>
+                        <td><?=$modelOther[1]['ext3']?></td>
+                        <td><?=$modelOther[1]['ext4']?></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[2]['ext1']?></td>
+                        <td><?=$modelOther[2]['ext2']?></td>
+                        <td><?=$modelOther[2]['ext3']?></td>
+                        <td><?=$modelOther[2]['ext4']?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">自我介绍</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <?=$modelOther[3]['ext1']?>
+                        <td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">主要家庭成员</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td><b>与本人关系</b></td>
+                        <td><b>姓名</b></td>
+                        <td><b>职业</b></td>
+                        <td><b>联系电话</b></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[4]['ext1']?></td>
+                        <td><?=$modelOther[4]['ext2']?></td>
+                        <td><?=$modelOther[4]['ext3']?></td>
+                        <td><?=$modelOther[4]['ext4']?></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[5]['ext1']?></td>
+                        <td><?=$modelOther[5]['ext2']?></td>
+                        <td><?=$modelOther[5]['ext3']?></td>
+                        <td><?=$modelOther[5]['ext4']?></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[6]['ext1']?></td>
+                        <td><?=$modelOther[6]['ext2']?></td>
+                        <td><?=$modelOther[6]['ext3']?></td>
+                        <td><?=$modelOther[6]['ext4']?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">紧急联系人</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td><b>与本人关系</b></td>
+                        <td><b>姓名</b></td>
+                        <td><b>职业</b></td>
+                        <td><b>联系方式</b></td>
+                    </tr>
+                    <tr>
+                        <td><?=$modelOther[7]['ext1']?></td>
+                        <td><?=$modelOther[7]['ext2']?></td>
+                        <td><?=$modelOther[7]['ext3']?></td>
+                        <td><?=$modelOther[7]['ext4']?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>

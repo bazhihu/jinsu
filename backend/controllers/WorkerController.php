@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\OrderMaster;
+use backend\Models\Workerother;
 use backend\models\WorkerSchedule;
 use Yii;
 use backend\Models\Worker;
@@ -56,12 +57,11 @@ class WorkerController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->worker_id]);
+            return $this->redirect(['view', 'id' => $model->worker_id]);
         } else {
-        return $this->render('view', ['model' => $model]);
-}
+            return $this->render('view', ['model' => $model]);
+        }
     }
 
     /**

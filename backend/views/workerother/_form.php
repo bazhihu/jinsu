@@ -11,6 +11,8 @@ use kartik\builder\Form;
  * @var yii\widgets\ActiveForm $form
  */
 $act = (int)$_GET['act'];
+var_dump($model);
+die();
 ?>
 <div class="workerother-form">
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);?>

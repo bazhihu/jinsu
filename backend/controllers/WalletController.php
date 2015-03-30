@@ -3,11 +3,13 @@
 namespace backend\controllers;
 
 use Yii;
+use backend\models\WalletWithdrawcashSearch;
 use backend\models\User;
 use backend\models\WalletWithdrawcash;
 use backend\models\WalletUserDetail;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetailSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,7 +43,7 @@ class WalletController extends Controller
         if(isset($queryParams['WalletUserDetailSearch']['uid']) && $queryParams['WalletUserDetailSearch']['uid']){
             $user = new User();
             $queryParams['WalletUserDetailSearch']['id'] =
-                $user->findOne(['username'=>$queryParams['WalletUserDetailSearch']['uid']])->id;
+                $user->findOne(['mobile'=>$queryParams['WalletUserDetailSearch']['uid']])->id;
         }
         #指向充值
         $queryParams['WalletUserDetailSearch']['detail_type'] = 2;
@@ -65,7 +67,7 @@ class WalletController extends Controller
         if(isset($queryParams['WalletUserDetailSearch']['uid']) && $queryParams['WalletUserDetailSearch']['uid']){
             $user = new User();
             $queryParams['WalletUserDetailSearch']['id'] =
-                $user->findOne(['username'=>$queryParams['WalletUserDetailSearch']['uid']])->id;
+                $user->findOne(['mobile'=>$queryParams['WalletUserDetailSearch']['uid']])->id;
         }
         #指向充值
         $queryParams['WalletUserDetailSearch']['detail_type'] = 1;
@@ -74,18 +76,6 @@ class WalletController extends Controller
         return $this->render('deduction', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single WalletUserDetail model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
 
@@ -103,9 +93,9 @@ class WalletController extends Controller
         {
             $user = WalletUser::findOne(['uid'=>$uid]);
 
-            $model = new WalletWithdrawcash(['scenario' => 'pay_create']);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->detail_id]);
+            $model = new WalletWithdrawcash(['scenario' => 'applyCash']);
+            if ($model->load(Yii::$app->request->post()) && $model->create()) {
+                return $this->redirect(['applyList']);
             } else {
                 return $this->render('applyCash', [
                     'model' => $model,
@@ -113,6 +103,147 @@ class WalletController extends Controller
                 ]);
             }
         }
+    }
+
+    /**
+     * 提现申请页
+     * @return string
+     */
+    public function actionApplyList(){
+
+        $searchModel = new WalletWithdrawcashSearch();
+        $queryParams = Yii::$app->request->queryParams;
+
+        if(isset($queryParams['WalletWithdrawcashSearch']['uid']) && $queryParams['WalletWithdrawcashSearch']['uid']){
+            $user = new User();
+            $queryParams['WalletWithdrawcashSearch']['id'] =
+                $user->findOne(['mobile'=>$queryParams['WalletWithdrawcashSearch']['uid']])->id;
+        }
+        #限定列表区间为申请审核
+        $queryParams['WalletWithdrawcashSearch']['start'] = 0;
+        $queryParams['WalletWithdrawcashSearch']['end'] = 2;
+
+        $dataProvider = $searchModel->search($queryParams);
+
+        return $this->render('applyList', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * 审核申请退款ajax
+     * @return string
+     */
+    public function actionApply(){
+
+        if(Yii::$app->request->isAjax && Yii::$app->user->identity->getId())
+        {
+            $response = [
+                'code'      =>'200',
+                'msg'   =>'',
+            ];
+            $id     = Yii::$app->request->post()['id'];
+            $todo   = Yii::$app->request->post()['todo'];
+            if($id && isset($todo)) {
+                $walletWithdrawcash = new WalletWithdrawcash();
+                $params = [
+                    'id'    =>$id,
+                    'todo'  =>$todo,
+                    'admin_uid'=>Yii::$app->user->identity->getId(),
+                ];
+                if($walletWithdrawcash->check($params)){
+                    $response['msg'] = '操作成功';
+                    return Json::encode($response);
+                }
+            }
+        }
+        $response = [
+            'code  '    =>'400',
+            'msg'   =>'请求失败',
+        ];
+        return Json::encode($response);
+    }
+
+    /**
+     * 提现支付
+     * @return string
+     */
+    public function actionToPay()
+    {
+        $searchModel = new WalletWithdrawcashSearch();
+        $queryParams = Yii::$app->request->queryParams;
+        if(isset($queryParams['WalletWithdrawcashSearch']['uid']) && $queryParams['WalletWithdrawcashSearch']['uid']){
+            $user = new User();
+            $queryParams['WalletWithdrawcashSearch']['id'] =
+                $user->findOne(['mobile'=>$queryParams['WalletWithdrawcashSearch']['uid']])->id;
+        }
+        #限定列表区间为申请审核
+        $queryParams['WalletWithdrawcashSearch']['start'] = 2;
+        $queryParams['WalletWithdrawcashSearch']['end'] = 3;
+
+        $dataProvider = $searchModel->search($queryParams);
+
+        return $this->render('topay', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * 付款操作
+     * @return string
+     */
+    public function actionPay(){
+        if(Yii::$app->request->isAjax && Yii::$app->user->identity->getId())
+        {
+            $response = [
+                'code'      =>'200',
+                'msg'   =>'',
+            ];
+            $id     = Yii::$app->request->post()['id'];
+            if($id) {
+                $walletWithdrawcash = new WalletWithdrawcash();
+                $params = [
+                    'id'    =>$id,
+                    'admin_uid'=>Yii::$app->user->identity->getId(),
+                ];
+                if($walletWithdrawcash->pay($params)){
+                    $response['msg'] = '操作成功';
+                    return Json::encode($response);
+                }
+            }
+        }
+        $response = [
+            'code  '    =>'400',
+            'msg'   =>'请求失败',
+        ];
+        return Json::encode($response);
+    }
+
+    /**
+     * 付款记录
+     * @return string
+     */
+    public function actionPayment(){
+        $searchModel = new WalletWithdrawcashSearch();
+        $queryParams = Yii::$app->request->queryParams;
+
+        if(isset($queryParams['WalletWithdrawcashSearch']['uid']) && $queryParams['WalletWithdrawcashSearch']['uid']){
+            $user = new User();
+            $queryParams['WalletWithdrawcashSearch']['id'] =
+                $user->findOne(['mobile'=>$queryParams['WalletWithdrawcashSearch']['uid']])->id;
+        }
+        #限定列表区间为提现记录
+        $queryParams['WalletWithdrawcashSearch']['start'] = 3;
+        $queryParams['WalletWithdrawcashSearch']['end'] = 3;
+
+        $dataProvider = $searchModel->search($queryParams);
+
+        return $this->render('payment', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
     /**
      * 充值
@@ -144,39 +275,6 @@ class WalletController extends Controller
                 ]);
             }
         }
-    }
-
-
-    /**
-     * Updates an existing WalletUserDetail model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->detail_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing WalletUserDetail model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

@@ -61,6 +61,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             [['username','staff_name','staff_role','hospital','phone'],'required'],
             [['password','pwd'],'required','on'=>['create']],
             [['password','pwd'],'string','min' => 6,'max'=>20],
+
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
 

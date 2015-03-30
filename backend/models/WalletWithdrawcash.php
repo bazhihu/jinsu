@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%wallet_withdrawcash}}".
@@ -55,7 +56,9 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
                 'required',
                 'on'=>['applyCash']
             ],
-
+            [
+                'payee_id_card','match','pattern'=>'/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$/',
+            ],
 
             [['uid', 'status', 'payee_type', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
             [['money'], 'number'],
@@ -100,5 +103,85 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             'admin_uid_audit' => '审核管理员',
             'admin_uid_apply' => '申请管理员',
         ];
+    }
+
+    /**
+     * 申请取款
+     * @return bool
+     */
+    public function create(){
+
+        if($this->payee_time<date('Y-m-d H:i:s')){
+            $this->addError('payee_type','取款时间错误！');
+        }
+        #补充必要操作记录
+        $params = [
+            'status'=>0,
+            'withdrawcash_no'=>self::_generateWalletNo(),
+            'time_apply'=>date('Y-m-d H:i:s'),
+            'admin_uid_apply'=>\Yii::$app->user->getId(),
+        ];
+        $this->setAttributes($params,false);
+        if(!$this->save())
+        {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * 更改申请的状态
+     * @param $params
+     * [
+     *      'id'    =>'withdrawcash_id', //提现记录ID
+     *      'todo'  =>'todo',           //同意|拒绝
+     * ]
+     * @return bool
+     */
+    public function check($params){
+        $update = [
+            'time_audit'=>date('Y-m-d H:i:s'),
+            'admin_uid_audit'=>$params['admin_uid'],
+        ];
+
+        if($params['todo']){
+            $update['status'] =2;
+            if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
+                return true;
+            }
+        }else{
+            $update['status'] =1;
+            if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 付款操作
+     * @param $params
+     * @return bool
+     */
+    public function pay($params){
+        $update = [
+            'time_payment'=>date('Y-m-d H:i:s'),
+            'admin_uid_payment'=>$params['admin_uid'],
+            'status'=>3,
+        ];
+        if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 生成钱包流水号
+     * @return string
+     * @throws \Exception
+     * @author HZQ
+     */
+    private function _generateWalletNo(){
+        $walletIncrement = new WalletIncrement();
+        $walletIncrement->insert();
+        return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
     }
 }

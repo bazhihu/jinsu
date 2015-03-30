@@ -12,11 +12,16 @@ use backend\models\WalletWithdrawcash;
  */
 class WalletWithdrawcashSearch extends WalletWithdrawcash
 {
+    public $fromDate;   //开始时间
+    public $toDate;     //结束时间
+    public $id;         //用户ID
+    public $start;      //起始状态
+    public $end;        //结束状态
     public function rules()
     {
         return [
             [['withdrawcash_id', 'uid', 'status', 'payee_type', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
-            [['withdrawcash_no', 'remark_audit', 'remark_apply', 'payee_time', 'payee_hospital', 'payee_name', 'payee_id_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
+            [['fromDate','toDate','start','end','withdrawcash_no', 'remark_audit', 'remark_apply', 'payee_time', 'payee_hospital', 'payee_name', 'payee_id_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
             [['money'], 'number'],
         ];
     }
@@ -33,6 +38,9 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {
@@ -41,11 +49,10 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
 
         $query->andFilterWhere([
             'withdrawcash_id' => $this->withdrawcash_id,
-            'uid' => $this->uid,
+            'uid' => $this->id,
             'money' => $this->money,
             'status' => $this->status,
             'payee_type' => $this->payee_type,
-            'payee_time' => $this->payee_time,
             'time_apply' => $this->time_apply,
             'time_audit' => $this->time_audit,
             'time_payment' => $this->time_payment,
@@ -54,12 +61,16 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
             'admin_uid_apply' => $this->admin_uid_apply,
         ]);
 
-        $query->andFilterWhere(['like', 'withdrawcash_no', $this->withdrawcash_no])
-            ->andFilterWhere(['like', 'remark_audit', $this->remark_audit])
-            ->andFilterWhere(['like', 'remark_apply', $this->remark_apply])
-            ->andFilterWhere(['like', 'payee_hospital', $this->payee_hospital])
-            ->andFilterWhere(['like', 'payee_name', $this->payee_name])
-            ->andFilterWhere(['like', 'payee_id_card', $this->payee_id_card]);
+        $query//->andFilterWhere(['like', 'withdrawcash_no', $this->withdrawcash_no])
+            //->andFilterWhere(['like', 'remark_audit', $this->remark_audit])
+            //->andFilterWhere(['like', 'remark_apply', $this->remark_apply])
+            ->andFilterWhere(['>=', 'status', $this->start])
+            ->andFilterWhere(['<=', 'status', $this->end])
+            ->andFilterWhere(['>', 'payee_time', $this->fromDate])
+            ->andFilterWhere(['<', 'payee_time', $this->toDate]);
+            //->andFilterWhere(['like', 'payee_hospital', $this->payee_hospital])
+            //->andFilterWhere(['like', 'payee_name', $this->payee_name])
+            //->andFilterWhere(['like', 'payee_id_card', $this->payee_id_card]);
 
         return $dataProvider;
     }

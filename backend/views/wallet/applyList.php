@@ -9,17 +9,17 @@ use kartik\widgets\DateTimePicker;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '扣款明细';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = '提现申请';
+$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
 <div class="wallet-user-detail-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <!-- start -->
-    <div class="wallet-user-detail-search" style="padding:25px">
+    <!--?php  echo $this->render('_search', ['model' => $searchModel]); ?-->
+    <div class="wallet-apply-list" style="padding: 25px">
 
         <?php $form = ActiveForm::begin([
-            'action' => ['deduction-index'],
+            'action' => ['apply-list'],
             'method' => 'get',
 
             'type' => ActiveForm::TYPE_INLINE,
@@ -64,11 +64,11 @@ $this->params['breadcrumbs'][] = $this->title;
         )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
         <?= $form->field(
             $searchModel,
-            'order_no',
+            'status',
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
-        )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:300px'])->label('订单编号') ?>
+        )->dropDownList(['0'=>'提现申请中','1'=>'已同意','2'=>'已拒绝'],['prompt'=>'选择','style'=>'width:300px'])->label('申请状态') ?>
 
         <div class="form-group" style="padding-top: 25px">
             <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end(); ?>
 
     </div>
-    <!-- end -->
+
     <p>
         <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
     </p>
@@ -89,27 +89,53 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute'=>'detail_time',
-                'format' => 'text',
-                'label' => '扣款时间',
+                'header'=>'申请时间',
+                'attribute'=>'time_apply',
             ],
             [
-                'attribute'=>'order_no',
-                'format' => 'text',
-                'label' => '订单编号',
-            ],
-            [
+                'header'=>'用户账号',
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->username;
+                    return \backend\Models\User::findOne(['id'=>$model->uid])->mobile;
                 },
-                'label' => '帐号',
             ],
             [
-                'attribute'=>'detail_money',
-                'label' => '扣款金额',
-
+                'attribute'=>'money',
+                'value'=>function($model){
+                    return $model->money;
+                }
             ],
+            [
+                'header'=>'申请状态',
+                'attribute'=>'status',
+                'value'=>function($model){
+                    if($model->status == '3') {
+                        return '付款成功';
+                    }elseif($model->status == '2'){
+                        return '已同意';
+                    }elseif($model->status == '1'){
+                        return '已拒绝';
+                    }else{
+                        return '待审核';
+                    }
+                },
+            ],
+            ['class' => 'yii\grid\ActionColumn',
+                'header'=>'操作',
+                    'buttons' => [
+                    'update' => function ($url, $model) {
+                        return $model->status?"":Html::button('同意', [
+                            'title' => Yii::t('yii', '同意'),
+                            'class' => 'btn btn-default jsapplypass',
+                        ]).Html::button('拒绝', [
+                            'title' => Yii::t('yii', '拒绝'),
+                            'class' => 'btn btn-danger jsapplynix',
+                        ]);
+                    },
+                ],
+                'template'=>'{update}',
+            ],
+            'remark_audit',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',

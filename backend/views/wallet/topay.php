@@ -9,17 +9,17 @@ use kartik\widgets\DateTimePicker;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '扣款明细';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = '提现支付';
+$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
-<div class="wallet-user-detail-index">
+<div class="wallet-to-pay">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <!-- start -->
-    <div class="wallet-user-detail-search" style="padding:25px">
+    <!--?php  echo $this->render('_search', ['model' => $searchModel]); ?-->
+    <div class="wallet-apply-list" style="padding: 25px">
 
         <?php $form = ActiveForm::begin([
-            'action' => ['deduction-index'],
+            'action' => ['to-pay'],
             'method' => 'get',
 
             'type' => ActiveForm::TYPE_INLINE,
@@ -61,14 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
-        )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
-        <?= $form->field(
-            $searchModel,
-            'order_no',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:300px'])->label('订单编号') ?>
+        )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:400px'])->label('用户账号')?>
 
         <div class="form-group" style="padding-top: 25px">
             <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -78,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end(); ?>
 
     </div>
-    <!-- end -->
+
     <p>
         <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
     </p>
@@ -89,26 +82,50 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute'=>'detail_time',
-                'format' => 'text',
-                'label' => '扣款时间',
+                'header'=>'申请时间',
+                'attribute'=>'time_apply',
             ],
             [
-                'attribute'=>'order_no',
-                'format' => 'text',
-                'label' => '订单编号',
-            ],
-            [
+                'header'=>'用户账号',
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->username;
+                    return \backend\Models\User::findOne(['id'=>$model->uid])->mobile;
                 },
-                'label' => '帐号',
             ],
             [
-                'attribute'=>'detail_money',
-                'label' => '扣款金额',
-
+                'attribute'=>'money',
+                'value'=>function($model){
+                    return $model->money;
+                }
+            ],
+            'remark_apply',
+            [
+                'header'=>'审核时间',
+                'attribute'=>'time_audit',
+            ],
+            'remark_audit',
+            [
+                'header'=>'付款状态',
+                'attribute'=>'status',
+                'value'=>function($model){
+                    if($model->status == '3') {
+                        return '已付款';
+                    }elseif($model->status == '2'){
+                        return '待付款';
+                    }
+                },
+            ],
+            ['class' => 'yii\grid\ActionColumn',
+                'header'=>'操作',
+                    'buttons' => [
+                    'update' => function ($url, $model) {
+                        return $model->status==2?Html::button('付款', [
+                            'title' => Yii::t('yii', '付款'),
+                            'class' => 'btn btn-default jspay',
+                        ]):"";
+                    },
+                ],
+                'template'=>'{update}',
             ],
         ],
         'panel' => [

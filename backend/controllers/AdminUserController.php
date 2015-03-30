@@ -2,8 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\models\City;
-use backend\models\Hospitals;
 use Yii;
 use backend\models\AdminUser;
 use backend\models\AdminUserSearch;
@@ -64,7 +62,7 @@ class AdminUserController extends Controller
      */
     public function actionDelete($id="") {
 
-        if(Yii::$app->request->isAjax)
+        if(Yii::$app->request->isAjax && Yii::$app->user->identity->getId())
         {
             #操作的id
             $id = Yii::$app->request->post()['id'];
@@ -74,12 +72,12 @@ class AdminUserController extends Controller
                 {
                     $value = $this->findModel($id)->status?0:10;
                     if($this->findModel($id)->updateAttributes(['status'=>$value]))
-                        echo Json::encode(['code'=>1,'message'=>'success']);
+                        echo Json::encode(['code'=>200,'message'=>'success']);
                     exit;
                 }
             }
         }
-        echo Json::encode(['code'=>0,'message'=>'操作失败']);
+        echo Json::encode(['code'=>400,'message'=>'操作失败']);
         exit;
     }
     /**

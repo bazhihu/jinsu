@@ -61,7 +61,7 @@ use kartik\widgets\DateTimePicker;
         [
             'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
         ]
-    )->dropDownList(['Backstage'=>'线下支付','weixin'=>'微信支付','zhifubao'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
+    )->dropDownList(['1'=>'线下支付','2'=>'微信支付','3'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
 
     <div class="form-group" style="padding-top: 25px">
         <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>

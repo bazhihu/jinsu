@@ -29,7 +29,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     </div>
 
     <!--订单操作-->
-    <div class="panel panel-warning">
+    <?php if($model->order_status != OrderMaster::ORDER_STATUS_CANCEL):?>
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">订单操作</h3>
         </div>
@@ -38,13 +39,13 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'pay')){
                 echo Html::button('支付',[
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/pay', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsPayOrder'
+                    'class'=>'btn btn-primary jsPayOrder'
                 ]);
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'confirm')){
                 echo Html::button('确认', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/confirm', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsConfirmOrder',
+                    'class'=>'btn btn-primary jsConfirmOrder',
                     'select-worker-url'=>Yii::$app->urlManager->createUrl([
                         'worker/select',
                         'order_id' => $model->order_id,
@@ -55,45 +56,45 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'begin_service')){
                 echo Html::button('开始服务', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/begin_service', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsBeginServiceOrder'
+                    'class'=>'btn btn-primary jsBeginServiceOrder'
                 ]);
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'finish')){
                 echo Html::button('完成', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/finish', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsFinishOrder'
+                    'class'=>'btn btn-primary jsFinishOrder'
                 ]);
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'update')){
                 echo Html::button('修改',[
                         'data-url'=>Yii::$app->urlManager->createUrl(['order/update', 'id'=>$model->order_id]),
-                        'class'=>'btn btn-warning jsUpdateOrder'
+                        'class'=>'btn btn-primary jsUpdateOrder'
                     ]
                 );
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'continue')){
                 echo Html::button('续单', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/continueOrder', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsContinueOrder'
+                    'class'=>'btn btn-primary jsContinueOrder'
                 ]);
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'cancel')){
                 echo Html::button('取消', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/cancel', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsCancelOrder'
+                    'class'=>'btn btn-primary jsCancelOrder'
                 ]);
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'evaluate')){
                 echo Html::button('评价', [
                     'data-url'=>Yii::$app->urlManager->createUrl(['order/evaluate', 'id'=>$model->order_id]),
-                    'class'=>'btn btn-warning jsEvaluateOrder'
+                    'class'=>'btn btn-primary jsEvaluateOrder'
                 ]);
             }
 
             ?>
         </div>
     </div>
-
+    <?php endif;?>
 
     <?php
     echo DetailView::widget([

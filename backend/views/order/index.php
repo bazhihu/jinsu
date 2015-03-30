@@ -17,6 +17,9 @@ $this->title = '订单管理';
 $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_END]);
 
 ?>
+<style>
+    td .btn{margin-left: 3px}
+</style>
 <div class="order-master-index">
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
@@ -62,7 +65,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 'format'=>'raw',
                 'value'=>function ($model) {
                     return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id'=>$model->uid]));
-
                 },
                 'options' => [
                     'style' => 'width:110px',
@@ -111,7 +113,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                     'pay' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'pay')){
                             return Html::button('支付',[
-                                    'data-url'=>$url, 'class'=>'jsPayOrder'
+                                    'data-url'=>$url, 'class'=>'btn btn-sm btn-primary jsPayOrder'
                             ]);
                         }
                     },
@@ -119,7 +121,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'confirm')){
                             return Html::button('确认', [
                                 'data-url'=>$url,
-                                'class'=>'jsConfirmOrder',
+                                'class'=>'btn btn-sm btn-primary jsConfirmOrder',
                                 'select-worker-url'=>Yii::$app->urlManager->createUrl([
                                     'worker/select',
                                     'order_id' => $model->order_id,
@@ -131,42 +133,42 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                     'begin_service' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'begin_service')){
                             return Html::button('开始服务', [
-                                'data-url'=>$url, 'class'=>'jsBeginServiceOrder'
+                                'data-url'=>$url, 'class'=>'btn btn-sm btn-primary jsBeginServiceOrder'
                             ]);
                         }
                     },
                     'finish' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'finish')){
                             return Html::button('完成', [
-                                'data-url'=>$url, 'class'=>'jsFinishOrder'
+                                'data-url'=>$url, 'class'=>'btn btn-sm btn-primary jsFinishOrder'
                             ]);
                         }
                     },
                     'update' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'update')){
                             return Html::button('修改',[
-                                    'data-url'=>$url,'class'=>'jsUpdateOrder']
+                                    'data-url'=>$url,'class'=>'btn btn-sm btn-primary jsUpdateOrder']
                             );
                         }
                     },
                     'continue' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'continue')){
                             return Html::button('续单', [
-                                'data-url'=>$url, 'class'=>'jsContinueOrder'
+                                'data-url'=>$url, 'class'=>'btn btn-sm btn-primary jsContinueOrder'
                             ]);
                         }
                     },
                     'cancel' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'cancel')){
                             return Html::button('取消', [
-                                'data-url'=>$url, 'class'=>'jsCancelOrder'
+                                'data-url'=>$url, 'class'=>'btn btn-sm btn-primary jsCancelOrder'
                             ]);
                         }
                     },
                     'evaluate' => function ($url, $model) {
                         if(OrderMaster::checkOrderStatusAction($model->order_status, 'evaluate')){
                             return Html::button('评价', [
-                                'data-url'=>$url, 'class'=>'jsEvaluateOrder'
+                                'data-url'=>$url, 'class'=>'btn btn-sm btn-primary jsEvaluateOrder'
                             ]);
                         }
                     },
@@ -179,12 +181,12 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 'buttons' => [
                     'user' => function ($url, $model) {
                         return Html::button('用户', [
-                            'title' => '用户','class' => 'jsUser','callid' =>$model->mobile
+                            'title' => '用户','class' => 'btn btn-sm btn-primary jsUser','callid' =>$model->mobile
                         ]);
                     },
                     'office' => function ($url, $model) {
                         return Html::button('办公室', [
-                            'title' => '办公室','class'=>'jsBan','callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
+                            'title' => '办公室','class'=>'btn btn-sm btn-primary jsBan','callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
                         ]);
                     },
                 ]

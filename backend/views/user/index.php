@@ -49,15 +49,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],*/
             'login_ip',
-            'login_date',
-            'add_date',
+            'login_time',
+            'register_time',
             [
                 'attribute'=>'adder',
                 'value'=>function($model) {
                     return ($model->adder) ? \backend\models\AdminUser::findOne(['admin_uid', $model->adder])->username : null;
                 }
             ],
-            'edit_date',
+            'edit_time',
             [
                 'attribute'=>'editer',
                 'value'=>function($model) {

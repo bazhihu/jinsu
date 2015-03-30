@@ -13,8 +13,7 @@ use backend\models\OrderPatient;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
 use backend\models\WalletUserDetail;
-
-use amnah\yii2\user\models\User;
+use backend\models\User;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.
@@ -84,10 +83,8 @@ class OrderController extends Controller
                 $params['OrderMaster']['uid'] = $user->id;
             }else{
                 //注册手机号
-                $userModel->setScenario('register'); //设置为注册场景
                 $userModel->mobile = $params['OrderMaster']['mobile'];
-                $userModel->username = $params['OrderMaster']['contact_name'];
-
+                $userModel->name = $params['OrderMaster']['contact_name'];
                 if ($user = $userModel->SystemSignUp()) {
                     $params['OrderMaster']['uid'] = $user->id;
                 }

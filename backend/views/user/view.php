@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
+use backend\models\User;
 
 /**
  * @var yii\web\View $this
@@ -35,11 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'type',
             [
                 'attribute'=>'status',
-                'value'=> ($model->status==1) ? '正常':'禁用',
+                'value'=> ($model->status==User::STATUS_NORMAL) ? '正常':'禁用',
             ],
             'login_ip',
             [
-                'attribute'=>'login_date',
+                'attribute'=>'login_time',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
@@ -48,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'attribute'=>'add_date',
+                'attribute'=>'register_time',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [
@@ -61,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>($model->adder)? \backend\models\AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
             [
-                'attribute'=>'edit_date',
+                'attribute'=>'edit_time',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [

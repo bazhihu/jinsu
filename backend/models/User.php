@@ -27,6 +27,26 @@ use yii\validators\EmailValidator;
 class User extends \yii\db\ActiveRecord
 {
     /**
+     * @var string 系统注册类型
+     */
+    const REGISTER_TYPE_SYSTEM = 'system';
+
+    /**
+     * @var string 用户注册类型
+     */
+    const REGISTER_TYPE_USER = 'user';
+
+    /**
+     * @var int 禁用
+     */
+    const STATUS_DISABLED = 0;
+
+    /**
+     * @var int 正常
+     */
+    const STATUS_NORMAL = 1;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -40,14 +60,23 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mobile'],'required'],
+            [['mobile'], 'filter', 'filter' => 'trim'],
+            [['mobile'], 'required'],
+            [['mobile'], 'unique', 'message' => '手机号已注册.'],
+            [['mobile'], 'string', 'min' => 11, 'max' => 11],
+
             [['status', 'adder', 'editer'], 'integer'],
-            [['login_date', 'add_date', 'edit_date'], 'safe'],
+            [['login_time', 'register_time', 'edit_time'], 'safe'],
             [['mobile'], 'string', 'max' => 32],
             [['nickname'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
+
+            //注册类型
+            [['type'], 'required'],
+            [['type'], 'in', 'range' => [self::REGISTER_TYPE_SYSTEM,self::REGISTER_TYPE_USER]],
+
             [['gender'], 'string', 'max' => 1],
-            [['name','login_ip'], 'string', 'max' => 50]
+            [['name','login_ip','register_ip'], 'string', 'max' => 50]
         ];
     }
 
@@ -65,11 +94,12 @@ class User extends \yii\db\ActiveRecord
             'type' => '注册类型',
             'status' => '账号状态',
            // 'finance_status' => '财务状态',
+            'register_ip' => '注册IP',
             'login_ip' => '登陆IP',
-            'login_date' => '登陆时间',
-            'add_date' => '注册时间',
+            'login_time' => '登陆时间',
+            'register_time' => '注册时间',
             'adder' => '注册人',
-            'edit_date' => '编辑时间',
+            'edit_time' => '编辑时间',
             'editer' => '编辑人',
         ];
     }
@@ -96,5 +126,33 @@ class User extends \yii\db\ActiveRecord
     public function getUserKeys()
     {
         return $this->hasMany(UserKey::className(), ['user_id' => 'id']);
+    }
+
+
+    public static function findByMobile($mobile)
+    {
+        return static::findOne(['mobile' => $mobile, 'status' => self::STATUS_NORMAL]);
+    }
+
+    /**
+     * 系统自动注册
+     * @return $this
+     * @throws ErrorException
+     */
+    public function SystemSignUp(){
+        $attributes = [
+            'type'      => self::REGISTER_TYPE_SYSTEM,
+            "register_ip" => Yii::$app->request->userIP,
+            "status"    => static::STATUS_NORMAL,
+        ];
+
+        $this->setAttributes($attributes, false);
+
+        //print_r($this->attributes);exit;
+        if(!$this->save()){
+            throw new ErrorException(print_r($this->getErrors(), true));
+        }
+        return $this;
+
     }
 }

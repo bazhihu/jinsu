@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <!-- 搜索START -->
-    <div class="wallet-user-detail-search" style="padding: 50px">
+    <div class="wallet-user-detail-search" style="padding: 25px">
 
         <?php $form = ActiveForm::begin([
             'action' => ['pay-index'],

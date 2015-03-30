@@ -139,3 +139,15 @@ $('body').on('click', 'button.jsCancelOrder', function () {
         }
     });
 });
+//外呼
+$('body').on('click','button.jsUser',function(){
+    var button = $(this);
+    var callid = $(this).attr('callid');
+    try{window.navigate("app:1234567@"+callid+""); } catch(e){};
+});
+$('body').on('click','button.jsBan',function(){
+    var button = $(this);
+    var callid = $(this).attr('callid');
+    try{window.navigate("app:1234567@"+callid+""); } catch(e){};
+});
+

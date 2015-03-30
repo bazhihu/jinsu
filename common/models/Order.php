@@ -93,6 +93,8 @@ class Order extends \yii\db\ActiveRecord{
         ]
     ];
 
+    public $orderCycle; //订单周期
+
     /**
      * @inheritdoc
      */
@@ -234,6 +236,10 @@ class Order extends \yii\db\ActiveRecord{
                 throw new HttpException(400, '无法获取护工价格');
             }
 
+            //能否自理价格系数
+            $patientState = $params['OrderPatient']['patient_state'];
+            $orderData['patient_state_coefficient'] = OrderPatient::$patientStatePrice[$patientState];
+
             $orderData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
             $this->attributes = $orderData;
             if (!$this->save()) {
@@ -296,7 +302,7 @@ class Order extends \yii\db\ActiveRecord{
      */
     public function calculateTotalPrice($returnDetail = false){
 
-        if(strtotime($this->start_time) >= strtotime($this->end_time)){
+        if(strtotime($this->start_time) >= strtotime($this->reality_end_time)){
             throw new ErrorException('开始时间不能大于结束时间');
         }
 
@@ -309,7 +315,7 @@ class Order extends \yii\db\ActiveRecord{
         $holidaysList = ArrayHelper::map(Holidays::find()->all(), 'id', 'date');
 
         //获取日期列表
-        $dates = $this->getDateList($this->start_time, $this->end_time);
+        $dates = $this->getDateList($this->start_time, $this->reality_end_time);
         //print_r($dates);exit;
 
         //价格明细
@@ -320,14 +326,26 @@ class Order extends \yii\db\ActiveRecord{
 
         $dayPrice = 0;
         foreach($dates as $date){
+            $detailArr = [
+                'dayPrice' => 0,
+                'basePrice' => $basePrice,
+                'disabledPrice' => 0,
+                'holidayPrice' => 0
+            ];
+
             //节假日（金额/天）
             $holidayPrice = 0;
             if(in_array($date, $holidaysList)){
                 $holidayPrice = $basePrice * self::HOLIDAY_PRICE_MULTIPLIER - $basePrice;
+                $detailArr['holidayPrice'] = $holidayPrice;
             }
-
+            //能否自理（金额/天）
+            if($disabledPrice > 0){
+                $detailArr['disabledPrice'] = $disabledPrice;
+            }
             $dayPrice = $basePrice + $disabledPrice + $holidayPrice;
-            $priceDetail[$date] = $dayPrice;
+            $detailArr['dayPrice'] = $dayPrice;
+            $priceDetail[$date] = $detailArr;
             $totalPrice += $dayPrice;
         }
         if($returnDetail){
@@ -345,7 +363,7 @@ class Order extends \yii\db\ActiveRecord{
      */
     public function getDateList($startDate, $endDate){
         $dateList = [];
-        $number = 1;
+        $number = 0;
         $startDay = date("d", strtotime($startDate));
         $startMonth = date("m", strtotime($startDate));
         $startYear = date("Y", strtotime($startDate));
@@ -360,6 +378,18 @@ class Order extends \yii\db\ActiveRecord{
             }
         }
         return $dateList;
+    }
+
+    /**
+     * 获取订单周期（天）
+     * @param $startTime
+     * @param $endTime
+     * @return int
+     * @author zhangbo
+     */
+    static public function getOrderCycle($startTime, $endTime){
+        $days = (strtotime($endTime) - strtotime($startTime))/86400;
+        return intval($days);
     }
 
     /**
@@ -382,7 +412,6 @@ class Order extends \yii\db\ActiveRecord{
             if($response['code'] == '200'){
                 //扣款成功，修改订单信息
                 $this->total_amount = $totalPrice;
-                $this->patient_state_coefficient = OrderPatient::$patientStatePrice[$this->patient_state];
                 $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
                 $this->pay_time = date('Y-m-d H:i:s');
                 $this->operator_id = \Yii::$app->user->id;

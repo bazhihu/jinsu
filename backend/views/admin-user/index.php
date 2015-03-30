@@ -11,17 +11,13 @@ use yii\widgets\Pjax;
  */
 
 $this->title = '帐号列表';
-$this->params['breadcrumbs'][] = $this->title;
+$this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
 ?>
 <div class="admin-user-index">
     <div class="page-header">
             <h1><?= Html::encode($this->title) ?></h1>
     </div>
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php  //echo Html::a('新增帐号', ['create'], ['class' => 'btn btn-success'])  ?>
-    </p>
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
@@ -69,78 +65,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'delete' => function ($url, $model) {
                         return $model->status?Html::a(
-                            '<span class="glyphicon col-md-offset-4 glyphicon-remove"></span>',
-                            $url,
+                            '<span class="glyphicon col-md-offset-4 glyphicon-remove "></span>',
+                            "#",
                             [
                                 'title' => Yii::t('yii', '关闭'),
-                                'onclick'=>"
-                                    var num = $(this);
-                                    var key = num.parent().parent().attr('data-key');
-                                    alert('确认关闭？');
-                                    $.ajax({
-                                        type    :'POST',
-                                        cache   : false,
-                                        url     : '?r=admin-user/delete',
-                                        data    : {'id':key},
-                                        dataType : 'json' ,
-                                        success : function(response) {
-                                            if(response.code=='1'){
-                                                if(num.find('span').hasClass('glyphicon-remove'))
-                                                {
-                                                    num.parent().parent().find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                                                    num.find('.glyphicon-remove').removeClass();
-                                                    num.find('span').addClass('glyphicon col-md-offset-4 glyphicon-ok text-success');
-                                                }
-                                                else
-                                                {
-                                                    num.parent().parent().find('.glyphicon-remove').removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                                                    num.find('span').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                                                }
-                                            }else{
-                                                alert(response.message);
-                                            }
-                                        }
-                                    });
-                                    return false;
-                                ",
-                                //'data-pjax'=>'w0',
                             ]):
                             Html::a(
                             '<span class="glyphicon col-md-offset-4 glyphicon-ok"></span>',
-                            $url,
+                            '#',
                             [
                                 'title' => Yii::t('yii', '恢复'),
-                                'onclick'=>"
-                                    var num = $(this);
-                                    var key = num.parent().parent().attr('data-key');
-                                    alert('确认恢复？');
-                                    $.ajax({
-                                        type    :'POST',
-                                        cache   : false,
-                                        url     : '?r=admin-user/delete',
-                                        data    : {'id':key},
-                                        dataType : 'json' ,
-                                        success : function(response) {
-                                            if(response.code == '1'){
-                                                if(num.find('span').hasClass('glyphicon-ok'))
-                                                {alert(22222)
-                                                    num.parent().parent().find('.glyphicon-remove').removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                                                    num.find('.glyphicon-ok').removeClass();
-                                                    num.find('span').addClass('glyphicon col-md-offset-4 glyphicon-remove');
-                                                }
-                                                else
-                                                {
-                                                    num.parent().parent().find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                                                    num.find('span').removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                                                }
-                                            }else{
-                                                alert(response.message);
-                                            }
-                                        }
-                                    });
-                                    return false;
-                                ",
-                                //'data-pjax'=>'w0',
                             ]
                         );
                     },

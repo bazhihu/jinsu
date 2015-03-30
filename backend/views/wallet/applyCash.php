@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
+use kartik\widgets\Select2;
 
 
 /* @var $this yii\web\View */
@@ -20,6 +21,9 @@ $this->title = '申请提现确认-用户信息核对';
         <div class="panel-body">
             <label><big>用户信息</big></label><br/>
 
+            <div style='padding: 33px;'><strong><span>用户账号:</span>&nbsp;&nbsp;&nbsp;<?=$user->uid?\backend\Models\User::findOne(['id'=>$user->uid])->username:'无' ?></strong></div>
+            <div style='padding: 33px;'><strong><span>账户余额:</span>&nbsp;&nbsp;&nbsp;<?=$user->money?$user->money:0?>元</strong></div>
+
 
         </div>
         <div class="panel-body">
@@ -32,12 +36,26 @@ $this->title = '申请提现确认-用户信息核对';
                 'form' => $form,
                 'columns' => 1,
                 'attributes' => [
+                    'uid'=>[
+                        'type'=> Form::INPUT_HIDDEN,
+                        'options'=>[
+                            'value'=>$user->uid,
+                        ],
+                        'label'=>false,
+                    ],
                     'money'=>[
                         'type'=> Form::INPUT_TEXT,
                         'options'=>[
-                            'placeholder'=>'输入金额...',
-                            'maxlength'=>10
+                            'value'=>$user->money?$user->money:0,
+                            'disabled'=>true,
                         ]
+                    ],
+                    'money'=>[
+                        'type'=> Form::INPUT_HIDDEN,
+                        'options'=>[
+                            'value'=>$user->money?$user->money:0,
+                        ],
+                        'label'=>false,
                     ],
                     'payee_type'=>[
                         'type'=> Form::INPUT_DROPDOWN_LIST,
@@ -50,13 +68,6 @@ $this->title = '申请提现确认-用户信息核对';
                         'widgetClass'=>DateControl::classname(),
                         'options'=>[
                             'type'=>DateControl::FORMAT_DATETIME
-                        ]
-                    ],
-                    'payee_hospital'=>[
-                        'type'=> Form::INPUT_TEXT,
-                        'options'=>[
-                            'placeholder'=>'输入将要提现的医院...',
-                            'maxlength'=>255
                         ]
                     ],
                     'payee_name'=>[
@@ -75,7 +86,17 @@ $this->title = '申请提现确认-用户信息核对';
                     ],
                 ]
             ]);
-            echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+            echo $form->field($model, 'payee_hospital')->widget(Select2::classname(), [
+                'data' => \backend\models\Hospitals::getList(),
+                'options' => [
+                    'placeholder' => '请选择医院',
+                    'style'=>'width:100%'
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])->label('医院');
+            echo Html::submitButton(Yii::t('app', '完成'), ['class' => 'btn btn-success btn-lg col-sm-offset-6']);
             ActiveForm::end(); ?>
         </div>
     </div>

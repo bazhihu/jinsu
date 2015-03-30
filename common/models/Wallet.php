@@ -30,12 +30,16 @@ class Wallet
 {
     /**
      * 用户充值
-     * @param int uid 用户id
-     * @param string pay_from 支付渠道 1 backstage(后台)|2 other
-     * @param int top 充值类型 0为正充值|1为负充值
-     * @param string detail_money 充值金额
+     * @param $param
+     * [
+     *      'uid'           =>'', //用户ID
+     *      'pay_from'      =>'', //支付渠道 1 backstage(后台)|2 other
+     *      'top'           =>'', //充值类型 0为正充值|1为负充值
+     *      'detail_money'  =>'', //充值金额
+     * ]
      * @return bool
      * @throws HttpException
+     * @throws \yii\db\Exception
      */
     public function recharge($param)
     {

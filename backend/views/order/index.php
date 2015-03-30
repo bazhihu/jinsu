@@ -14,7 +14,7 @@ use backend\models\OrderPatient;
 
 $this->title = '订单管理';
 //$this->params['breadcrumbs'][] = $this->title;
-$this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
+$this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_END]);
 
 ?>
 <div class="order-master-index">

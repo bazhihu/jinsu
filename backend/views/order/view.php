@@ -17,7 +17,7 @@ $this->title = '订单详情';
 //$this->params['breadcrumbs'][] = ['label' => 'Order Masters', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
+$this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_END]);
 ?>
 <style>
     .btn{margin:5px}

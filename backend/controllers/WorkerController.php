@@ -76,7 +76,7 @@ class WorkerController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
             $model->saveData($params['Worker'],'create');
-            $this->redirect("?r=workerother/create&worker_id=".$model->worker_id."&act=1");
+            $this->redirect("?r=workerother/update&worker_id=".$model->worker_id);
         } else {
             return $this->render('create', [
                 'model' => $model,

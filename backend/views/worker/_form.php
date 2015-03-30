@@ -208,7 +208,7 @@ use kartik\widgets\DepDrop;
 
     echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存，下一步') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     if(!$model->isNewRecord){
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-primary' onclick=location.href='?r=workerother/update&worker_id=".$model->worker_id."&act=0' value='编辑其他信息'>";
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-primary' onclick=location.href='?r=workerother/update&worker_id=".$model->worker_id."' value='编辑其他信息'>";
     }
 
     ActiveForm::end(); ?>

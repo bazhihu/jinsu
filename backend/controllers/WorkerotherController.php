@@ -64,7 +64,7 @@ class WorkerotherController extends Controller
      */
     public function actionUpdate($worker_id,$act='')
     {
-        $model = $this->findModel($worker_id);
+        $model =Workerother::findAll(['worker_id'=>$worker_id]);
         if (Yii::$app->request->post()) {
             $params = Yii::$app->request->post();
             //先全部删除，再重新入库

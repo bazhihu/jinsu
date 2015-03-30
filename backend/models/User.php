@@ -143,6 +143,7 @@ class User extends \yii\db\ActiveRecord
         $attributes = [
             'type'      => self::REGISTER_TYPE_SYSTEM,
             "register_ip" => Yii::$app->request->userIP,
+            'register_time' => date('Y-m-d H:i:s'),
             "status"    => static::STATUS_NORMAL,
         ];
 

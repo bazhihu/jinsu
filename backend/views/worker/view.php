@@ -20,7 +20,9 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-
+<?
+echo Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg",['width'=>'213']);
+?>
 
     <?= DetailView::widget([
             'model' => $model,

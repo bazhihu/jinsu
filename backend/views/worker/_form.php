@@ -15,12 +15,35 @@ use kartik\widgets\DepDrop;
  * @var backend\Models\Worker $model
  * @var yii\widgets\ActiveForm $form
  */
+
+
+
 ?>
 
 <div class="worker-form">
+    <?php $form = ActiveForm::begin([
+            'type'=>ActiveForm::TYPE_HORIZONTAL,
+            'enableAjaxValidation' => false,
+            'options' => ['enctype' => 'multipart/form-data']
+        ]
+    );
 
-    <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]); echo Form::widget([
+    //echo $form->field($model, 'pic')->fileInput() ;
+    echo $form->field($model, 'pic')->widget(\kartik\file\FileInput::classname(), [
+        'options' => ['style'=>'width:50%'],
+        'pluginOptions' => [
+            'showUpload' => false,
+            'browseLabel' => '浏览上传',
+            'showRemove' => false,
+            'initialPreview'=>[
+                Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg", ['class'=>'file-preview-image', 'alt'=>'护工照片', 'title'=>'护工照片']),
+        ],
+            'initialCaption'=>"护工照片",
+            'overwriteInitial'=>false
+        ]
+    ]);
 
+    echo Form::widget([
     'model' => $model,
     'form' => $form,
     'columns' => 1,

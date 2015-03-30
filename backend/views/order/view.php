@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use kartik\grid\GridView;
 use kartik\datecontrol\DateControl;
 use backend\models\OrderMaster;
 use backend\models\OrderPatient;
-use backend\models\Worker;
+use backend\models\Hospitals;
+use backend\models\Departments;
 
 /**
  * @var yii\web\View $this
@@ -95,46 +95,108 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
             ?>
         </div>
     </div>
-    <?= DetailView::widget([
-            'model' => $model,
-            'condensed'=>false,
-            'hover'=>true,
-            'mode'=>DetailView::MODE_VIEW,
-            'panel'=>[
-            'heading'=>$this->title,
+
+
+    <?php
+    echo DetailView::widget([
+        'model' => $model,
+        'condensed'=>false,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
+            'heading'=>'用户信息',
             'type'=>DetailView::TYPE_INFO,
         ],
         'attributes' => [
-            'order_id',
-            'order_no',
-            [
-                'attribute'=>'order_status',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>OrderMaster::$orderStatusLabels[$model->order_status]
-
-            ],
             'uid',
             'mobile',
-            'worker_no',
-            'worker_name',
-            [
-                'attribute'=>'worker_level',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>Worker::$workerLevelLabel[$model->worker_level]
-            ],
-            'base_price',
-            'patient_state_coefficient',
-            [
-                'attribute'=>'total_amount',
-            ],
+            'contact_name',
+            'contact_telephone',
+            'contact_address'
+        ],
+        'enableEditMode'=>false,
+    ]);
+
+    echo DetailView::widget([
+        'model' => $orderPatientModel,
+        'condensed'=>false,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
+            'heading'=>'患者信息',
+            'type'=>DetailView::TYPE_INFO,
+        ],
+        'attributes' => [
+            'name',
+            'gender',
+            'age',
+            'height',
+            'weight',
             [
                 'attribute'=>'patient_state',
                 'type'=>DetailView::INPUT_WIDGET,
                 'value'=>OrderPatient::$patientStateLabels[$model->patient_state]
             ],
+            'in_hospital_reason',
+            'admission_date',
+            'room_no',
+            'bed_no'
+        ],
+        'enableEditMode'=>false,
+    ]);
 
-            'customer_service_id',
-            'operator_id',
+    echo DetailView::widget([
+        'model' => $model,
+        'condensed'=>false,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
+            'heading'=>'护工信息',
+            'type'=>DetailView::TYPE_INFO,
+        ],
+        'attributes' => [
+            'worker_no',
+            'worker_name',
+            'base_price',
+            [
+                'attribute'=>'worker_level',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>\backend\Models\Worker::$workerLevelLabel[$model->worker_level]
+            ]
+        ],
+        'enableEditMode'=>false,
+    ]);
+
+    echo DetailView::widget([
+        'model' => $model,
+        'condensed'=>false,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
+            'heading'=>'订单信息',
+            'type'=>DetailView::TYPE_INFO,
+        ],
+        'attributes' => [
+            'order_no',
+            [
+                'attribute'=>'order_status',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>OrderMaster::$orderStatusLabels[$model->order_status]
+            ],
+            'patient_state_coefficient',
+            [
+                'attribute'=>'total_amount'
+            ],
+            [
+                'attribute'=>'hospital_id',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>Hospitals::getName($model->hospital_id)
+            ],
+            [
+                'attribute'=>'department_id',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>Departments::getName($model->department_id)
+            ],
             [
                 'attribute'=>'start_time',
                 'type'=>DetailView::INPUT_WIDGET,
@@ -158,6 +220,12 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                     'class'=>DateControl::classname(),
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
+            ],
+            [
+                'label'=>'订单周期',
+                'attribute'=>'orderCycle',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>OrderMaster::getOrderCycle($model->start_time, $model->reality_end_time).'天'
             ],
             [
                 'attribute'=>'create_time',
@@ -191,6 +259,8 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
                     'type'=>DateControl::FORMAT_DATETIME
                 ]
             ],
+            'customer_service_id',
+            'operator_id',
             'create_order_ip',
             [
                 'attribute'=>'create_order_sources',
@@ -199,14 +269,45 @@ $this->registerJsFile('js/order.js', ['position'=>yii\web\View::POS_END]);
             ],
             'create_order_user_agent',
         ],
-//        'deleteOptions'=>[
-//            'url'=>['delete', 'id' => $model->order_id],
-//            'data'=>[
-//                'confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'),
-//                'method'=>'post',
-//            ],
-//        ],
         'enableEditMode'=>false,
-    ]) ?>
+    ]);
+ ?>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">订单费用明细</h3>
+        </div>
+        <div class="panel-body">
+            <?php
+            $details = $model->calculateTotalPrice(true);
+            ?>
+            <table class="detail-view table table-hover table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>每天基础价格</th>
+                    <th>不能自理加价</th>
+                    <th>节假日加价</th>
+                    <th>每天总价格</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($details['PriceDetail'] as $date => $item):?>
+                <tr>
+                    <td><div class="kv-attribute"><?php echo $date;?></div></td>
+                    <td><div class="kv-attribute"><?php echo $item['basePrice'];?></div></td>
+                    <td><div class="kv-attribute"><?php echo $item['disabledPrice'];?></div></td>
+                    <td><div class="kv-attribute"><?php echo $item['holidayPrice'];?></div></td>
 
+                    <td><div class="kv-attribute"><?php echo $item['dayPrice'];?></div></td>
+                </tr>
+                <?php endforeach;?>
+                <tr class="warning">
+                    <td>总额</td>
+                    <td colspan="4" style="text-align: right"><?php echo $details['totalPrice'];?></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </div>

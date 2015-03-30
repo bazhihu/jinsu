@@ -3,7 +3,6 @@
 namespace backend\models;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%departments}}".
@@ -47,9 +46,20 @@ class Departments extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取科室名称
+     * @param int $id
+     * @return string
+     * @author zhangbo
+     */
+    static public function getName($id){
+        return self::findOne($id)->name;
+    }
+
+    /**
      * 获取科室列表
      * @param int $hospitalId 医院ID
      * @return static[]
+     * @author zhangbo
      */
     static public function getList($hospitalId = null){
         $result = array();
@@ -64,7 +74,6 @@ class Departments extends \yii\db\ActiveRecord
 
         $list = array();
         self::formatItems($result, 0, 0, $list);
-
 
         return $list;
     }
@@ -106,6 +115,7 @@ class Departments extends \yii\db\ActiveRecord
      * @param int $parentId 父级ID
      * @param array $list 最终格式化的结果
      * @return bool
+     * @author zhangbo
      */
     static public function formatItems($items, $level, $parentId, &$list){
         $level += 1;
@@ -128,5 +138,4 @@ class Departments extends \yii\db\ActiveRecord
             }
         }
     }
-
 }

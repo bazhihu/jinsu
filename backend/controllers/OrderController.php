@@ -40,7 +40,7 @@ class OrderController extends Controller
     public function actionIndex()
     {
         //客服直接登录start
-        $uin = empty(Yii::$app->request->get('uin'))? 0 : Yii::$app->request->get('uin');
+        $uin = empty($_GET['uin'])? 0 : $_GET['uin'];
         if($uin){
             $this->TqLogin($uin);
         }

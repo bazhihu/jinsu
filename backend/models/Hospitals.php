@@ -59,6 +59,7 @@ class Hospitals extends \yii\db\ActiveRecord
      * @param int $cityId 市ID
      * @param int $areaId 区县ID
      * @return static[]
+     * @author zhangbo
      */
     static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0)
     {
@@ -68,6 +69,16 @@ class Hospitals extends \yii\db\ActiveRecord
         }
 
         return ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+    }
+
+    /**
+     * 获取医院名称
+     * @param int $id
+     * @return string
+     * @author zhangbo
+     */
+    static function getName($id){
+        return self::findOne($id)->name;
     }
 
     /**

@@ -10,6 +10,7 @@ $('body').on('click', 'button.jsPayOrder', function () {
         return false;
     }
     var button = $(this);
+    button.text('处理中...');
     button.attr('disabled', true);
     var url = $(this).attr('data-url');
     $.ajax({
@@ -25,6 +26,7 @@ $('body').on('click', 'button.jsPayOrder', function () {
                 location.reload();
             }else{
                 button.attr('disabled', false);
+                button.text('支付');
             }
         }
     });
@@ -36,6 +38,7 @@ $('body').on('click', 'button.jsConfirmOrder', function () {
         return false;
     }
     var button = $(this);
+    button.text('处理中...');
     button.attr('disabled', true);
     var url = $(this).attr('data-url');
     var selectWorkerUrl = $(this).attr('select-worker-url');
@@ -56,6 +59,7 @@ $('body').on('click', 'button.jsConfirmOrder', function () {
                 location.href = selectWorkerUrl;
             }else{
                 button.attr('disabled', false);
+                button.text('支付');
             }
         }
     });
@@ -67,6 +71,7 @@ $('body').on('click', 'button.jsBeginServiceOrder', function () {
         return false;
     }
     var button = $(this);
+    button.text('处理中...');
     button.attr('disabled', true);
     var url = $(this).attr('data-url');
     $.ajax({
@@ -82,6 +87,7 @@ $('body').on('click', 'button.jsBeginServiceOrder', function () {
                 location.reload();
             }else{
                 button.attr('disabled', false);
+                button.text('开始服务');
             }
         }
     });
@@ -93,6 +99,7 @@ $('body').on('click', 'button.jsFinishOrder', function () {
         return false;
     }
     var button = $(this);
+    button.text('处理中...');
     button.attr('disabled', true);
     var url = $(this).attr('data-url');
     var selectWorkerUrl = $(this).attr('select-worker-url');
@@ -109,6 +116,7 @@ $('body').on('click', 'button.jsFinishOrder', function () {
                 location.reload();
             }else{
                 button.attr('disabled', false);
+                button.text('支付');
             }
         }
     });
@@ -120,6 +128,7 @@ $('body').on('click', 'button.jsCancelOrder', function () {
         return false;
     }
     var button = $(this);
+    button.text('处理中...');
     button.attr('disabled', true);
     var url = $(this).attr('data-url');
     $.ajax({
@@ -135,7 +144,20 @@ $('body').on('click', 'button.jsCancelOrder', function () {
                 location.reload();
             }else{
                 button.attr('disabled', false);
+                button.text('支付');
             }
         }
     });
 });
+//外呼
+$('body').on('click','button.jsUser',function(){
+    var button = $(this);
+    var callid = $(this).attr('callid');
+    try{window.navigate("app:1234567@"+callid+""); } catch(e){};
+});
+$('body').on('click','button.jsBan',function(){
+    var button = $(this);
+    var callid = $(this).attr('callid');
+    try{window.navigate("app:1234567@"+callid+""); } catch(e){};
+});
+

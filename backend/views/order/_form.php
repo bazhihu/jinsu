@@ -87,7 +87,7 @@ use backend\models\OrderPatient;
                         'type'=> Form::INPUT_TEXT,
                         'options'=>[
                             'placeholder'=>'请输入姓名...',
-                            'maxlength'=>4,
+                            'maxlength'=>6,
                             'style'=>'width:25%'
                         ],
                     ],

@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\OrderMaster;
+use backend\Models\UploadForm;
 use backend\Models\Workerother;
 use backend\models\WorkerSchedule;
 use Yii;
@@ -15,6 +16,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\web\UploadedFile;
 
 
 /**
@@ -29,6 +31,7 @@ class WorkerController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'upload' => ['post']
                 ],
             ],
         ];
@@ -75,8 +78,11 @@ class WorkerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
+            //上传照片
+            $pic_name = $this->picUpload($params);
+            $params['Worker']['pic'] = $pic_name;
             $model->saveData($params['Worker'],'create');
-            $this->redirect("?r=workerother/create&worker_id=".$model->worker_id."&act=1");
+            $this->redirect("?r=workerother/update&worker_id=".$model->worker_id);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -120,6 +126,9 @@ class WorkerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
+            //上传照片
+            $pic_name = $this->picUpload($params);
+            $params['Worker']['pic'] = $pic_name;
             $model->saveData($params['Worker'],'update');
             return $this->redirect(['view', 'id' => $id]);
         } else {
@@ -264,5 +273,21 @@ class WorkerController extends Controller
             'orderId' => $orderId,
             'startTime' => $startTime
         ]);
+    }
+
+    /**
+     * 护工照片上传
+     */
+
+    public function picUpload($params)
+    {
+        $model = new Worker();
+        if (Yii::$app->request->isPost) {
+            $model->pic = UploadedFile::getInstance($model, 'pic');
+            $pic_name = md5($params['Worker']['idcard']);
+            $model->pic->saveAs('uploads/' . $pic_name . '.' . $model->pic->extension);
+            return $pic_name.'.'.$model->pic->extension;
+           // }
+        }
     }
 }

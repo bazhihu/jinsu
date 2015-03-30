@@ -10,9 +10,6 @@ use kartik\builder\Form;
  * @var backend\Models\Workerother $model
  * @var yii\widgets\ActiveForm $form
  */
-$act = (int)$_GET['act'];
-var_dump($model);
-die();
 ?>
 <div class="workerother-form">
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);?>
@@ -30,22 +27,22 @@ die();
                     <td><b>主要职责与成绩</b><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_1[]" value="<?=$act ?"":$model[0]['ext1']?>"><td>
-                    <td><input name="ext2_1[]" value="<?=$act ?"":$model[0]['ext2']?>"><td>
-                    <td><input name="ext3_1[]" value="<?=$act ?"":$model[0]['ext3']?>"><td>
-                    <td><input name="ext4_1[]" value="<?=$act ?"":$model[0]['ext4']?>"><td>
+                    <td><input name="ext1_1[]" value="<?=empty($model) ?"":$model[0]['ext1']?>"><td>
+                    <td><input name="ext2_1[]" value="<?=empty($model) ?"":$model[0]['ext2']?>"><td>
+                    <td><input name="ext3_1[]" value="<?=empty($model) ?"":$model[0]['ext3']?>"><td>
+                    <td><input name="ext4_1[]" value="<?=empty($model) ?"":$model[0]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_1[]" value="<?=$act ?"":$model[1]['ext1']?>"><td>
-                    <td><input name="ext2_1[]" value="<?=$act ?"":$model[1]['ext2']?>"><td>
-                    <td><input name="ext3_1[]" value="<?=$act ?"":$model[1]['ext3']?>"><td>
-                    <td><input name="ext4_1[]" value="<?=$act ?"":$model[1]['ext4']?>"><td>
+                    <td><input name="ext1_1[]" value="<?=empty($model) ?"":$model[1]['ext1']?>"><td>
+                    <td><input name="ext2_1[]" value="<?=empty($model) ?"":$model[1]['ext2']?>"><td>
+                    <td><input name="ext3_1[]" value="<?=empty($model) ?"":$model[1]['ext3']?>"><td>
+                    <td><input name="ext4_1[]" value="<?=empty($model) ?"":$model[1]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_1[]" value="<?=$act ?"":$model[2]['ext1']?>"><td>
-                    <td><input name="ext2_1[]" value="<?=$act ?"":$model[2]['ext2']?>"><td>
-                    <td><input name="ext3_1[]" value="<?=$act ?"":$model[2]['ext3']?>"><td>
-                    <td><input name="ext4_1[]" value="<?=$act ?"":$model[2]['ext4']?>"><td>
+                    <td><input name="ext1_1[]" value="<?=empty($model) ?"":$model[2]['ext1']?>"><td>
+                    <td><input name="ext2_1[]" value="<?=empty($model) ?"":$model[2]['ext2']?>"><td>
+                    <td><input name="ext3_1[]" value="<?=empty($model) ?"":$model[2]['ext3']?>"><td>
+                    <td><input name="ext4_1[]" value="<?=empty($model) ?"":$model[2]['ext4']?>"><td>
                 </tr>
             </table>
         </div>
@@ -59,7 +56,7 @@ die();
             <table class="table table-striped">
                 <tr>
                     <td>
-                        <textarea style="width: 100%;height: 200px" name="ext1_2[]" value="<?=$act ?"":$model[3]['ext1']?>"></textarea>
+                        <textarea style="width: 100%;height: 200px" name="ext1_2[]"><?=empty($model) ? "":$model[3]['ext1']?></textarea>
                     <td>
                 </tr>
             </table>
@@ -79,22 +76,22 @@ die();
                     <td><b>联系电话</b><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_3[]" value="<?=$act ?"":$model[4]['ext1']?>"><td>
-                    <td><input name="ext2_3[]" value="<?=$act ?"":$model[4]['ext2']?>"><td>
-                    <td><input name="ext3_3[]" value="<?=$act ?"":$model[4]['ext3']?>"><td>
-                    <td><input name="ext4_3[]" value="<?=$act ?"":$model[4]['ext4']?>"><td>
+                    <td><input name="ext1_3[]" value="<?=empty($model) ?"":$model[4]['ext1']?>"><td>
+                    <td><input name="ext2_3[]" value="<?=empty($model) ?"":$model[4]['ext2']?>"><td>
+                    <td><input name="ext3_3[]" value="<?=empty($model) ?"":$model[4]['ext3']?>"><td>
+                    <td><input name="ext4_3[]" value="<?=empty($model) ?"":$model[4]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_3[]"  value="<?=$act ?"":$model[5]['ext1']?>"><td>
-                    <td><input name="ext2_3[]"  value="<?=$act ?"":$model[5]['ext2']?>"><td>
-                    <td><input name="ext3_3[]"  value="<?=$act ?"":$model[5]['ext3']?>"><td>
-                    <td><input name="ext4_3[]"  value="<?=$act ?"":$model[5]['ext4']?>"><td>
+                    <td><input name="ext1_3[]"  value="<?=empty($model) ?"":$model[5]['ext1']?>"><td>
+                    <td><input name="ext2_3[]"  value="<?=empty($model) ?"":$model[5]['ext2']?>"><td>
+                    <td><input name="ext3_3[]"  value="<?=empty($model) ?"":$model[5]['ext3']?>"><td>
+                    <td><input name="ext4_3[]"  value="<?=empty($model) ?"":$model[5]['ext4']?>"><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_3[]"  value="<?=$act ?"":$model[6]['ext1']?>"><td>
-                    <td><input name="ext2_3[]"  value="<?=$act ?"":$model[6]['ext2']?>"><td>
-                    <td><input name="ext3_3[]"  value="<?=$act ?"":$model[6]['ext3']?>"><td>
-                    <td><input name="ext4_3[]"  value="<?=$act ?"":$model[6]['ext4']?>"><td>
+                    <td><input name="ext1_3[]"  value="<?=empty($model) ?"":$model[6]['ext1']?>"><td>
+                    <td><input name="ext2_3[]"  value="<?=empty($model) ?"":$model[6]['ext2']?>"><td>
+                    <td><input name="ext3_3[]"  value="<?=empty($model) ?"":$model[6]['ext3']?>"><td>
+                    <td><input name="ext4_3[]"  value="<?=empty($model) ?"":$model[6]['ext4']?>"><td>
                 </tr>
             </table>
         </div>
@@ -113,10 +110,10 @@ die();
                     <td><b>联系方式</b><td>
                 </tr>
                 <tr>
-                    <td><input name="ext1_4[]" value="<?=$act ?"":$model[7]['ext1']?>"><td>
-                    <td><input name="ext2_4[]" value="<?=$act ?"":$model[7]['ext2']?>"><td>
-                    <td><input name="ext3_4[]" value="<?=$act ?"":$model[7]['ext3']?>"><td>
-                    <td><input name="ext4_4[]" value="<?=$act ?"":$model[7]['ext4']?>"><td>
+                    <td><input name="ext1_4[]" value="<?=empty($model) ?"":$model[7]['ext1']?>"><td>
+                    <td><input name="ext2_4[]" value="<?=empty($model) ?"":$model[7]['ext2']?>"><td>
+                    <td><input name="ext3_4[]" value="<?=empty($model) ?"":$model[7]['ext3']?>"><td>
+                    <td><input name="ext4_4[]" value="<?=empty($model) ?"":$model[7]['ext4']?>"><td>
                 </tr>
             </table>
         </div>

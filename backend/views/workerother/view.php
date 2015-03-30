@@ -12,6 +12,7 @@ use kartik\datecontrol\DateControl;
 $this->title = '护工其他信息';
 $this->params['breadcrumbs'][] = ['label' => 'Workerothers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="workerother-form">
     <div class="panel panel-info">

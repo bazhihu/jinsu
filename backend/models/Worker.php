@@ -43,9 +43,6 @@ use yii\web\HttpException;
  */
 class Worker extends \yii\db\ActiveRecord
 {
-
-
-
     /**
      * 护工等级
      */
@@ -213,7 +210,7 @@ class Worker extends \yii\db\ActiveRecord
 
     public $birth_place_city;
     public $birth_place_area;
-
+    //public $pic;
 
 
     /**
@@ -237,7 +234,7 @@ class Worker extends \yii\db\ActiveRecord
             [['price', 'good_rate'], 'number'],
             [['name', 'idcard','native_province', 'nation', 'phone1', 'phone2','certificate'], 'string', 'max' => 20],
             [['place','birth_place'], 'string', 'max' => 255],
-
+            [['pic'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png']
         ];
     }
 
@@ -247,6 +244,7 @@ class Worker extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'pic' =>'护工照片',
             'worker_id' => '护工编号',
             'name' => '姓名',
             'gender' => '性别',

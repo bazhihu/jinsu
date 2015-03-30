@@ -20,7 +20,9 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-
+<?
+echo Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg",['width'=>'213']);
+?>
 
     <?= DetailView::widget([
             'model' => $model,
@@ -193,22 +195,22 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
                         <td><b>主要职责与成绩</b></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[0]['ext1']?$modelOther[0]['ext1']:""?></td>
-                        <td><?=$modelOther[0]['ext2']?$modelOther[0]['ext2']:""?></td>
-                        <td><?=$modelOther[0]['ext3']?$modelOther[0]['ext3']:""?></td>
-                        <td><?=$modelOther[0]['ext4']?$modelOther[0]['ext4']:""?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[0]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[0]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[0]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[0]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[1]['ext1']?></td>
-                        <td><?=$modelOther[1]['ext2']?></td>
-                        <td><?=$modelOther[1]['ext3']?></td>
-                        <td><?=$modelOther[1]['ext4']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[1]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[1]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[1]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[1]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[2]['ext1']?></td>
-                        <td><?=$modelOther[2]['ext2']?></td>
-                        <td><?=$modelOther[2]['ext3']?></td>
-                        <td><?=$modelOther[2]['ext4']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[2]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[2]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[2]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[2]['ext4']?></td>
                     </tr>
                 </table>
             </div>
@@ -222,7 +224,7 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
                 <table class="table table-striped">
                     <tr>
                         <td>
-                            <?=$modelOther[3]['ext1']?>
+                            <?=empty($modelOther) ?"":$modelOther[3]['ext1']?>
                         <td>
                     </tr>
                 </table>
@@ -242,22 +244,22 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
                         <td><b>联系电话</b></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[4]['ext1']?></td>
-                        <td><?=$modelOther[4]['ext2']?></td>
-                        <td><?=$modelOther[4]['ext3']?></td>
-                        <td><?=$modelOther[4]['ext4']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[4]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[4]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[4]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[4]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[5]['ext1']?></td>
-                        <td><?=$modelOther[5]['ext2']?></td>
-                        <td><?=$modelOther[5]['ext3']?></td>
-                        <td><?=$modelOther[5]['ext4']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[5]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[5]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[5]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[5]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[6]['ext1']?></td>
-                        <td><?=$modelOther[6]['ext2']?></td>
-                        <td><?=$modelOther[6]['ext3']?></td>
-                        <td><?=$modelOther[6]['ext4']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[6]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[6]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[6]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[6]['ext4']?></td>
                     </tr>
                 </table>
             </div>
@@ -276,10 +278,10 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
                         <td><b>联系方式</b></td>
                     </tr>
                     <tr>
-                        <td><?=$modelOther[7]['ext1']?></td>
-                        <td><?=$modelOther[7]['ext2']?></td>
-                        <td><?=$modelOther[7]['ext3']?></td>
-                        <td><?=$modelOther[7]['ext4']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[7]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[7]['ext2']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[7]['ext3']?></td>
+                        <td><?=empty($modelOther) ?"":$modelOther[7]['ext4']?></td>
                     </tr>
                 </table>
             </div>

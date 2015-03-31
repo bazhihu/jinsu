@@ -77,7 +77,7 @@ class Wallet
      * @return WalletUser|Wallet|null
      * @throws HttpException
      */
-    public function addMoney($uid, $money){
+    public static function addMoney($uid, $money){
         #获取所需的账户信息
         $walletUser = self::checkAccount($uid);
 
@@ -109,7 +109,6 @@ class Wallet
         if(empty($walletUser)){
             $walletUser = new WalletUser();
             $wallet['uid'] = $uid;
-
             $walletUser->attributes = $wallet;
             if(!$walletUser->save()){
                 throw new HttpException(400, print_r($walletUser->getErrors(), true));
@@ -136,32 +135,30 @@ class Wallet
      * ]
      * @return array
      */
-    public function addConRecords($params){
+    public static function addConRecords($params){
         $response = [
             'code' => '200',
             'msg' => ''
         ];
         $walletUserDetail = new WalletUserDetail(['scenario' => 'consume']);
         $userDetail = [
-            'detail_no'  => self::_generateWalletNo(),
-            'order_id'      => isset($params['order_id'])?$params['order_id']:'',
-            'order_no'      => isset($params['order_no'])?$params['order_no']:'',
-
-            'uid'           => $params['uid'],
-            'detail_money'  => $params['detail_money'],
-            'detail_type'   => $params['detail_type'],//默认为1
-            'wallet_money'  => $params['wallet_money'],//当前账户余额
-            'detail_time'   => date('Y-m-d H:i:s'),
-            'pay_from'      => $params['pay_from'],//后台为 1
-
-            'admin_uid'     => isset($params['admin_uid'])?$params['admin_uid']:'',
-            'extract_to'    => isset($params['extract_to'])?$params['extract_to']:'',
-            'remark'        => isset($params['remark'])?$params['remark']:'',
+            'detail_no' => self::_generateWalletNo(),
+            'order_id' => isset($params['order_id']) ? $params['order_id'] : null,
+            'order_no' => isset($params['order_no']) ? $params['order_no'] : null,
+            'uid' => $params['uid'],
+            'detail_money' => $params['detail_money'],
+            'detail_type' => $params['detail_type'],//默认为1
+            'wallet_money' => $params['wallet_money'],//当前账户余额
+            'detail_time' => date('Y-m-d H:i:s'),
+            'pay_from' => $params['pay_from'],//后台为 1
+            'admin_uid' => isset($params['admin_uid']) ? $params['admin_uid'] : null,
+            'extract_to' => isset($params['extract_to']) ? $params['extract_to'] : null,
+            'remark' => isset($params['remark']) ? $params['remark'] : null,
         ];
         $walletUserDetail->setAttributes($userDetail);
         if(!$walletUserDetail->save())
         {
-            $response['code'] = '412';
+            $response['code'] = '400';
             $response['msg'] = '记录失败'.print_r($walletUserDetail->getErrors(), true);
             return $response;
         }

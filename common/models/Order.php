@@ -479,17 +479,15 @@ class Order extends \yii\db\ActiveRecord{
      */
     public function confirm($remark = null){
         $response = ['code' => '200'];
-
+        if(!self::checkOrderStatusAction($this->order_status, 'confirm')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
         if(empty($this->worker_no)){
             $response['code'] = '202';
             $response['msg'] = '没有选护工，请选择护工';
             $response['start_time'] = $this->start_time;
-            return $response;
-        }
-
-        if(!self::checkOrderStatusAction($this->order_status, 'confirm')){
-            $response['code'] = '212';
-            $response['msg'] = '订单状态错误';
             return $response;
         }
 

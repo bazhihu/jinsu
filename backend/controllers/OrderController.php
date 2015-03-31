@@ -37,13 +37,8 @@ class OrderController extends Controller
      * Lists all OrderMaster models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        //客服直接登录start
-        $uin = empty($_GET['uin'])? 0 : $_GET['uin'];
-        if($uin){
-            $this->TqLogin($uin);
-        }
+    public function actionIndex(){
+
         //客服直接登录end
         $searchModel = new OrderSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
@@ -53,20 +48,7 @@ class OrderController extends Controller
             'searchModel' => $searchModel,
         ]);
     }
-    /*
-         * 客服自动登录
-         * $username 客服用户名
-         * */
-    private function TqLogin($username)
-    {
-        $model = new LoginForm();
-        $LoginForm = array('username'=>$username,'password' => '123456','rememberMe'=>'1' );
-        if ($model->load_TQ($LoginForm) && $model->login()) {
-            $this->redirect(['/order/index']);
-        } else {
-            $this->redirect(['/site/login']);
-        }
-    }
+
     /**
      * Displays a single OrderMaster model.
      * @param string $id

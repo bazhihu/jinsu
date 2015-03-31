@@ -334,7 +334,6 @@ class Order extends \yii\db\ActiveRecord{
         //能否自理（金额/天）
         $disabledPrice = $basePrice*$this->patient_state_coefficient;
 
-        $dayPrice = 0;
         foreach($dates as $date){
             $detailArr = [
                 'dayPrice' => 0,
@@ -581,6 +580,53 @@ class Order extends \yii\db\ActiveRecord{
     }
 
     /**
+     * 订单取消
+     * @return array
+     */
+    public function cancel(){
+        $response = ['code' => '200'];
+        if(!self::checkOrderStatusAction($this->order_status, 'cancel')){
+            $response['code'] = '212';
+            $response['msg'] = '订单状态错误';
+            return $response;
+        }
+
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            $this->order_status = self::ORDER_STATUS_CANCEL;
+            $this->cancel_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            $this->save();
+
+            //删除护工排期时间
+            WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
+
+            //退款操作
+            if(in_array($this->order_status, [self::ORDER_STATUS_WAIT_CONFIRM,self::ORDER_STATUS_WAIT_SERVICE])){
+                $wallet = new Wallet();
+                $rechargeParams = [
+
+                ];
+                $wallet->recharge($rechargeParams);
+            }
+
+            $response['msg'] = '取消成功';
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '400',
+                'msg' => '取消失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
+        }
+
+        //记录操作
+        $orderOperatorLog = new OrderOperatorLog();
+        $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
+        return $response;
+    }
+
+    /**
      * 订单评价
      * @return array
      */
@@ -604,46 +650,6 @@ class Order extends \yii\db\ActiveRecord{
         //记录操作
         $orderOperatorLog = new OrderOperatorLog();
         $orderOperatorLog->addLog($this->order_no, 'evaluate', $response);
-        return $response;
-    }
-
-    /**
-     * 订单取消
-     * @return array
-     */
-    public function cancel(){
-        $response = ['code' => '200'];
-        if(!self::checkOrderStatusAction($this->order_status, 'cancel')){
-            $response['code'] = '212';
-            $response['msg'] = '订单状态错误';
-            return $response;
-        }
-
-        $transaction = \Yii::$app->db->beginTransaction();
-        try {
-            $this->order_status = self::ORDER_STATUS_CANCEL;
-            $this->cancel_time = date('Y-m-d H:i:s');
-            $this->operator_id = \Yii::$app->user->id;
-            $this->save();
-
-            //删除护工排期时间
-            WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
-
-            //退款操作@TODO...
-
-            $response['msg'] = '取消成功';
-        }catch (Exception $e){
-            $transaction->rollBack();
-            $response = [
-                'code' => '400',
-                'msg' => '取消失败:'.$e->getMessage(),
-                'errorMsg' => $e->getMessage()
-            ];
-        }
-
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
         return $response;
     }
 

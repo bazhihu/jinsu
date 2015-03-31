@@ -77,22 +77,12 @@ class OrderController extends Controller
         $model = new OrderMaster;
         $orderPatientModel = new OrderPatient();
         if ($model->load(Yii::$app->request->post())) {
-
             $params = Yii::$app->request->post();
 
             //检查手机号是否注册
-            $userModel = new User();
-            $user = $userModel->findByMobile($params['OrderMaster']['mobile']);
-            if($user && isset($user->id)){
-                $params['OrderMaster']['uid'] = $user->id;
-            }else{
-                //注册手机号
-                $userModel->mobile = $params['OrderMaster']['mobile'];
-                $userModel->name = $params['OrderMaster']['contact_name'];
-                if ($user = $userModel->SystemSignUp()) {
-                    $params['OrderMaster']['uid'] = $user->id;
-                }
-            }
+            $user = $this->_checkMobile($params['OrderMaster']['mobile'], $params['OrderMaster']['contact_name']);
+
+            $params['OrderMaster']['uid'] = $user->id;
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
             $params['OrderMaster']['create_order_sources'] = OrderMaster::ORDER_SOURCES_SERVICE;
             $params['OrderMaster']['customer_service_id'] = \Yii::$app->user->id;
@@ -106,6 +96,24 @@ class OrderController extends Controller
                 'orderPatientModel' => $orderPatientModel
             ]);
         }
+    }
+
+    /**
+     * @param $mobile
+     * @param null $name
+     * @return $this|User|null|static
+     * @throws \backend\Models\ErrorException
+     */
+    private function _checkMobile($mobile, $name = null){
+        $user = User::findByMobile($mobile);
+        if(empty($user)){
+            //注册手机号
+            $user = new User();
+            $user->mobile = $mobile;
+            $user->name = $name;
+            $user = $user->SystemSignUp();
+        }
+        return $user;
     }
 
     public function actionContinue($id){

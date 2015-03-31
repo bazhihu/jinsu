@@ -4,6 +4,7 @@ namespace common\models;
 
 use backend\models\WalletIncrement;
 use Yii;
+use yii\base\Exception;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
 use yii\web\HttpException;
@@ -46,7 +47,7 @@ class Wallet
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             #更新wallet-user 表
-            $walletUser = self::addMoney($params);
+            $walletUser = self::addMoney($params['uid'], $params['detail_money']);
 
             $detail = array();//添加消费记录
             $detail['uid']          = $walletUser->uid;
@@ -56,8 +57,8 @@ class Wallet
             $detail['pay_from']     = $params['pay_from'];
             $detail['admin_uid']    = Yii::$app->user->identity->getId();
 
-            $reslut = self::addConRecords($detail);
-            if ($reslut['code'] !== '200') {
+            $result = self::addConRecords($detail);
+            if ($result['code'] !== '200') {
                 throw new HttpException(400, "", true);
             }
             $transaction->commit();
@@ -68,27 +69,24 @@ class Wallet
         #事务-END
         return true;
     }
+
     /**
-     * 充值goto-Wallet-user
-     * @param $param
-     * [
-     *      'uid'           =>'', //用户ID
-     *      'detail_money'  =>'', //充值金额
-     * ]
+     * 加钱
+     * @param int $uid 用户ID
+     * @param number $money 钱
+     * @return WalletUser|Wallet|null
      * @throws HttpException
-     * @throws \yii\db\Exception
      */
-    public function addMoney($params){
+    public function addMoney($uid, $money){
         #获取所需的账户信息
-        $walletUser = self::checkAccount($params['uid']);
+        $walletUser = self::checkAccount($uid);
 
         $user = array();//用户钱包表所需字段
-        $user['money']      = $walletUser->money + $params['detail_money'];//账户余额
-        $user['money_pay']  = $walletUser->money_pay + $params['detail_money'];//账户累积充值金额
+        $user['money']      = $walletUser->money + $money;//账户余额
+        $user['money_pay']  = $walletUser->money_pay + $money;//账户累积充值金额
 
-        if($params['detail_money']<0)
-        {
-            $user['money_pay_s'] = $walletUser->money_pay_s - $params['detail_money'];//累积充值负金额
+        if($money<0){
+            $user['money_pay_s'] = $walletUser->money_pay_s - $money;//累积充值负金额
         }
         $walletUser->attributes = $user;
 
@@ -104,7 +102,7 @@ class Wallet
      * @return WalletUser|null|static
      * @throws HttpException
      */
-    public function checkAccount($uid){
+    public static function checkAccount($uid){
 
         $walletUser = WalletUser::findOne(['uid'=>$uid]);
 

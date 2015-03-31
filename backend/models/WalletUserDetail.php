@@ -35,8 +35,9 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const WALLET_TYPE_WITHDRAWALS = 3; //提现
 
     #支付渠道
-    const PAY_FROM_BACKEND = 'backend'; //后台
-    const PAY_FROM_APP = 'app'; //手机应用
+    const PAY_FROM_BACKEND = '1'; //后台现金
+    const PAY_FROM_ALIPAY = '2'; //Alipay(支付宝)
+    const PAY_FROM_WECHAT = '3'; //Wechat(微信)
 
 
     /**
@@ -53,10 +54,10 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['detail_money','required','on'=>'pay_create'],
-            ['detail_money','number','on'=>'pay_create'],
+            [['detail_money','uid'],'required','on'=>'pay_create'],
+            [['detail_money','uid'],'number','on'=>'pay_create'],
 
-            [['detail_no','order_id','order_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from'],'required','on'=>'consume'],
+            [['detail_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from'],'required','on'=>'consume'],
 
             [['order_id', 'worker_id', 'uid', 'detail_type', 'admin_uid'], 'integer'],
             [['wallet_money'], 'number'],
@@ -73,8 +74,8 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return[
-            'pay_create'=>['detail_money'],
-            'consume'=>['detail_no','order_id','order_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from']
+            'pay_create'=>['detail_money','uid'],
+            'consume'=>['detail_no','order_id','order_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from','extract_to','remark','admin_uid']
         ];
     }
     /**
@@ -99,21 +100,21 @@ class WalletUserDetail extends \yii\db\ActiveRecord
             'admin_uid' => '经办人',
         ];
     }
-    public function recharge($uid)
-    {
-        $param = array();
-        #正充值
-        $param['top'] = 0;
-        if($this->detail_money<0){
-            $param['top'] = 1;
-        }
 
-        $param['detail_money']  = abs($this->detail_money);
-        $param['pay_from']      = 1;
-        $param['uid']           = $uid;
+    /**
+     * 充值
+     * @return bool
+     * @throws \yii\web\HttpException
+     */
+    public function recharge()
+    {
+        $params = array();
+        $params['detail_money']  = $this->detail_money;
+        $params['pay_from']      = self::PAY_FROM_BACKEND;
+        $params['uid']           = $this->uid;
 
         $wallet = new Wallet();
-        if($wallet->recharge($param))
+        if($wallet->recharge($params))
         {
             return true;
         }

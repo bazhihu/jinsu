@@ -27,6 +27,12 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 ]
             ]
         ); ?>
+        <?= $form->field($model, 'uid')->hiddenInput(
+                [
+                    'value'=>$userRow['uid'],
+                ]
+            )
+        ?>
         <?= $form->field($model, 'uid')
             ->textInput(
                 [

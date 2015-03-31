@@ -270,7 +270,7 @@ class WalletController extends Controller
                 return $this->redirect(['pay-index', 'uid' => $model->uid]);
             } else {
                 $userRow=array();
-                $mobile = User::findOne(['id'=>$uid])->username;
+                $mobile = User::findOne(['id'=>$uid])->mobile;
                 $admin_name = Yii::$app->user->identity->username;
 
                 if($mobile && $admin_name){

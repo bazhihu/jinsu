@@ -14,7 +14,6 @@ use backend\models\OrderMaster;
 use backend\models\OrderSearch;
 use backend\models\WalletUserDetail;
 use backend\models\User;
-use backend\models\LoginForm;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.

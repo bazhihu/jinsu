@@ -773,18 +773,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
             return false;
         }
     }
-/*
- * 验证TQ用户名
- * */
-    public function load_TQ($data)
-    {
-        if (!empty($data)) {
-            $this->setAttributes($data);
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     /**
      * Populates a set of models with the data from end user.
      * This method is mainly used to collect tabular data input.

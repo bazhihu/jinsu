@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <h1><?= Html::encode($this->title) ?></h1>
     </div>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?php /* echo Html::a('Create User', ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
@@ -28,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
      //   'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'mobile',
             'nickname',
@@ -66,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}&nbsp;&nbsp;{update}',
                 'buttons' => [
                 'update' => function ($url, $model) {
                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['user/update','id' => $model->id]), [
@@ -79,10 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'hover'=>true,
         'condensed'=>true,
         'floatHeader'=>true,
-
-
-
-
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
@@ -90,5 +85,4 @@ $this->params['breadcrumbs'][] = $this->title;
             'showFooter'=>false
         ],
     ]); Pjax::end(); ?>
-
 </div>

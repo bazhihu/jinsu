@@ -79,11 +79,21 @@ class WorkerController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
             //上传照片
-            $pic_name = $this->picUpload($params);
-            $params['Worker']['pic'] = $pic_name;
-            $model->saveData($params['Worker'],'create');
-            $this->redirect("?r=workerother/update&worker_id=".$model->worker_id);
-        } else {
+            if ($params['Worker']['pic']) {
+                $pic_name = $this->picUpload($params);
+                $params['Worker']['pic'] = $pic_name;
+            }
+            $model->saveData($params['Worker'], 'create');
+            $model->attributes = $params;
+
+            if ($model->save()) {
+                return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
+            }else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -127,10 +137,20 @@ class WorkerController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
             //上传照片
-            $pic_name = $this->picUpload($params);
-            $params['Worker']['pic'] = $pic_name;
-            $model->saveData($params['Worker'],'update');
-            return $this->redirect(['view', 'id' => $id]);
+            if ($params['Worker']['pic']) {
+                $pic_name = $this->picUpload($params);
+                $params['Worker']['pic'] = $pic_name;
+            }
+            $model->saveData($params['Worker'], 'update');
+            $model->attributes = $params;
+
+            if ($model->save()) {
+                return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
+            }else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -144,12 +164,12 @@ class WorkerController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionDelete($id)
+  /*  public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the Worker model based on its primary key value.

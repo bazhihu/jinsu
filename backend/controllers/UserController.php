@@ -74,10 +74,15 @@ class UserController extends Controller
             $params['add_date'] = date('Y-m-d H:i:s');
             $params['adder'] = yii::$app->user->getId();
             $model->attributes = $params;
-        }
-        if($model->save()){
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -104,7 +109,9 @@ class UserController extends Controller
             $model->attributes = $params;
             if($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            }
+            } return $this->render('update', [
+                'model' => $model,
+            ]);
         }else {
             return $this->render('update', [
                 'model' => $model,
@@ -118,12 +125,12 @@ class UserController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+  /*  public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the User model based on its primary key value.

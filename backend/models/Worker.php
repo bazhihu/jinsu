@@ -3,6 +3,7 @@
 namespace backend\Models;
 
 use Yii;
+use yii\helpers\Url;
 use yii\web\HttpException;
 
 /**
@@ -227,14 +228,19 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','idcard'], 'required'],
+            [['name','idcard','phone1'], 'required'],
             [['gender'],'string', 'max' => 1],
             [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
             [['price', 'good_rate'], 'number'],
-            [['name', 'idcard','native_province', 'nation', 'phone1', 'phone2','certificate'], 'string', 'max' => 20],
+            [['name','native_province', 'nation'], 'string', 'max' => 20],
             [['place','birth_place'], 'string', 'max' => 255],
-            [['pic'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png']
+            [['pic'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png'],
+          //  [['phone1'], 'unique', 'message'=>'{attribute}已经被占用了'],
+            [['phone1','idcard'], 'unique', 'message' => '{attribute}已注册.'],
+            [['phone1','phone2'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}必须为1开头的11位纯数字'],
+            [['idcard'], 'string', 'max' => 20],
+            [['idcard'],'match','pattern'=>'/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/','message'=>'{attribute}不正确'],
         ];
     }
 
@@ -411,10 +417,8 @@ class Worker extends \yii\db\ActiveRecord
             $params['editer'] = yii::$app->user->getId();
         }
 
-        $this->attributes = $params;
-        if(!$this->save()){
-            throw new HttpException(400, print_r($this->getErrors(), true));
-        }
+        return $params;
+
     }
 
 /**

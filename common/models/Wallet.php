@@ -34,7 +34,7 @@ class Wallet
      * @param $param
      * [
      *      'uid'           =>'', //用户ID
-     *      'pay_from'      =>'', //支付渠道 1 (后台)|2 (支付宝)|3 (微信)
+     *      'pay_from'      =>'', //支付渠道
      *      'detail_money'  =>'', //充值金额
      * ]
      * @return bool
@@ -150,7 +150,7 @@ class Wallet
             'detail_type' => $params['detail_type'],//默认为1
             'wallet_money' => $params['wallet_money'],//当前账户余额
             'detail_time' => date('Y-m-d H:i:s'),
-            'pay_from' => $params['pay_from'],//后台为 1
+            'pay_from' => $params['pay_from'],//后台为
             'admin_uid' => isset($params['admin_uid']) ? $params['admin_uid'] : null,
             'extract_to' => isset($params['extract_to']) ? $params['extract_to'] : null,
             'remark' => isset($params['remark']) ? $params['remark'] : null,

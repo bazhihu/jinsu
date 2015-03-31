@@ -26,10 +26,6 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
     const ORDER_SOURCES_SERVICE = 'service'; //客服
 
-    //是否续单
-    const IS_CONTINUE_YES = 1;
-    const IS_CONTINUE_NO = 0;
-
     static $orderSources = [
         self::ORDER_SOURCES_WEB => '网站',
         self::ORDER_SOURCES_MOBILE => '移动客户端',
@@ -233,7 +229,7 @@ class Order extends \yii\db\ActiveRecord{
             $orderData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
             //获取护工价格
-            if($orderData['is_continue'] != self::IS_CONTINUE_YES){
+            if(empty($orderData['is_continue'])){
                 if(isset($orderData['worker_no'])){
                     $worker = Worker::findOne($orderData['worker_no']);
                     $orderData['base_price'] = $worker->price;
@@ -452,8 +448,7 @@ class Order extends \yii\db\ActiveRecord{
                     'wallet_money' => $response['money'],
                     'pay_from' => $payFrom
                 ];
-                $wallet = new Wallet();
-                $wallet->addConRecords($params);
+                Wallet::addConRecords($params);
             }
             $transaction->commit();
         }catch (Exception $e){
@@ -578,8 +573,23 @@ class Order extends \yii\db\ActiveRecord{
             //计算实际金额
             $realAmount = $this->calculateTotalPrice();
             $refundAmount = $this->total_amount - $realAmount;
+
+            //退款
             if($refundAmount > 0){
                 $this->real_amount = $realAmount;
+                $wallet = Wallet::addMoney($this->uid, $refundAmount);
+
+                //添加退款记录
+                $params = [
+                    'order_id' => $this->order_id,
+                    'order_no' => $this->order_no,
+                    'uid' => $this->uid,
+                    'detail_money' => $refundAmount,
+                    'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
+                    'wallet_money' => $wallet->money,
+                    'pay_from' => $payFrom
+                ];
+                Wallet::addConRecords($params);
             }
             if($this->save()){
                 $response['msg'] = '完成订单成功';
@@ -588,13 +598,9 @@ class Order extends \yii\db\ActiveRecord{
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
-            //退款@TODO...
-
-
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'finish', $response);
-
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();

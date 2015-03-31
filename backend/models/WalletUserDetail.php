@@ -33,12 +33,12 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const WALLET_TYPE_CONSUME = 1; //消费
     const WALLET_TYPE_RECHARGE = 2; //充值
     const WALLET_TYPE_WITHDRAWALS = 3; //提现
+    const WALLET_TYPE_REFUND = 4; //退款
 
     #支付渠道
     const PAY_FROM_BACKEND = 'backend'; //后台现金
     const PAY_FROM_ALIPAY = 'alipay'; //Alipay(支付宝)
     const PAY_FROM_WECHAT = 'wechat'; //Wechat(微信)
-
 
     /**
      * @inheritdoc

@@ -4,6 +4,7 @@ namespace common\models;
 
 use backend\models\WalletIncrement;
 use Yii;
+use yii\base\Exception;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
 use yii\web\HttpException;
@@ -53,45 +54,45 @@ class Wallet
                 throw new HttpException(400, print_r($walletUser->getErrors(), true));
             }
         }
+        $walletDetail = $param['wallet_user_detail'];
+        $walletDetail['detail_no']    = self::_generateWalletNo(); //'交易流水编号',
+        $walletDetail['uid']          = $param['uid']; //'用户ID',
+        $walletDetail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE; //'交易类型',
+        $walletDetail['detail_money'] = $param['detail_money']; //'交易金额',
+        $walletDetail['detail_time']  = date('Y-m-d H:i:s'); //'交易时间',
+        $walletDetail['pay_from']     = $param['pay_from']; //'支付渠道',
+        $walletDetail['admin_uid']    = Yii::$app->user->identity->getId(); //'管理员ID',
 
-        $param['wallet_user_detail']['detail_no']    = self::_generateWalletNo(); //'交易流水编号',
-        $param['wallet_user_detail']['uid']             = $param['uid']; //'用户ID',
-        $param['wallet_user_detail']['detail_type']     = WalletUserDetail::WALLET_TYPE_RECHARGE; //'交易类型',
-        $param['wallet_user_detail']['detail_money']    = $param['detail_money']; //'交易类型',
-        $param['wallet_user_detail']['detail_time']     = date('Y-m-d H:i:s'); //'交易时间',
-        $param['wallet_user_detail']['pay_from']        = $param['pay_from']; //'支付渠道',
-        $param['wallet_user_detail']['admin_uid']       = Yii::$app->user->identity->getId(); //'管理员ID',
+        $walletData = $param['wallet_user'];
 
         #判断充值正负
         if(!$param['top']){
-            $param['wallet_user_detail']['wallet_money']= $walletUser['money']+$param['detail_money']; //'账户余额',
-
-            $param['wallet_user']['money_pay']          = $walletUser['money_pay']+$param['detail_money'];
+            $walletDetail['wallet_money'] = $walletUser['money']+$param['detail_money']; //'账户余额',
+            $walletData['money_pay'] = $walletUser['money_pay']+$param['detail_money'];
         }else{
-            $param['wallet_user_detail']['wallet_money']= $walletUser['money']-$param['detail_money']; //'账户余额',
+            $walletDetail['wallet_money'] = $walletUser['money']-$param['detail_money']; //'账户余额',
+            $walletData['money_pay'] = $walletUser['money_pay']-$param['detail_money'];
+            $walletData['money_pay_s'] = $walletUser['money_pay_s']+$param['detail_money'];//累积充值负金额
 
-            $param['wallet_user']['money_pay']          = $walletUser['money_pay']-$param['detail_money'];
-            $param['wallet_user']['money_pay_s']        = $walletUser['money_pay_s']+$param['detail_money'];//累积充值负金额
-
-            if($param['wallet_user']['money_pay']<0){
+            if($walletData['money_pay']<0){
                 throw new HttpException(400, print_r(("充值错误!"), true));
             }
         }
-        $param['wallet_user']['uid']                = $param['uid'];
-        $param['wallet_user']['money']              = $param['wallet_user_detail']['wallet_money'];
+        $walletData['uid'] = $param['uid'];
+        $walletData['money'] = $walletDetail['wallet_money'];
 
         #事务-START
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             $walletUserDetail = new WalletUserDetail(['scenario' => 'pay_create']);
-            $walletUserDetail->setAttributes($param['wallet_user_detail'],false);
+            $walletUserDetail->setAttributes($walletDetail,false);
             if (!$walletUserDetail->save()) {
-                throw new HttpException(400, print_r($this->getErrors(), true));
+                throw new HttpException(400, print_r($walletUserDetail->getErrors(), true));
             }
 
-            $walletUser->attributes = $param['wallet_user'];
+            $walletUser->attributes = $walletData;
             if (!$walletUser->save()) {
-                throw new HttpException(400, print_r($this->getErrors(), true));
+                throw new HttpException(400, print_r($walletUser->getErrors(), true));
             }
 
             $transaction->commit();

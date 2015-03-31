@@ -75,13 +75,10 @@ class Wallet extends \yii\db\ActiveRecord
     }
     /**
      * 充值goto-Wallet-user
-     * @param $param
-     * [
-     *      'uid'           =>'', //用户ID
-     *      'money'  =>'', //充值金额
-     * ]
+     * @param $uid 用户ID
+     * @param $money 充值金额
+     * @return WalletUser|Wallet|null|static
      * @throws HttpException
-     * @throws \yii\db\Exception
      */
     public function addMoney($uid,$money){
         #获取所需的账户信息

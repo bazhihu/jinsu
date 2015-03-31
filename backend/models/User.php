@@ -62,12 +62,11 @@ class User extends \yii\db\ActiveRecord
         return [
             [['mobile'], 'filter', 'filter' => 'trim'],
             [['mobile'], 'required'],
-            [['mobile'], 'unique', 'message' => '手机号已注册.'],
+            [['mobile'], 'unique', 'message' => '{attribute}已注册.'],
             [['mobile'], 'string', 'min' => 11, 'max' => 11],
 
             [['status', 'adder', 'editer'], 'integer'],
             [['login_time', 'register_time', 'edit_time'], 'safe'],
-            [['mobile'], 'string', 'max' => 32],
             [['nickname'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
 

@@ -30,13 +30,12 @@ use kartik\widgets\DepDrop;
 
     //echo $form->field($model, 'pic')->fileInput() ;
     echo $form->field($model, 'pic')->widget(\kartik\file\FileInput::classname(), [
-        'options' => ['style'=>'width:50%'],
         'pluginOptions' => [
             'showUpload' => false,
-            'browseLabel' => '浏览上传',
+            'browseLabel' => '浏览',
             'showRemove' => false,
             'initialPreview'=>[
-                Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg", ['class'=>'file-preview-image', 'alt'=>'护工照片', 'title'=>'护工照片']),
+                Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg", [ 'alt'=>'护工照片', 'title'=>'护工照片']),
         ],
             'initialCaption'=>"护工照片",
             'overwriteInitial'=>false

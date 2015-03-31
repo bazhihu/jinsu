@@ -311,9 +311,9 @@ class Order extends \yii\db\ActiveRecord{
      * @author zhangbo
      */
     public function calculateTotalPrice($returnDetail = false){
-        $startTime = strtotime(date('Y-m-d', strtotime($this->start_time)));
-        $endTime = strtotime(date('Y-m-d', strtotime($this->reality_end_time)));
-        if($startTime >= $endTime){
+        $startDate = date('Y-m-d', strtotime($this->start_time));
+        $endDate = date('Y-m-d', strtotime($this->reality_end_time));
+        if(strtotime($startDate) >= strtotime($endDate)){
             throw new ErrorException('开始时间不能大于结束时间');
         }
 
@@ -326,7 +326,7 @@ class Order extends \yii\db\ActiveRecord{
         $holidaysList = ArrayHelper::map(Holidays::find()->all(), 'id', 'date');
 
         //获取日期列表
-        $dates = $this->getDateList($startTime, $endTime);
+        $dates = $this->getDateList($startDate, $endDate);
         //print_r($dates);exit;
 
         //价格明细
@@ -412,9 +412,16 @@ class Order extends \yii\db\ActiveRecord{
      * @throws \yii\db\Exception
      */
     public function pay($payFrom, $remark = null){
-
         //计算订单总价
         $totalPrice = $this->calculateTotalPrice();
+        if($totalPrice <= 0){
+            $response = [
+                'code' => '500',
+                'msg' => '支付失败:订单总价计算错误',
+            ];
+            return $response;
+        }
+
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $wallet = new Wallet();
@@ -427,9 +434,6 @@ class Order extends \yii\db\ActiveRecord{
                 $this->operator_id = \Yii::$app->user->id;
                 if($this->save()) {
                     $response['msg'] = '支付成功';
-                }else{
-                    $response['code'] = '412';
-                    $response['msg'] = '支付失败';
                 }
 
                 //添加护工排期时间
@@ -455,7 +459,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '400',
+                'code' => '500',
                 'msg' => '支付失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
@@ -489,19 +493,27 @@ class Order extends \yii\db\ActiveRecord{
             return $response;
         }
 
-        $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
-        $this->confirm_time = date('Y-m-d H:i:s');
-        $this->operator_id = \Yii::$app->user->id;
-        if($this->save()) {
-            $response['msg'] = '确认成功';
-        }else{
-            $response['code'] = '412';
-            $response['msg'] = '确认失败';
-        }
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
+            $this->confirm_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            if($this->save()) {
+                $response['msg'] = '确认成功';
+            }
 
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
+            //记录操作
+            $orderOperatorLog = new OrderOperatorLog();
+            $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '500',
+                'msg' => '确认失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
+        }
         return $response;
     }
 
@@ -523,19 +535,27 @@ class Order extends \yii\db\ActiveRecord{
             $response['msg'] = '开始时间未到';
             return $response;
         }
-        $this->order_status = self::ORDER_STATUS_IN_SERVICE;
-        $this->begin_service_time = date('Y-m-d H:i:s');
-        $this->operator_id = \Yii::$app->user->id;
-        if($this->save()) {
-            $response['msg'] = '开始服务成功';
-        }else{
-            $response['code'] = '412';
-            $response['msg'] = '开始服务失败';
-        }
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->order_status = self::ORDER_STATUS_IN_SERVICE;
+            $this->begin_service_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            if($this->save()) {
+                $response['msg'] = '开始服务成功';
+            }
 
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'begin_service', $response);
+            //记录操作
+            $orderOperatorLog = new OrderOperatorLog();
+            $orderOperatorLog->addLog($this->order_no, 'begin_service', $response);
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '500',
+                'msg' => '开始服务失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
+        }
         return $response;
     }
 
@@ -563,28 +583,29 @@ class Order extends \yii\db\ActiveRecord{
             if($refundAmount > 0){
                 $this->real_amount = $realAmount;
             }
-            $this->save();
-
-            //退款@TODO...
-
+            if($this->save()){
+                $response['msg'] = '完成订单成功';
+            }
 
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
-            $response['msg'] = '完成订单成功';
+            //退款@TODO...
+
+
+            //记录操作
+            $orderOperatorLog = new OrderOperatorLog();
+            $orderOperatorLog->addLog($this->order_no, 'finish', $response);
+
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '400',
+                'code' => '500',
                 'msg' => '完成订单处理失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
         }
-
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'finish', $response);
         return $response;
     }
 
@@ -620,20 +641,24 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_CANCEL;
             $this->cancel_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            $this->save();
-            $response['msg'] = '取消成功';
+            if($this->save()){
+                $response['msg'] = '取消成功';
+            }
+
+            //记录操作
+            $orderOperatorLog = new OrderOperatorLog();
+            $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
+
+            $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '400',
+                'code' => '500',
                 'msg' => '取消失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
         }
 
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
         return $response;
     }
 
@@ -648,19 +673,28 @@ class Order extends \yii\db\ActiveRecord{
             $response['msg'] = '订单状态错误';
             return $response;
         }
-        $this->order_status = self::ORDER_STATUS_END_SERVICE;
-        $this->evaluate_time = date('Y-m-d H:i:s');
-        $this->operator_id = \Yii::$app->user->id;
-        if($this->save()) {
-            $response['msg'] = '评价成功';
-        }else{
-            $response['code'] = '412';
-            $response['msg'] = '评价失败';
+        $transaction = \Yii::$app->db->beginTransaction();
+        try{
+            $this->order_status = self::ORDER_STATUS_END_SERVICE;
+            $this->evaluate_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            if($this->save()) {
+                $response['msg'] = '评价成功';
+            }
+
+            //记录操作
+            $orderOperatorLog = new OrderOperatorLog();
+            $orderOperatorLog->addLog($this->order_no, 'evaluate', $response);
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            $response = [
+                'code' => '500',
+                'msg' => '评价失败:'.$e->getMessage(),
+                'errorMsg' => $e->getMessage()
+            ];
         }
 
-        //记录操作
-        $orderOperatorLog = new OrderOperatorLog();
-        $orderOperatorLog->addLog($this->order_no, 'evaluate', $response);
         return $response;
     }
 

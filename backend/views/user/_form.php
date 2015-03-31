@@ -13,7 +13,6 @@ use kartik\datecontrol\DateControl;
 ?>
 
 <div class="user-form">
-
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);
     echo Form::widget([
         'model' => $model,
@@ -60,5 +59,4 @@ use kartik\datecontrol\DateControl;
     //echo $form->field($model, 'pic')->inputOptions('IN'); ;
     echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
-
 </div>

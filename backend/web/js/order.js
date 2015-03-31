@@ -59,7 +59,7 @@ $('body').on('click', 'button.jsConfirmOrder', function () {
                 location.href = selectWorkerUrl;
             }else{
                 button.attr('disabled', false);
-                button.text('支付');
+                button.text('确认');
             }
         }
     });
@@ -116,7 +116,7 @@ $('body').on('click', 'button.jsFinishOrder', function () {
                 location.reload();
             }else{
                 button.attr('disabled', false);
-                button.text('支付');
+                button.text('完成');
             }
         }
     });
@@ -144,7 +144,7 @@ $('body').on('click', 'button.jsCancelOrder', function () {
                 location.reload();
             }else{
                 button.attr('disabled', false);
-                button.text('支付');
+                button.text('取消');
             }
         }
     });

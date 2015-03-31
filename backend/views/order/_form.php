@@ -180,7 +180,7 @@ use backend\models\OrderMaster;
             ]);
 
             //续单
-            if($model->is_continue == OrderMaster::IS_CONTINUE_YES){
+            if($model->is_continue){
                 echo $form->field($model, 'is_continue', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                 echo $form->field($model, 'worker_no', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                 echo $form->field($model, 'worker_name', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);

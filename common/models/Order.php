@@ -427,8 +427,8 @@ class Order extends \yii\db\ActiveRecord{
                 $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
                 $this->pay_time = date('Y-m-d H:i:s');
                 $this->operator_id = \Yii::$app->user->id;
-                if($this->save()) {
-                    $response['msg'] = '支付成功';
+                if(!$this->save()) {
+                    throw new HttpException(400, print_r($this->getErrors(), true));
                 }
 
                 //添加护工排期时间
@@ -449,6 +449,7 @@ class Order extends \yii\db\ActiveRecord{
                 ];
                 Wallet::addConRecords($params);
             }
+            $response['msg'] = '支付成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -490,13 +491,14 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
             $this->confirm_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()) {
-                $response['msg'] = '确认成功';
+            if(!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
+            $response['msg'] = '确认成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -532,13 +534,14 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_IN_SERVICE;
             $this->begin_service_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()) {
-                $response['msg'] = '开始服务成功';
+            if(!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'begin_service', $response);
+            $response['msg'] = '开始服务成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -585,12 +588,13 @@ class Order extends \yii\db\ActiveRecord{
                     'uid' => $this->uid,
                     'detail_money' => $refundAmount,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
-                    'wallet_money' => $wallet->money
+                    'wallet_money' => $wallet->money,
+                    'admin_uid' => \Yii::$app->user->id
                 ];
                 Wallet::addConRecords($params);
             }
-            if($this->save()){
-                $response['msg'] = '完成订单成功';
+            if(!$this->save()){
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //删除护工排期时间
@@ -599,6 +603,7 @@ class Order extends \yii\db\ActiveRecord{
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'finish', $response);
+            $response['msg'] = '完成订单成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -628,29 +633,36 @@ class Order extends \yii\db\ActiveRecord{
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
-            //退款操作@TODO...
+            //退款操作
             if(in_array($this->order_status, [self::ORDER_STATUS_WAIT_CONFIRM,self::ORDER_STATUS_WAIT_SERVICE])){
-                $wallet = new Wallet();
-                $rechargeParams = [
+                $refundAmount = $this->total_amount;
+                $wallet = Wallet::refundMoney($this->uid, $refundAmount);
+
+                //添加退款记录
+                $params = [
+                    'order_id' => $this->order_id,
+                    'order_no' => $this->order_no,
                     'uid' => $this->uid,
-                    'pay_from' => WalletUserDetail::PAY_FROM_BACKEND,
-                    'top' => 0,
-                    'detail_money' => $this->total_amount
+                    'detail_money' => $refundAmount,
+                    'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
+                    'wallet_money' => $wallet->money,
+                    'admin_uid' => \Yii::$app->user->id
                 ];
-                $wallet->recharge($rechargeParams);
+                Wallet::addConRecords($params);
             }
 
             $this->order_status = self::ORDER_STATUS_CANCEL;
             $this->cancel_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()){
-                $response['msg'] = '取消成功';
+            if(!$this->save()){
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
 
+            $response['msg'] = '取消成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -680,13 +692,14 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_END_SERVICE;
             $this->evaluate_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()) {
-                $response['msg'] = '评价成功';
+            if(!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'evaluate', $response);
+            $response['msg'] = '评价成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();

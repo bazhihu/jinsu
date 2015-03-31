@@ -96,6 +96,26 @@ class Wallet
         }
         return $walletUser;
     }
+
+    /**
+     * 退款
+     * @param $uid
+     * @param $money
+     * @return null|static
+     * @throws HttpException
+     */
+    public static function refundMoney($uid, $money){
+        $wallet = WalletUser::findOne(['uid'=>$uid]);
+        if(empty($wallet)){
+            NotFoundHttpException('The requested user wallet does not exist.');
+        }
+
+        $wallet->money = $wallet->money + $money;
+        if(!$wallet->save()){
+            throw new HttpException(400, print_r($wallet->getErrors(), true));
+        }
+        return $wallet;
+    }
     /**
      * 查询用户账户信息
      * @param $uid 用户ID

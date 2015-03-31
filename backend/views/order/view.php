@@ -187,6 +187,11 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 'attribute'=>'total_amount'
             ],
             [
+                'attribute'=>'real_amount',
+                'value'=>'<font style="font-weight: bold;color: #aa0000">'.$model->real_amount.'</font>',
+                'format'=>'raw'
+            ],
+            [
                 'attribute'=>'hospital_id',
                 'type'=>DetailView::INPUT_WIDGET,
                 'value'=>Hospitals::getName($model->hospital_id)
@@ -264,3 +269,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$('body').on('click', '.panel-heading', function () {
+    $(this).siblings().toggle();
+});
+</script>

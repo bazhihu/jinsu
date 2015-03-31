@@ -33,6 +33,7 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const WALLET_TYPE_CONSUME = 1; //消费
     const WALLET_TYPE_RECHARGE = 2; //充值
     const WALLET_TYPE_WITHDRAWALS = 3; //提现
+    const WALLET_TYPE_REFUND = 4; //退款
 
     #支付渠道
     const PAY_FROM_BACKEND = 'backend'; //后台现金
@@ -53,10 +54,11 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            //[['pay_from'],'required'],
             [['detail_money','uid'],'required','on'=>'pay_create'],
             [['detail_money','uid'],'number','on'=>'pay_create'],
 
-            [['detail_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from'],'required','on'=>'consume'],
+            [['detail_no','uid','order_no','order_id','detail_money','detail_type','wallet_money','detail_time'],'required','on'=>'consume'],
 
             [['order_id', 'worker_id', 'uid', 'detail_type', 'admin_uid'], 'integer'],
             [['wallet_money'], 'number'],

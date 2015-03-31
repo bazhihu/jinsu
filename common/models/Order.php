@@ -26,10 +26,6 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
     const ORDER_SOURCES_SERVICE = 'service'; //客服
 
-    //是否续单
-    const IS_CONTINUE_YES = 1;
-    const IS_CONTINUE_NO = 0;
-
     static $orderSources = [
         self::ORDER_SOURCES_WEB => '网站',
         self::ORDER_SOURCES_MOBILE => '移动客户端',
@@ -233,7 +229,7 @@ class Order extends \yii\db\ActiveRecord{
             $orderData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
             //获取护工价格
-            if($orderData['is_continue'] != self::IS_CONTINUE_YES){
+            if(empty($orderData['is_continue'])){
                 if(isset($orderData['worker_no'])){
                     $worker = Worker::findOne($orderData['worker_no']);
                     $orderData['base_price'] = $worker->price;
@@ -404,14 +400,13 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单支付
-     * @param string $payFrom 支付渠道
      * @param string $remark 备注
      * @return array
      * @throws ErrorException
      * @throws HttpException
      * @throws \yii\db\Exception
      */
-    public function pay($payFrom, $remark = null){
+    public function pay($remark = null){
         //计算订单总价
         $totalPrice = $this->calculateTotalPrice();
         if($totalPrice <= 0){
@@ -432,8 +427,8 @@ class Order extends \yii\db\ActiveRecord{
                 $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
                 $this->pay_time = date('Y-m-d H:i:s');
                 $this->operator_id = \Yii::$app->user->id;
-                if($this->save()) {
-                    $response['msg'] = '支付成功';
+                if(!$this->save()) {
+                    throw new HttpException(400, print_r($this->getErrors(), true));
                 }
 
                 //添加护工排期时间
@@ -450,11 +445,11 @@ class Order extends \yii\db\ActiveRecord{
                     'detail_money' => $totalPrice,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_CONSUME,
                     'wallet_money' => $response['money'],
-                    'pay_from' => $payFrom
+                    'admin_uid' => \Yii::$app->user->id
                 ];
-                $wallet = new Wallet();
-                $wallet->addConRecords($params);
+                Wallet::addConRecords($params);
             }
+            $response['msg'] = '支付成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -496,13 +491,14 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
             $this->confirm_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()) {
-                $response['msg'] = '确认成功';
+            if(!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'confirm', $response, $remark);
+            $response['msg'] = '确认成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -538,13 +534,14 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_IN_SERVICE;
             $this->begin_service_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()) {
-                $response['msg'] = '开始服务成功';
+            if(!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'begin_service', $response);
+            $response['msg'] = '开始服务成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -578,23 +575,35 @@ class Order extends \yii\db\ActiveRecord{
             //计算实际金额
             $realAmount = $this->calculateTotalPrice();
             $refundAmount = $this->total_amount - $realAmount;
+
+            //退款
             if($refundAmount > 0){
                 $this->real_amount = $realAmount;
+                $wallet = Wallet::addMoney($this->uid, $refundAmount);
+
+                //添加退款记录
+                $params = [
+                    'order_id' => $this->order_id,
+                    'order_no' => $this->order_no,
+                    'uid' => $this->uid,
+                    'detail_money' => $refundAmount,
+                    'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
+                    'wallet_money' => $wallet->money,
+                    'admin_uid' => \Yii::$app->user->id
+                ];
+                Wallet::addConRecords($params);
             }
-            if($this->save()){
-                $response['msg'] = '完成订单成功';
+            if(!$this->save()){
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
-            //退款@TODO...
-
-
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'finish', $response);
-
+            $response['msg'] = '完成订单成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -624,29 +633,36 @@ class Order extends \yii\db\ActiveRecord{
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
-            //退款操作@TODO...
+            //退款操作
             if(in_array($this->order_status, [self::ORDER_STATUS_WAIT_CONFIRM,self::ORDER_STATUS_WAIT_SERVICE])){
-                $wallet = new Wallet();
-                $rechargeParams = [
+                $refundAmount = $this->total_amount;
+                $wallet = Wallet::refundMoney($this->uid, $refundAmount);
+
+                //添加退款记录
+                $params = [
+                    'order_id' => $this->order_id,
+                    'order_no' => $this->order_no,
                     'uid' => $this->uid,
-                    'pay_from' => WalletUserDetail::PAY_FROM_BACKEND,
-                    'top' => 0,
-                    'detail_money' => $this->total_amount
+                    'detail_money' => $refundAmount,
+                    'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
+                    'wallet_money' => $wallet->money,
+                    'admin_uid' => \Yii::$app->user->id
                 ];
-                $wallet->recharge($rechargeParams);
+                Wallet::addConRecords($params);
             }
 
             $this->order_status = self::ORDER_STATUS_CANCEL;
             $this->cancel_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()){
-                $response['msg'] = '取消成功';
+            if(!$this->save()){
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
 
+            $response['msg'] = '取消成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -676,13 +692,14 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_END_SERVICE;
             $this->evaluate_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
-            if($this->save()) {
-                $response['msg'] = '评价成功';
+            if(!$this->save()) {
+                throw new HttpException(400, print_r($this->getErrors(), true));
             }
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'evaluate', $response);
+            $response['msg'] = '评价成功';
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();

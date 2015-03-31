@@ -33,6 +33,7 @@ use kartik\widgets\DepDrop;
         'pluginOptions' => [
             'showUpload' => false,
             'browseLabel' => '浏览',
+            'showRemove' => false,
             'class'=>"file-loading",
             'allowedFileExtensions' => ['jpg', 'png'],
             'maxFileSize' =>2000,
@@ -109,7 +110,7 @@ use kartik\widgets\DepDrop;
            'options'=>['inline'=>true], 'maxlength'=>10
        ],
 
-        'phone1'=>[
+       /* 'phone1'=>[
             'type'=> Form::INPUT_TEXT,
             'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']
         ],
@@ -118,7 +119,7 @@ use kartik\widgets\DepDrop;
             'type'=> Form::INPUT_TEXT,
             'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
         ],
-
+        */
         'level'=>[
             'type'=> Form::INPUT_RADIO_LIST,
             'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel(), 'options'=>['inline'=>true]
@@ -162,20 +163,28 @@ use kartik\widgets\DepDrop;
     ])->label('民族');
 
     //户口所在地
+   // $model->birth_place = 140000;
     echo $form->field($model, 'birth_place')->dropDownList(
         \backend\models\City::getList(1),
-        ['id'=>'birth_place','style'=>'width:30%','prompt'=>'请选择']);
+        [
+            'id'=>'birth_place',
+            'style'=>'width:30%',
+            'prompt'=>'请选择',
+        ]);
 
     // 户口所在地 Child # 1
+    $model->birth_place_city = 140300;
     echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
-        'options'=>['id'=>'birth_place_city','style'=>'width:30%'],
+        'options'=>[
+            'id'=>'birth_place_city',
+            'style'=>'width:30%'
+        ],
         'pluginOptions'=>[
             'depends'=>['birth_place'],
             'placeholder'=>'请选择',
             'url'=>Url::to(['worker/getcity']),
             'initialize' => true
         ]
-
     ])->label('');
 
     //户口所在地 Child # 2
@@ -188,6 +197,10 @@ use kartik\widgets\DepDrop;
             'initialize' => true
         ]
     ])->label('');
+
+
+
+
 
     //籍贯
     echo $form->field($model, 'native_province')->widget(Select2::classname(), [
@@ -238,8 +251,12 @@ use kartik\widgets\DepDrop;
 
     ActiveForm::end(); ?>
 
+
+
 </div>
 <?php
+
+
 /*?$js = <<<EOF
 var birth_place_city = $model->birth_place_city;
     jQuery(document).ready(function () {

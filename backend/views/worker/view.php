@@ -82,9 +82,9 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
                 'value'=>\backend\Models\Worker::getCertificateName($model->certificate)
             ],
 
-            'phone1',
+            //'phone1',
 
-            'phone2',
+           // 'phone2',
 
             [
                 'attribute'=>'level',

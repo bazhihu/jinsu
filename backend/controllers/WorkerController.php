@@ -83,9 +83,7 @@ class WorkerController extends Controller
                 $pic_name = $this->picUpload($params);
                 $params['Worker']['pic'] = $pic_name;
             }
-            $model->saveData($params['Worker'], 'create');
-            $model->attributes = $params;
-
+            $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
             }else {
@@ -109,12 +107,13 @@ class WorkerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
         //户口所在地
         if($model['birth_place']){
             $place = explode(',',$model['birth_place']);
-            $model->birth_place = $place[0];
-            $model->birth_place_city = $place[1];
-            $model->birth_place_area = $place[2];
+            $model->birth_place = $place[1];
+            $model->birth_place_city = $place[2];
+            $model->birth_place_area = $place[3];
         }
 
         //资质证书
@@ -141,9 +140,7 @@ class WorkerController extends Controller
                 $pic_name = $this->picUpload($params);
                 $params['Worker']['pic'] = $pic_name;
             }
-            $model->saveData($params['Worker'], 'update');
-            $model->attributes = $params;
-
+            $model->attributes =  $model->saveData($params['Worker'], 'update');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
             }else {
@@ -225,8 +222,8 @@ class WorkerController extends Controller
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $birth_place = $parents[0];
-                $out = City::getListPlace($birth_place);
-                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                $data  = City::getListPlace($birth_place);
+                echo Json::encode(['output'=>$data,'selected'=>140300]);
                 return;
             }
         }
@@ -240,7 +237,7 @@ class WorkerController extends Controller
             $birth_place_city = $parents[0];
             if ($birth_place_city != null) {
                 $out = City::getListPlace($birth_place_city);
-                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                echo Json::encode(['output'=>$out, 'selected'=>'140300']);
                 return;
             }
         }

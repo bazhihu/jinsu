@@ -311,8 +311,9 @@ class Order extends \yii\db\ActiveRecord{
      * @author zhangbo
      */
     public function calculateTotalPrice($returnDetail = false){
-
-        if(strtotime($this->start_time) >= strtotime($this->reality_end_time)){
+        $startTime = strtotime(date('Y-m-d', strtotime($this->start_time)));
+        $endTime = strtotime(date('Y-m-d', strtotime($this->reality_end_time)));
+        if($startTime >= $endTime){
             throw new ErrorException('开始时间不能大于结束时间');
         }
 
@@ -325,7 +326,7 @@ class Order extends \yii\db\ActiveRecord{
         $holidaysList = ArrayHelper::map(Holidays::find()->all(), 'id', 'date');
 
         //获取日期列表
-        $dates = $this->getDateList($this->start_time, $this->reality_end_time);
+        $dates = $this->getDateList($startTime, $endTime);
         //print_r($dates);exit;
 
         //价格明细
@@ -555,12 +556,20 @@ class Order extends \yii\db\ActiveRecord{
             $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
             $this->reality_end_time = date('Y-m-d H:i:s');
             $this->operator_id = \Yii::$app->user->id;
+
+            //计算实际金额
+            $realAmount = $this->calculateTotalPrice();
+            $refundAmount = $this->total_amount - $realAmount;
+            if($refundAmount > 0){
+                $this->real_amount = $realAmount;
+            }
             $this->save();
+
+            //退款@TODO...
+
 
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
-
-            //退款@Todo...
 
             $response['msg'] = '完成订单成功';
             $transaction->commit();
@@ -593,23 +602,25 @@ class Order extends \yii\db\ActiveRecord{
 
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            $this->order_status = self::ORDER_STATUS_CANCEL;
-            $this->cancel_time = date('Y-m-d H:i:s');
-            $this->operator_id = \Yii::$app->user->id;
-            $this->save();
-
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
-            //退款操作
+            //退款操作@TODO...
             if(in_array($this->order_status, [self::ORDER_STATUS_WAIT_CONFIRM,self::ORDER_STATUS_WAIT_SERVICE])){
                 $wallet = new Wallet();
                 $rechargeParams = [
-
+                    'uid' => $this->uid,
+                    'pay_from' => WalletUserDetail::PAY_FROM_BACKEND,
+                    'top' => 0,
+                    'detail_money' => $this->total_amount
                 ];
                 $wallet->recharge($rechargeParams);
             }
 
+            $this->order_status = self::ORDER_STATUS_CANCEL;
+            $this->cancel_time = date('Y-m-d H:i:s');
+            $this->operator_id = \Yii::$app->user->id;
+            $this->save();
             $response['msg'] = '取消成功';
         }catch (Exception $e){
             $transaction->rollBack();

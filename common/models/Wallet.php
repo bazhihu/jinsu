@@ -34,7 +34,7 @@ class Wallet
      * @param $param
      * [
      *      'uid'           =>'', //用户ID
-     *      'pay_from'      =>'', //支付渠道 1 backstage(后台)|2 other
+     *      'pay_from'      =>'', //支付渠道
      *      'top'           =>'', //充值类型 0为正充值|1为负充值
      *      'detail_money'  =>'', //充值金额
      * ]

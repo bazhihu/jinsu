@@ -228,7 +228,7 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','idcard','phone1'], 'required'],
+            [['name','idcard'], 'required'],
             [['gender'],'string', 'max' => 1],
             [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],

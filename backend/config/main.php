@@ -37,7 +37,13 @@ return [
             ],
             'menus' => [
                 'assignment' => [
-                    'label' => 'Grand Access' // change label
+                    'label' => '权限管理' // change label
+                ],
+                'role' => [
+                    'label' => '角色' // change label
+                ],
+                'permission' => [
+                    'label' => '权限' // change label
                 ],
                 'route' => null, // disable menu route
             ]

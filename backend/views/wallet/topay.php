@@ -89,7 +89,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'用户账号',
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->mobile;
+                    return \backend\Models\User::findOne(['id'=>$model->uid])?\backend\Models\User::findOne(['id'=>$model->uid])->mobile:"";
                 },
             ],
             [
@@ -118,14 +118,15 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
             ['class' => 'yii\grid\ActionColumn',
                 'header'=>'操作',
                     'buttons' => [
-                    'update' => function ($url, $model) {
+                    'pay' => function ($url, $model) {
                         return $model->status==2?Html::button('付款', [
                             'title' => Yii::t('yii', '付款'),
                             'class' => 'btn btn-default jspay',
+                            'data-url'=>$url,
                         ]):"";
                     },
                 ],
-                'template'=>'{update}',
+                'template'=>'{pay}',
             ],
         ],
         'panel' => [

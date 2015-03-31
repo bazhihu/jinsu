@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use backend\models\Recharge;
+use common\models\Wallet;
 use Yii;
 use backend\models\WalletWithdrawcashSearch;
 use backend\models\User;
@@ -60,7 +62,7 @@ class WalletController extends Controller
         $queryParams['WalletUserDetailSearch']['detail_type'] = 2;
         $dataProvider = $searchModel->search($queryParams);
 
-        return $this->render('index', [
+        return $this->render('pay-index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -96,23 +98,21 @@ class WalletController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionApplyCash()
+    public function actionApplyCash($uid)
     {
-        $uid = Yii::$app->request->get('uid');
+        $user = WalletUser::findOne(['uid'=>$uid]);
+        if(empty($user)){
+            throw new NotFoundHttpException('user not exist.');
+        }
 
-        if($uid)
-        {
-            $user = WalletUser::findOne(['uid'=>$uid]);
-
-            $model = new WalletWithdrawcash(['scenario' => 'applyCash']);
-            if ($model->load(Yii::$app->request->post()) && $model->create()) {
-                return $this->redirect(['applyList']);
-            } else {
-                return $this->render('applyCash', [
-                    'model' => $model,
-                    'user'  => $user,
-                ]);
-            }
+        $model = new WalletWithdrawcash(['scenario' => 'applyCash']);
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            return $this->redirect(['applyList']);
+        } else {
+            return $this->render('applyCash', [
+                'model' => $model,
+                'user'  => $user,
+            ]);
         }
     }
 
@@ -260,32 +260,43 @@ class WalletController extends Controller
      * 充值
      * @return string|\yii\web\Response
      */
-    public function actionPayCreate()
+    public function actionPayCreate($uid)
     {
-        $uid=Yii::$app->request->get("uid");
-        if($uid)
-        {
-            $model = new WalletUserDetail(['scenario' => 'pay_create']);
-            if ($model->load(Yii::$app->request->post()) && $model->recharge()) {
-                return $this->redirect(['pay-index', 'uid' => $model->uid]);
-            } else {
-                $userRow=array();
-                $mobile = User::findOne(['id'=>$uid])->mobile;
-                $admin_name = Yii::$app->user->identity->username;
+        $user = User::findOne(['id'=>$uid]);
+        if(empty($user)){
+            throw new NotFoundHttpException('user not exist.');
+        }
 
-                if($mobile && $admin_name){
-                    $userRow = [
-                        'uid'=>$uid,
-                        'mobile'=>$mobile,  //电话帐号
-                        'admin_name'=>$admin_name,  //操作者
-                    ];
+        if (Yii::$app->request->post()) {
+            $params = Yii::$app->request->post('Recharge');
+            if($params['uid'] && $params['money'])
+            {
+                #支付渠道-后台
+                $params['pay_from'] = WalletUserDetail::PAY_FROM_BACKEND;
+                $wallet = new Wallet();
+                if($wallet->recharge($params)){
+                    return $this->redirect(['pay-index', 'uid' => $uid]);
                 }
-                return $this->render('pay_create', [
-                    'model' => $model,
-                    'userRow' => $userRow,
-                ]);
             }
         }
+
+        $model = new Recharge();
+
+        $mobile     = $user->mobile;
+        $admin_name = Yii::$app->user->identity->username;
+        if($mobile && $admin_name){
+            $userRow = [
+                'uid'       =>$uid,
+                'mobile'    =>$mobile,  //电话帐号
+                'admin_name'=>$admin_name,  //操作者
+            ];
+        }
+        return $this->render('pay_create', [
+            'model'   => $model,
+            'userRow' => $userRow,
+        ]);
+
+
     }
 
     /**

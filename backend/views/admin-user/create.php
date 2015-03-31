@@ -14,10 +14,7 @@ use kartik\widgets\Select2;
 $this->title = '新增帐号';
 ?>
 
-<div class="panel panel-info col-xs-8">
-    <div class="panel-heading">
-        <h3 class="panel-title"></h3>
-    </div>
+<div class="panel panel-info" style="margin: 8%;">
     <div class="panel-body">
         <div class="admin-user-create">
             <div class="page-header">

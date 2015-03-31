@@ -10,7 +10,6 @@ use kartik\widgets\DateTimePicker;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '充值记录';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="wallet-user-detail-index">
 
@@ -68,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
-        )->dropDownList(['1'=>'线下支付','2'=>'微信支付','3'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
+        )->dropDownList(['backend'=>'线下支付','wechat'=>'微信支付','alipay'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
 
         <div class="form-group" style="padding-top: 25px">
             <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -90,18 +89,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->username;
+                    return \backend\Models\User::findOne(['id'=>$model->uid])?\backend\Models\User::findOne(['id'=>$model->uid])->username:"";
                 },
             ],
             [
                 'attribute'=>'pay_from',
                 'value'=>function($model){
-                    if($model->pay_from == '1')
+                    if($model->pay_from == 'backend')
                     {
                         return '现金支付';
-                    }elseif($model->pay_from == '2'){
+                    }elseif($model->pay_from == 'alipay'){
                         return '支付宝';
-                    }elseif($model->pay_from == '3'){
+                    }elseif($model->pay_from == 'wechat'){
                         return '微信支付';
                     }
                 }

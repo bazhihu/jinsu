@@ -23,8 +23,6 @@ $route = $controller->route;
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li><a href="">财务管理</a></li>
-    <li <?php if($route == 'wallet/pay-create'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute(['wallet/pay-create', 'uid' => '2']);?>">充值</a></li>
     <li <?php if($route == 'wallet/pay-index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/pay-index');?>">充值记录</a></li>
     <li <?php if($route == 'wallet/apply-list'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/apply-list');?>">提现申请</a></li>
     <li <?php if($route == 'wallet/to-pay'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/to-pay');?>">提现支付</a></li>

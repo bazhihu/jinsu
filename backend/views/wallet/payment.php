@@ -89,7 +89,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'用户账号',
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->mobile;
+                    return \backend\Models\User::findOne(['id'=>$model->uid])?\backend\Models\User::findOne(['id'=>$model->uid])->mobile:"";
                 },
             ],
             [

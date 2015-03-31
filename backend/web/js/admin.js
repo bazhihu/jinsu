@@ -5,10 +5,11 @@ $('body').on('click', 'span.glyphicon-remove', function () {
     }
     var num = $(this);
     var key = num.parent().parent().parent().attr('data-key');
+    var url = $(this).parent().attr('data-url');
     $.ajax({
         type    :'POST',
         cache   : false,
-        url     : '?r=admin-user/delete',
+        url     : url,
         data    : {'id':key},
         dataType : 'json' ,
         success : function(response) {
@@ -38,10 +39,11 @@ $('body').on('click', 'span.glyphicon-ok', function () {
     }
     var num = $(this);
     var key = num.parent().parent().parent().attr('data-key');
+    var url = $(this).parent().attr('data-url');
     $.ajax({
         type    :'POST',
         cache   : false,
-        url     : '?r=admin-user/delete',
+        url     : url,
         data    : {'id':key},
         dataType : 'json' ,
         success : function(response) {

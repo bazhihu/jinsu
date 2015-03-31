@@ -6,13 +6,16 @@ $('body').on('click', 'button.jsapplypass', function () {
     var button = $(this);
     var id = button.parent().parent().attr('data-key'),
         todo = 1;//同意
+
+    var url = $(this).attr('data-url');
+
     $.ajax({
         type    : "POST",
         dataType: "json",
         async   :false,
         cache   :false,
         timeout :30000,
-        url     : '?r=wallet/apply',
+        url     : url,
         data    : {'id':id,'todo':todo},
         success: function(json){
             if(json.code == '200'){
@@ -32,13 +35,14 @@ $('body').on('click', 'button.jsapplynix', function () {
     var button = $(this);
     var id = button.parent().parent().attr('data-key'),
         todo = 0;//拒绝
+    var url = $(this).attr('data-url');
     $.ajax({
         type    : "POST",
         dataType: "json",
         async   :false,
         cache   :false,
         timeout :30000,
-        url     : '?r=wallet/apply',
+        url     : url,
         data    : {'id':id ,'todo':todo},
         success: function(json){
             if(json.code == '200'){
@@ -57,13 +61,15 @@ $('body').on('click', 'button.jspay', function () {
     }
     var button = $(this);
     var id = button.parent().parent().attr('data-key');
+
+    var url = $(this).attr('data-url');
     $.ajax({
         type    : "POST",
         dataType: "json",
         async   :false,
         cache   :false,
         timeout :30000,
-        url     : '?r=wallet/pay',
+        url     : url,
         data    : {'id':id },
         success: function(json){
             if(json.code == '200'){
@@ -75,11 +81,11 @@ $('body').on('click', 'button.jspay', function () {
         }
     });
 });
-//申请拒绝
+//充值
 $('body').on('click', 'button.recharge', function () {
 
-    var value = $('#walletuserdetail-detail_money').val(),
-        name = $('#walletuserdetail-uid').val();
+    var value = $('#recharge-money').val(),
+        name = $('#recharge-uid').val();
 
     if(!confirm('确认给用户'+name+'：充值'+value+'人民币？')){
         return false;

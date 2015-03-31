@@ -31,7 +31,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 [
                     'value'=>$userRow['uid'],
                 ]
-            )
+            )->label("");
         ?>
         <?= $form->field($model, 'uid')
             ->textInput(
@@ -41,8 +41,8 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 ]
             )->label('充值帐号') ?>
 
-        <?= $form->field($model, 'detail_money')->textInput()->label('充值金额') ?>
-        <?= $form->field($model, 'mobile')->textInput(
+        <?= $form->field($model, 'money')->textInput()->label('充值金额') ?>
+        <?= $form->field($model, 'admin_name')->textInput(
             [
                 'disabled'=>true,
                 'value'=>$userRow['admin_name'],

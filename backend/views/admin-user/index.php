@@ -69,12 +69,14 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                             "#",
                             [
                                 'title' => Yii::t('yii', '关闭'),
+                                'data-url'=>$url
                             ]):
                             Html::a(
                             '<span class="glyphicon col-md-offset-4 glyphicon-ok"></span>',
                             '#',
                             [
                                 'title' => Yii::t('yii', '恢复'),
+                                'data-url'=>$url
                             ]
                         );
                     },

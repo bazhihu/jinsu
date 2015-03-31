@@ -113,6 +113,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
 
         if($this->payee_time<date('Y-m-d H:i:s')){
             $this->addError('payee_type','取款时间错误！');
+            return false;
         }
         #补充必要操作记录
         $params = [

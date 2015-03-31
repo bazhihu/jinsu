@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: HZQ
+ * Date: 2015/3/31
+ * Time: 20:52
+ */
 namespace common\models;
 
-use backend\models\WalletIncrement;
 use Yii;
+use backend\models\WalletIncrement;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
 use yii\web\HttpException;
@@ -26,7 +31,7 @@ use yii\web\HttpException;
  * @property string $extract_to 提现渠道
  * @property integer $admin_uid 管理员ID
  */
-class Wallet
+class Wallet extends \yii\db\ActiveRecord
 {
     /**
      * 用户充值
@@ -34,7 +39,7 @@ class Wallet
      * [
      *      'uid'           =>'', //用户ID
      *      'pay_from'      =>'', //支付渠道 1 (后台)|2 (支付宝)|3 (微信)
-     *      'detail_money'  =>'', //充值金额
+     *      'money'         =>'', //充值金额
      * ]
      * @return bool
      * @throws HttpException
@@ -46,17 +51,17 @@ class Wallet
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             #更新wallet-user 表
-            $walletUser = self::addMoney($params);
+            $walletUser = $this->addMoney($params['uid'],$params['money']);
 
             $detail = array();//添加消费记录
             $detail['uid']          = $walletUser->uid;
-            $detail['detail_money'] = $params['detail_money'];
+            $detail['detail_money'] = $params['money'];
             $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
             $detail['wallet_money'] = $walletUser->money;
             $detail['pay_from']     = $params['pay_from'];
             $detail['admin_uid']    = Yii::$app->user->identity->getId();
 
-            $reslut = self::addConRecords($detail);
+            $reslut = $this->addConRecords($detail);
             if ($reslut['code'] !== '200') {
                 throw new HttpException(400, "", true);
             }
@@ -73,22 +78,22 @@ class Wallet
      * @param $param
      * [
      *      'uid'           =>'', //用户ID
-     *      'detail_money'  =>'', //充值金额
+     *      'money'  =>'', //充值金额
      * ]
      * @throws HttpException
      * @throws \yii\db\Exception
      */
-    public function addMoney($params){
+    public function addMoney($uid,$money){
         #获取所需的账户信息
-        $walletUser = self::checkAccount($params['uid']);
+        $walletUser = $this->checkAccount($uid);
 
         $user = array();//用户钱包表所需字段
-        $user['money']      = $walletUser->money + $params['detail_money'];//账户余额
-        $user['money_pay']  = $walletUser->money_pay + $params['detail_money'];//账户累积充值金额
+        $user['money']      = $walletUser->money + $money;//账户余额
+        $user['money_pay']  = $walletUser->money_pay + $money;//账户累积充值金额
 
-        if($params['detail_money']<0)
+        if($money<0)
         {
-            $user['money_pay_s'] = $walletUser->money_pay_s - $params['detail_money'];//累积充值负金额
+            $user['money_pay_s'] = $walletUser->money_pay_s + abs($money);//累积充值负金额
         }
         $walletUser->attributes = $user;
 

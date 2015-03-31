@@ -96,7 +96,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'用户账号',
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->mobile;
+                    return \backend\Models\User::findOne(['id'=>$model->uid])?\backend\Models\User::findOne(['id'=>$model->uid])->mobile:"";
                 },
             ],
             [
@@ -123,17 +123,19 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
             ['class' => 'yii\grid\ActionColumn',
                 'header'=>'操作',
                     'buttons' => [
-                    'update' => function ($url, $model) {
+                    'apply' => function ($url, $model) {
                         return $model->status?"":Html::button('同意', [
                             'title' => Yii::t('yii', '同意'),
                             'class' => 'btn btn-default jsapplypass',
+                            'data-url'=>$url,
                         ]).Html::button('拒绝', [
                             'title' => Yii::t('yii', '拒绝'),
                             'class' => 'btn btn-danger jsapplynix',
+                            'data-url'=>$url,
                         ]);
                     },
                 ],
-                'template'=>'{update}',
+                'template'=>'{apply}',
             ],
             'remark_audit',
         ],

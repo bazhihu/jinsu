@@ -116,11 +116,12 @@ return [
             'errorAction' => 'site/error',
         ]
     ],
-//    'as access' => [
-//        'class' => 'mdm\admin\components\AccessControl',
-//        'allowActions' => [
-//            '*'
-//        ]
-//    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'site/login',
+            'site/error'
+        ]
+    ],
     'params' => $params,
 ];

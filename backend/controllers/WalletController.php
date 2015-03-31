@@ -13,6 +13,7 @@ use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * WalletUserDetailController implements the CRUD actions for WalletUserDetail model.
@@ -22,6 +23,16 @@ class WalletController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['pay-index', 'deduction-index', 'apply-cash', 'apply-list','apply','to-pay','pay','payment','pay-create'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -195,18 +206,18 @@ class WalletController extends Controller
      * @return string
      */
     public function actionPay(){
-        if(Yii::$app->request->isAjax && Yii::$app->user->identity->getId())
+        if(Yii::$app->request->isAjax)
         {
             $response = [
-                'code'      =>'200',
+                'code'  =>'200',
                 'msg'   =>'',
             ];
             $id     = Yii::$app->request->post()['id'];
             if($id) {
                 $walletWithdrawcash = new WalletWithdrawcash();
                 $params = [
-                    'id'    =>$id,
-                    'admin_uid'=>Yii::$app->user->identity->getId(),
+                    'id'        =>$id,
+                    'admin_uid' =>Yii::$app->user->identity->getId(),
                 ];
                 if($walletWithdrawcash->pay($params)){
                     $response['msg'] = '操作成功';
@@ -255,7 +266,7 @@ class WalletController extends Controller
         if($uid)
         {
             $model = new WalletUserDetail(['scenario' => 'pay_create']);
-            if ($model->load(Yii::$app->request->post()) && $model->recharge($uid)) {
+            if ($model->load(Yii::$app->request->post()) && $model->recharge()) {
                 return $this->redirect(['pay-index', 'uid' => $model->uid]);
             } else {
                 $userRow=array();

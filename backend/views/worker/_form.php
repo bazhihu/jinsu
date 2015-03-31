@@ -33,12 +33,15 @@ use kartik\widgets\DepDrop;
         'pluginOptions' => [
             'showUpload' => false,
             'browseLabel' => '浏览',
-            'showRemove' => false,
+            'class'=>"file-loading",
+            'allowedFileExtensions' => ['jpg', 'png'],
+            'maxFileSize' =>2000,
             'initialPreview'=>[
-                Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg", [ 'alt'=>'护工照片', 'title'=>'护工照片']),
-        ],
+                Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg", [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
+
+            ],
             'initialCaption'=>"护工照片",
-            'overwriteInitial'=>false
+            'overwriteInitial'=>true
         ]
     ]);
 

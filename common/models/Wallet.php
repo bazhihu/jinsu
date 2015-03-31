@@ -150,17 +150,14 @@ class Wallet
             'detail_type' => $params['detail_type'],//默认为1
             'wallet_money' => $params['wallet_money'],//当前账户余额
             'detail_time' => date('Y-m-d H:i:s'),
-            'pay_from' => $params['pay_from'],//后台为
+            'pay_from' => isset($params['pay_from']) ? $params['pay_from'] : null,
             'admin_uid' => isset($params['admin_uid']) ? $params['admin_uid'] : null,
             'extract_to' => isset($params['extract_to']) ? $params['extract_to'] : null,
             'remark' => isset($params['remark']) ? $params['remark'] : null,
         ];
         $walletUserDetail->setAttributes($userDetail);
-        if(!$walletUserDetail->save())
-        {
-            $response['code'] = '400';
-            $response['msg'] = '记录失败'.print_r($walletUserDetail->getErrors(), true);
-            return $response;
+        if(!$walletUserDetail->save()){
+            throw new HttpException(400, print_r($walletUserDetail->getErrors(), true));
         }
         $response['msg'] = '记录成功';
         return $response;
@@ -209,7 +206,7 @@ class Wallet
      * @throws \Exception
      * @author HZQ
      */
-    private function _generateWalletNo(){
+    private static function _generateWalletNo(){
         $walletIncrement = new WalletIncrement();
         $walletIncrement->insert();
         return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);

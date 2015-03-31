@@ -400,14 +400,13 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单支付
-     * @param string $payFrom 支付渠道
      * @param string $remark 备注
      * @return array
      * @throws ErrorException
      * @throws HttpException
      * @throws \yii\db\Exception
      */
-    public function pay($payFrom, $remark = null){
+    public function pay($remark = null){
         //计算订单总价
         $totalPrice = $this->calculateTotalPrice();
         if($totalPrice <= 0){
@@ -446,7 +445,7 @@ class Order extends \yii\db\ActiveRecord{
                     'detail_money' => $totalPrice,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_CONSUME,
                     'wallet_money' => $response['money'],
-                    'pay_from' => $payFrom
+                    'admin_uid' => \Yii::$app->user->id
                 ];
                 Wallet::addConRecords($params);
             }
@@ -586,8 +585,7 @@ class Order extends \yii\db\ActiveRecord{
                     'uid' => $this->uid,
                     'detail_money' => $refundAmount,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
-                    'wallet_money' => $wallet->money,
-                    'pay_from' => $payFrom
+                    'wallet_money' => $wallet->money
                 ];
                 Wallet::addConRecords($params);
             }

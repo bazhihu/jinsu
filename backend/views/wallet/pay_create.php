@@ -10,7 +10,6 @@ use kartik\widgets\Growl;
 /* @var $this yii\web\View */
 /* @var $model backend\models\WalletUserDetail */
 $this->title = '账号充值 用户ID：'.$userRow['uid'];
-$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
 <div class="panel panel-success" style="margin: 100px 300px 100px 300px;">
     <div class="panel-heading">
@@ -53,7 +52,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
             <?= Html::submitButton(
                 '充值',
                 [
-                    'class' =>'recharge btn btn-info btn-lg col-sm-4 col-md-offset-4',
+                    'class' =>'btn btn-info btn-lg col-sm-4 col-md-offset-4',
                 ]
             ) ?>
         </div>
@@ -63,3 +62,14 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
     </div>
 
 </div>
+<script type="text/javascript">
+    $("form").submit( function () {
+        var value = $('#recharge-money').val(),
+            name = $('#recharge-uid').val();
+
+        if(!confirm('确认给用户'+name+'：充值'+value+'人民币？')){
+            return false;
+        }
+        return true;
+    } );
+</script>

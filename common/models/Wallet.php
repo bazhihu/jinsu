@@ -155,6 +155,7 @@ class Wallet
      *      'admin_uid'     int  管理员ID
      * ]
      * @return array
+     * @throws HttpException
      */
     public static function addConRecords($params){
         $response = [

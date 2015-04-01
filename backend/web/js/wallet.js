@@ -82,7 +82,8 @@ $('body').on('click', 'button.jspay', function () {
     });
 });
 //充值
-$('body').on('click', 'button.recharge', function () {
+
+$('body').on('submit', '#w0', function () {
 
     var value = $('#recharge-money').val(),
         name = $('#recharge-uid').val();

@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: HZQ
- * Date: 2015/3/31
- * Time: 20:52
- */
+
 namespace common\models;
 
-use Yii;
 use backend\models\WalletIncrement;
+use Yii;
+use yii\base\Exception;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
 use yii\web\HttpException;
@@ -31,15 +27,15 @@ use yii\web\HttpException;
  * @property string $extract_to 提现渠道
  * @property integer $admin_uid 管理员ID
  */
-class Wallet extends \yii\db\ActiveRecord
+class Wallet
 {
     /**
      * 用户充值
      * @param $param
      * [
      *      'uid'           =>'', //用户ID
-     *      'pay_from'      =>'', //支付渠道 1 (后台)|2 (支付宝)|3 (微信)
-     *      'money'         =>'', //充值金额
+     *      'pay_from'      =>'', //支付渠道
+     *      'detail_money'  =>'', //充值金额
      * ]
      * @return bool
      * @throws HttpException
@@ -51,18 +47,18 @@ class Wallet extends \yii\db\ActiveRecord
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             #更新wallet-user 表
-            $walletUser = $this->addMoney($params['uid'],$params['money']);
+            $walletUser = self::addMoney($params['uid'], $params['detail_money']);
 
             $detail = array();//添加消费记录
             $detail['uid']          = $walletUser->uid;
-            $detail['detail_money'] = $params['money'];
+            $detail['detail_money'] = $params['detail_money'];
             $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
             $detail['wallet_money'] = $walletUser->money;
             $detail['pay_from']     = $params['pay_from'];
             $detail['admin_uid']    = Yii::$app->user->identity->getId();
 
-            $reslut = $this->addConRecords($detail);
-            if ($reslut['code'] !== '200') {
+            $result = self::addConRecords($detail);
+            if ($result['code'] !== '200') {
                 throw new HttpException(400, "", true);
             }
             $transaction->commit();
@@ -73,24 +69,24 @@ class Wallet extends \yii\db\ActiveRecord
         #事务-END
         return true;
     }
+
     /**
-     * 充值goto-Wallet-user
-     * @param $uid 用户ID
-     * @param $money 充值金额
-     * @return WalletUser|Wallet|null|static
+     * 加钱
+     * @param int $uid 用户ID
+     * @param number $money 钱
+     * @return WalletUser|Wallet|null
      * @throws HttpException
      */
-    public function addMoney($uid,$money){
+    public static function addMoney($uid, $money){
         #获取所需的账户信息
-        $walletUser = $this->checkAccount($uid);
+        $walletUser = self::checkAccount($uid);
 
         $user = array();//用户钱包表所需字段
         $user['money']      = $walletUser->money + $money;//账户余额
         $user['money_pay']  = $walletUser->money_pay + $money;//账户累积充值金额
 
-        if($money<0)
-        {
-            $user['money_pay_s'] = $walletUser->money_pay_s + abs($money);//累积充值负金额
+        if($money<0){
+            $user['money_pay_s'] = $walletUser->money_pay_s - $money;//累积充值负金额
         }
         $walletUser->attributes = $user;
 
@@ -100,20 +96,39 @@ class Wallet extends \yii\db\ActiveRecord
         }
         return $walletUser;
     }
+
+    /**
+     * 退款
+     * @param $uid
+     * @param $money
+     * @return null|static
+     * @throws HttpException
+     */
+    public static function refundMoney($uid, $money){
+        $wallet = WalletUser::findOne(['uid'=>$uid]);
+        if(empty($wallet)){
+            NotFoundHttpException('The requested user wallet does not exist.');
+        }
+
+        $wallet->money = $wallet->money + $money;
+        if(!$wallet->save()){
+            throw new HttpException(400, print_r($wallet->getErrors(), true));
+        }
+        return $wallet;
+    }
     /**
      * 查询用户账户信息
      * @param $uid 用户ID
      * @return WalletUser|null|static
      * @throws HttpException
      */
-    public function checkAccount($uid){
+    public static function checkAccount($uid){
 
         $walletUser = WalletUser::findOne(['uid'=>$uid]);
 
         if(empty($walletUser)){
             $walletUser = new WalletUser();
             $wallet['uid'] = $uid;
-
             $walletUser->attributes = $wallet;
             if(!$walletUser->save()){
                 throw new HttpException(400, print_r($walletUser->getErrors(), true));
@@ -140,34 +155,29 @@ class Wallet extends \yii\db\ActiveRecord
      * ]
      * @return array
      */
-    public function addConRecords($params){
+    public static function addConRecords($params){
         $response = [
             'code' => '200',
             'msg' => ''
         ];
         $walletUserDetail = new WalletUserDetail(['scenario' => 'consume']);
         $userDetail = [
-            'detail_no'  => self::_generateWalletNo(),
-            'order_id'      => isset($params['order_id'])?$params['order_id']:'',
-            'order_no'      => isset($params['order_no'])?$params['order_no']:'',
-
-            'uid'           => $params['uid'],
-            'detail_money'  => $params['detail_money'],
-            'detail_type'   => $params['detail_type'],//默认为backend
-            'wallet_money'  => $params['wallet_money'],//当前账户余额
-            'detail_time'   => date('Y-m-d H:i:s'),
-            'pay_from'      => $params['pay_from'],//后台为 1
-
-            'admin_uid'     => isset($params['admin_uid'])?$params['admin_uid']:'',
-            'extract_to'    => isset($params['extract_to'])?$params['extract_to']:'',
-            'remark'        => isset($params['remark'])?$params['remark']:'',
+            'detail_no' => self::_generateWalletNo(),
+            'order_id' => isset($params['order_id']) ? $params['order_id'] : null,
+            'order_no' => isset($params['order_no']) ? $params['order_no'] : null,
+            'uid' => $params['uid'],
+            'detail_money' => $params['detail_money'],
+            'detail_type' => $params['detail_type'],//默认为1
+            'wallet_money' => $params['wallet_money'],//当前账户余额
+            'detail_time' => date('Y-m-d H:i:s'),
+            'pay_from' => isset($params['pay_from']) ? $params['pay_from'] : null,
+            'admin_uid' => isset($params['admin_uid']) ? $params['admin_uid'] : null,
+            'extract_to' => isset($params['extract_to']) ? $params['extract_to'] : null,
+            'remark' => isset($params['remark']) ? $params['remark'] : null,
         ];
         $walletUserDetail->setAttributes($userDetail);
-        if(!$walletUserDetail->save())
-        {
-            $response['code'] = '412';
-            $response['msg'] = '记录失败'.print_r($walletUserDetail->getErrors(), true);
-            return $response;
+        if(!$walletUserDetail->save()){
+            throw new HttpException(400, print_r($walletUserDetail->getErrors(), true));
         }
         $response['msg'] = '记录成功';
         return $response;
@@ -216,7 +226,7 @@ class Wallet extends \yii\db\ActiveRecord
      * @throws \Exception
      * @author HZQ
      */
-    private function _generateWalletNo(){
+    private static function _generateWalletNo(){
         $walletIncrement = new WalletIncrement();
         $walletIncrement->insert();
         return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);

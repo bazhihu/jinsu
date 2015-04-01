@@ -419,8 +419,7 @@ class Order extends \yii\db\ActiveRecord{
 
         $transaction = \Yii::$app->db->beginTransaction();
         try{
-            $wallet = new Wallet();
-            $response = $wallet->deduction($this->uid, $totalPrice);
+            $response = Wallet::deduction($this->uid, $totalPrice);
             if($response['code'] == '200'){
                 //扣款成功，修改订单信息
                 $this->total_amount = $totalPrice;

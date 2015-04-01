@@ -89,6 +89,7 @@ $this->title = '护工管理';
 
             [
                 'class' => 'yii\grid\ActionColumn',
+                'header' => '操作',
                 'template' => '{view}&nbsp;&nbsp;{update}',
                 'buttons' => [
                 'update' => function ($url, $model) {

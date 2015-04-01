@@ -47,7 +47,6 @@ class AdminUserController extends Controller
     {
         $searchModel = new AdminUserSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,

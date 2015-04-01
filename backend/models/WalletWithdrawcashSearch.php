@@ -66,8 +66,8 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
             //->andFilterWhere(['like', 'remark_apply', $this->remark_apply])
             ->andFilterWhere(['>=', 'status', $this->start])
             ->andFilterWhere(['<=', 'status', $this->end])
-            ->andFilterWhere(['>', 'payee_time', $this->fromDate])
-            ->andFilterWhere(['<', 'payee_time', $this->toDate]);
+            ->andFilterWhere(['>=', 'time_apply', $this->fromDate])
+            ->andFilterWhere(['<=', 'time_apply', $this->toDate]);
             //->andFilterWhere(['like', 'payee_hospital', $this->payee_hospital])
             //->andFilterWhere(['like', 'payee_name', $this->payee_name])
             //->andFilterWhere(['like', 'payee_id_card', $this->payee_id_card]);

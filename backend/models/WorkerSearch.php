@@ -5,7 +5,6 @@ namespace backend\Models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\Models\Worker;
 
 /**
  * WorkerSearch represents the model behind the search form about `backend\Models\Worker`.

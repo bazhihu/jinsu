@@ -21,11 +21,11 @@ $this->title = '申请提现确认-用户信息核对';
         <div class="panel-body">
             <label><big>用户信息</big></label><br/>
 
-            <div style='padding: 33px;'><strong><span>用户账号:</span>&nbsp;&nbsp;&nbsp;<?=$user->uid?\backend\Models\User::findOne(['id'=>$user->uid])->username:'无' ?></strong></div>
+            <div style='padding: 33px;'><strong><span>用户账号:</span>&nbsp;&nbsp;&nbsp;<?=$user->uid?\backend\models\User::findOne(['id'=>$user->uid])->username:'无' ?></strong></div>
             <div style='padding: 33px;'><strong><span>账户余额:</span>&nbsp;&nbsp;&nbsp;<?=$user->money?$user->money:0?>元</strong></div>
 
 
-        </div>
+        </div>m
         <div class="panel-body">
             <label><big>取款信息</big></label>
             <?php

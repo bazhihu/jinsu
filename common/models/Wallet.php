@@ -5,6 +5,7 @@ namespace common\models;
 use backend\models\WalletIncrement;
 use Yii;
 use yii\base\Exception;
+use yii\web\NotFoundHttpException;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
 use yii\web\HttpException;
@@ -107,7 +108,7 @@ class Wallet
     public static function refundMoney($uid, $money){
         $wallet = WalletUser::findOne(['uid'=>$uid]);
         if(empty($wallet)){
-            NotFoundHttpException('The requested user wallet does not exist.');
+            throw new NotFoundHttpException('The requested user wallet does not exist.');
         }
 
         $wallet->money = $wallet->money + $money;
@@ -196,11 +197,7 @@ class Wallet
         ];
         //判断金额是否足够
         $wallet = WalletUser::findOne($uid);
-        if(empty($wallet->money)){
-            $money = 0;
-        }else{
-            $money = $wallet->money;
-        }
+        $money = empty($wallet->money) ? 0 : $wallet->money;
 
         $response['money'] = $money;
         if($amount > $money){

@@ -111,7 +111,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             [
                 'attribute'=>'order_status',
                 'type'=>DetailView::INPUT_WIDGET,
-                'value'=>OrderMaster::$orderStatusLabels[$model->order_status]
+                'value'=>'<font style="font-weight: bold;color: #aa0000">'.OrderMaster::$orderStatusLabels[$model->order_status].'</font>',
+                'format'=>'raw'
             ],
             'patient_state_coefficient',
             [
@@ -158,7 +159,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         ],
         'enableEditMode'=>false,
     ]);
-    
+
     echo DetailView::widget([
         'model' => $model,
         'condensed'=>false,

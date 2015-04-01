@@ -5,10 +5,9 @@ namespace backend\models;
 use Yii;
 use yii\base\model;
 use yii\data\ActiveDataProvider;
-use backend\Models\User;
 
 /**
- * UserSearch represents the model behind the search form about `backend\Models\User`.
+ * UserSearch represents the model behind the search form about `backend\models\User`.
  */
 class UserSearch extends User
 {

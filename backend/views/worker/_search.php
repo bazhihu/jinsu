@@ -10,7 +10,7 @@ use backend\models\Departments;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\WorkerSearch $model
+ * @var backend\models\WorkerSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>

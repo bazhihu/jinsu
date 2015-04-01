@@ -8,7 +8,7 @@ use backend\models\AdminUser;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\User $model
+ * @var backend\models\User $model
  */
 
 $this->title = $model->id;

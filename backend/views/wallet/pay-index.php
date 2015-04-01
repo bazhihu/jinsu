@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\DateTimePicker;
+use backend\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\WalletUserDetailSearch */
@@ -89,7 +90,7 @@ $this->title = '充值记录';
             [
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])?\backend\Models\User::findOne(['id'=>$model->uid])->username:"";
+                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->username:"";
                 },
             ],
             [

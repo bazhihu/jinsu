@@ -3,7 +3,7 @@ namespace backend\models;
 
 use Yii;
 use yii\base\Model;
-use backend\Models\User;
+use backend\models\User;
 
 
 class Tq extends Model

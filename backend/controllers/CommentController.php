@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\Models\Comment;
-use backend\Models\CommentSearch;
+use backend\models\Comment;
+use backend\models\CommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

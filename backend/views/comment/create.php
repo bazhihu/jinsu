@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\Comment $model
+ * @var backend\models\Comment $model
  */
 
 $this->title = '添加评价';

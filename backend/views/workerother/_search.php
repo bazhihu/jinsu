@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\WorkerotherSearch $model
+ * @var backend\models\WorkerotherSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\Worker $model
+ * @var backend\models\Worker $model
  */
 
 $this->title = '护工编辑' . ' ' . $model->name;

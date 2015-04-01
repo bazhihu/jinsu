@@ -102,7 +102,7 @@ class OrderController extends Controller
      * @param $mobile
      * @param null $name
      * @return $this|User|null|static
-     * @throws \backend\Models\ErrorException
+     * @throws \backend\models\ErrorException
      */
     private function _checkMobile($mobile, $name = null){
         $user = User::findByMobile($mobile);

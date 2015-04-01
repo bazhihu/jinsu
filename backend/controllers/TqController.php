@@ -3,12 +3,9 @@
 namespace backend\controllers;
 
 use Yii;
-use yii\helpers\Json;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
 
-use backend\Models\User;
-use backend\Models\UserSearch;
+use backend\models\User;
 use backend\models\Tq;
 use backend\models\LoginForm;
 

@@ -16,7 +16,7 @@ use backend\models\Holidays;
 use backend\models\OrderIncrement;
 use backend\models\OrderOperatorLog;
 use backend\models\OrderPatient;
-use backend\Models\Worker;
+use backend\models\Worker;
 use backend\models\WorkerSchedule;
 use backend\models\WalletUserDetail;
 

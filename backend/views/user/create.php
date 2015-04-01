@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\User $model
+ * @var backend\models\User $model
  */
 
 $this->title = '用户注册';

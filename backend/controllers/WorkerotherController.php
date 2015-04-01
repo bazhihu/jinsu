@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\Models\Workerother;
-use backend\Models\WorkerotherSearch;
+use backend\models\Workerother;
+use backend\models\WorkerotherSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

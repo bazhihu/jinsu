@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\DateTimePicker;
+use backend\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\WalletUserDetailSearch */
@@ -101,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return \backend\Models\User::findOne(['id'=>$model->uid])->username;
+                    return User::findOne(['id'=>$model->uid])->username;
                 },
                 'label' => '帐号',
             ],

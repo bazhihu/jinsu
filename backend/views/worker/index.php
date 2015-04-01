@@ -9,7 +9,7 @@ use backend\models\Hospitals;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var backend\Models\WorkerSearch $searchModel
+ * @var backend\models\WorkerSearch $searchModel
  */
 
 $this->title = '护工管理';

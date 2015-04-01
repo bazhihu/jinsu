@@ -6,7 +6,7 @@ use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\Comment $model
+ * @var backend\models\Comment $model
  */
 
 $this->title = $model->comment_id;

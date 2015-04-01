@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\Workerother $model
+ * @var backend\models\Workerother $model
  */
 
 $this->title = 'Update Workerother: ' . ' ' . (int)$_GET['worker_id'];

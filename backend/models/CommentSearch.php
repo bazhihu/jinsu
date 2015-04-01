@@ -5,10 +5,10 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\Models\Comment;
+use backend\models\Comment;
 
 /**
- * CommentSearch represents the model behind the search form about `backend\Models\Comment`.
+ * CommentSearch represents the model behind the search form about `backend\models\Comment`.
  */
 class CommentSearch extends Comment
 {

@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use kartik\datecontrol\DateControl;
 use backend\models\OrderMaster;
 use backend\models\OrderPatient;
 use backend\models\Hospitals;
 use backend\models\Departments;
+use backend\models\Worker;
 
 /**
  * @var yii\web\View $this
@@ -160,7 +160,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             [
                 'attribute'=>'worker_level',
                 'type'=>DetailView::INPUT_WIDGET,
-                'value'=>\backend\Models\Worker::$workerLevelLabel[$model->worker_level]
+                'value'=>Worker::$workerLevelLabel[$model->worker_level]
             ]
         ],
         'enableEditMode'=>false,

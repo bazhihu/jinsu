@@ -7,7 +7,7 @@ use backend\models\AdminUser;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var backend\Models\CommentSearch $searchModel
+ * @var backend\models\CommentSearch $searchModel
  */
 
 $this->title = '评论管理';

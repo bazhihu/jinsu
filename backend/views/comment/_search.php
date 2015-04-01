@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\datecontrol\DateControl;
 /**
  * @var yii\web\View $this
- * @var backend\Models\CommentSearch $model
+ * @var backend\models\CommentSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>

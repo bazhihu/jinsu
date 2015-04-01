@@ -10,16 +10,23 @@ use kartik\widgets\Select2;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
+<style>
+    .panel-body .form-group{
+        float:left;
+        margin:5px;
+    }
+</style>
 
 <div class="worker-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-        'type' => ActiveForm::TYPE_INLINE,
-        'formConfig'=>[
-            'labelSpan'=>1
+        'type' => ActiveForm::TYPE_VERTICAL,
+        'formConfig' => [
+            'showLabels' => true,
         ],
+
     ]); ?>
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -28,25 +35,19 @@ use kartik\widgets\Select2;
         <div class="panel-body">
             <?= $form->field(
                 $model,
-                'worker_id',
-                [
-                    'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                ]
-            )->input('text',['placeholder'=>'请输入护工编号...'])->label("护工编号") ?>
+                'worker_id'
+            )->input('text',['placeholder'=>'请输入护工编号...','style'=>'width:135px'])?>
 
             <?= $form->field(
                 $model,
-                'name',
-                [
-                    'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                ]
-            )->input('text',['placeholder'=>'请输入姓名...'])->label("姓名") ?>
+                'name'
+            )->input('text',['placeholder'=>'请输入姓名...','style'=>'width:120px'])->label("姓名") ?>
 
             <?= $form->field(
                 $model,
                 'gender',
                 [
-                    'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
+                    //'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
                 ]
             )->dropDownList(['男'=>'男','女'=>'女'],['prompt'=>'请选择'])->label("性别") ?>
 
@@ -54,11 +55,11 @@ use kartik\widgets\Select2;
                $model,
                'native_province',
                [
-                   'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
+                   //'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
                ]
            )->widget(Select2::classname(),[
                'data' => \backend\models\City::getList(1),
-               'options' => ['placeholder' => '请选择'],
+               'options' => ['placeholder' => '请选择','style'=>'width:140px'],
                'pluginOptions' => [
                    'allowClear' => true
                ],
@@ -68,7 +69,7 @@ use kartik\widgets\Select2;
                 $model,
                 'hospital_id',
                 [
-                    'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ]
             )->widget(Select2::classname(),[
                 'data' =>  \backend\models\Hospitals::getList('110000'),
@@ -80,17 +81,14 @@ use kartik\widgets\Select2;
 
             <?= $form->field(
                 $model,
-                'level',
-                [
-                    'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6','size'=>Select2::LARGE]
-                ]
-            )->dropDownList([\backend\Models\Worker::getWorkerLevel()],['prompt'=>'请选择'])->label("护工等级") ?>
+                'level'
+            )->dropDownList([\backend\models\Worker::getWorkerLevel()],['prompt'=>'请选择'])->label("护工等级") ?>
 
             <?= $form->field(
                 $model,
                 'price',
                 [
-                    'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ]
             )->dropDownList(['1'=>'50-150','2'=>'150-250','3'=>'250以上'],['prompt'=>'请选择'])->label("服务价格") ?>
 
@@ -98,7 +96,7 @@ use kartik\widgets\Select2;
                 $model,
                 'status',
                 [
-                    'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ]
             )->dropDownList(['1'=>'在职','2'=>'离职'],['prompt'=>'请选择'])->label("工作状态") ?>
 
@@ -106,7 +104,7 @@ use kartik\widgets\Select2;
                 $model,
                 'chinese_level',
                 [
-                    'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ],
                 [
                     'pluginOptions' => ['allowClear' => true]
@@ -123,17 +121,17 @@ use kartik\widgets\Select2;
                 $model,
                 'good_at',
                 [
-                    'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ]
             )->widget(Select2::classname(),[
                 'data' =>   \backend\models\Departments::getList(),
-                'options' => ['placeholder' => '请选择'],
+                'options' => ['placeholder' => '请选择','style'=>'width:160px'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
             ])->label('擅长护理疾病');?>
 
-            <div class="form-group" style="padding-top: 25px">
+            <div class="form-group" style="margin-top: 30px;">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
             </div>
         </div>

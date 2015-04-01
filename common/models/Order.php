@@ -410,7 +410,7 @@ class Order extends \yii\db\ActiveRecord{
      */
     public function pay($remark = null){
         //计算订单总价
-        $totalPrice = $this->calculateTotalPrice();
+        $totalPrice = $this->total_amount;
         if($totalPrice <= 0){
             $response = [
                 'code' => '500',
@@ -449,8 +449,9 @@ class Order extends \yii\db\ActiveRecord{
                     'admin_uid' => \Yii::$app->user->id
                 ];
                 Wallet::addConRecords($params);
+                $response['msg'] = '支付成功';
             }
-            $response['msg'] = '支付成功';
+
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();

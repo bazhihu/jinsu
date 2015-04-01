@@ -248,6 +248,8 @@ class Order extends \yii\db\ActiveRecord{
 
             $orderData['order_status'] = self::ORDER_STATUS_WAIT_PAY;
             $this->attributes = $orderData;
+            $totalAmount = $this->calculateTotalPrice();
+            $this->total_amount = $totalAmount;
             if (!$this->save()) {
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -422,7 +424,7 @@ class Order extends \yii\db\ActiveRecord{
             $response = Wallet::deduction($this->uid, $totalPrice);
             if($response['code'] == '200'){
                 //扣款成功，修改订单信息
-                $this->total_amount = $totalPrice;
+                //$this->total_amount = $totalPrice;
                 $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
                 $this->pay_time = date('Y-m-d H:i:s');
                 $this->operator_id = \Yii::$app->user->id;

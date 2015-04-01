@@ -189,7 +189,7 @@ class Wallet
      * @return array
      * @author zhangbo
      */
-    public function deduction($uid, $amount){
+    public static function deduction($uid, $amount){
         $response = [
             'code' => '200',
             'msg' => ''

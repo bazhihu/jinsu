@@ -47,7 +47,7 @@ class Order extends \yii\db\ActiveRecord{
         self::ORDER_STATUS_WAIT_SERVICE => '待服务',
         self::ORDER_STATUS_IN_SERVICE => '服务中',
         self::ORDER_STATUS_END_SERVICE => '结束服务',
-        self::ORDER_STATUS_CANCEL => '取消订单',
+        self::ORDER_STATUS_CANCEL => '已取消',
         self::ORDER_STATUS_WAIT_EVALUATE => '待评价'
     ];
 

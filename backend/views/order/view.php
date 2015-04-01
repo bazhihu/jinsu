@@ -103,6 +103,69 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         'hover'=>true,
         'mode'=>DetailView::MODE_VIEW,
         'panel'=>[
+            'heading'=>'订单信息',
+            'type'=>DetailView::TYPE_INFO,
+        ],
+        'attributes' => [
+            'order_no',
+            [
+                'attribute'=>'order_status',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>'<font style="font-weight: bold;color: #aa0000">'.OrderMaster::$orderStatusLabels[$model->order_status].'</font>',
+                'format'=>'raw'
+            ],
+            'patient_state_coefficient',
+            [
+                'attribute'=>'total_amount'
+            ],
+            [
+                'attribute'=>'real_amount',
+                'value'=>'<font style="font-weight: bold;color: #aa0000">'.$model->real_amount.'</font>',
+                'format'=>'raw'
+            ],
+            [
+                'attribute'=>'hospital_id',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>Hospitals::getName($model->hospital_id)
+            ],
+            [
+                'attribute'=>'department_id',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>Departments::getName($model->department_id)
+            ],
+            'start_time',
+            'end_time',
+            'reality_end_time',
+            [
+                'label'=>'订单周期',
+                'attribute'=>'orderCycle',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>OrderMaster::getOrderCycle($model->start_time, $model->reality_end_time).'天'
+            ],
+            'create_time',
+            'pay_time',
+            'confirm_time',
+            'begin_service_time',
+            'cancel_time',
+            'customer_service_id',
+            'operator_id',
+            'create_order_ip',
+            [
+                'attribute'=>'create_order_sources',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>OrderMaster::$orderSources[$model->create_order_sources]
+            ],
+            'create_order_user_agent',
+        ],
+        'enableEditMode'=>false,
+    ]);
+
+    echo DetailView::widget([
+        'model' => $model,
+        'condensed'=>false,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
             'heading'=>'用户信息',
             'type'=>DetailView::TYPE_INFO,
         ],
@@ -166,67 +229,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         'enableEditMode'=>false,
     ]);
 
-    echo DetailView::widget([
-        'model' => $model,
-        'condensed'=>false,
-        'hover'=>true,
-        'mode'=>DetailView::MODE_VIEW,
-        'panel'=>[
-            'heading'=>'订单信息',
-            'type'=>DetailView::TYPE_INFO,
-        ],
-        'attributes' => [
-            'order_no',
-            [
-                'attribute'=>'order_status',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>OrderMaster::$orderStatusLabels[$model->order_status]
-            ],
-            'patient_state_coefficient',
-            [
-                'attribute'=>'total_amount'
-            ],
-            [
-                'attribute'=>'real_amount',
-                'value'=>'<font style="font-weight: bold;color: #aa0000">'.$model->real_amount.'</font>',
-                'format'=>'raw'
-            ],
-            [
-                'attribute'=>'hospital_id',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>Hospitals::getName($model->hospital_id)
-            ],
-            [
-                'attribute'=>'department_id',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>Departments::getName($model->department_id)
-            ],
-            'start_time',
-            'end_time',
-            'reality_end_time',
-            [
-                'label'=>'订单周期',
-                'attribute'=>'orderCycle',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>OrderMaster::getOrderCycle($model->start_time, $model->reality_end_time).'天'
-            ],
-            'create_time',
-            'pay_time',
-            'confirm_time',
-            'begin_service_time',
-            'cancel_time',
-            'customer_service_id',
-            'operator_id',
-            'create_order_ip',
-            [
-                'attribute'=>'create_order_sources',
-                'type'=>DetailView::INPUT_WIDGET,
-                'value'=>OrderMaster::$orderSources[$model->create_order_sources]
-            ],
-            'create_order_user_agent',
-        ],
-        'enableEditMode'=>false,
-    ]);
  ?>
     <div class="panel panel-info">
         <div class="panel-heading">

@@ -5,10 +5,11 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use backend\models\AdminUser;
 
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var backend\Models\UserSearch $searchModel
+ * @var backend\models\UserSearch $searchModel
  */
 
 $this->title = '用户管理';

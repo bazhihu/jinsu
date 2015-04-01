@@ -3,11 +3,15 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use backend\models\AdminUser;
+use yii\helpers\Url;
+use backend\models\WalletUser;
+
 
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var backend\Models\UserSearch $searchModel
+ * @var backend\models\UserSearch $searchModel
  */
 
 $this->title = '用户管理';
@@ -52,25 +56,49 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'adder',
                 'value'=>function($model) {
-                    return ($model->adder) ? \backend\models\AdminUser::findOne(['admin_uid', $model->adder])->username : null;
+                    return ($model->adder) ? AdminUser::findOne(['admin_uid', $model->adder])->username : null;
                 }
             ],
             'edit_time',
             [
                 'attribute'=>'editer',
                 'value'=>function($model) {
-                    return ($model->editer) ? \backend\models\AdminUser::findOne(['admin_uid', $model->editer])->username : null;
+                    return ($model->editer) ? AdminUser::findOne(['admin_uid', $model->editer])->username : null;
                 }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}&nbsp;&nbsp;{update}',
+                'header'=>'财务操作',
+               // 'template' => '{view}&nbsp;&nbsp;{update}',
+                'template' => '{pay_create}&nbsp;{apply_cash}',
                 'buttons' => [
-                'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['user/update','id' => $model->id]), [
-                                                    'title' => Yii::t('yii', 'Edit'),
-                                                  ]);}
+                    'pay_create' => function ($url, $model) {
+                        return Html::a('<span class="btn btn-sm btn-primary">充值</span>',
+                            Yii::$app->urlManager->createUrl(['wallet/pay-create','uid' => $model->id]),
+                            ['title' => '充值']
+                        );
+                    },
 
+                    'apply_cash' => function ($url, $model) {
+                        if(WalletUser::findOne(['uid'=>$model->id])){
+                            return Html::a('<span class="btn btn-sm btn-primary">提现</span>',
+                                Yii::$app->urlManager->createUrl(['wallet/apply-cash','uid' => $model->id]),
+                                ['title' =>'提现']
+                            );
+                        }
+                    },
+                ],
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => '操作',
+                'template' => '{view}&nbsp;{update}',
+                'buttons' => [
+                    'update' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['user/update','id' => $model->id]), [
+                            'title' => Yii::t('yii', 'Edit'),
+                        ]);
+                    }
                 ],
             ],
         ],

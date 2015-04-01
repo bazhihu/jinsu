@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\Models;
+namespace backend\models;
 
 use Yii;
-use yii\base\Model;
+use yii\base\model;
 use yii\data\ActiveDataProvider;
 use backend\Models\User;
 

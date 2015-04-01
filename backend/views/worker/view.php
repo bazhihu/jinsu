@@ -3,17 +3,22 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
+use backend\models\Worker;
+use backend\models\Workerother;
 use backend\models\Hospitals;
+use backend\models\City;
+use backend\models\Departments;
+use backend\models\AdminUser;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\Worker $model
+ * @var backend\models\Worker $model
  */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Workers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_id]);
+$modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
 
 ?>
 <div class="worker-view">
@@ -64,22 +69,22 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
 
             [
                 'attribute'=>'education',
-                'value'=>\backend\Models\Worker::getEducationLevel($model->education,'view')
+                'value'=>Worker::getEducationLevel($model->education,'view')
             ],
 
             [
                 'attribute'=>'politics',
-                'value'=>\backend\Models\Worker::getPoliticsLevel($model->politics,'view')
+                'value'=>Worker::getPoliticsLevel($model->politics,'view')
             ],
 
             [
                 'attribute'=>'chinese_level',
-                'value'=>\backend\Models\Worker::getChineseLevel($model->chinese_level,'view')
+                'value'=>Worker::getChineseLevel($model->chinese_level,'view')
             ],
 
             [
                 'attribute'=>'certificate',
-                'value'=>\backend\Models\Worker::getCertificateName($model->certificate)
+                'value'=>Worker::getCertificateName($model->certificate)
             ],
 
             //'phone1',
@@ -88,7 +93,7 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
 
             [
                 'attribute'=>'level',
-                'value'=>\backend\Models\Worker::getWorkerLevel($model->level,'view')
+                'value'=>Worker::getWorkerLevel($model->level,'view')
             ],
 
             'price',
@@ -112,12 +117,12 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
 
             [
                 'attribute'=>'nation',
-                'value'=>\backend\Models\Worker::getNation($model->nation,'view')
+                'value'=>Worker::getNation($model->nation,'view')
             ],
 
             [
                 'attribute'=>'birth_place',
-                'value'=>\backend\models\City::getCityName($model->birth_place)
+                'value'=>City::getCityName($model->birth_place)
             ],
 
             [
@@ -127,13 +132,13 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
 
             [
                 'attribute'=>'office_id',
-                'value'=>\backend\models\Departments::getDepartmentName($model->office_id)
+                'value'=>Departments::getDepartmentName($model->office_id)
             ],
 
 
             [
                 'attribute'=>'good_at',
-                'value'=>\backend\models\Departments::getDepartmentName($model->good_at)
+                'value'=>Departments::getDepartmentName($model->good_at)
             ],
 
             'total_score',
@@ -158,7 +163,7 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
 
             [
                 'attribute'=>'adder',
-                'value'=>($model->adder)? \backend\models\AdminUser::findOne(['admin_uid',$model->adder])->username :null,
+                'value'=>($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
 
             [
@@ -173,7 +178,7 @@ $modelOther = \backend\Models\Workerother::findAll(['worker_id'=>$model->worker_
 
             [
                 'attribute'=>'editer',
-                'value'=>($model->editer)? \backend\models\AdminUser::findOne(['admin_uid',$model->editer])->username : null,
+                'value'=>($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])->username : null,
             ],
         ],
         'deleteOptions'=>[

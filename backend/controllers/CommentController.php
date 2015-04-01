@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\User;
-use backend\models\UserSearch;
+use backend\Models\Comment;
+use backend\Models\CommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * CommentController implements the CRUD actions for Comment model.
  */
-class UserController extends Controller
+class CommentController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all Comment models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch;
+        $searchModel = new CommentSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
@@ -42,8 +42,8 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
-     * @param integer $id
+     * Displays a single Comment model.
+     * @param string $id
      * @return mixed
      */
     public function actionView($id)
@@ -51,38 +51,24 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->id]);
+        return $this->redirect(['view', 'id' => $model->comment_id]);
         } else {
         return $this->render('view', ['model' => $model]);
 }
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Comment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new User;
+        $model = new Comment;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $params_all = Yii::$app->request->post();
-            $params = $params_all['User'];
-            $params['type'] = 'system';
-            //添加时间
-            $params['add_date'] = date('Y-m-d H:i:s');
-            $params['adder'] = yii::$app->user->getId();
-            $model->attributes = $params;
-
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
-        }else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->comment_id]);
+        } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -90,29 +76,18 @@ class UserController extends Controller
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Comment model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $params_all = Yii::$app->request->post();
-            $params = $params_all['User'];
-
-            //编辑时间
-            $params['edit_date'] = date('Y-m-d H:i:s');
-            $params['editer'] = yii::$app->user->getId();
-            $model->attributes = $params;
-            if($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } return $this->render('update', [
-                'model' => $model,
-            ]);
-        }else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->comment_id]);
+        } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -120,28 +95,28 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Comment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
-  /*  public function actionDelete($id)
+    public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }*/
+    }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Comment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return User the loaded model
+     * @param string $id
+     * @return Comment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = Comment::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -503,9 +503,6 @@ class Worker extends \yii\db\ActiveRecord
         return $data;
     }
 
-
-
-
     /**
      * 民族
      * @param null $chineselevel
@@ -520,6 +517,4 @@ class Worker extends \yii\db\ActiveRecord
             return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
         }
     }
-
-
 }

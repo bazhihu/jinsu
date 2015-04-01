@@ -2,13 +2,13 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use backend\Models\Worker;
+use backend\models\Worker;
 use backend\models\Hospitals;
 
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var backend\Models\WorkerSearch $searchModel
+ * @var backend\models\WorkerSearch $searchModel
  */
 
 $this->title = '选择护工';

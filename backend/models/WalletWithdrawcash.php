@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Wallet;
 use Yii;
 use yii\web\UploadedFile;
 
@@ -159,20 +160,64 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
     }
 
     /**
-     * 付款操作
-     * @param $params
+     * 提现付款操作
+     * @param $id 提现记录ID
      * @return bool
      */
-    public function pay($params){
+    public function pay($id){
+        #事务-START
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            $withdrawcash = $this->findOne(['withdrawcash_id'=>$id]);
+
+            #修改提现记录
+            if(!$this->payMoney($id)){
+                return false;
+            }
+
+            #添加收支明细
+            $params = [
+                'uid'           =>$withdrawcash->uid,
+                'detail_money'  =>$withdrawcash->money,
+                'wallet_money'  =>0,
+                'detail_type'   =>WalletUserDetail::WALLET_TYPE_WITHDRAWALS,
+                'pay_from'      =>WalletUserDetail::PAY_FROM_BACKEND,
+                'admin_uid'     =>Yii::$app->user->identity->getId(),
+            ];
+            $wallet = new Wallet();
+            if($wallet->addConRecords($params)['code'] !== '200'){
+                return false;
+            }
+
+            #账户清零
+            $walletUser = new WalletUser();
+            if(!$walletUser->purseCleared($withdrawcash->uid)){
+                return false;
+            }
+            $transaction->commit();
+        }catch (Exception $e){
+            $transaction->rollBack();
+            throw new HttpException(400, print_r($e, true));
+        }
+        #事务-END
+        return true;
+    }
+
+    /**
+     * 去付钱给用户
+     * @param $id 提现记录ID
+     * @return bool
+     */
+    public function payMoney($id){
         $update = [
             'time_payment'=>date('Y-m-d H:i:s'),
-            'admin_uid_payment'=>$params['admin_uid'],
+            'admin_uid_payment'=>Yii::$app->user->identity->getId(),
             'status'=>3,
         ];
-        if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
-            return true;
+        if(!$this->updateAll($update,['withdrawcash_id'=>$id])){
+            return false;
         }
-        return false;
+        return true;
     }
     /**
      * 生成钱包流水号

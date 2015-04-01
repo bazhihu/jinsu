@@ -8,11 +8,14 @@ use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use kartik\widgets\DepDrop;
-
+use backend\models\Worker;
+use backend\models\Departments;
+use backend\models\City;
+use backend\models\Hospitals;
 
 /**
  * @var yii\web\View $this
- * @var backend\Models\Worker $model
+ * @var backend\models\Worker $model
  * @var yii\widgets\ActiveForm $form
  */
 
@@ -63,7 +66,9 @@ use kartik\widgets\DepDrop;
 
         'gender'=>[
             'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择性别...'], 'items'=>['男'=>'男','女'=>'女'], 'options'=>['inline'=>true]
+            'options'=>['placeholder'=>'请选择性别...'],
+            'items'=>['男'=>'男','女'=>'女'],
+            'options'=>['inline'=>true]
         ],
 
         'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
@@ -86,27 +91,27 @@ use kartik\widgets\DepDrop;
         'education'=>[
             'type'=> Form::INPUT_RADIO_LIST,
             'options'=>['placeholder'=>'请选择文化程度...'],
-            'items'=>\backend\Models\Worker::getEducationLevel(),
+            'items'=>Worker::getEducationLevel(),
             'options'=>['inline'=>true]
         ],
 
         'politics'=>[
             'type'=> Form::INPUT_RADIO_LIST,
             'options'=>['placeholder'=>'请选择政治面貌...'],
-            'items'=>\backend\Models\Worker::getPoliticsLevel(),
+            'items'=>Worker::getPoliticsLevel(),
             'options'=>['inline'=>true]
         ],
 
        'chinese_level'=>[
            'type'=> Form::INPUT_RADIO_LIST,
            'options'=>['placeholder'=>'请选择普通话水平...'],
-           'items'=>\backend\Models\Worker::getChineseLevel(), 'options'=>['inline'=>true]
+           'items'=>Worker::getChineseLevel(), 'options'=>['inline'=>true]
        ],
 
        'certificate'=>[
            'type'=> Form::INPUT_CHECKBOX_LIST,
            'options'=>['placeholder'=>'请选择资质证书...'],
-           'items'=>\backend\Models\Worker::getCertificate(),
+           'items'=>Worker::getCertificate(),
            'options'=>['inline'=>true], 'maxlength'=>10
        ],
 
@@ -122,7 +127,7 @@ use kartik\widgets\DepDrop;
         */
         'level'=>[
             'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择护工等级...'],'items'=>\backend\Models\Worker::getWorkerLevel(), 'options'=>['inline'=>true]
+            'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
         ],
 
         'price'=>[
@@ -155,7 +160,7 @@ use kartik\widgets\DepDrop;
     ]);
 
     echo $form->field($model, 'nation')->widget(Select2::classname(), [
-        'data' =>\backend\Models\Worker::getNation(),
+        'data' =>Worker::getNation(),
         'options' => ['placeholder' => '请选择民族','style'=>'width:50%'],
         'pluginOptions' => [
             'allowClear' => true
@@ -165,7 +170,7 @@ use kartik\widgets\DepDrop;
     //户口所在地
    // $model->birth_place = 140000;
     echo $form->field($model, 'birth_place')->dropDownList(
-        \backend\models\City::getList(1),
+        City::getList(1),
         [
             'id'=>'birth_place',
             'style'=>'width:30%',
@@ -204,7 +209,7 @@ use kartik\widgets\DepDrop;
 
     //籍贯
     echo $form->field($model, 'native_province')->widget(Select2::classname(), [
-        'data' => \backend\models\City::getList(1),
+        'data' => City::getList(1),
         'options' => ['placeholder' => '请选择籍贯','style'=>'width:50%'],
         'pluginOptions' => [
             'allowClear' => true
@@ -213,7 +218,7 @@ use kartik\widgets\DepDrop;
 
     // 常驻医院
     echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Hospitals::getList('110000'),
+        'data' =>   Hospitals::getList('110000'),
         'addon' => 1,
         'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [
@@ -224,7 +229,7 @@ use kartik\widgets\DepDrop;
 
     // 常驻科室
     echo $form->field($model, 'office_id')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Departments::getList(),
+        'data' =>   Departments::getList(),
         'addon' => 1,
         'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [
@@ -235,7 +240,7 @@ use kartik\widgets\DepDrop;
 
     // 擅长护理的疾病
     echo $form->field($model, 'good_at')->widget(Select2::classname(), [
-        'data' =>   \backend\models\Departments::getList(),
+        'data' =>   Departments::getList(),
         'addon' => 1,
         'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:50%'],
         'pluginOptions' => [

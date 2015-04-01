@@ -126,7 +126,8 @@ return [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/login',
-            'site/error'
+            'site/error',
+            'site/logout'
         ]
     ],
     'params' => $params,

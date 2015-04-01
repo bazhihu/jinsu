@@ -109,7 +109,7 @@ class WalletController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['apply-list']);
         } else {
-            return $this->render('apply-cash', [
+            return $this->render('applyCash', [
                 'model' => $model,
                 'user'  => $user,
             ]);

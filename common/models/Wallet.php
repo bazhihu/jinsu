@@ -36,7 +36,7 @@ class Wallet
      * [
      *      'uid'           =>'', //用户ID
      *      'pay_from'      =>'', //支付渠道
-     *      'detail_money'  =>'', //充值金额
+     *      'money'  =>'', //充值金额
      * ]
      * @return bool
      * @throws HttpException
@@ -48,11 +48,11 @@ class Wallet
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             #更新wallet-user 表
-            $walletUser = self::addMoney($params['uid'], $params['detail_money']);
+            $walletUser = self::addMoney($params['uid'], $params['money']);
 
             $detail = array();//添加消费记录
             $detail['uid']          = $walletUser->uid;
-            $detail['detail_money'] = $params['detail_money'];
+            $detail['detail_money'] = $params['money'];
             $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
             $detail['wallet_money'] = $walletUser->money;
             $detail['pay_from']     = $params['pay_from'];

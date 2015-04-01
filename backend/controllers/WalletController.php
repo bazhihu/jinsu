@@ -215,11 +215,8 @@ class WalletController extends Controller
             $id     = Yii::$app->request->post()['id'];
             if($id) {
                 $walletWithdrawcash = new WalletWithdrawcash();
-                $params = [
-                    'id'        =>$id,
-                    'admin_uid' =>Yii::$app->user->identity->getId(),
-                ];
-                if($walletWithdrawcash->pay($params)){
+
+                if($walletWithdrawcash->pay($id)){
                     $response['msg'] = '操作成功';
                     return Json::encode($response);
                 }

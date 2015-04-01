@@ -91,7 +91,7 @@ return [
             ],
         ],
         'user' => [
-            'identityClass' => 'backend\models\adminUser',
+            'identityClass' => 'backend\models\AdminUser',
             'enableAutoLogin' => true,
         ],
         'mailer' => [

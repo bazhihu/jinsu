@@ -1,9 +1,8 @@
 <?php
 
-namespace backend\Models;
+namespace backend\models;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\HttpException;
 
 /**

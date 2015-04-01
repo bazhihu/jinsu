@@ -90,7 +90,7 @@ $this->title = '充值记录';
             [
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->username:"";
+                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->mobile:"";
                 },
             ],
             [

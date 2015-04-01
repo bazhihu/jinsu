@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'uid',
                 'value'=>function($model){
-                    return User::findOne(['id'=>$model->uid])->username;
+                    return User::findOne(['id'=>$model->uid])->mobile;
                 },
                 'label' => '帐号',
             ],

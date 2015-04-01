@@ -66,14 +66,12 @@ class AdminUserController extends Controller
             #操作的id
             $id = Yii::$app->request->post()['id'];
             if($id){
-                $ispass = yii::$app->authManager->checkAccess(Yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
-                if($ispass)
-                {
-                    $value = $this->findModel($id)->status?0:10;
-                    if($this->findModel($id)->updateAttributes(['status'=>$value]))
-                        echo Json::encode(['code'=>200,'message'=>'success']);
-                    exit;
-                }
+                //$ispass = yii::$app->authManager->checkAccess(Yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
+
+                $value = $this->findModel($id)->status?0:10;
+                if($this->findModel($id)->updateAttributes(['status'=>$value]))
+                    echo Json::encode(['code'=>200,'message'=>'success']);
+                exit;
             }
         }
         echo Json::encode(['code'=>400,'message'=>'操作失败']);

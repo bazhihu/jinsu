@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\dictionary\Hospitals;
-use backend\models\dictionary\HospitalsSearch;
+use backend\models\Hospitals;
+use backend\models\HospitalsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

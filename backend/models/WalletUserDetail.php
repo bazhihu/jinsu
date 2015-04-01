@@ -58,7 +58,7 @@ class WalletUserDetail extends \yii\db\ActiveRecord
             [['detail_money','uid'],'required','on'=>'pay_create'],
             [['detail_money','uid'],'number','on'=>'pay_create'],
 
-            [['detail_no','uid','order_no','order_id','detail_money','detail_type','wallet_money','detail_time'],'required','on'=>'consume'],
+            [['detail_no','uid','detail_money','detail_type','wallet_money','detail_time'],'required','on'=>'consume'],
 
             [['order_id', 'worker_id', 'uid', 'detail_type', 'admin_uid'], 'integer'],
             [['wallet_money'], 'number'],

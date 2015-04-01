@@ -1,11 +1,11 @@
 <?php
 
-namespace backend\models\dictionary;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\dictionary\Hospitals;
+use backend\models\Hospitals;
 
 /**
  * HospitalsSearch represents the model behind the search form about `\backend\models\Hospitals`.

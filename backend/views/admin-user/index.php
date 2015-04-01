@@ -28,10 +28,6 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                 'class' => 'yii\grid\SerialColumn'
             ],
             'username',
-            [
-                'attribute'=>'密码',
-                'value'=>function(){return '******';}
-            ],
             'staff_id',
             'staff_name',
             'staff_role',

@@ -28,7 +28,7 @@ return [
             'controllerMap' => [
                 'assignment' => [
                     'class' => 'mdm\admin\controllers\AssignmentController',
-                    'userClassName' => 'backend\models\adminUser',
+                    'userClassName' => 'backend\models\AdminUser',
                     'idField' => 'id'
                 ],
 //                'other' => [
@@ -126,7 +126,8 @@ return [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/login',
-            'site/error'
+            'site/error',
+            'site/logout'
         ]
     ],
     'params' => $params,

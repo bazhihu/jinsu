@@ -102,14 +102,14 @@ class WalletController extends Controller
     {
         $user = WalletUser::findOne(['uid'=>$uid]);
         if(empty($user)){
-            throw new NotFoundHttpException('user not exist.');
+            throw new NotFoundHttpException('Users wallet does not exist!');
         }
 
         $model = new WalletWithdrawcash(['scenario' => 'applyCash']);
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            return $this->redirect(['applyList']);
+            return $this->redirect(['apply-list']);
         } else {
-            return $this->render('applyCash', [
+            return $this->render('apply-cash', [
                 'model' => $model,
                 'user'  => $user,
             ]);
@@ -205,14 +205,13 @@ class WalletController extends Controller
      * 付款操作
      * @return string
      */
-    public function actionPay(){
+    public function actionPay($id){
         if(Yii::$app->request->isAjax)
         {
             $response = [
                 'code'  =>'200',
                 'msg'   =>'',
             ];
-            $id     = Yii::$app->request->post()['id'];
             if($id) {
                 $walletWithdrawcash = new WalletWithdrawcash();
 
@@ -224,7 +223,7 @@ class WalletController extends Controller
         }
         $response = [
             'code  '    =>'400',
-            'msg'   =>'请求失败',
+            'msg'   =>'账户余额为零',
         ];
         return Json::encode($response);
     }

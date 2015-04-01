@@ -25,7 +25,7 @@ $this->title = '申请提现确认-用户信息核对';
             <div style='padding: 33px;'><strong><span>账户余额:</span>&nbsp;&nbsp;&nbsp;<?=$user->money?$user->money:0?>元</strong></div>
 
 
-        </div>m
+        </div>
         <div class="panel-body">
             <label><big>取款信息</big></label>
             <?php

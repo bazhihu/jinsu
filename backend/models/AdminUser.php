@@ -111,7 +111,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     {
         #权限验证
         $admin_uid = yii::$app->user->identity->getId();
-        if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
+        if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->staff_role))
         {
             $this->created_at = date('Y-m-d H:i:s');
             $this->setAttribute('created_id',yii::$app->user->identity->getId());
@@ -123,7 +123,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
                 $info = $this->findOne(['username'=>$this->username]);
                 yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
                 #添加操作记录
-                Yii::getLogger()->log('系统操作',Logger::LEVEL_ERROR);
+                //Yii::getLogger()->log('系统操作',Logger::LEVEL_ERROR);
                 //yii::$app->log->getLogger();
                 return true;
             }
@@ -150,27 +150,27 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function up()
     {
         #权限验证
-        //$admin_uid = Yii::$app->user->identity->getId();
+        $admin_uid = Yii::$app->user->identity->getId();
         #当前用户没有权限操作自己
-        //if($admin_uid!==$this->getAttribute('admin_uid') && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
-        //{
-
-        $this->updated_at = date('Y-m-d H:i:s');
-        $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
-
-        #保存信息
-        if($this->save())
+        if($admin_uid!==$this->getAttribute('admin_uid')/* && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role"))*/)
         {
-            #授予权限
-            $info = $this->findOne(['username'=>$this->username]);
-            yii::$app->authManager->revokeAll($info->getId());
-            yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
-            #添加操作记录
 
-            return true;
+            $this->updated_at = date('Y-m-d H:i:s');
+            $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
+
+            #保存信息
+            if($this->save())
+            {
+                #授予权限
+                $info = $this->findOne(['username'=>$this->username]);
+                yii::$app->authManager->revokeAll($info->getId());
+                yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+                #添加操作记录
+
+                return true;
+            }
+
         }
-
-        //}
         $this->addError('staff_role','权限不足');
         return false;
     }
@@ -327,7 +327,9 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     static function getRoles(){
         $staff_role = Yii::$app->authManager->getRoles();
         foreach(ArrayHelper::toArray($staff_role) as $val){
-            $return[$val['name']] = $val['name'];
+            if($val['name'] !== '系统管理员'){
+                $return[$val['name']] = $val['name'];
+            }
         }
         return $return;
     }

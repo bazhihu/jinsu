@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\datecontrol\DateControl;
 use backend\models\User;
+use backend\models\AdminUser;
 
 /**
  * @var yii\web\View $this
@@ -59,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'adder',
-                'value'=>($model->adder)? \backend\models\AdminUser::findOne(['admin_uid',$model->adder])->username :null,
+                'value'=>($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
             [
                 'attribute'=>'edit_time',
@@ -72,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'editer',
-                'value'=>($model->editer)? \backend\models\AdminUser::findOne(['admin_uid',$model->editer])->username : null,
+                'value'=>($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])->username : null,
             ],
         ],
         'deleteOptions'=>[

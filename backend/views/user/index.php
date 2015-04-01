@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use backend\models\AdminUser;
 
 /**
  * @var yii\web\View $this
@@ -52,14 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'adder',
                 'value'=>function($model) {
-                    return ($model->adder) ? \backend\models\AdminUser::findOne(['admin_uid', $model->adder])->username : null;
+                    return ($model->adder) ? AdminUser::findOne(['admin_uid', $model->adder])->username : null;
                 }
             ],
             'edit_time',
             [
                 'attribute'=>'editer',
                 'value'=>function($model) {
-                    return ($model->editer) ? \backend\models\AdminUser::findOne(['admin_uid', $model->editer])->username : null;
+                    return ($model->editer) ? AdminUser::findOne(['admin_uid', $model->editer])->username : null;
                 }
             ],
             [

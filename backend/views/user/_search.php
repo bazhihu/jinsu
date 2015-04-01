@@ -8,7 +8,7 @@ use kartik\widgets\Select2;
 use kartik\widgets\Growl;
 /**
  * @var yii\web\View $this
- * @var backend\Models\UserSearch $model
+ * @var backend\models\UserSearch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>

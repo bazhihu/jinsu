@@ -3,6 +3,11 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
+use backend\models\Worker;
+use backend\models\City;
+use backend\models\Hospitals;
+use backend\models\Departments;
+
 
 /**
  * @var yii\web\View $this
@@ -58,7 +63,7 @@ use kartik\widgets\Select2;
                    //'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
                ]
            )->widget(Select2::classname(),[
-               'data' => \backend\models\City::getList(1),
+               'data' => City::getList(1),
                'options' => ['placeholder' => '请选择','style'=>'width:140px'],
                'pluginOptions' => [
                    'allowClear' => true
@@ -72,7 +77,7 @@ use kartik\widgets\Select2;
                     //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ]
             )->widget(Select2::classname(),[
-                'data' =>  \backend\models\Hospitals::getList('110000'),
+                'data' =>  Hospitals::getList('110000'),
                 'options' => ['placeholder' => '请选择'],
                 'pluginOptions' => [
                     'allowClear' => true
@@ -82,7 +87,7 @@ use kartik\widgets\Select2;
             <?= $form->field(
                 $model,
                 'level'
-            )->dropDownList([\backend\models\Worker::getWorkerLevel()],['prompt'=>'请选择'])->label("护工等级") ?>
+            )->dropDownList([Worker::getWorkerLevel()],['prompt'=>'请选择'])->label("护工等级") ?>
 
             <?= $form->field(
                 $model,
@@ -110,7 +115,7 @@ use kartik\widgets\Select2;
                     'pluginOptions' => ['allowClear' => true]
                 ]
             )->widget(Select2::classname(),[
-                'data' => \backend\Models\Worker::getChineseLevel(),
+                'data' => Worker::getChineseLevel(),
                 'options' => ['placeholder' => '请选择'],
                 'pluginOptions' => [
                     'allowClear' => true
@@ -124,7 +129,7 @@ use kartik\widgets\Select2;
                     //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
                 ]
             )->widget(Select2::classname(),[
-                'data' =>   \backend\models\Departments::getList(),
+                'data' =>   Departments::getList(),
                 'options' => ['placeholder' => '请选择','style'=>'width:160px'],
                 'pluginOptions' => [
                     'allowClear' => true

@@ -42,7 +42,7 @@ class WorkerotherController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+   /* public function actionCreate()
     {
         $model = new Workerother;
         if (Yii::$app->request->post()) {
@@ -54,7 +54,7 @@ class WorkerotherController extends Controller
                 'model' => $model,
             ]);
         }
-    }
+    }*/
 
     /**
      * Updates an existing Workerother model.

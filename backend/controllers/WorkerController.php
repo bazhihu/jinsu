@@ -3,11 +3,14 @@
 namespace backend\controllers;
 
 use backend\models\OrderMaster;
+use backend\models\UploadForm;
+use backend\models\Workerother;
 use backend\models\WorkerSchedule;
 use Yii;
 use backend\models\Worker;
 use backend\models\WorkerSearch;
 use backend\models\City;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -108,9 +111,9 @@ class WorkerController extends Controller
         //户口所在地
         if($model['birth_place']){
             $place = explode(',',$model['birth_place']);
-            $model->birth_place = $place[1];
-            $model->birth_place_city = $place[2];
-            $model->birth_place_area = $place[3];
+            $model->birth_place = @$place[1];
+            $model->birth_place_city = @$place[2];
+            $model->birth_place_area = @$place[3];
         }
 
         //资质证书

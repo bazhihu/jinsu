@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
-use backend\Models\Worker;
+use backend\models\Worker;
 use backend\models\Hospitals;
 
 /**

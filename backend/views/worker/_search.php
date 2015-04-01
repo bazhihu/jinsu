@@ -8,7 +8,6 @@ use backend\models\City;
 use backend\models\Hospitals;
 use backend\models\Departments;
 
-
 /**
  * @var yii\web\View $this
  * @var backend\Models\WorkerSearch $model
@@ -91,11 +90,8 @@ use backend\models\Departments;
 
             <?= $form->field(
                 $model,
-                'price',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
-                ]
-            )->dropDownList(['1'=>'50-150','2'=>'150-250','3'=>'250以上'],['prompt'=>'请选择'])->label("服务价格") ?>
+                'price'
+            )->dropDownList(['1'=>'50-150','2'=>'150-250','3'=>'250以上'],['prompt'=>'请选择']); ?>
 
             <?= $form->field(
                 $model,

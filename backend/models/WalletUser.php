@@ -50,4 +50,21 @@ class WalletUser extends \yii\db\ActiveRecord
             'money_extract' => 'Money Extract',
         ];
     }
+
+    /**
+     * 用户提现余额
+     * @param $uid 用户ID
+     * @return bool
+     */
+    public function purseCleared($uid){
+        $user = $this->findOne(['uid'=>$uid]);
+        $params = [
+            'money'=>0,
+            'money_extract'=>$user->money_extract + $user->money,
+        ];
+        if(!$this->updateAll($params,['uid'=>$uid])){
+            return false;
+        }
+        return true;
+    }
 }

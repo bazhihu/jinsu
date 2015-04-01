@@ -153,7 +153,7 @@ class Wallet extends \yii\db\ActiveRecord
 
             'uid'           => $params['uid'],
             'detail_money'  => $params['detail_money'],
-            'detail_type'   => $params['detail_type'],//默认为1
+            'detail_type'   => $params['detail_type'],//默认为backend
             'wallet_money'  => $params['wallet_money'],//当前账户余额
             'detail_time'   => date('Y-m-d H:i:s'),
             'pay_from'      => $params['pay_from'],//后台为 1

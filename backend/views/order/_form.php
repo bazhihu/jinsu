@@ -41,7 +41,9 @@ use backend\models\OrderMaster;
                         'options'=>[
                             'placeholder'=>'请输入手机号...',
                             'maxlength'=>11,
-                            'style'=>'width:25%'
+                            'style'=>'width:25%',
+                            //用户来电将电话号码显示在表单中
+                            'value'=>isset($_GET['callid'])? $_GET['callid'] : ''
                         ],
                     ],
                     'contact_name'=>[

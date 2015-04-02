@@ -10,16 +10,17 @@ use backend\models\User;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '充值记录';
+$this->title = '扣款明细';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="wallet-user-detail-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <!-- 搜索START -->
-    <div class="wallet-user-detail-search" style="padding: 25px">
+    <!-- start -->
+    <div class="wallet-user-detail-search" style="padding:25px">
 
         <?php $form = ActiveForm::begin([
-            'action' => ['pay-index'],
+            'action' => ['debit-records'],
             'method' => 'get',
 
             'type' => ActiveForm::TYPE_INLINE,
@@ -57,18 +58,18 @@ $this->title = '充值记录';
         ?>
         <?= $form->field(
             $searchModel,
-            'uid',
+            'mobile',
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
         )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
         <?= $form->field(
             $searchModel,
-            'pay_from',
+            'order_no',
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
-        )->dropDownList(['backend'=>'线下支付','wechat'=>'微信支付','alipay'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
+        )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:300px'])->label('订单编号') ?>
 
         <div class="form-group" style="padding-top: 25px">
             <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -78,41 +79,34 @@ $this->title = '充值记录';
         <?php ActiveForm::end(); ?>
 
     </div>
-    <!-- 搜索END -->
+    <!-- end -->
+    <p>
+        <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
+    </p>
 
-    <!-- 列表START -->
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'detail_no',
-            'detail_time',
             [
-                'attribute'=>'uid',
-                'value'=>function($model){
-                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->mobile:"";
-                },
+                'attribute'=>'time',
+                'format' => 'text',
+                'label' => '扣款时间',
             ],
             [
-                'attribute'=>'pay_from',
-                'value'=>function($model){
-                    if($model->pay_from == 'backend')
-                    {
-                        return '现金支付';
-                    }elseif($model->pay_from == 'alipay'){
-                        return '支付宝';
-                    }elseif($model->pay_from == 'wechat'){
-                        return '微信支付';
-                    }
-                }
+                'attribute'=>'order_no',
+                'format' => 'text',
+                'label' => '订单编号',
             ],
-            'detail_money',
-            'wallet_money',
             [
-                'attribute'=>'admin_uid',
-                'value'=>function($model){
-                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid])->username;
-                }
+                'attribute'=>'mobile',
+                'label' => '帐号',
+            ],
+            [
+                'attribute'=>'money',
+                'label' => '扣款金额',
+
             ],
         ],
         'panel' => [
@@ -120,6 +114,6 @@ $this->title = '充值记录';
             'type'=>'info',
             'showFooter'=>true
         ],
-    ]);?>
-    <!-- 列表END -->
+    ]); ?>
+
 </div>

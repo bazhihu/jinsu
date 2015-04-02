@@ -23,11 +23,11 @@ $route = $controller->route;
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li <?php if($route == 'wallet/pay-index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/pay-index');?>">充值记录</a></li>
-    <li <?php if($route == 'wallet/apply-list'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/apply-list');?>">提现申请</a></li>
-    <li <?php if($route == 'wallet/to-pay'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/to-pay');?>">提现支付</a></li>
-    <li <?php if($route == 'wallet/payment'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/payment');?>">提现记录</a></li>
-    <li <?php if($route == 'wallet/deduction-index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/deduction-index');?>">扣款明细</a></li>
+    <li <?php if($route == 'wallet/recharge-records'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/recharge-records');?>">充值记录</a></li>
+    <li <?php if($route == 'wallet/cash-list'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/cash-list');?>">提现申请</a></li>
+    <li <?php if($route == 'wallet/confirm-list'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/confirm-list');?>">提现支付</a></li>
+    <li <?php if($route == 'wallet/cash-records'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/cash-records');?>">提现记录</a></li>
+    <li <?php if($route == 'wallet/debit-records'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('wallet/debit-records');?>">扣款明细</a></li>
 </ul>
 
 <ul class="nav nav-sidebar">

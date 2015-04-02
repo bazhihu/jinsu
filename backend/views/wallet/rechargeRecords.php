@@ -10,17 +10,16 @@ use backend\models\User;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '提现申请';
-$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
+$this->title = '充值记录';
 ?>
-<div class="wallet-user-detail-index">
+<div class="wallet-rechargeRecords">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <!--?php  echo $this->render('_search', ['model' => $searchModel]); ?-->
-    <div class="wallet-apply-list" style="padding: 25px">
+    <!-- 搜索START -->
+    <div class="wallet-user-detail-search" style="padding: 25px">
 
         <?php $form = ActiveForm::begin([
-            'action' => ['apply-list'],
+            'action' => ['recharge-records'],
             'method' => 'get',
 
             'type' => ActiveForm::TYPE_INLINE,
@@ -58,18 +57,18 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
         ?>
         <?= $form->field(
             $searchModel,
-            'uid',
+            'mobile',
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
         )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
         <?= $form->field(
             $searchModel,
-            'status',
+            'pay_from',
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
-        )->dropDownList(['0'=>'提现申请中','1'=>'已同意','2'=>'已拒绝'],['prompt'=>'选择','style'=>'width:300px'])->label('申请状态') ?>
+        )->dropDownList(['backend'=>'线下支付','wechat'=>'微信支付','alipay'=>'支付宝'],['prompt'=>'选择','style'=>'width:300px'])->label('支付渠道') ?>
 
         <div class="form-group" style="padding-top: 25px">
             <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -79,72 +78,43 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
         <?php ActiveForm::end(); ?>
 
     </div>
+    <!-- 搜索END -->
 
-    <p>
-        <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
-    </p>
-
+    <!-- 列表START -->
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'trade_no',
+            'time',
+            'mobile',
             [
-                'header'=>'申请时间',
-                'attribute'=>'time_apply',
-            ],
-            [
-                'header'=>'用户账号',
-                'attribute'=>'uid',
+                'attribute'=>'pay_from',
                 'value'=>function($model){
-                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->mobile:"";
-                },
-            ],
-            [
-                'attribute'=>'money',
-                'value'=>function($model){
-                    return $model->money;
+                    if($model->pay_from == 'backend')
+                    {
+                        return '现金支付';
+                    }elseif($model->pay_from == 'alipay'){
+                        return '支付宝';
+                    }elseif($model->pay_from == 'wechat'){
+                        return '微信支付';
+                    }
                 }
             ],
+            'money',
+            'balance',
             [
-                'header'=>'申请状态',
-                'attribute'=>'status',
+                'attribute'=>'admin_uid',
                 'value'=>function($model){
-                    if($model->status == '3') {
-                        return '付款成功';
-                    }elseif($model->status == '2'){
-                        return '已同意';
-                    }elseif($model->status == '1'){
-                        return '已拒绝';
-                    }else{
-                        return '待审核';
-                    }
-                },
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid])->username;
+                }
             ],
-            ['class' => 'yii\grid\ActionColumn',
-                'header'=>'操作',
-                    'buttons' => [
-                    'apply' => function ($url, $model) {
-                        return $model->status?"":Html::button('同意', [
-                            'title' => Yii::t('yii', '同意'),
-                            'class' => 'btn btn-default jsapplypass',
-                            'data-url'=>$url,
-                        ]).Html::button('拒绝', [
-                            'title' => Yii::t('yii', '拒绝'),
-                            'class' => 'btn btn-danger jsapplynix',
-                            'data-url'=>$url,
-                        ]);
-                    },
-                ],
-                'template'=>'{apply}',
-            ],
-            'remark_audit',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
             'showFooter'=>true
         ],
-    ]); ?>
-
+    ]);?>
+    <!-- 列表END -->
 </div>

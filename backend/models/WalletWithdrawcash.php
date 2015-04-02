@@ -88,6 +88,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             'withdrawcash_id' => '提现记录ID',
             'withdrawcash_no' => '提现记录编号',
             'uid' => '用户ID',
+            'mobile' => '用户手机号',
             'money' => '提现金额',
             'status' => '状态',
             'remark_audit' => '审核备注',
@@ -119,6 +120,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
         #补充必要操作记录
         $params = [
             'status'=>0,
+            'mobile'=>User::findOne(['id'=>$this->uid])->mobile,
             'withdrawcash_no'=>self::_generateWalletNo(),
             'time_apply'=>date('Y-m-d H:i:s'),
             'admin_uid_apply'=>\Yii::$app->user->getId(),
@@ -172,20 +174,6 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
 
             #修改提现记录
             if(!$this->payMoney($id)){
-                return false;
-            }
-
-            #添加收支明细
-            $params = [
-                'uid'           =>$withdrawcash->uid,
-                'detail_money'  =>$withdrawcash->money,
-                'wallet_money'  =>0,
-                'detail_type'   =>WalletUserDetail::WALLET_TYPE_WITHDRAWALS,
-                'pay_from'      =>WalletUserDetail::PAY_FROM_BACKEND,
-                'admin_uid'     =>Yii::$app->user->identity->getId(),
-            ];
-            $wallet = new Wallet();
-            if($wallet->addConRecords($params)['code'] !== '200'){
                 return false;
             }
 

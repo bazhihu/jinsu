@@ -10,17 +10,17 @@ use backend\models\User;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '提现支付';
+$this->title = '提现记录';
 $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
-<div class="wallet-to-pay">
+<div class="wallet-user-detail-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <!--?php  echo $this->render('_search', ['model' => $searchModel]); ?-->
     <div class="wallet-apply-list" style="padding: 25px">
 
         <?php $form = ActiveForm::begin([
-            'action' => ['to-pay'],
+            'action' => ['cash-records'],
             'method' => 'get',
 
             'type' => ActiveForm::TYPE_INLINE,
@@ -58,7 +58,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
         ?>
         <?= $form->field(
             $searchModel,
-            'uid',
+            'mobile',
             [
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
@@ -83,51 +83,77 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'header'=>'申请时间',
-                'attribute'=>'time_apply',
+                'header'=>'交易流水号',
+                'attribute'=>'withdrawcash_no',
             ],
             [
                 'header'=>'用户账号',
-                'attribute'=>'uid',
+                'attribute'=>'mobile',
+            ],
+            [
+                'header'=>'医院名称',
+                'attribute'=>'payee_hospital',
                 'value'=>function($model){
-                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->mobile:"";
+                    return \backend\models\Hospitals::findOne(['id'=>$model->payee_hospital])->name;
                 },
             ],
             [
+                'header'=>'姓名',
+                'attribute'=>'payee_name',
+            ],
+            [
+                'header'=>'身份证号码',
+                'attribute'=>'payee_id_card',
+            ],
+            [
+                'header'=>'提现金额',
                 'attribute'=>'money',
-                'value'=>function($model){
-                    return $model->money;
-                }
             ],
-            'remark_apply',
             [
-                'header'=>'审核时间',
-                'attribute'=>'time_audit',
-            ],
-            'remark_audit',
-            [
-                'header'=>'付款状态',
+                'header'=>'申请状态',
                 'attribute'=>'status',
                 'value'=>function($model){
                     if($model->status == '3') {
                         return '已付款';
                     }elseif($model->status == '2'){
                         return '待付款';
+                    }elseif($model->status == '1'){
+                        return '已拒绝';
+                    }else{
+                        return '待审核';
                     }
-                },
+                }
             ],
-            ['class' => 'yii\grid\ActionColumn',
-                'header'=>'操作',
-                    'buttons' => [
-                    'pay' => function ($url, $model) {
-                        return $model->status==2?Html::button('付款', [
-                            'title' => Yii::t('yii', '付款'),
-                            'class' => 'btn btn-default jspay',
-                            'data-url'=>$url,
-                        ]):"";
-                    },
-                ],
-                'template'=>'{pay}',
+            [
+                'header'=>'申请操作人',
+                'attribute'=>'admin_uid_apply',
+                'value'=>function($model){
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_apply])->username;
+                }
+            ],
+            [
+                'header'=>'申请时间',
+                'attribute'=>'time_apply',
+
+            ],
+            [
+                'header'=>'确认人',
+                'attribute'=>'admin_uid_audit',
+                'value'=>function($model){
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_audit])->username;
+                }
+            ],[
+                'header'=>'确认时间',
+                'attribute'=>'time_audit',
+            ],[
+                'header'=>'付款人',
+                'attribute'=>'admin_uid_payment',
+                'value'=>function($model){
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_payment])->username;
+                }
+            ],[
+                'header'=>'付款时间',
+                'attribute'=>'time_payment',
             ],
         ],
         'panel' => [

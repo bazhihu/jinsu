@@ -2,7 +2,11 @@
 
 namespace common\models;
 
+use backend\models\User;
+use backend\models\WalletDebitRecords;
 use backend\models\WalletIncrement;
+use backend\models\WalletRechargeRecords;
+use backend\models\WalletRefundRecords;
 use Yii;
 use yii\base\Exception;
 use yii\web\NotFoundHttpException;
@@ -52,13 +56,13 @@ class Wallet
 
             $detail = array();//添加消费记录
             $detail['uid']          = $walletUser->uid;
+            $detail['mobile']       = User::findOne(['id'=>$walletUser->uid])->mobile;
             $detail['detail_money'] = $params['money'];
-            $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
             $detail['wallet_money'] = $walletUser->money;
             $detail['pay_from']     = $params['pay_from'];
             $detail['admin_uid']    = Yii::$app->user->identity->getId();
 
-            $result = self::addConRecords($detail);
+            $result = self::rechargeRecords($detail);
             if ($result['code'] !== '200') {
                 throw new HttpException(400, "", true);
             }
@@ -69,6 +73,47 @@ class Wallet
         }
         #事务-END
         return true;
+    }
+
+    /**
+     * 充值记录入库
+     * @param $params
+     * [
+     *      'trade_no'          =>充值记录编号
+     *       'uid'              =>用户ID
+     *       'mobile'           =>手机号
+     *        'detail_money'    =>充值金额
+     *       'wallet_money'     =>余额
+     *       'admin_uid'        =>操作者ID
+     *       'pay_from'         =>支付渠道
+     * ]
+     * @return array
+     * @throws HttpException
+     */
+    public static function rechargeRecords($params)
+    {
+        $response = [
+            'code' => '200',
+            'msg' => ''
+        ];
+        $rechargeRecords = new WalletRechargeRecords();
+        $records = [
+            'trade_no'      => self::_generateWalletNo(),
+            'uid'           => $params['uid'],
+            'mobile'        => $params['mobile'],
+            'money'         => $params['detail_money'],
+            'balance'       => $params['wallet_money'],
+            'admin_uid'     => $params['admin_uid'],
+            'time'          => date('Y-m-d H:i:s'),
+            'pay_from'      => $params['pay_from'],
+        ];
+
+        $rechargeRecords->setAttributes($records);
+        if(!$rechargeRecords->save()){
+            throw new HttpException(400, print_r($rechargeRecords->getErrors(), true));
+        }
+        $response['msg'] = '记录成功';
+        return $response;
     }
 
     /**
@@ -139,18 +184,15 @@ class Wallet
     }
 
     /**
-     * 消费记录
+     * 扣款入库
      * @author HZQ
      * @param $params
      * [
-     *      'order_id'      int  订单ID
-     *      'order_no'   string  订单编号
+     *      'order_id'      int  订单ID                           必填
+     *      'order_no'   string  订单编号                           必填
      *      'uid'           int  用户id                           必填
      *      'detail_money'  int  交易金额                          必填
      *      'wallet_money'  int  当前账户余额                       必填
-     *      'detail_type'   int  交易类型 默认 1 (1消费,2充值,3提现)  必填
-     *      'pay_from'      int  支付渠道 默认 1 (1后台,2 app)      必填
-     *      'extract_to'    int  提现渠道
      *      'remark'        varchar 备注
      *      'admin_uid'     int  管理员ID
      * ]
@@ -162,24 +204,63 @@ class Wallet
             'code' => '200',
             'msg' => ''
         ];
-        $walletUserDetail = new WalletUserDetail(['scenario' => 'consume']);
-        $userDetail = [
-            'detail_no' => self::_generateWalletNo(),
-            'order_id' => isset($params['order_id']) ? $params['order_id'] : null,
-            'order_no' => isset($params['order_no']) ? $params['order_no'] : null,
-            'uid' => $params['uid'],
-            'detail_money' => $params['detail_money'],
-            'detail_type' => $params['detail_type'],//默认为1
-            'wallet_money' => $params['wallet_money'],//当前账户余额
-            'detail_time' => date('Y-m-d H:i:s'),
-            'pay_from' => isset($params['pay_from']) ? $params['pay_from'] : null,
-            'admin_uid' => isset($params['admin_uid']) ? $params['admin_uid'] : null,
-            'extract_to' => isset($params['extract_to']) ? $params['extract_to'] : null,
-            'remark' => isset($params['remark']) ? $params['remark'] : null,
+        $walletDebitRecords = new WalletDebitRecords();
+        $debit = [
+            'trade_no'      => self::_generateWalletNo(),
+            'order_id'      => $params['order_id'],
+            'order_no'      => $params['order_no'],
+            'uid'           => $params['uid'],
+            'mobile'        => User::findOne(['uid'=>$params['uid']])->mobile,
+            'money'         => $params['detail_money'],
+            'balance'       => $params['wallet_money'],//当前账户余额
+            'time'          => date('Y-m-d H:i:s'),
+            'admin_uid'     => $params['admin_uid']?$params['admin_uid']:"",
+            'remark'        => $params['remark']?$params['remark']:"",
         ];
-        $walletUserDetail->setAttributes($userDetail);
-        if(!$walletUserDetail->save()){
-            throw new HttpException(400, print_r($walletUserDetail->getErrors(), true));
+        $walletDebitRecords->setAttributes($debit);
+        if(!$walletDebitRecords->save()){
+            throw new HttpException(400, print_r($walletDebitRecords->getErrors(), true));
+        }
+        $response['msg'] = '记录成功';
+        return $response;
+    }
+
+    /**
+     * 退款记录入库
+     * @param $params
+     * [
+     *      'order_id'          订单ID
+     *      'order_no'          订单编号
+     *      'uid'               用户ID
+     *      'detail_money'      交易金额
+     *      'wallet_money'      余额
+     *      'admin_uid'         操作者ID
+     *      'remark'            备注
+     * ]
+     * @return array
+     * @throws HttpException
+     */
+    public static function refundRecords($params){
+        $response = [
+            'code' => '200',
+            'msg' => ''
+        ];
+        $walletRefundRecords = new WalletRefundRecords();
+        $refundRecords = [
+            'trade_no'      =>self::_generateWalletNo(),
+            'order_id'      =>$params['order_id'],
+            'order_no'      =>$params['order_no'],
+            'uid'           =>$params['uid'],
+            'mobile'        =>User::findOne(['uid'=>$params['uid']])->mobile,
+            'money'         =>$params['detail_money'],
+            'balance'       =>$params['wallet_money'],
+            'time'          =>date('Y-m-d H:i:s'),
+            'admin_uid'     =>$params['admin_uid']?$params['admin_uid']:"",
+            'remark'        =>$params['remark']?$params['remark']:"",
+        ];
+        $walletRefundRecords->setAttributes($refundRecords);
+        if(!$walletRefundRecords->save()){
+            throw new HttpException(400, print_r($walletRefundRecords->getErrors(), true));
         }
         $response['msg'] = '记录成功';
         return $response;

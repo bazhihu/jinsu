@@ -1,5 +1,5 @@
 //申请同意
-$('body').on('click', 'button.jsapplypass', function () {
+$('body').on('click', 'button.jsPass', function () {
     if(!confirm('确认执行此操作吗？')){
         return false;
     }
@@ -28,7 +28,7 @@ $('body').on('click', 'button.jsapplypass', function () {
     });
 });
 //申请拒绝
-$('body').on('click', 'button.jsapplynix', function () {
+$('body').on('click', 'button.jsNix', function () {
     if(!confirm('确认执行此操作吗？')){
         return false;
     }
@@ -55,7 +55,7 @@ $('body').on('click', 'button.jsapplynix', function () {
     });
 });
 //申请拒绝
-$('body').on('click', 'button.jspay', function () {
+$('body').on('click', 'button.jsPay', function () {
     if(!confirm('确认执行此操作吗？')){
         return false;
     }
@@ -80,15 +80,4 @@ $('body').on('click', 'button.jspay', function () {
             }
         }
     });
-});
-//充值
-
-$('body').on('submit', '#w0', function () {
-
-    var value = $('#recharge-money').val(),
-        name = $('#recharge-uid').val();
-
-    if(!confirm('确认给用户'+name+'：充值'+value+'人民币？')){
-        return false;
-    }
 });

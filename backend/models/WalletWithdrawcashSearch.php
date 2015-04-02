@@ -14,14 +14,14 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
 {
     public $fromDate;   //开始时间
     public $toDate;     //结束时间
-    public $id;         //用户ID
+
     public $start;      //起始状态
     public $end;        //结束状态
     public function rules()
     {
         return [
             [['withdrawcash_id', 'uid', 'status', 'payee_type', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
-            [['fromDate','toDate','start','end','withdrawcash_no', 'remark_audit', 'remark_apply', 'payee_time', 'payee_hospital', 'payee_name', 'payee_id_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
+            [['fromDate','toDate','start','end','withdrawcash_no','mobile','remark_audit', 'remark_apply', 'payee_time', 'payee_hospital', 'payee_name', 'payee_id_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
             [['money'], 'number'],
         ];
     }
@@ -49,7 +49,7 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
 
         $query->andFilterWhere([
             'withdrawcash_id' => $this->withdrawcash_id,
-            'uid' => $this->id,
+            'mobile' => $this->mobile,
             'money' => $this->money,
             'status' => $this->status,
             'payee_type' => $this->payee_type,

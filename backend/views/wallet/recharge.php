@@ -59,8 +59,8 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
                 '充值',
                 [
                     'class' =>'jsRecharge btn btn-info btn-lg col-sm-4 col-md-offset-4',
-                    'data-url'=>Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->uid]),
-                    'jump-url'=>Yii::$app->urlManager->createUrl(['wallet/pay-index','uid' => $model->uid]),
+                    'data-url'=>Yii::$app->urlManager->createUrl(['wallet/ajax-recharge','uid' => $userRow['uid']]),
+                    'jump-url'=>Yii::$app->urlManager->createUrl(['wallet/recharge-records','uid' => $userRow['uid']]),
                 ]
             );
             ?>

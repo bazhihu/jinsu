@@ -2,13 +2,14 @@
 
 namespace common\models;
 
-use backend\models\WalletIncrement;
 use Yii;
 use yii\base\Exception;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
+use backend\models\WalletIncrement;
 use backend\models\WalletUser;
 use backend\models\WalletUserDetail;
-use yii\web\HttpException;
+
 
 /**
  * @author zhiqiang

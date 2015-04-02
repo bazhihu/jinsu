@@ -7,7 +7,7 @@ use yii\helpers\Html;
  * @var backend\models\Hospitals $model
  */
 
-$this->title = 'Create Hospitals';
+$this->title=$model->isNewRecord?'新建医院':'编辑医院';
 $this->params['breadcrumbs'][] = ['label' => 'Hospitals', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -19,7 +19,7 @@ use Yii\helpers\Url;
 
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);
 
-    echo $form->field($model, 'parent_id')->dropDownList(\backend\models\dictionary\Departments::getParent());
+    echo $form->field($model, 'parent_id')->dropDownList(\backend\models\Departments::getParent());
     echo $form->field($model, 'name');
 
     echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);

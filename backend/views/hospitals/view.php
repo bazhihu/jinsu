@@ -33,15 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute'=>'province_id',
-                'value'=>\backend\models\dictionary\City::findOne(['id'=>$model->province_id])->name,
+                'value'=>\backend\models\City::findOne(['id'=>$model->province_id])->name,
             ],
             [
                 'attribute'=>'city_id',
-                'value'=>\backend\models\dictionary\City::findOne(['id'=>$model->city_id])->name,
+                'value'=>\backend\models\City::findOne(['id'=>$model->city_id])->name,
             ],
             [
                 'attribute'=>'area_id',
-                'value'=>\backend\models\dictionary\City::findOne(['id'=>$model->area_id])->name,
+                'value'=>\backend\models\City::findOne(['id'=>$model->area_id])->name,
             ],
             'phone',
         ],

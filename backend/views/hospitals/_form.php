@@ -47,7 +47,7 @@ use kartik\widgets\Select2;
     ]
     ]);
     echo $form->field($model, 'province_id')->widget(Select2::classname(), [
-            'data' => \backend\models\dictionary\City::getList(1),
+            'data' => \backend\models\City::getList(1),
     ]);
     echo $form->field($model, 'city_id')->widget(DepDrop::classname(), [
         'data'=> [6=>'Bank'],

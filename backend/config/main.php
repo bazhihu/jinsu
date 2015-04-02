@@ -127,7 +127,8 @@ return [
         'allowActions' => [
             'site/login',
             'site/error',
-            'site/logout'
+            'site/logout',
+            'tq/index'
         ]
     ],
     'params' => $params,

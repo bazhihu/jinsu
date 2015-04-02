@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "{{%comment}}".
  *
  * @property string $comment_id
- * @property string $order_id
+ * @property string $order_no
  * @property string $uid
  * @property string $worker_id
  * @property integer $star
@@ -39,10 +39,11 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', 'uid', 'worker_id', 'star', 'status', 'adder', 'auditer'], 'integer'],
+            [['uid', 'worker_id', 'star', 'status', 'adder', 'auditer'], 'integer'],
             [['content'], 'required'],
             [['comment_date', 'audit_time'], 'safe'],
             [['content'], 'string', 'max' => 255],
+            [['order_no'], 'string', 'max' =>50],
             [['type'], 'string', 'max' => 10]
         ];
     }
@@ -53,7 +54,7 @@ class Comment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'order_id' => '订单号',
+            'order_no' => '订单号',
             'uid' => '用户ID',
             'worker_id' => '护工编号',
             'worker_name' => '护工姓名',
@@ -69,4 +70,15 @@ class Comment extends \yii\db\ActiveRecord
             'type' => '来源',
         ];
     }
+
+//    public function  commentAudit(){
+//        $comment_ids = $_POST['comment_id'];
+//        self::model()->updateAll(array('status'=>2,'auditer'=>1,'audit_date'=>date('Y-m-d H:i:s')), 'password=:pass',array(':pass'=>'1111a1'));
+//        if($count>0){
+//            echo "修改成功";
+//        }else{
+//            echo "修改失败";
+//        }
+//
+//    }
 }

@@ -12,7 +12,6 @@ use common\models\Order;
 use backend\models\OrderPatient;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
-use backend\models\WalletUserDetail;
 use backend\models\User;
 
 /**
@@ -116,6 +115,11 @@ class OrderController extends Controller
         return $user;
     }
 
+    /**
+     * 续单
+     * @param $id
+     * @return string
+     */
     public function actionContinue($id){
         $oldOrder = OrderMaster::findOne($id);
         $oldOrderPatient = OrderPatient::findOne(['order_id' => $id]);
@@ -151,7 +155,6 @@ class OrderController extends Controller
             'model' => $model,
             'orderPatientModel' => $orderPatientModel
         ]);
-
     }
 
     /**

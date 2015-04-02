@@ -29,7 +29,7 @@ class WalletController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['pay-index', 'deduction-index', 'apply-cash', 'apply-list','apply','to-pay','pay','payment','pay-create'],
+                        'actions' => ['pay-index', 'deduction-index', 'apply-cash', 'apply-list','apply','to-pay','pay','payment','pay-create','recharge'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -263,21 +263,7 @@ class WalletController extends Controller
             throw new NotFoundHttpException('user not exist.');
         }
 
-        if (Yii::$app->request->post()) {
-            $params = Yii::$app->request->post('Recharge');
-            if($params['uid'] && $params['money'])
-            {
-                #支付渠道-后台
-                $params['pay_from'] = WalletUserDetail::PAY_FROM_BACKEND;
-                $wallet = new Wallet();
-                if($wallet->recharge($params)){
-                    return $this->redirect(['pay-index', 'uid' => $uid]);
-                }
-            }
-        }
-
         $model = new Recharge();
-
         $mobile     = $user->mobile;
         $admin_name = Yii::$app->user->identity->username;
         if($mobile && $admin_name){
@@ -295,6 +281,32 @@ class WalletController extends Controller
 
     }
 
+    public function actionRecharge(){
+        $response = [
+            'code'  =>'200',
+            'msg'   =>'',
+        ];
+        if(Yii::$app->request->isAjax)
+        {
+            $params = Yii::$app->request->post();
+
+            if($params['uid'] && $params['money'])
+            {
+                #支付渠道-后台
+                $params['pay_from'] = WalletUserDetail::PAY_FROM_BACKEND;
+                $wallet = new Wallet();
+                if(!$wallet->recharge($params)){
+                    $response = [
+                        'code'  =>'400',
+                        'msg'   =>'充值失败',
+                    ];
+                    echo Json::encode($response);
+                }
+            }
+        }
+        $response['msg'] = '成功充值';
+        echo Json::encode($response);
+    }
     /**
      * Finds the WalletUserDetail model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

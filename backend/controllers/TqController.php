@@ -8,9 +8,27 @@ use yii\web\Controller;
 use backend\models\User;
 use backend\models\Tq;
 use backend\models\LoginForm;
+use yii\filters\AccessControl;
 
 class TqController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'select'],
+                        'allow' => true,
+                    ],
+                ],
+            ],
+        ];
+    }
 /*
  * TQ客服登录跳转此方法
  * */

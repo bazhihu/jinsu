@@ -62,10 +62,13 @@ class HospitalsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id=null)
     {
-        $model = new Hospitals;
-
+        if($id){
+            $model = Hospitals::findOne(['id'=>$id]);
+        }else{
+            $model = new Hospitals();
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

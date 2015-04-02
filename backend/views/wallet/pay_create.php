@@ -49,12 +49,21 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
         )->label('经办人') ?>
 
         <div class="form-group">
-            <?= Html::submitButton(
+            <?= /*Html::submitButton(
                 '充值',
                 [
                     'class' =>'btn btn-info btn-lg col-sm-4 col-md-offset-4',
                 ]
-            ) ?>
+            );*/
+            Html::button(
+                '充值',
+                [
+                    'class' =>'jsRecharge btn btn-info btn-lg col-sm-4 col-md-offset-4',
+                    'data-url'=>Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->uid]),
+                    'jump-url'=>Yii::$app->urlManager->createUrl(['wallet/pay-index','uid' => $model->uid]),
+                ]
+            );
+            ?>
         </div>
 
         <?php ActiveForm::end(); ?>
@@ -63,13 +72,37 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
 
 </div>
 <script type="text/javascript">
-    $("form").submit( function () {
-        var value = $('#recharge-money').val(),
-            name = $('#recharge-uid').val();
+    //充值
+    $('body').on('click', 'button.jsRecharge', function () {
 
-        if(!confirm('确认给用户'+name+'：充值'+value+'人民币？')){
-            return false;
+        var value = $('#recharge-money').val(),
+            name = $('#recharge-uid').val(),
+            url = $(this).attr('data-url'),
+            jump = $(this).attr('jump-url');
+
+        if(value && name){
+            if(!confirm('确认给用户'+name+'：充值'+value+'人民币？')){
+                return false;
+            }
+            $.ajax({
+                type    : "POST",
+                dataType: "json",
+                async   :false,
+                cache   :false,
+                timeout :30000,
+                url     : url,
+                data    : {'money':value ,'uid':name},
+                success: function(json){
+                    if(json.code == '200'){
+                        alert(json.msg);
+                        location.href = jump;
+                        return true;
+                    }
+                }
+            });
+        }else{
+            $('#recharge-money').prev().addClass('has-error');
+            $('#recharge-money').next().html('money不能为空');
         }
-        return true;
-    } );
+    });
 </script>

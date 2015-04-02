@@ -24,18 +24,6 @@ use kartik\widgets\Select2;
     'columns' => 1,
     'attributes' => [
 
-//        'province_id'=>[
-//            'type'=> Form::INPUT_TEXT,
-//            'options'=>['placeholder'=>'Enter Province ID...', 'maxlength'=>11]
-//        ],
-//        'city_id'=>[
-//            'type'=> Form::INPUT_TEXT,
-//            'options'=>['placeholder'=>'Enter City ID...', 'maxlength'=>11]
-//        ],
-//        'area_id'=>[
-//            'type'=> Form::INPUT_TEXT,
-//            'options'=>['placeholder'=>'Enter Area ID...', 'maxlength'=>11]
-//        ],
         'name'=>[
             'type'=> Form::INPUT_TEXT,
             'options'=>['placeholder'=>'Enter Name...', 'maxlength'=>255]
@@ -47,10 +35,10 @@ use kartik\widgets\Select2;
     ]
     ]);
     echo $form->field($model, 'province_id')->widget(Select2::classname(), [
-            'data' => \backend\models\dictionary\City::getList(1),
+            'data' => \backend\models\City::getList(1),
     ]);
     echo $form->field($model, 'city_id')->widget(DepDrop::classname(), [
-        'data'=> [6=>'Bank'],
+        'data'=> $model->province_id?\backend\models\City::getList(['parent_id'=>$model->province_id]):"",
         'options' => ['placeholder' => 'Select ...'],
         'type' => DepDrop::TYPE_SELECT2,
         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
@@ -61,7 +49,7 @@ use kartik\widgets\Select2;
         ]
     ]);
     echo $form->field($model, 'area_id')->widget(DepDrop::classname(), [
-        'data'=> [9=>'Savings'],
+        'data'=> $model->city_id?\backend\models\City::getList(['parent_id'=>$model->city_id]):"",
         'options' => ['placeholder' => 'Select ...'],
         'type' => DepDrop::TYPE_SELECT2,
         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],

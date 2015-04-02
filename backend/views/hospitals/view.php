@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'condensed'=>false,
             'hover'=>true,
-            'mode'=>Yii::$app->request->get('edit')=='t' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
+            //'mode'=>Yii::$app->request->get('edit')=='t' ? DetailView::MODE_EDIT : DetailView::MODE_VIEW,
             'panel'=>[
             'heading'=>$this->title,
             'type'=>DetailView::TYPE_INFO,
@@ -33,15 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute'=>'province_id',
-                'value'=>\backend\models\dictionary\City::findOne(['id'=>$model->province_id])->name,
+                'value'=>$model->province_id?\backend\models\City::findOne(['id'=>$model->province_id])->name:"",
             ],
             [
                 'attribute'=>'city_id',
-                'value'=>\backend\models\dictionary\City::findOne(['id'=>$model->city_id])->name,
+                'value'=>$model->city_id?\backend\models\City::findOne(['id'=>$model->city_id])->name:"",
             ],
             [
                 'attribute'=>'area_id',
-                'value'=>\backend\models\dictionary\City::findOne(['id'=>$model->area_id])->name,
+                'value'=>$model->area_id?\backend\models\City::findOne(['id'=>$model->area_id])->name:"",
             ],
             'phone',
         ],

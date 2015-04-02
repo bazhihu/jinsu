@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute'=>'parent_id',
-                'value'=>$model->parent_id?\backend\models\dictionary\Departments::findOne(['id'=>$model->parent_id])->name:'无',
+                'value'=>$model->parent_id?\backend\models\Departments::findOne(['id'=>$model->parent_id])->name:'无',
             ]
         ],
         'deleteOptions'=>[

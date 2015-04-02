@@ -227,8 +227,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         // define possible fields
         $possibleNames = [
+            "nickname",
             "username",
-            "email",
+            "mobile",
+            //"email",
             "id",
         ];
 

@@ -28,7 +28,7 @@ use kartik\datecontrol\DateControl;
         <div class="panel-body">
             <?= $form->field(
                 $model,
-                'order_id'
+                'order_no'
             )->input('text',['placeholder'=>'请输入订单号...','style'=>'width:135px'])?>
 
             <?= $form->field(

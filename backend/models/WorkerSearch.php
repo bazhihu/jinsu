@@ -14,7 +14,7 @@ class WorkerSearch extends Worker
     public function rules()
     {
         return [
-            [['worker_id', 'gender', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
+            [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
             [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'good_at', 'add_date', 'edit_date'], 'safe'],
             [['price', 'good_rate'], 'number'],
         ];

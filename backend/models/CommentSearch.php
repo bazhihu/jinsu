@@ -15,7 +15,7 @@ class CommentSearch extends Comment
     public function rules()
     {
         return [
-            [['comment_id', 'order_id', 'uid', 'worker_id', 'star', 'status', 'adder', 'auditer'], 'integer'],
+            [['comment_id', 'order_no', 'uid', 'worker_id', 'star', 'status', 'adder', 'auditer'], 'integer'],
             [['content', 'comment_date', 'audit_time', 'type'], 'safe'],
         ];
     }
@@ -39,12 +39,11 @@ class CommentSearch extends Comment
         }
 
         $query->andFilterWhere([
-            'order_id' => $this->order_id,
-            'worker_id' => $this->worker_id,
             'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'worker_name', $this->worker_name])
+        $query->andFilterWhere(['like', 'order_no', $this->order_no])
+            ->andFilterWhere(['like', 'worker_id', $this->worker_id])
             ->andFilterWhere(['like', 'worker_name', $this->worker_name])
             ->andFilterWhere(['between', 'comment_date', $this->comment_date_begin, $this->comment_date_end]);
 

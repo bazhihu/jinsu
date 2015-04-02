@@ -156,7 +156,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByMobile($mobile)
     {
-        return static::findOne(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['mobile' => $mobile, 'status' => self::STATUS_NORMAL]);
     }
 
     /**

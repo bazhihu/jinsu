@@ -29,16 +29,16 @@ class WalletController extends Controller
     public function behaviors()
     {
         return [
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'rules' => [
-//                    [
-//                        'actions' => ['pay-index', 'deduction-index', 'apply-cash', 'apply-list','apply','to-pay','pay','payment','pay-create','recharge'],
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                    ],
-//                ],
-//            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['recharge', 'ajax-recharge', 'recharge-records', 'debit-records','cash','cash-list','ajax-cash','confirm-list','cash-records','ajax-confirm'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

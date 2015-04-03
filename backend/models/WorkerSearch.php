@@ -81,6 +81,8 @@ class WorkerSearch extends Worker
             ->andFilterWhere(['like', 'hospital_id', $this->hospital_id])
             ->andFilterWhere(['like', 'office_id', $this->office_id])
             ->andFilterWhere(['like', 'good_at', $this->good_at])*/;
+      //  $query->orderBy(['worker_id'=>'desc']);
+        $query->orderBy('worker_id desc');
 
         return $dataProvider;
     }

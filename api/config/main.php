@@ -42,7 +42,8 @@ return [
                     'controller' => [
                         'v1/country',
                         'v1/user',
-                        'v1/order'
+                        'v1/order',
+                        'v1/config'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

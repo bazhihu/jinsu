@@ -20,7 +20,7 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 
 class ConfigController extends ActiveController {
-    public $modelClass = 'backend\models\Hospitals';
+    public $modelClass = FALSE;
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -29,8 +29,8 @@ class ConfigController extends ActiveController {
      * @var array
      */
     private static $patientDes = [
-        OrderPatient::PATIENT_STATE_OK          =>'自己吃饭,自己走路,自己上厕所',
-        OrderPatient::PATIENT_STATE_DISABLED    =>'不能自己吃饭,不能自己走路,不能自己上厕所',
+        OrderPatient::PATIENT_STATE_OK          =>'指行动不需要协助可自行解决的病患，如：可自行行走、吃饭、排便并意识清醒',
+        OrderPatient::PATIENT_STATE_DISABLED    =>'指行动完全需要协助来完成的病患，如：不可行走、吃饭、排便或昏迷',
     ];
     /**
      * 护工等级描述
@@ -78,7 +78,7 @@ class ConfigController extends ActiveController {
             unset($hospitals['phone']);
         }
         #科室
-        $return['departments'] = Departments::find()->all();
+        $return['departments'] = Departments::find(['parent_id'])->all();
         foreach($return['departments'] as $departments)
         {
             unset($departments['parent_id']);
@@ -89,6 +89,7 @@ class ConfigController extends ActiveController {
         #患者等级
         $return['patient_states'] = self::generatePatient([OrderPatient::PATIENT_STATE_OK,OrderPatient::PATIENT_STATE_DISABLED]);
         $return['holidays'] = ArrayHelper::getColumn(Holidays::find()->all(),'date');
+
         return $return;
     }
 
@@ -124,7 +125,7 @@ class ConfigController extends ActiveController {
         {
             $return[$key] = [
                 "id"    => $value,
-                "name"  => Worker::$workerLevelLabel[$value],
+                "name"  => Worker::$workerLevelLabel[$value].'护理师',
                 "des"   => self::$workerDes[$value],
                 "price" => Worker::$workerPrice[$value],
             ];

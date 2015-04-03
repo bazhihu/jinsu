@@ -94,7 +94,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'医院名称',
                 'attribute'=>'payee_hospital',
                 'value'=>function($model){
-                    return \backend\models\Hospitals::findOne(['id'=>$model->payee_hospital])->name;
+                    return \backend\models\Hospitals::findOne(['id'=>$model->payee_hospital])?\backend\models\Hospitals::findOne(['id'=>$model->payee_hospital])->name:'';
                 },
             ],
             [
@@ -128,7 +128,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'申请操作人',
                 'attribute'=>'admin_uid_apply',
                 'value'=>function($model){
-                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_apply])->username;
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_apply])?\backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_apply])->username:'';
                 }
             ],
             [
@@ -140,7 +140,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'确认人',
                 'attribute'=>'admin_uid_audit',
                 'value'=>function($model){
-                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_audit])->username;
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_audit])?\backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_audit])->username:'';
                 }
             ],[
                 'header'=>'确认时间',
@@ -149,7 +149,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'header'=>'付款人',
                 'attribute'=>'admin_uid_payment',
                 'value'=>function($model){
-                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_payment])->username;
+                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_payment])?\backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid_payment])->username:'';
                 }
             ],[
                 'header'=>'付款时间',

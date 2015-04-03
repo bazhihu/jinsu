@@ -35,8 +35,8 @@ class OrderPatient extends \yii\db\ActiveRecord
      * @var array
      */
     static public $patientStateLabels = [
-        self::PATIENT_STATE_OK => '能自理',
-        self::PATIENT_STATE_DISABLED => '不能自理'
+        self::PATIENT_STATE_OK => '可自理',
+        self::PATIENT_STATE_DISABLED => '不可自理'
     ];
 
     /**

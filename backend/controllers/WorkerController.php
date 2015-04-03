@@ -79,10 +79,8 @@ class WorkerController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
             //上传照片
-            if ($params['Worker']['pic']) {
-                $pic_name = $this->picUpload($params);
-                $params['Worker']['pic'] = $pic_name;
-            }
+            $pic_name = $this->picUpload($params);
+            $params['Worker']['pic'] = $pic_name;
             $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
@@ -136,10 +134,8 @@ class WorkerController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
             //上传照片
-            if ($params['Worker']['pic']) {
-                $pic_name = $this->picUpload($params);
-                $params['Worker']['pic'] = $pic_name;
-            }
+            $pic_name = $this->picUpload($params);
+            $params['Worker']['pic'] = $pic_name;
             $model->attributes =  $model->saveData($params['Worker'], 'update');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);

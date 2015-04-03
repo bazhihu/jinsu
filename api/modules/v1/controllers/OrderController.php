@@ -56,7 +56,7 @@ class OrderController extends ActiveController {
         $result = ArrayHelper::toArray($query);
         if(!empty($query)){
             foreach($result as $key => $item){
-                $item['pic'] = Worker::workerPicByWorkerId($item['worker_no']);
+                $item['pic'] = Worker::workerPic($item['worker_no']);
                 $result[$key] = $item;
             }
         }
@@ -73,7 +73,7 @@ class OrderController extends ActiveController {
         $result['pic'] = null;
         if(!empty($result['worker_no'])){
             //获取护工照片
-            $result['pic'] = Worker::workerPicByWorkerId($result['worker_no']);
+            $result['pic'] = Worker::workerPic($result['worker_no']);
         }
         return $result;
     }

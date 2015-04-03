@@ -22,7 +22,7 @@ class WalletUserDetailSearch extends WalletUserDetail
     {
         return [
             [['detail_id', 'order_id', 'worker_id', 'uid', 'detail_type', 'admin_uid'], 'integer'],
-            [['detail_no', 'order_no', 'detail_time', 'remark', 'pay_from', 'extract_to'], 'safe'],
+            [['id','detail_no', 'order_no', 'detail_time', 'remark', 'pay_from', 'extract_to'], 'safe'],
             [['detail_money', 'wallet_money'], 'number'],
             [['fromDate','toDate'],'safe']
         ];

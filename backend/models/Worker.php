@@ -525,7 +525,7 @@ class Worker extends \yii\db\ActiveRecord
      */
     static public function workerPic($workerId){
         if($workerId)
-            return Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
+            return 'http://'.Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
         else
             return "uploads/no.jpg";
     }

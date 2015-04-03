@@ -15,7 +15,7 @@ use kartik\datecontrol\DateControl;
 <div class="user-form">
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h3 class="panel-title">评论</h3>
+            <h3 class="panel-title"><?=$this->title?></h3>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]);
@@ -62,6 +62,8 @@ use kartik\datecontrol\DateControl;
                 ]);
             }
             //echo $form->field($model, 'pic')->inputOptions('IN'); ;
-            echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
-            ActiveForm::end(); ?>
+            echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);?>
+        </div>
+    </div>
+    <? ActiveForm::end(); ?>
 </div>

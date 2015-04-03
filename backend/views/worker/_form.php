@@ -24,250 +24,236 @@ use backend\models\Hospitals;
 ?>
 
 <div class="worker-form">
-    <?php $form = ActiveForm::begin([
-            'type'=>ActiveForm::TYPE_HORIZONTAL,
-            'enableAjaxValidation' => false,
-            'options' => ['enctype' => 'multipart/form-data']
-        ]
-    );
+    <div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title"><?=$this->title?></h3>
+    </div>
+    <div class="panel-body">
+        <?php $form = ActiveForm::begin([
+                'type'=>ActiveForm::TYPE_HORIZONTAL,
+                'enableAjaxValidation' => false,
+                'options' => ['enctype' => 'multipart/form-data']
+            ]
+        );
 
-    //echo $form->field($model, 'pic')->fileInput() ;
-    echo $form->field($model, 'pic')->widget(\kartik\file\FileInput::classname(), [
-        'pluginOptions' => [
-            'showUpload' => false,
-            'browseLabel' => '浏览',
-            'showRemove' => false,
-            'class'=>"file-loading",
-            'allowedFileExtensions' => ['jpg', 'png'],
-            'maxFileSize' =>2000,
-            'initialPreview'=>[
-                Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
-            ],
-            'initialCaption'=>"护工照片",
-            'overwriteInitial'=>true
-        ]
-    ]);
-
-    echo Form::widget([
-    'model' => $model,
-    'form' => $form,
-    'columns' => 1,
-    'attributes' => [
-        'name'=>[
-            'type'=> Form::INPUT_TEXT,
-            'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:50%']
-        ],
-
-        'idcard'=>[
-            'type'=> Form::INPUT_TEXT,
-            'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:50%']
-        ],
-
-        'gender'=>[
-            'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择性别...'],
-            'items'=>['男'=>'男','女'=>'女'],
-            'options'=>['inline'=>true]
-        ],
-
-        'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-            'options'=>[
-                'options'=>[
-                    'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:30%']
+        //echo $form->field($model, 'pic')->fileInput() ;
+        echo $form->field($model, 'pic')->widget(\kartik\file\FileInput::classname(), [
+            'pluginOptions' => [
+                'showUpload' => false,
+                'browseLabel' => '浏览',
+                'showRemove' => false,
+                'class'=>"file-loading",
+                'allowedFileExtensions' => ['jpg', 'png'],
+                'maxFileSize' =>2000,
+                'initialPreview'=>[
+                    Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
                 ],
-                'type'=>DateControl::FORMAT_DATE,
-                'displayFormat' => 'yyyy-MM-dd',
-                'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
-            ],
-        ],
-
-        'marriage'=>[
-            'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择婚姻状况...'],
-            'items'=>['1'=>'已婚','2'=>'未婚'], 'options'=>['inline'=>true]
-        ],
-
-        'education'=>[
-            'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择文化程度...'],
-            'items'=>Worker::getEducationLevel(),
-            'options'=>['inline'=>true]
-        ],
-
-        'politics'=>[
-            'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择政治面貌...'],
-            'items'=>Worker::getPoliticsLevel(),
-            'options'=>['inline'=>true]
-        ],
-
-       'chinese_level'=>[
-           'type'=> Form::INPUT_RADIO_LIST,
-           'options'=>['placeholder'=>'请选择普通话水平...'],
-           'items'=>Worker::getChineseLevel(), 'options'=>['inline'=>true]
-       ],
-
-       'certificate'=>[
-           'type'=> Form::INPUT_CHECKBOX_LIST,
-           'options'=>['placeholder'=>'请选择资质证书...'],
-           'items'=>Worker::getCertificate(),
-           'options'=>['inline'=>true], 'maxlength'=>10
-       ],
-
-       /* 'phone1'=>[
-            'type'=> Form::INPUT_TEXT,
-            'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']
-        ],
-
-        'phone2'=>[
-            'type'=> Form::INPUT_TEXT,
-            'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
-        ],
-        */
-        'level'=>[
-            'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
-        ],
-
-        'price'=>[
-            'type'=> Form::INPUT_TEXT,
-            'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:50%']
-        ],
-
-        'status'=>[
-            'type'=> Form::INPUT_RADIO_LIST,
-            'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]
-        ],
-
-        'start_work'=>[
-            'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-            'options'=>[
-                'options'=>[
-                    'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:30%']
-                ],
-                'type'=>DateControl::FORMAT_DATE,
-                'displayFormat' => 'yyyy-MM-dd',
-                'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
-            ],
-        ],
-
-        'place'=>[
-            'type'=> Form::INPUT_TEXT,
-            'options'=>['placeholder'=>'请输入户口所在地...', 'maxlength'=>255,'style'=>'width:50%']
-        ]
-    ]
-    ]);
-
-    echo $form->field($model, 'nation')->widget(Select2::classname(), [
-        'data' =>Worker::getNation(),
-        'options' => ['placeholder' => '请选择民族','style'=>'width:50%'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ])->label('民族');
-
-    //户口所在地
-   // $model->birth_place = 140000;
-    echo $form->field($model, 'birth_place')->dropDownList(
-        City::getList(1),
-        [
-            'id'=>'birth_place',
-            'style'=>'width:30%',
-            'prompt'=>'请选择',
+                'initialCaption'=>"护工照片",
+                'overwriteInitial'=>true
+            ]
         ]);
 
-    // 户口所在地 Child # 1
-    $model->birth_place_city = 140300;
-    echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
-        'options'=>[
-            'id'=>'birth_place_city',
-            'style'=>'width:30%'
-        ],
-        'pluginOptions'=>[
-            'depends'=>['birth_place'],
-            'placeholder'=>'请选择',
-            'url'=>Url::to(['worker/getcity']),
-            'initialize' => true
+        echo Form::widget([
+        'model' => $model,
+        'form' => $form,
+        'columns' => 1,
+        'attributes' => [
+            'name'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:50%']
+            ],
+
+            'idcard'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:50%']
+            ],
+
+            'gender'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择性别...'],
+                'items'=>['男'=>'男','女'=>'女'],
+                'options'=>['inline'=>true]
+            ],
+
+            'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
+                'options'=>[
+                    'options'=>[
+                        'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:30%']
+                    ],
+                    'type'=>DateControl::FORMAT_DATE,
+                    'displayFormat' => 'yyyy-MM-dd',
+                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
+                ],
+            ],
+
+            'marriage'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择婚姻状况...'],
+                'items'=>['1'=>'已婚','2'=>'未婚'], 'options'=>['inline'=>true]
+            ],
+
+            'education'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择文化程度...'],
+                'items'=>Worker::getEducationLevel(),
+                'options'=>['inline'=>true]
+            ],
+
+            'politics'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择政治面貌...'],
+                'items'=>Worker::getPoliticsLevel(),
+                'options'=>['inline'=>true]
+            ],
+
+           'chinese_level'=>[
+               'type'=> Form::INPUT_RADIO_LIST,
+               'options'=>['placeholder'=>'请选择普通话水平...'],
+               'items'=>Worker::getChineseLevel(), 'options'=>['inline'=>true]
+           ],
+
+           'certificate'=>[
+               'type'=> Form::INPUT_CHECKBOX_LIST,
+               'options'=>['placeholder'=>'请选择资质证书...'],
+               'items'=>Worker::getCertificate(),
+               'options'=>['inline'=>true], 'maxlength'=>10
+           ],
+
+           /* 'phone1'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']
+            ],
+
+            'phone2'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
+            ],
+            */
+            'level'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
+            ],
+
+            'price'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:50%']
+            ],
+
+            'status'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]
+            ],
+
+            'start_work'=>[
+                'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
+                'options'=>[
+                    'options'=>[
+                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:30%']
+                    ],
+                    'type'=>DateControl::FORMAT_DATE,
+                    'displayFormat' => 'yyyy-MM-dd',
+                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
+                ],
+            ],
+
+            'place'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入户口所在地...', 'maxlength'=>255,'style'=>'width:50%']
+            ]
         ]
-    ])->label('');
+        ]);
 
-    //户口所在地 Child # 2
-    echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
-        'options'=>['style'=>'width:30%'],
-        'pluginOptions'=>[
-            'depends'=>[ 'birth_place_city'],
-            'placeholder'=>'请选择',
-            'url'=>Url::to(['worker/getarea']),
-            'initialize' => true
-        ]
-    ])->label('');
+        echo $form->field($model, 'nation')->widget(Select2::classname(), [
+            'data' =>Worker::getNation(),
+            'options' => ['placeholder' => '请选择民族','style'=>'width:50%'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ])->label('民族');
 
+        //户口所在地
+       // $model->birth_place = 140000;
+        echo $form->field($model, 'birth_place')->dropDownList(
+            City::getList(1),
+            [
+                'id'=>'birth_place',
+                'style'=>'width:30%',
+                'prompt'=>'请选择',
+            ]);
 
+        // 户口所在地 Child # 1
+        $model->birth_place_city = 140300;
+        echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
+            'options'=>[
+                'id'=>'birth_place_city',
+                'style'=>'width:30%'
+            ],
+            'pluginOptions'=>[
+                'depends'=>['birth_place'],
+                'placeholder'=>'请选择',
+                'url'=>Url::to(['worker/getcity']),
+                'initialize' => true
+            ]
+        ])->label('');
 
+        //户口所在地 Child # 2
+        echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
+            'options'=>['style'=>'width:30%'],
+            'pluginOptions'=>[
+                'depends'=>[ 'birth_place_city'],
+                'placeholder'=>'请选择',
+                'url'=>Url::to(['worker/getarea']),
+                'initialize' => true
+            ]
+        ])->label('');
 
+        //籍贯
+        echo $form->field($model, 'native_province')->widget(Select2::classname(), [
+            'data' => City::getList(1),
+            'options' => ['placeholder' => '请选择籍贯','style'=>'width:50%'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ])->label('籍贯');
 
-    //籍贯
-    echo $form->field($model, 'native_province')->widget(Select2::classname(), [
-        'data' => City::getList(1),
-        'options' => ['placeholder' => '请选择籍贯','style'=>'width:50%'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ])->label('籍贯');
+        // 常驻医院
+        echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
+            'data' =>   Hospitals::getList('110000'),
+            'addon' => 1,
+            'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:50%'],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'maximumInputLength' => 10
+            ],
+        ])->label('常驻医院');
 
-    // 常驻医院
-    echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-        'data' =>   Hospitals::getList('110000'),
-        'addon' => 1,
-        'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:50%'],
-        'pluginOptions' => [
-            'allowClear' => true,
-            'maximumInputLength' => 10
-        ],
-    ])->label('常驻医院');
+        // 常驻科室
+        echo $form->field($model, 'office_id')->widget(Select2::classname(), [
+            'data' =>   Departments::getList(),
+            'addon' => 1,
+            'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:50%'],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'maximumInputLength' => 10
+            ],
+        ])->label('常驻科室');
 
-    // 常驻科室
-    echo $form->field($model, 'office_id')->widget(Select2::classname(), [
-        'data' =>   Departments::getList(),
-        'addon' => 1,
-        'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:50%'],
-        'pluginOptions' => [
-            'allowClear' => true,
-            'maximumInputLength' => 10
-        ],
-    ])->label('常驻科室');
+        // 擅长护理的疾病
+        echo $form->field($model, 'good_at')->widget(Select2::classname(), [
+            'data' =>   Departments::getList(),
+            'addon' => 1,
+            'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:50%'],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'maximumInputLength' => 10
+            ],
+        ])->label('擅长护理的疾病');
 
-    // 擅长护理的疾病
-    echo $form->field($model, 'good_at')->widget(Select2::classname(), [
-        'data' =>   Departments::getList(),
-        'addon' => 1,
-        'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:50%'],
-        'pluginOptions' => [
-            'allowClear' => true,
-            'maximumInputLength' => 10
-        ],
-    ])->label('擅长护理的疾病');
-
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存，下一步') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
-    if(!$model->isNewRecord){
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-primary' onclick=location.href='?r=workerother/update&worker_id=".$model->worker_id."' value='编辑其他信息'>";
-    }
-
-    ActiveForm::end(); ?>
-
-
-
+        echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存，下一步') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+        if(!$model->isNewRecord){
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-primary' onclick=location.href='?r=workerother/update&worker_id=".$model->worker_id."' value='编辑其他信息'>";
+        }?>
+    </div>
+    </div>
+    <?ActiveForm::end(); ?>
 </div>
-<?php
-
-
-/*?$js = <<<EOF
-var birth_place_city = $model->birth_place_city;
-    jQuery(document).ready(function () {
-        jQuery("#birth_place_city").val(birth_place_city);
-        console.log(jQuery("#birth_place_city").val());
-    });
-EOF;
-
-$this->registerJs($js, \yii\web\View::POS_READY);*/
-?>

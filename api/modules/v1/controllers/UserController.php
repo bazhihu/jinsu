@@ -16,6 +16,8 @@ use yii\filters\auth\QueryParamAuth;
 
 class UserController extends ActiveController{
     public $modelClass = 'common\models\User';
+    public $responseCode = 200;
+    public $responseMsg = null;
 
     public function behaviors()
     {
@@ -40,4 +42,19 @@ class UserController extends ActiveController{
         return $actions;
     }
 
+    /**
+     * 返回数据处理
+     * @inheritdoc
+     */
+    public function afterAction($action, $result)
+    {
+        $response = [
+            'code' => $this->responseCode,
+            'msg' => $this->responseMsg,
+            'data' => null
+        ];
+        $result = parent::afterAction($action, $result);
+        $response['data'] = $result;
+        return $this->serializeData($response);
+    }
 }

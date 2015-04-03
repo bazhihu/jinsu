@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'pay_create' => function ($url, $model) {
                         return Html::a('<span class="btn btn-sm btn-primary">充值</span>',
-                            Yii::$app->urlManager->createUrl(['wallet/pay-create','uid' => $model->id]),
+                            Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
                             ['title' => '充值']
                         );
                     },
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'apply_cash' => function ($url, $model) {
                         if(WalletUser::findOne(['uid'=>$model->id])){
                             return Html::a('<span class="btn btn-sm btn-primary">提现</span>',
-                                Yii::$app->urlManager->createUrl(['wallet/apply-cash','uid' => $model->id]),
+                                Yii::$app->urlManager->createUrl(['wallet/cash','uid' => $model->id]),
                                 ['title' =>'提现']
                             );
                         }

@@ -90,7 +90,7 @@ class OrderController extends ActiveController {
         $params = ['OrderMaster' => $post];
         $params['OrderPatient']['patient_state'] = isset($post['patient_state']) ? $post['patient_state'] : null;
 
-        $params['OrderMaster']['create_order_sources'] = Order::ORDER_SOURCES_SERVICE;
+        $params['OrderMaster']['create_order_sources'] = Order::ORDER_SOURCES_MOBILE;
 
         $orderModel = new Order();
         $res = $orderModel->createOrder($params);

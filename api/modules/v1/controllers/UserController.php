@@ -10,8 +10,9 @@ namespace api\modules\v1\controllers;
 
 use yii\web\Response;
 use yii\rest\ActiveController;
-use yii\filters\auth\HttpBasicAuth;
 use yii\helpers\ArrayHelper;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 
 class UserController extends ActiveController{
     public $modelClass = 'common\models\User';
@@ -22,7 +23,7 @@ class UserController extends ActiveController{
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                //'class' => HttpBasicAuth::className(),
+                'class' => HttpBearerAuth::className()
             ],
         ]);
     }
@@ -38,4 +39,5 @@ class UserController extends ActiveController{
 
         return $actions;
     }
+
 }

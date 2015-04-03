@@ -41,7 +41,8 @@ return [
                     'class' => 'yii\rest\UrlRule', 
                     'controller' => [
                         'v1/country',
-                        'v1/user'
+                        'v1/user',
+                        'v1/order'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

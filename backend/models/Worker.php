@@ -520,12 +520,12 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 护工照片
-     * @param $worker_id 护工编号
+     * @param $workerId 护工编号
      * @return string
      */
-    static public function workerPic($worker_id){
-        if($worker_id)
-            return Yii::$app->params['pic_domain']."/uploads/".$worker_id.".jpg";
+    static public function workerPic($workerId){
+        if($workerId)
+            return Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
         else
             return "uploads/no.jpg";
     }

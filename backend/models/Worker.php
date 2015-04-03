@@ -517,4 +517,16 @@ class Worker extends \yii\db\ActiveRecord
             return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
         }
     }
+
+    /**
+     * 护工照片
+     * @param $pic
+     * @return string
+     */
+    static  public  function  workerPic($pic){
+        if($pic)
+            return "uploads/".$pic;
+        else
+            return "uploads/no.jpg";
+    }
 }

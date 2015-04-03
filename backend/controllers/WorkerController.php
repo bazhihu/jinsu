@@ -78,12 +78,21 @@ class WorkerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
-            //上传照片
-            $pic_name = $this->picUpload($params);
-            $params['Worker']['pic'] = $pic_name;
+
             $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
-                return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
+                //上传照片
+                $params['Worker']['worker_id'] =  $model->worker_id;
+                $pic_name = $this->picUpload($params);
+                $params['Worker']['pic'] = $pic_name;
+                $model->attributes = $model->saveData($params['Worker'], 'create');
+                if ($model->save()) {
+                    return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
+                }else {
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
             }else {
                 return $this->render('create', [
                     'model' => $model,
@@ -133,10 +142,12 @@ class WorkerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
+
             //上传照片
+            $params['Worker']['worker_id'] =  $model->worker_id;
             $pic_name = $this->picUpload($params);
             $params['Worker']['pic'] = $pic_name;
-            $model->attributes =  $model->saveData($params['Worker'], 'update');
+            $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
             }else {
@@ -297,10 +308,9 @@ class WorkerController extends Controller
         $model = new Worker();
         if (Yii::$app->request->isPost) {
             $model->pic = UploadedFile::getInstance($model, 'pic');
-            $pic_name = md5($params['Worker']['idcard']);
-            $model->pic->saveAs('uploads/' . $pic_name . '.' . $model->pic->extension);
-            return $pic_name.'.'.$model->pic->extension;
-           // }
+            $pic_name = $params['Worker']['worker_id'].".jpg";
+            $model->pic->saveAs('uploads/' . $pic_name);
+            return $params['Worker']['worker_id'];
         }
     }
 }

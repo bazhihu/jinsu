@@ -42,7 +42,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
         'attributes' => [
             [
                 'attribute'=>'pic',
-                'value'=> Html::img(Worker::workerPic($model->pic),['width'=>200,'height'=>200]),
+                'value'=> Html::img(Worker::workerPic($model->worker_id),['width'=>200,'height'=>200]),
                 'format'=>'raw',
             ],
             'worker_id',

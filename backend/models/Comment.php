@@ -15,7 +15,7 @@ use Yii;
  * @property string $content
  * @property integer $status
  * @property string $comment_date
- * @property string $audit_time
+ * @property string $audit_date
  * @property string $adder
  * @property string $auditer
  * @property string $type
@@ -39,11 +39,12 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'worker_id', 'star', 'status', 'adder', 'auditer'], 'integer'],
+            [['uid', 'worker_id', 'star', 'status', 'adder','editer', 'auditer'], 'integer'],
             [['content'], 'required'],
-            [['comment_date', 'audit_time'], 'safe'],
-            [['content'], 'string', 'max' => 255],
-            [['order_no'], 'string', 'max' =>50],
+            [['comment_date','edit_date', 'audit_date'], 'safe'],
+            ['worker_name', 'string', 'max' => 20],
+            ['content', 'string'],
+            [['order_no','comment_ip'], 'string', 'max' =>50],
             [['type'], 'string', 'max' => 10]
         ];
     }
@@ -55,18 +56,21 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             'order_no' => '订单号',
-            'uid' => '用户ID',
+            'uid' => '用户名',
             'worker_id' => '护工编号',
             'worker_name' => '护工姓名',
             'star' => '星级',
             'content' => '评价内容',
             'status' => '状态',
             'comment_date' => '评论时间',
+            'edit_date' => '编辑时间',
             'comment_date_begin' => '时间范围',
             'comment_date_end' => '至',
-            'audit_time' => '审核时间',
+            'audit_date' => '审核时间',
             'adder' => '添加人',
+            'editer' => '编辑人',
             'auditer' => '审核人',
+            'comment_ip' => '评论IP',
             'type' => '来源',
         ];
     }

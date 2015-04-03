@@ -48,27 +48,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'content',
             'status',
             'comment_date',
-            'audit_time',
+            'edit_date',
+            'audit_date',
             [
                 'attribute'=>'adder',
                 'value'=>function($model) {
                     return ($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])['username'] :null;
                 }
             ],
-
+            [
+                'attribute'=>'editer',
+                'value'=>function($model) {
+                    return ($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])['username'] :null;
+                }
+            ],
             [
                 'attribute'=>'auditer',
                 'value'=>function($model) {
                     return ($model->auditer)? AdminUser::findOne(['admin_uid',$model->auditer])['username'] :null;
                 }
             ],
+            'comment_ip',
             'type',
-
             [
                 'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}&nbsp;&nbsp;{delete}',
                 'buttons' => [
                 'update' => function ($url, $model) {
-                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['comment/view','id' => $model->comment_id,'edit'=>'t']), [
+                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['comment/update','id' => $model->comment_id,'edit'=>'t']), [
                                                     'title' => Yii::t('yii', 'Edit'),
                                                   ]);}
 
@@ -87,5 +94,4 @@ $this->params['breadcrumbs'][] = $this->title;
             'showFooter'=>false
         ],
     ]); Pjax::end(); ?>
-
 </div>

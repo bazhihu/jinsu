@@ -16,7 +16,7 @@ class CommentSearch extends Comment
     {
         return [
             [['comment_id', 'order_no', 'uid', 'worker_id', 'star', 'status', 'adder', 'auditer'], 'integer'],
-            [['content', 'comment_date', 'audit_time', 'type'], 'safe'],
+            [['content', 'comment_date', 'audit_date', 'type'], 'safe'],
         ];
     }
 

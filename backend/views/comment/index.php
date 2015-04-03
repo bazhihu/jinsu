@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use backend\models\AdminUser;
 use backend\models\User;
+use kartik\widgets\Alert;
 
 /**
  * @var yii\web\View $this
@@ -14,6 +15,19 @@ use backend\models\User;
 
 $this->title = '评论管理';
 $this->params['breadcrumbs'][] = $this->title;
+
+if(Yii::$app->session->hasFlash('consol_v_error'))
+  if(Yii::$app->session->getFlash('consol_v_error')){
+    echo Alert::widget([
+        'type' => Alert::TYPE_SUCCESS,
+        'title' => 'Well done!',
+        'icon' => 'glyphicon glyphicon-ok-sign',
+        'body' => 'You successfully read this important alert message.',
+        'showSeparator' => true,
+        'delay' => 2000
+    ]);
+  }
+
 ?>
 <div class="comment-index">
     <div class="page-header">
@@ -80,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'comment_ip',
             'type',
-            [
+           /* [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update}&nbsp;&nbsp;{delete}',
                 'buttons' => [
@@ -90,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                   ]);}
 
                 ],
-            ],
+            ],*/
         ],
         'responsive'=>true,
         'hover'=>true,

@@ -34,7 +34,7 @@ class OrderController extends ActiveController {
         $actions = parent::actions();
 
         // disable the "delete" actions
-        unset($actions['index'], $actions['delete'], $actions['create']);
+        unset($actions['index'], $actions['view'], $actions['delete'], $actions['create']);
 
         // customize the data provider preparation with the "prepareDataProvider()" method
         //$actions['index']['prepareDataProvider'] = [$this, 'index'];
@@ -47,10 +47,20 @@ class OrderController extends ActiveController {
      * @return array|\yii\db\ActiveRecord[]
      */
     public function actionIndex($uid){
-        $uid = (int)Yii::$app->getRequest()->get('uid');
         $query = Order::find()
             ->andFilterWhere(['uid' => $uid])
             ->orderBy(['order_id' => SORT_DESC])->all();
+
+        return $query;
+    }
+
+    /**
+     * @return null|static
+     */
+    public function actionView(){
+        $order_no = Yii::$app->request->get('id');
+        $query = Order::findOne(['order_no' => $order_no]);
+
 
         return $query;
     }

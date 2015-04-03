@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\OrderMaster;
 use backend\models\Worker;
 use common\models\Order;
+use kartik\alert\Alert;
 use Yii;
 use backend\models\Comment;
 use backend\models\CommentSearch;
@@ -86,7 +87,14 @@ class CommentController extends Controller
             $params['comment_ip'] = Yii::$app->request->userIP;
             $model->attributes = $params;
             if ($model->save()) {
-               return $this->redirect(Url::toRoute('comment/index'));
+                //更新订单状态
+                $orderModel = OrderMaster::findOne(['order_no'=>$order_no]);
+                if($orderModel){
+                    $commentStatus = $orderModel->evaluate();
+                    Yii::$app->getSession()->setFlash('alert',$commentStatus['msg']);
+                    return $this->redirect(Url::toRoute('comment/index'));
+                }
+
             }else {
                 return $this->render('create', ['model' => $model]);
             }
@@ -101,7 +109,7 @@ class CommentController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
+   /* public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
@@ -129,12 +137,12 @@ class CommentController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionDelete($id)
+  /*  public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    }*/
 
     /**
      * Finds the Comment model based on its primary key value.

@@ -177,7 +177,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     ];
 
     //判断是否是TQ
-    if(false){
+    $juese = \backend\models\AdminUser::findOne(['admin_uid'=>$_SESSION['__id']])->staff_role;
+    if($juese=='客服'){
         $columns[] = [
             'class' => 'yii\grid\ActionColumn',
             'header' => '呼出操作',

@@ -8,6 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
+use backend\models\WalletUser;
 use common\models\Order;
 use Yii;
 use yii\web\Response;
@@ -92,9 +93,27 @@ class OrderController extends ActiveController {
             return null;
         }
 
-        $result = [];
-        $orderModel->createOrder($params);
-        $result['order'] = $orderModel->getAttributes();
+        $res = $orderModel->createOrder($params);
+        if(!$res){
+            $this->responseCode = 500;
+            $this->responseMsg = '创建订单失败';
+            return null;
+        }
+        $order = $orderModel->getAttributes();
+
+        //用户数据
+        $user = [
+            'mobile' => $order['mobile'],
+            'uid' => $order['uid'],
+            'wallet' => [
+                'money' => WalletUser::getBalance($order['uid'])
+            ]
+        ];
+
+        return [
+            'order' => $order,
+            'user' => $user
+        ];
     }
 
     /**

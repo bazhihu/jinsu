@@ -520,7 +520,7 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 护工照片
-     * @param $pic
+     * @param $pic 护工照片
      * @return string
      */
     static  public  function  workerPic($pic){
@@ -528,5 +528,14 @@ class Worker extends \yii\db\ActiveRecord
             return "uploads/".$pic;
         else
             return "uploads/no.jpg";
+    }
+
+    /**
+     * 通过护工编号取照片
+     * @param $worker_id 护工编号
+     */
+    static public  function  workerPicByWorkerId($worker_id){
+        $worker_info = Worker::findOne(['worker_id'=>$worker_id]);
+        return Worker::workerPic($worker_info->pic);
     }
 }

@@ -60,7 +60,7 @@ class Comment extends \yii\db\ActiveRecord
             'worker_id' => '护工编号',
             'worker_name' => '护工姓名',
             'star' => '星级',
-            'content' => '评价内容',
+            'content' => '评论内容',
             'status' => '状态',
             'comment_date' => '评论时间',
             'edit_date' => '编辑时间',

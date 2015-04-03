@@ -46,7 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'worker_name',
             'star',
             'content',
-            'status',
+            [
+                'attribute'=>'status',
+                'value'=>function($model) {
+                    if ($model->status ==1)
+                        return '待审核';
+                    elseif($model->status==2)
+                        return '审核通过';
+                    elseif($model->status==3)
+                        return '审核未通过';
+                }
+            ],
             'comment_date',
             'edit_date',
             'audit_date',

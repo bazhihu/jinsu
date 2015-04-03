@@ -113,8 +113,23 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=> Html::a('<span class="btn btn-sm btn-primary">审核通过</span>', Yii::$app->urlManager->createUrl('wallet/pay-create'), ['title' => '审核通过']),
-                        Html::a('<span class="btn btn-sm btn-primary">审核未通过</span>', Yii::$app->urlManager->createUrl('wallet/pay-create'), ['title' => '审核未通过']),                                                                                                                                                         'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'templates'=>'{audit_yes}&nbsp;{audit_no}',
+            'button'=>[
+                'audit_yes' => function ($url, $model) {
+                    return Html::a('<span class="btn btn-sm btn-primary">审核通过</span>',
+                        Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
+                        ['title' => '审核通过']
+                    );
+                },
+                'audit_no' => function ($url, $model) {
+                    return Html::a('<span class="btn btn-sm btn-primary">审核未通过</span>',
+                        Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
+                        ['title' => '审核未通过']
+                    );
+                }
+            ],
+         //  'before'=> Html::a('<span class="btn btn-sm btn-primary">审核通过</span>', Yii::$app->urlManager->createUrl('wallet/pay-create'), ['title' => '审核通过']),
+             //           Html::a('<span class="btn btn-sm btn-primary">审核未通过</span>', Yii::$app->urlManager->createUrl('wallet/pay-create'), ['title' => '审核未通过']),                                                                                                                                                         'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
     ]); Pjax::end(); ?>

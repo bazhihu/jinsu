@@ -2,44 +2,36 @@
 /**
  * Created by PhpStorm.
  * User: zhangbo
- * Date: 2015/4/2
- * Time: 21:58
+ * Date: 2015/4/3
+ * Time: 22:15
  */
 
 namespace api\modules\v1\controllers;
 
+
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
-//use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
 
-class UserController extends ActiveController{
+class LoginController extends ActiveController{
     public $modelClass = 'common\models\User';
     public $responseCode = 200;
     public $responseMsg = null;
 
-    public function behaviors()
-    {
+    public function behaviors(){
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
-        return ArrayHelper::merge($behaviors, [
-            'authenticator' => [
-                'class' => QueryParamAuth::className()
-            ],
-        ]);
+        return $behaviors;
     }
-    public function actions()
-    {
+    public function actions(){
         $actions = parent::actions();
-
-        // disable the "delete" actions
-        unset($actions['delete'], $actions['index']);
-
-        // customize the data provider preparation with the "prepareDataProvider()" method
-        //$actions['index']['prepareDataProvider'] = [$this, 'index'];
+        unset($actions['create'], $actions['delete'], $actions['update'], $actions['index'], $actions['view']);
 
         return $actions;
+    }
+
+    public function actionIndex(){
+        echo 'login';exit;
     }
 
     /**

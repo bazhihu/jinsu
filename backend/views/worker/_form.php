@@ -41,7 +41,7 @@ use backend\models\Hospitals;
             'allowedFileExtensions' => ['jpg', 'png'],
             'maxFileSize' =>2000,
             'initialPreview'=>[
-                Html::img(Worker::workerPic($model->pic), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
+                Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
             ],
             'initialCaption'=>"护工照片",
             'overwriteInitial'=>true

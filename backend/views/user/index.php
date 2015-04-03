@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'status',
                 'value'=>function($model) {
-                    return ($model->status) ? '正常':'禁用';
+                    return ($model->status==1) ? '正常':'禁用';
                 }
             ],
             //'finance_status',

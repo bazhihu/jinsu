@@ -44,7 +44,7 @@ use backend\models\Departments;
             <?= $form->field(
                 $model,
                 'name'
-            )->input('text',['placeholder'=>'请输入姓名...','style'=>'width:120px'])->label("姓名") ?>
+            )->input('text',['placeholder'=>'请输入姓名...'])->label("姓名") ?>
 
             <?= $form->field(
                 $model,

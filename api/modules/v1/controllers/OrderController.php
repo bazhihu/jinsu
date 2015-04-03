@@ -53,8 +53,14 @@ class OrderController extends ActiveController {
         $query = Order::find()
             ->andFilterWhere(['uid' => $uid])
             ->orderBy(['order_id' => SORT_DESC])->all();
-
-        return $query;
+        $result = ArrayHelper::toArray($query);
+        if(!empty($query)){
+            foreach($result as $key => $item){
+                $item['pic'] = Worker::workerPic($item['worker_no']);
+                $result[$key] = $item;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -63,11 +69,13 @@ class OrderController extends ActiveController {
     public function actionView(){
         $order_no = Yii::$app->request->get('id');
         $query = Order::findOne(['order_no' => $order_no]);
-        if(!empty($query->worker_no)){
+        $result = ArrayHelper::toArray($query);
+        $result['pic'] = null;
+        if(!empty($result['worker_no'])){
             //获取护工照片
-            $query->pic = Worker::workerPicByWorkerId($query->worker_no);
+            $result['pic'] = Worker::workerPic($result['worker_no']);
         }
-        return $query;
+        return $result;
     }
 
     /**
@@ -76,9 +84,16 @@ class OrderController extends ActiveController {
      * @throws \yii\web\HttpException
      */
     public function actionCreate(){
+        $params = Yii::$app->getRequest()->getBodyParams();
         $orderModel = new Order();
-        $result = $orderModel->createOrder(Yii::$app->getRequest()->getBodyParams());
-
+        if($orderModel->validate()){
+            $orderModel->createOrder($params);
+            print_r($orderModel);
+        }else{
+            $this->responseCode = $orderModel->getErrors();
+            $this->responseMsg = $orderModel->getErrors();
+        }
+exit;
     }
 
     /**

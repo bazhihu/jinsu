@@ -489,7 +489,7 @@ class Worker extends \yii\db\ActiveRecord
      * @return static[]
      */
 
-    static public  function  getCertificateName($certificateStr=''){
+    static public function getCertificateName($certificateStr=''){
         $data = null;
         if($certificateStr){
             $certificates = explode(',',$certificateStr);
@@ -520,23 +520,13 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 护工照片
-     * @param $pic 护工照片
+     * @param $worker_id 护工编号
      * @return string
      */
-    static public function workerPic($pic){
-        if($pic)
-            return "uploads/".$pic;
+    static public function workerPic($worker_id){
+        if($worker_id)
+            return Yii::$app->params['pic_domain']."/uploads/".$worker_id.".jpg";
         else
             return "uploads/no.jpg";
-    }
-
-    /**
-     * 通过护工编号取照片
-     * @param $workerId
-     * @return string
-     */
-    static public function workerPicByWorkerId($workerId){
-        $worker = Worker::findOne(['worker_id'=>$workerId]);
-        return Worker::workerPic($worker->pic);
     }
 }

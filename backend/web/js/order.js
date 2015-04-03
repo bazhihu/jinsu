@@ -158,6 +158,14 @@ $('body').on('click', 'button.jsContinueOrder', function () {
     location.href=url;
 
 });
+
+//评价
+$('body').on('click', 'button.jsEvaluateOrder', function () {
+    var button = $(this);
+    var url = $(this).attr('evaluate-url');
+    location.href=url;
+
+});
 //外呼
 $('body').on('click','button.jsUser',function(){
     var button = $(this);

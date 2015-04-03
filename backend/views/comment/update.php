@@ -7,10 +7,10 @@ use yii\helpers\Html;
  * @var backend\models\Comment $model
  */
 
-$this->title = 'Update Comment: ' . ' ' . $model->comment_id;
+$this->title = '编辑评论: ' . ' ' . $model->comment_id;
 $this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->comment_id, 'url' => ['view', 'id' => $model->comment_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = '编辑';
 ?>
 <div class="comment-update">
 

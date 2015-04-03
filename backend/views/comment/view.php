@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'attribute'=>'audit_time',
+                'attribute'=>'audit_date',
                 'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
                 'type'=>DetailView::INPUT_WIDGET,
                 'widgetOptions'=> [

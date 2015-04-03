@@ -83,6 +83,7 @@ class CommentController extends Controller
             $params['worker_name'] = $order_info['worker_name'];
             $params['worker_id'] = $order_info['worker_no'];
             $params['uid'] = $order_info['uid'];
+            $params['comment_ip'] = Yii::$app->request->userIP;
             $model->attributes = $params;
             if ($model->save()) {
                return $this->redirect(Url::toRoute('comment/index'));
@@ -104,9 +105,18 @@ class CommentController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->comment_id]);
-        } else {
+        if ($model->load(Yii::$app->request->post())) {
+            $params_all = Yii::$app->request->post();
+            $params =  $params_all['Comment'];
+            $params['edit_date'] = date('Y-m-d H:i:s');
+            $params['editer'] = yii::$app->user->getId();
+            $model->attributes = $params;
+            if ($model->save()) {
+                return $this->redirect(Url::toRoute('comment/index'));
+            }else {
+                return $this->render('update', ['model' => $model]);
+            }
+        }else{
             return $this->render('update', [
                 'model' => $model,
             ]);

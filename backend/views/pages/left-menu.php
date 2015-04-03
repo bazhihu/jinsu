@@ -31,7 +31,7 @@ $route = $controller->route;
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li <?php if($route == 'comment/index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('comment/index');?>">评价管理</a></li>
+    <li <?php if($route == 'comment/index'):?>class="active"<?php endif;?>><a href="<?=Url::toRoute('comment/index');?>">评论管理</a></li>
 </ul>
 
 <ul class="nav nav-sidebar">

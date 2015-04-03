@@ -15,7 +15,7 @@ class UserSearch extends User
     {
         return [
             [['status'], 'integer'],
-            [['username', 'nickname', 'name'], 'safe'],
+            [['username', 'nickname', 'name','register_date_begin','register_date_end'], 'safe'],
         ];
     }
 
@@ -43,7 +43,8 @@ class UserSearch extends User
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'nickname', $this->nickname])
-            ->andFilterWhere(['like', 'name', $this->name]);
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['between', 'register_time', $this->register_date_begin, $this->register_date_end]);;
 
         return $dataProvider;
     }

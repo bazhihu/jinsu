@@ -22,7 +22,6 @@ use backend\models\Departments;
 </style>
 
 <div class="worker-search">
-
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
@@ -137,8 +136,5 @@ use backend\models\Departments;
             </div>
         </div>
     </div>
-
-
     <?php ActiveForm::end(); ?>
-
 </div>

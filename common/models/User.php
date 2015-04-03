@@ -59,6 +59,10 @@ class User extends ActiveRecord implements IdentityInterface
      */
     const REGISTER_TYPE_USER = 'user';
 
+    public $register_date_begin;
+
+    public $register_date_end;
+
     /**
      * @inheritdoc
      */
@@ -77,16 +81,13 @@ class User extends ActiveRecord implements IdentityInterface
             [['mobile'], 'required'],
             [['mobile'], 'unique', 'message' => '{attribute}已注册.'],
             [['mobile'], 'string', 'min' => 11, 'max' => 11],
-
             [['status', 'adder', 'editer'], 'integer'],
-            [['login_time', 'register_time', 'edit_time'], 'safe'],
+            [['login_time', 'register_time', 'edit_time','register_date_begin','register_date_end'], 'safe'],
             [['nickname'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
-
             //注册类型
             [['type'], 'required'],
             [['type'], 'in', 'range' => [self::REGISTER_TYPE_SYSTEM, self::REGISTER_TYPE_USER]],
-
             [['gender'], 'string', 'max' => 1],
             [['name', 'login_ip', 'register_ip'], 'string', 'max' => 50]
         ];
@@ -110,6 +111,8 @@ class User extends ActiveRecord implements IdentityInterface
             'login_ip' => '登陆IP',
             'login_time' => '登陆时间',
             'register_time' => '注册时间',
+            'register_date_begin'=>'时间范围',
+            'register_date_end'=>'至',
             'adder' => '注册人',
             'edit_time' => '编辑时间',
             'editer' => '编辑人',

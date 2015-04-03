@@ -16,10 +16,13 @@ use kartik\datecontrol\DateControl;
     }
 </style>
 <div class="comment-search">
-
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'type' => ActiveForm::TYPE_VERTICAL,
+        'formConfig' => [
+            'showLabels' => true,
+        ],
     ]); ?>
     <div class="panel panel-info">
         <div class="panel-heading">

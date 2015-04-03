@@ -4,7 +4,6 @@ namespace backend\models;
 
 use Yii;
 use yii\validators\EmailValidator;
-
 /**
  * This is the model class for table "{{%user}}".
  *
@@ -23,6 +22,11 @@ use yii\validators\EmailValidator;
  * @property Profile[] $profiles
  * @property UserAuth[] $userAuths
  * @property UserKey[] $userKeys
+ */
+
+/**
+ * Class User
+ * @package backend\models
  */
 class User extends \common\models\User
 {

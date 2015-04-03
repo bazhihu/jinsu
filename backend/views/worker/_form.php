@@ -255,5 +255,7 @@ use backend\models\Hospitals;
         }?>
     </div>
     </div>
+
     <?ActiveForm::end(); ?>
+
 </div>

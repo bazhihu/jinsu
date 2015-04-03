@@ -86,14 +86,15 @@ class OrderController extends ActiveController {
     public function actionCreate(){
         $params = Yii::$app->getRequest()->getBodyParams();
         $orderModel = new Order();
-        if($orderModel->validate()){
-            $orderModel->createOrder($params);
-            print_r($orderModel);
-        }else{
-            $this->responseCode = $orderModel->getErrors();
+        if(!$orderModel->validate()){
+            $this->responseCode = 400;
             $this->responseMsg = $orderModel->getErrors();
+            return null;
         }
-exit;
+
+        $result = [];
+        $orderModel->createOrder($params);
+        $result['order'] = $orderModel->getAttributes();
     }
 
     /**

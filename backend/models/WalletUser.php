@@ -72,6 +72,7 @@ class WalletUser extends \yii\db\ActiveRecord
      * 获取用户余额
      * @param int $uid
      * @return int|string
+     * @author zhangbo
      */
     public static function getBalance($uid){
         $model = self::findOne(['uid'=>$uid]);

@@ -85,14 +85,14 @@ class OrderController extends ActiveController {
      * @throws \yii\web\HttpException
      */
     public function actionCreate(){
-        $params = Yii::$app->getRequest()->getBodyParams();
-        $orderModel = new Order();
-        if(!$orderModel->validate()){
-            $this->responseCode = 400;
-            $this->responseMsg = $orderModel->getErrors();
-            return null;
-        }
+        $post = Yii::$app->getRequest()->getBodyParams();
 
+        $params = ['OrderMaster' => $post];
+        $params['OrderPatient']['patient_state'] = isset($post['patient_state']) ? $post['patient_state'] : null;
+
+        $params['OrderMaster']['create_order_sources'] = Order::ORDER_SOURCES_SERVICE;
+
+        $orderModel = new Order();
         $res = $orderModel->createOrder($params);
         if(!$res){
             $this->responseCode = 500;

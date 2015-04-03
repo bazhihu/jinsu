@@ -34,17 +34,32 @@ class OrderController extends ActiveController {
         $actions = parent::actions();
 
         // disable the "delete" actions
-        unset($actions['delete'], $actions['create']);
+        unset($actions['index'], $actions['delete'], $actions['create']);
 
         // customize the data provider preparation with the "prepareDataProvider()" method
-        $actions['index']['prepareDataProvider'] = [$this, 'index'];
+        //$actions['index']['prepareDataProvider'] = [$this, 'index'];
         return $actions;
     }
-    public function index(){
-        return Order::find()->orderBy(['order_id' => SORT_DESC])->all();
+
+    /**
+     * 订单列表
+     * @param $uid
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function actionIndex($uid){
+        $uid = (int)Yii::$app->getRequest()->get('uid');
+        $query = Order::find()
+            ->andFilterWhere(['uid' => $uid])
+            ->orderBy(['order_id' => SORT_DESC])->all();
+
+        return $query;
     }
 
-    //创建订单
+    /**
+     * 创建订单
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\web\HttpException
+     */
     public function actionCreate(){
         $orderModel = new Order();
         $orderModel->createOrder(Yii::$app->getRequest()->getBodyParams());

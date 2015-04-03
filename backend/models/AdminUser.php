@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
 
@@ -44,7 +45,14 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -65,15 +73,13 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
 
-            [['hospital'], 'integer'],
-
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
-            //[['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            //[['role', 'status', 'created_at', 'updated_at'], 'integer'],
-            //[['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
-            //[['auth_key'], 'string', 'max' => 32]
+            [['hospital', 'phone', 'status'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['username', 'password_hash', 'password_reset_token', 'staff_name', 'staff_role'], 'string', 'max' => 255],
+            [['auth_key', 'staff_id'], 'string', 'max' => 32]
         ];
     }
 
@@ -82,7 +88,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            'admin_uid' => '管理用户id',
+            'admin_uid' => '管理用户ID',
             'username' => '帐号',
             'auth_key' => 'Auth Key',
             'password'=>'密码',
@@ -113,23 +119,28 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         $admin_uid = yii::$app->user->identity->getId();
         if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->staff_role))
         {
-            $this->created_at = date('Y-m-d H:i:s');
-            $this->setAttribute('created_id',yii::$app->user->identity->getId());
-
+            $params = [
+                'created_id'    =>  yii::$app->user->identity->getId(),
+                'staff_id'      => $this->staff_name,
+                'password_hash' => \yii::$app->Security->generatePasswordHash($this->password),
+            ];
+            $this->setAttributes($params);
+            //var_dump($this->attributes);exit;
             #保存信息
             if($this->save())
             {
                 #授予权限
                 $info = $this->findOne(['username'=>$this->username]);
                 yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
-                #添加操作记录
-                //Yii::getLogger()->log('系统操作',Logger::LEVEL_ERROR);
-                //yii::$app->log->getLogger();
+
                 return true;
+            }else{
+                throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
             }
+        }else{
+            $this->addError('staff_role','权限不足');
+            return false;
         }
-        $this->addError('staff_role','权限不足');
-        return false;
     }
 
     /**
@@ -154,8 +165,6 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         #当前用户没有权限操作自己
         if($admin_uid!==$this->getAttribute('admin_uid')/* && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role"))*/)
         {
-
-            $this->updated_at = date('Y-m-d H:i:s');
             $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
 
             #保存信息
@@ -169,10 +178,10 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
                 return true;
             }
-
+        }else{
+            $this->addError('staff_role','权限不足');
+            return false;
         }
-        $this->addError('staff_role','权限不足');
-        return false;
     }
 
     /**
@@ -180,14 +189,14 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      * @param bool $insert
      * @return bool
      */
-    public function beforeSave($insert) {
+    /*public function beforeSave($insert) {
 
-        if(empty($this->staff_id))
-            $this->staff_id = $this->staff_name;
-        if(isset($this->password))
-            $this->password_hash = \yii::$app->Security->generatePasswordHash($this->password);
+//        if(empty($this->staff_id))
+//            $this->staff_id = $this->staff_name;
+//        if(isset($this->password))
+//            $this->password_hash = \yii::$app->Security->generatePasswordHash($this->password);
         return parent::beforeSave($insert);
-    }
+    }*/
 
     /**
      * @inheritdoc

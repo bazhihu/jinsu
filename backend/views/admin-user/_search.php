@@ -36,13 +36,13 @@ use kartik\widgets\Select2;
             'labelOptions'=> ['class'=>'col-sm-4 col-md-4 col-lg-4']
         ]
     )->input('text',['placeholder'=>'请输入员工姓名...'])->label("员工姓名") ?>
-    <?= $form->field(
+    <!--?= $form->field(
         $model,
         'staff_id',
         [
             'labelOptions'=> ['class'=>'col-sm-4 col-md-4 col-lg-4']
         ]
-    )->input('text',['placeholder'=>'请输入员工号...'])->label("员工号") ?>
+    )->input('text',['placeholder'=>'请输入员工号...'])->label("员工号") ?-->
     <?= $form->field(
         $model,
         'staff_role',

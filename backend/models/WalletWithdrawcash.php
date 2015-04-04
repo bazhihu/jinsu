@@ -180,7 +180,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
     public static function getWalletStatusByUid($uid=null)
     {
         $response = [
-            'code'  => 0,
+            'code'  => 200,
             'msg'   => '',
         ];
 

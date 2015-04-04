@@ -106,7 +106,7 @@ class User extends ActiveRecord implements IdentityInterface
             'gender' => '性别',
             'type' => '注册类型',
             'status' => '账号状态',
-            // 'finance_status' => '财务状态',
+            'finance_status' => '财务状态',
             'register_ip' => '注册IP',
             'login_ip' => '登陆IP',
             'login_time' => '登陆时间',

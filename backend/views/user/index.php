@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'cash' => function ($url, $model) {
                         if(WalletUser::findOne(['uid'=>$model->id])){
                             $finace_status = WalletWithdrawcash::getWalletStatusByUid($model->id);
-                            if($finace_status['code']==200 || $finace_status['code']==3){
+                            if($finace_status['code']==200 || $finace_status['code']==3|| $finace_status['code']==1){
                                 return Html::a('<span class="btn btn-sm btn-primary">提现</span>', Yii::$app->urlManager->createUrl(['wallet/cash','uid' => $model->id]), ['title' =>'提现']);
                            }
                         }

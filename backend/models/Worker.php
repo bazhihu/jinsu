@@ -232,7 +232,7 @@ class Worker extends \yii\db\ActiveRecord
             [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
             [['price', 'good_rate'], 'number'],
-            [['name','native_province', 'nation'], 'string', 'max' => 20],
+            [['name','native_province', 'nation','certificate'], 'string', 'max' => 20],
             [['place','birth_place'], 'string', 'max' => 255],
             [['pic'], 'file', 'extensions' => 'jpg, png', 'mimeTypes' => 'image/jpeg, image/png'],
           //  [['phone1'], 'unique', 'message'=>'{attribute}已经被占用了'],

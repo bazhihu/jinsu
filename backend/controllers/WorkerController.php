@@ -308,9 +308,11 @@ class WorkerController extends Controller
         $model = new Worker();
         if (Yii::$app->request->isPost) {
             $model->pic = UploadedFile::getInstance($model, 'pic');
-            $pic_name = $params['Worker']['worker_id'].".jpg";
-            $model->pic->saveAs('uploads/' . $pic_name);
-            return $params['Worker']['worker_id'];
+            if($model->pic){
+                $pic_name = $params['Worker']['worker_id'].".jpg";
+                $model->pic->saveAs('uploads/' . $pic_name);
+                return $params['Worker']['worker_id'];
+            }
         }
     }
 }

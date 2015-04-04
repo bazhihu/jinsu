@@ -60,7 +60,7 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
             [
                 'attribute'=>'uid',
                 'value'=>function($model) {
-                    return ($model->uid)? User::findOne(['id',$model->uid])['username'] :null;
+                    return ($model->uid)? User::findOne(['id',$model->uid])['mobile'] :null;
                 }
             ],
             'worker_id',

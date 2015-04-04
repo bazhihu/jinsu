@@ -3,13 +3,8 @@
 namespace common\models;
 
 use Yii;
-use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-use yii\swiftmailer\Mailer;
-use yii\swiftmailer\Message;
-use yii\helpers\Inflector;
-use ReflectionClass;
 
 /**
  * This is the model class for table "tbl_user".
@@ -85,6 +80,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['login_time', 'register_time', 'edit_time','register_date_begin','register_date_end'], 'safe'],
             [['nickname'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
+            [['access_token'], 'string', 'max' => 32],
+
             //注册类型
             [['type'], 'required'],
             [['type'], 'in', 'range' => [self::REGISTER_TYPE_SYSTEM, self::REGISTER_TYPE_USER]],

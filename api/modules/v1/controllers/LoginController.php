@@ -46,6 +46,7 @@ class LoginController extends ActiveController{
         $result = [
             'uid' => $user->id,
             'mobile' => $user->mobile,
+            'token' => Login::encryptToken($user->access_token),
             'wallet' => [
                 'money' => WalletUser::getBalance($user->id)
             ]

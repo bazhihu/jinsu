@@ -6,13 +6,14 @@ use yii\widgets\Pjax;
 use backend\models\AdminUser;
 use backend\models\User;
 use kartik\widgets\Alert;
+use yii\helpers\Url;
 
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var backend\models\CommentSearch $searchModel
  */
-
+$this->registerJsFile('js/comment.js?v=20150404', ['position'=>yii\web\View::POS_END]);
 $this->title = '评论管理';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -29,6 +30,7 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
   }
 
 ?>
+
 <div class="comment-index">
     <div class="page-header">
             <h1><?= Html::encode($this->title) ?></h1>
@@ -36,10 +38,15 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php /* echo Html::a('Create Comment', ['create'], ['class' => 'btn btn-success'])*/  ?>
+        <?php //echo Html::a('Create Comment', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(); echo GridView::widget([
+    <?php
+    echo '<form action="" method="post" name="comment" id="comment">';
+    $buttons ='<input type="button" name="audit_yes" id="audit_yes" value="审核通过" class="btn btn-success">';
+   // $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_yes" id="audit_yes" value="审核通过" class="btn btn-success" onclick="javascript:location.href='.$url_yes.'>';
+
+    Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
        // 'filterModel' => $searchModel,
         'columns' => [
@@ -113,24 +120,11 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'templates'=>'{audit_yes}&nbsp;{audit_no}',
-            'button'=>[
-                'audit_yes' => function ($url, $model) {
-                    return Html::a('<span class="btn btn-sm btn-primary">审核通过</span>',
-                        Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
-                        ['title' => '审核通过']
-                    );
-                },
-                'audit_no' => function ($url, $model) {
-                    return Html::a('<span class="btn btn-sm btn-primary">审核未通过</span>',
-                        Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
-                        ['title' => '审核未通过']
-                    );
-                }
-            ],
-         //  'before'=> Html::a('<span class="btn btn-sm btn-primary">审核通过</span>', Yii::$app->urlManager->createUrl('wallet/pay-create'), ['title' => '审核通过']),
-             //           Html::a('<span class="btn btn-sm btn-primary">审核未通过</span>', Yii::$app->urlManager->createUrl('wallet/pay-create'), ['title' => '审核未通过']),                                                                                                                                                         'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'before'=>$buttons,
+            //'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
-    ]); Pjax::end(); ?>
+    ]);
+    echo '</form>';
+    Pjax::end(); ?>
 </div>

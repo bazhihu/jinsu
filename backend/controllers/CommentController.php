@@ -40,6 +40,16 @@ class CommentController extends Controller
         $searchModel = new CommentSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+        $comment_id_array = Yii::$app->request->post('selection');
+        if($comment_id_array){
+            $comment_ids = implode(',',$comment_id_array);
+           // Comment::updateAll("comment_id in ("..")")";
+        }
+
+
+       // die();
+      //  if($audit_yes)
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,

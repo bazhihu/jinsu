@@ -100,6 +100,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
+            'username'=>'用户名',
             'mobile' => '手机号',
             'nickname' => '昵称',
             'name' => '姓名',

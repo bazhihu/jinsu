@@ -35,7 +35,7 @@ use kartik\widgets\Growl;
             <?= $form->field(
                 $model,
                 'mobile'
-            )->input('text',['placeholder'=>'请输入用户名...'])->label("用户名") ?>
+            )->input('text',['placeholder'=>'请输入手机号...'])->label("手机号") ?>
 
             <?= $form->field(
                 $model,

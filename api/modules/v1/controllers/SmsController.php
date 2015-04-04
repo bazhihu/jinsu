@@ -2,21 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: zhangbo
- * Date: 2015/4/3
- * Time: 22:15
+ * Date: 2015/4/4
+ * Time: 18:58
  */
 
 namespace api\modules\v1\controllers;
 
-
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
-use backend\models\WalletUser;
-use common\models\Login;
 
-class LoginController extends ActiveController{
-    public $modelClass = 'common\models\Login';
+class SmsController extends ActiveController{
+    public $modelClass = 'common\models\Sms';
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -29,30 +26,8 @@ class LoginController extends ActiveController{
         return null;
     }
 
-    /**
-     * 登录
-     * @return array|null
-     * @throws \yii\base\InvalidConfigException
-     */
     public function actionCreate(){
-        $loginModel = new Login();
-        $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
-        if(!$loginModel->validate()){
-            $this->responseCode = 400;
-            $this->responseMsg = $loginModel->getFirstError('authCode');
-            return null;
-        }
-
-        $user = $loginModel->getUser();
-        $result = [
-            'uid' => $user->id,
-            'mobile' => $user->mobile,
-            'token' => Login::encryptToken($user->access_token),
-            'wallet' => [
-                'money' => WalletUser::getBalance($user->id)
-            ]
-        ];
-        return $result;
+        echo 'sms';exit;
     }
 
     /**
@@ -70,4 +45,5 @@ class LoginController extends ActiveController{
         $response['data'] = $result;
         return $this->serializeData($response);
     }
+
 }

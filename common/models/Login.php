@@ -23,7 +23,6 @@ class Login extends Model{
     public function rules()
     {
         return [
-            // username and password are both required
             [['mobile'], 'required', 'message'=>'手机号码不能为空'],
             [['authCode'], 'required', 'message'=>'验证码不能为空'],
 
@@ -56,9 +55,11 @@ class Login extends Model{
     public function flushAccessToken(){
         $user = $this->getUser();
         if(isset($user->access_token) && strlen($user->access_token) == 32){
-            $user->access_token = Yii::$app->security->generateRandomString(32);
-            $user->save();
+            return null;
         }
+
+        $user->access_token = Yii::$app->security->generateRandomString(32);
+        $user->save();
     }
 
     /**

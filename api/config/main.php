@@ -44,7 +44,8 @@ return [
                         'v1/country',
                         'v1/user',
                         'v1/order',
-                        'v1/config'
+                        'v1/config',
+                        'v1/sms'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

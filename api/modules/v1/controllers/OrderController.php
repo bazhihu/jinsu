@@ -8,7 +8,6 @@
 
 namespace api\modules\v1\controllers;
 
-use backend\models\Hospitals;
 use backend\models\WalletUser;
 use common\models\Order;
 use Yii;
@@ -60,7 +59,6 @@ class OrderController extends ActiveController {
         if(!empty($result)){
             foreach($result as $key => $item){
                 $item['pic'] = Worker::workerPic($item['worker_no']);
-
                 $result[$key] = $item;
             }
         }
@@ -78,8 +76,6 @@ class OrderController extends ActiveController {
         if(!empty($result['worker_no'])){
             //获取护工照片
             $result['pic'] = Worker::workerPic($result['worker_no']);
-            //$result['hospital_id'] = Hospitals::getName($result['hospital_id']);
-
         }
         return $result;
     }

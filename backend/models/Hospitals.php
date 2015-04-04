@@ -91,15 +91,15 @@ class Hospitals extends \yii\db\ActiveRecord
         $data = null;
         if($IdStr) {
             $ids = explode(',', $IdStr);
-               if ($ids) {
-                    foreach ($ids as $id) {
-                        if($id){
-                            $findArr = ['id' => $id];
-                            $result = self::findOne($findArr);
-                            $data .= $result['name'] . "<br>";
-                        }
+            if ($ids) {
+                foreach ($ids as $id) {
+                    if($id){
+                        $findArr = ['id' => $id];
+                        $result = self::findOne($findArr);
+                        $data .= $result['name'] . "<br>";
                     }
                 }
+            }
         }
 
         return $data;

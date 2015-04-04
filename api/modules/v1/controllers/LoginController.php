@@ -8,7 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
-
+use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
@@ -24,14 +24,13 @@ class LoginController extends ActiveController{
         return $behaviors;
     }
     public function actions(){
-        $actions = parent::actions();
-        unset($actions['create'], $actions['delete'], $actions['update'], $actions['index'], $actions['view']);
-
-        return $actions;
+        return null;
     }
 
-    public function actionIndex(){
-        echo 'login';exit;
+    public function actionCreate(){
+        $code = Yii::$app->request->getBodyParam('code');
+
+        echo 'login:'.$code;exit;
     }
 
     /**

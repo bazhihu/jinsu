@@ -8,6 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
+use backend\models\Hospitals;
 use backend\models\WalletUser;
 use common\models\Order;
 use Yii;
@@ -38,7 +39,7 @@ class OrderController extends ActiveController {
         $actions = parent::actions();
 
         // disable the "delete" actions
-        unset($actions['index'], $actions['view'], $actions['delete'], $actions['create']);
+        unset($actions['index'], $actions['view'], $actions['update'], $actions['delete'], $actions['create']);
 
         // customize the data provider preparation with the "prepareDataProvider()" method
         //$actions['index']['prepareDataProvider'] = [$this, 'index'];
@@ -54,10 +55,12 @@ class OrderController extends ActiveController {
         $query = Order::find()
             ->andFilterWhere(['uid' => $uid])
             ->orderBy(['order_id' => SORT_DESC])->all();
+
         $result = ArrayHelper::toArray($query);
-        if(!empty($query)){
+        if(!empty($result)){
             foreach($result as $key => $item){
                 $item['pic'] = Worker::workerPic($item['worker_no']);
+
                 $result[$key] = $item;
             }
         }
@@ -75,6 +78,8 @@ class OrderController extends ActiveController {
         if(!empty($result['worker_no'])){
             //获取护工照片
             $result['pic'] = Worker::workerPic($result['worker_no']);
+            //$result['hospital_id'] = Hospitals::getName($result['hospital_id']);
+
         }
         return $result;
     }
@@ -114,6 +119,16 @@ class OrderController extends ActiveController {
             'order' => $order,
             'user' => $user
         ];
+    }
+
+    /**
+     * 更新订单
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionUpdate(){
+        $order_no = Yii::$app->request->get('id');
+        $post = Yii::$app->getRequest()->getBodyParams();
+        echo $order_no;exit;
     }
 
     /**

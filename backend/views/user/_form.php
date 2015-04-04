@@ -27,7 +27,7 @@ use kartik\datecontrol\DateControl;
                     'mobile'=>[
                         'type'=> Form::INPUT_TEXT,
                         'options'=>[
-                            'placeholder'=>'请输入用户名（用户名即手机号）...',
+                            'placeholder'=>'请输入手机号...',
                             'maxlength'=>32,
                             'style'=>'width:50%'
                         ]

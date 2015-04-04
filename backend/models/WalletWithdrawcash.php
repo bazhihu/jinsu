@@ -137,7 +137,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
      * @param $params
      * [
      *      'id'    =>'withdrawcash_id', //提现记录ID
-     *      'todo'  =>'todo',           //同意|拒绝
+     *      'todo'  =>'todo',           //同意拒绝
      * ]
      * @return bool
      */
@@ -159,6 +159,50 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             }
         }
         return false;
+    }
+
+    /**
+     * 用户钱包状态
+     * @var array
+     */
+    public static $status = [
+        '0'  =>  '申请提现中待审核',
+        '1'  =>  '申请提现已拒绝',
+        '2'  =>  '审核通过',
+        '3'  =>  '已提现成功',
+    ];
+
+    /**
+     * 获取用户的钱包状态
+     * @param null $uid 用户ID
+     * @return array|null
+     */
+    public static function getWalletStatusByUid($uid=null)
+    {
+        $response = [
+            'code'  => 200,
+            'msg'   => '',
+        ];
+
+        if($uid == null)
+        {
+            return null;
+        }else{
+            $status = self::find()->andFilterWhere(['uid'=>$uid])
+                ->addOrderBy(['withdrawcash_id' => SORT_DESC])
+                ->one();
+            if(!$status)
+            {
+                $response['msg'] = '正常';
+                return $response;
+            }else{
+                $response = [
+                    'code'  => $status['status'],
+                    'msg'   => self::$status[$status['status']],
+                ];
+                return $response;
+            }
+        }
     }
 
     /**

@@ -40,6 +40,26 @@ class CommentController extends Controller
         $searchModel = new CommentSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+        $comment_id_array = Yii::$app->request->post('selection');
+        $op = Yii::$app->request->post('op');
+
+        if($comment_id_array) {
+            $comment_ids = implode(',', $comment_id_array);
+            $auditer = yii::$app->user->getId();
+            if ($op=='audit_yes') {
+                $sql = "update yayh_comment set status = 2,auditer=".$auditer.",audit_date='".date('Y-m-d H:i:s')."' where comment_id in ($comment_ids)";
+            }elseif($op=='audit_no'){
+                $sql = "update yayh_comment set status = 3 ,auditer=".$auditer.",audit_date='".date('Y-m-d H:i:s')."' where comment_id in ($comment_ids)";
+            }
+            $connection = Yii::$app->db;
+            $command = $connection->createCommand($sql);
+            $command->query();
+        }
+
+
+       // die();
+      //  if($audit_yes)
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,

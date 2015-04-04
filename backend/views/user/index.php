@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use backend\models\AdminUser;
 use yii\helpers\Url;
 use backend\models\WalletUser;
+use backend\models\WalletWithdrawcash;
 
 
 /**
@@ -67,24 +68,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute'=>'finance_status',
+                'value'=>function($model) {
+                    $finace_status = WalletWithdrawcash::getWalletStatusByUid($model->id);
+                    return $finace_status['msg'];
+                }
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'header'=>'财务操作',
                // 'template' => '{view}&nbsp;&nbsp;{update}',
-                'template' => '{pay_create}&nbsp;{apply_cash}',
+                'template' => '{recharge}&nbsp;{cash}',
                 'buttons' => [
-                    'pay_create' => function ($url, $model) {
+                    'recharge' => function ($url, $model) {
                         return Html::a('<span class="btn btn-sm btn-primary">充值</span>',
                             Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
                             ['title' => '充值']
                         );
                     },
 
-                    'apply_cash' => function ($url, $model) {
+                    'cash' => function ($url, $model) {
                         if(WalletUser::findOne(['uid'=>$model->id])){
-                            return Html::a('<span class="btn btn-sm btn-primary">提现</span>',
-                                Yii::$app->urlManager->createUrl(['wallet/cash','uid' => $model->id]),
-                                ['title' =>'提现']
-                            );
+                            $finace_status = WalletWithdrawcash::getWalletStatusByUid($model->id);
+                            if($finace_status['code']==200 || $finace_status['code']==3){
+                                return Html::a('<span class="btn btn-sm btn-primary">提现</span>', Yii::$app->urlManager->createUrl(['wallet/cash','uid' => $model->id]), ['title' =>'提现']);
+                           }
                         }
                     },
                 ],

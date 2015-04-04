@@ -210,12 +210,12 @@ class Wallet
             'order_id'      => $params['order_id'],
             'order_no'      => $params['order_no'],
             'uid'           => $params['uid'],
-            'mobile'        => User::findOne(['uid'=>$params['uid']])->mobile,
+            'mobile'        => User::findOne($params['uid'])->mobile,
             'money'         => $params['detail_money'],
             'balance'       => $params['wallet_money'],//当前账户余额
             'time'          => date('Y-m-d H:i:s'),
             'admin_uid'     => $params['admin_uid']?$params['admin_uid']:"",
-            'remark'        => $params['remark']?$params['remark']:"",
+            'remark'        => isset($params['remark'])? $params['remark'] : null,
         ];
         $walletDebitRecords->setAttributes($debit);
         if(!$walletDebitRecords->save()){

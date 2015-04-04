@@ -8,13 +8,14 @@
 
 namespace api\modules\v1\controllers;
 
+use common\models\Login;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
-use yii\helpers\ArrayHelper;
+use backend\models\WalletUser;
 
 class LoginController extends ActiveController{
-    public $modelClass = 'common\models\User';
+    public $modelClass = 'api\modules\v1\models\Login';
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -27,10 +28,29 @@ class LoginController extends ActiveController{
         return null;
     }
 
+    /**
+     * 登录
+     * @return array|null
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionCreate(){
-        $code = Yii::$app->request->getBodyParam('code');
+        $loginModel = new Login();
+        $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
+        if(!$loginModel->validate()){
+            $this->responseCode = 400;
+            $this->responseMsg = $loginModel->getFirstError('authCode');
+            return null;
+        }
 
-        echo 'login:'.$code;exit;
+        $user = $loginModel->getUser();
+        $result = [
+            'uid' => $user->id,
+            'mobile' => $user->mobile,
+            'wallet' => [
+                'money' => WalletUser::getBalance($user->id)
+            ]
+        ];
+        return $result;
     }
 
     /**

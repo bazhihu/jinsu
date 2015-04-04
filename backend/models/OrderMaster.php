@@ -40,6 +40,7 @@ use common\models\Order;
  */
 class OrderMaster extends Order
 {
-
+    const IS_CONTINUE_YES = 1; //是续单
+    const IS_CONTINUE_NO = 0; //不是续单
 
 }

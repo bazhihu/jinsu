@@ -484,9 +484,9 @@ class Worker extends \yii\db\ActiveRecord
     }
 
     /**
-     * 根据ID获取省份、城市、地区的NAME
-     * @param int $IdStr 省ID 市ID 区县ID
-     * @return static[]
+     * 根据数据库中存的字符串获取证书名称
+     * @param string $certificateStr
+     * @return null|string
      */
 
     static public function getCertificateName($certificateStr=''){

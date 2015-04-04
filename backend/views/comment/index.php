@@ -40,11 +40,11 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
     <p>
         <?php //echo Html::a('Create Comment', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <form action="" method="post" name="comment" id="comment">
+        <input type="hidden" value="" name="op" id="op">
     <?php
-    echo '<form action="" method="post" name="comment" id="comment">';
     $buttons ='<input type="button" name="audit_yes" id="audit_yes" value="审核通过" class="btn btn-success">';
-   // $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_yes" id="audit_yes" value="审核通过" class="btn btn-success" onclick="javascript:location.href='.$url_yes.'>';
+    $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_no" id="audit_no" value="审核未通过" class="btn btn-success">';
 
     Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
@@ -78,27 +78,29 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
                         return '审核未通过';
                 }
             ],
-            'comment_date',
-            'edit_date',
-            'audit_date',
             [
                 'attribute'=>'adder',
                 'value'=>function($model) {
                     return ($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])['username'] :null;
                 }
             ],
-            [
-                'attribute'=>'editer',
-                'value'=>function($model) {
-                    return ($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])['username'] :null;
-                }
-            ],
+            'comment_date',
             [
                 'attribute'=>'auditer',
                 'value'=>function($model) {
                     return ($model->auditer)? AdminUser::findOne(['admin_uid',$model->auditer])['username'] :null;
                 }
             ],
+//            'edit_date',
+            'audit_date',
+
+//            [
+//                'attribute'=>'editer',
+//                'value'=>function($model) {
+//                    return ($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])['username'] :null;
+//                }
+//            ],
+
             'comment_ip',
             'type',
            /* [

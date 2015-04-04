@@ -183,6 +183,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             'code'  => 0,
             'msg'   => '',
         ];
+
         if($uid == null)
         {
             return null;

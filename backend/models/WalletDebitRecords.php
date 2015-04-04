@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "yayh_wallet_debit_records".
+ * This is the model class for table "{{%wallet_debit_records}}".
  *
  * @property string $id
  * @property string $trade_no
@@ -26,7 +26,7 @@ class WalletDebitRecords extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'yayh_wallet_debit_records';
+        return '{{%wallet_debit_records}}';
     }
 
     /**

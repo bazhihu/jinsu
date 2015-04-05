@@ -37,7 +37,7 @@ $this->title = $model->id;
             [
                 'attribute'=>'created_id',
                 'label'=>'创建人',
-                'value'=>\backend\models\AdminUser::findOne(['admin_uid'=>$model->created_id])->username,
+                'value'=>\backend\models\AdminUser::getInfo($model->created_id),
             ]
         ],
         'deleteOptions'=>[

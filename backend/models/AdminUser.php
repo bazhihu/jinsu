@@ -77,7 +77,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
             [['hospital', 'phone', 'status'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at' ,'created_id'], 'safe'],
             [['username', 'password_hash', 'password_reset_token', 'staff_name', 'staff_role'], 'string', 'max' => 255],
             [['auth_key', 'staff_id'], 'string', 'max' => 32]
         ];
@@ -124,8 +124,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
                 'staff_id'      => $this->staff_name,
                 'password_hash' => \yii::$app->Security->generatePasswordHash($this->password),
             ];
+
             $this->setAttributes($params);
-            //var_dump($this->attributes);exit;
             #保存信息
             if($this->save())
             {
@@ -148,9 +148,16 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      * @author 2015-3-20 hu
      * @return $info
      */
-    public static function getInfo($id)
+    public static function getInfo($id=null,$value='username')
     {
-        return self::findOne(['admin_uid'=>$id])->username;
+        if($id == null)
+        {
+            return null;
+        }else
+        {
+            return self::findOne(['admin_uid'=>$id])?self::findOne(['admin_uid'=>$id])->$value:'';
+        }
+
     }
 
     /**

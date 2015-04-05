@@ -81,7 +81,7 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
             jump = $(this).attr('jump-url');
 
         if(value && name){
-            if(!confirm('确认给用户'+name+'：充值'+value+'人民币？')){
+            if(!confirm('确认给用户'+name+'：充值'+value+'元人民币？')){
                 return false;
             }
             $.ajax({

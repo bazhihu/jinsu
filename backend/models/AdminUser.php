@@ -134,8 +134,6 @@ class AdminUser extends ActiveRecord implements IdentityInterface
                 yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
 
                 return true;
-            }else{
-                throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
             }
         }else{
             $this->addError('staff_role','权限不足');

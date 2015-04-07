@@ -3,16 +3,17 @@
  * Created by PhpStorm.
  * User: HZQ
  * Date: 2015/4/3
- * Time: 14:25
+ * Time: 17:54
  */
 namespace api\modules\v1\controllers;
 
-use api\modules\v1\models\Config;
+use backend\models\AdminUser;
+use backend\models\City;
 use backend\models\Departments;
-use backend\models\Holidays;
 use backend\models\Hospitals;
-use backend\models\OrderPatient;
+use backend\models\WalletWithdrawcash;
 use backend\models\Worker;
+use backend\models\WorkerSearch;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
@@ -20,8 +21,8 @@ use yii\helpers\ArrayHelper;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 
-class ConfigController extends ActiveController {
-    public $modelClass = FALSE;
+class WorkerController extends ActiveController {
+    public $modelClass = '';
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -47,34 +48,31 @@ class ConfigController extends ActiveController {
         return $actions;
     }
 
-
+    /**
+     * list
+     */
     public function actionIndex()
     {
+        //随机十个护工
+        $params = Yii::$app->getRequest()->getBodyParams();
+        $params['start_time'] = '2014-05-12';
+        $worker = \api\modules\v1\models\Worker::select($params);
 
-        $return  = array();
-        #医院
-        $return['hospitals'] =Hospitals::find()->all();
-        foreach($return['hospitals'] as $hospitals)
-        {
-            unset($hospitals['province_id']);
-            unset($hospitals['city_id']);
-            unset($hospitals['area_id']);
-            unset($hospitals['phone']);
-        }
-        #科室
-        $return['departments'] = Departments::find(['parent_id'])->all();
-        foreach($return['departments'] as $departments)
-        {
-            unset($departments['parent_id']);
-        }
-        #护工等级
-        $return['worker_levels'] = Config::generateWorker([Worker::WORKER_LEVEL_MEDIUM,Worker::WORKER_LEVEL_HIGH,Worker::WORKER_LEVEL_SUPER]);
+        $worker = \api\modules\v1\models\Worker::spliceWorker($worker);
+        return $worker;
+    }
 
-        #患者等级
-        $return['patient_states'] = Config::generatePatient([OrderPatient::PATIENT_STATE_OK,OrderPatient::PATIENT_STATE_DISABLED]);
-        $return['holidays'] = ArrayHelper::getColumn(Holidays::find()->all(),'date');
+    /**
+     * read
+     */
+    public function actionView()
+    {
+        $worker_id = Yii::$app->request->get('id');
 
-        return $return;
+        $worker = Worker::findOne(['worker_id'=>$worker_id]);
+
+        $worker = \api\modules\v1\models\Worker::spliceWorker(['0'=>$worker]);
+        return $worker;
     }
 
     /**

@@ -30,10 +30,15 @@ $this->title = '护工管理';
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'worker_id',
 
-            'name',
+            [
+                'attribute'=>'name',
+                'format'=>'raw',
+                'value'=>function ($model) {
+                    return Html::a($model->name, Yii::$app->urlManager->createUrl(['worker/view','id'=>$model->worker_id]));
+                },
+            ],
 
             'gender',
 

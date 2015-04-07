@@ -28,7 +28,8 @@ class WorkerSearch extends Worker
 
     public function search($params)
     {
-        $query = Worker::find();
+//        $query = Worker::find();
+        $query = Worker::find()->orderBy('worker_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

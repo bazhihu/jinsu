@@ -109,7 +109,7 @@ class User extends ActiveRecord implements IdentityInterface
             'login_ip' => '登陆IP',
             'login_time' => '登陆时间',
             'register_time' => '注册时间',
-            'register_date_begin'=>'时间范围',
+            'register_date_begin'=>'注册时间范围',
             'register_date_end'=>'至',
             'adder' => '注册人',
             'edit_time' => '编辑时间',

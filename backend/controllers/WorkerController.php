@@ -223,18 +223,18 @@ class WorkerController extends Controller
 
 
     // 获取选定省份下的城市
-    public function actionGetcity() {
+    public function actionGetcity($selected=0) {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $birth_place = $parents[0];
                 $data  = City::getListPlace($birth_place);
-                echo Json::encode(['output'=>$data,'selected'=>140300]);
+                echo Json::encode(['output'=>$data,'selected'=>150400]);
                 return;
             }
         }
-        echo Json::encode(['output'=>'', 'selected'=>'']);
+        echo Json::encode(['output'=>'', 'selected'=>$selected]);
     }
 
     //获取选定城市下的区县

@@ -113,6 +113,7 @@ class WorkerotherController extends Controller
 
     protected function saveWorkerOther($model,$params){
         $worker_id = $params['worker_id'];
+
         for ($i = 1; $i <= 4; $i++) {
             if ($i == 2 || $i == 4) {
                 $max = 0;
@@ -128,12 +129,17 @@ class WorkerotherController extends Controller
                 $ext2='';
                 $ext3='';
                 $ext4='';
-                $ext1 = $params[$key1][$j];
+                if($i==1){
+                    $ext1 = $params['begin_dt'.$j]."至".$params['end_dt'.$j];
+                }else{
+                    $ext1 = $params[$key1][$j];
+                }
                 if($i<>2){
                     $ext2 = $params[$key2][$j];
                     $ext3 = $params[$key3][$j];
                     $ext4 = $params[$key4][$j];
                 }
+
                 $sql = "INSERT INTO `yayh_workerother` (`worker_id`,`ext1`,`ext2`,`ext3`,`ext4`,`info_type`) VALUES ($worker_id,'$ext1','$ext2','$ext3','$ext4',$i)";
                 Workerother::workerOtherAdd($sql);
 

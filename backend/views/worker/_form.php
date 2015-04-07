@@ -18,9 +18,6 @@ use backend\models\Hospitals;
  * @var backend\models\Worker $model
  * @var yii\widgets\ActiveForm $form
  */
-
-
-
 ?>
 
 <div class="worker-form">
@@ -182,7 +179,8 @@ use backend\models\Hospitals;
             ]);
 
         // 户口所在地 Child # 1
-        $model->birth_place_city = 140300;
+       // $model->birth_place_city = 140300;
+
         echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
             'options'=>[
                 'id'=>'birth_place_city',
@@ -191,7 +189,7 @@ use backend\models\Hospitals;
             'pluginOptions'=>[
                 'depends'=>['birth_place'],
                 'placeholder'=>'请选择',
-                'url'=>Url::to(['worker/getcity']),
+                'url'=>Url::to(['worker/getcity/',['selected'=>$model->birth_place_city]]),
                 'initialize' => true
             ]
         ])->label('');

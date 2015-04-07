@@ -19,6 +19,10 @@ class Workerother extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public  $begin_dt;
+    public $end_dt;
+
     public static function tableName()
     {
         return '{{%workerother}}';
@@ -31,6 +35,7 @@ class Workerother extends \yii\db\ActiveRecord
     {
         return [
             [['worker_id'], 'required'],
+            [['begin_dt','end_dt'], 'safe'],
             [['worker_id', 'info_type'], 'integer'],
             [['ext1', 'ext2', 'ext3', 'ext4'], 'string', 'max' => 255]
         ];
@@ -43,6 +48,8 @@ class Workerother extends \yii\db\ActiveRecord
     {
         return [
             'worker_id' => '护工id',
+            'begin_dt'=>'开始时间',
+            'end_dt'=>'截至时间',
             'ext1' => '字段1',
             'ext2' => '字段2',
             'ext3' => '字段3',

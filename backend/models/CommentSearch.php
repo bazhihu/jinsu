@@ -28,7 +28,8 @@ class CommentSearch extends Comment
 
     public function search($params)
     {
-        $query = Comment::find();
+        //$query = Comment::find();
+        $query =  Comment::find()->orderBy('comment_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -46,6 +47,7 @@ class CommentSearch extends Comment
             ->andFilterWhere(['like', 'worker_id', $this->worker_id])
             ->andFilterWhere(['like', 'worker_name', $this->worker_name])
             ->andFilterWhere(['between', 'comment_date', $this->comment_date_begin, $this->comment_date_end]);
+        $query->orderBy('comment_id DESC');
 
         return $dataProvider;
     }

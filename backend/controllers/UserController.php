@@ -76,7 +76,7 @@ class UserController extends Controller
             $model->attributes = $params;
 
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['user/index']);
             } else {
                 return $this->render('create', [
                     'model' => $model,

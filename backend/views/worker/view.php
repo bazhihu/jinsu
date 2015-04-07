@@ -27,9 +27,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
     </div>
 <?
 //echo Html::img($model->pic?"uploads/".$model->pic:"uploads/no.jpg",['width'=>'213']);
-
 ?>
-
     <?= DetailView::widget([
             'model' => $model,
             'condensed'=>false,

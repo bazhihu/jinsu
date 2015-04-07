@@ -33,7 +33,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
-            'mobile',
+            //'mobile',
+            [
+                'attribute'=>'mobile',
+                'format'=>'raw',
+                'value'=>function ($model) {
+                    return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id'=>$model->id]));
+                },
+                'options' => [
+                    'style' => 'width:110px',
+                ]
+            ],
            // 'nickname',
             'name',
             'gender',

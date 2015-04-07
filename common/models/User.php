@@ -165,6 +165,11 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
+        $token = Yii::$app->security->decryptByKey(base64_decode($token), Yii::$app->params['encrypt_key']);
+        if(empty($token)){
+            return null;
+        }
+
         return static::findOne(["access_token" => $token]);
     }
 

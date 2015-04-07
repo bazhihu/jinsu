@@ -68,7 +68,8 @@ class Login extends Model{
      * @return string
      */
     public static function encryptToken($token){
-        return base64_encode(Yii::$app->security->encryptByKey($token, '123456'));
+        $key = Yii::$app->params['encrypt_key'];
+        return base64_encode(Yii::$app->security->encryptByKey($token, $key));
     }
 
     /**

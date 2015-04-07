@@ -8,11 +8,12 @@
 
 namespace api\modules\v1\controllers;
 
+use common\models\User;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
-//use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
+use yii\web\UnauthorizedHttpException;
 
 class UserController extends ActiveController{
     public $modelClass = 'common\models\User';
@@ -34,12 +35,27 @@ class UserController extends ActiveController{
         $actions = parent::actions();
 
         // disable the "delete" actions
-        unset($actions['delete'], $actions['index']);
+        unset($actions['delete'], $actions['index'], $actions['view']);
 
         // customize the data provider preparation with the "prepareDataProvider()" method
         //$actions['index']['prepareDataProvider'] = [$this, 'index'];
 
         return $actions;
+    }
+
+    /**
+     * 用户数据接口
+     * @param $id 用户ID
+     * @return null|\yii\web\IdentityInterface|static
+     * @throws UnauthorizedHttpException
+     */
+    public function actionView($id){
+        if($id != \Yii::$app->user->id){
+            throw new UnauthorizedHttpException('You are requesting with an invalid credential.');
+        }
+        $userData = User::findIdentity($id);
+        unset($userData->access_token,$userData->password);
+        return $userData;
     }
 
     /**

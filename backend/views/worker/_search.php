@@ -76,7 +76,7 @@ use backend\models\Departments;
                 ]
             )->widget(Select2::classname(),[
                 'data' =>  Hospitals::getList('110000'),
-                'options' => ['placeholder' => '请选择'],
+                'options' => ['placeholder' => '请选择','style'=>'width:200px'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
@@ -85,7 +85,7 @@ use backend\models\Departments;
             <?= $form->field(
                 $model,
                 'level'
-            )->dropDownList([Worker::getWorkerLevel()],['prompt'=>'请选择'])->label("护工等级") ?>
+            )->dropDownList([Worker::getWorkerLevel()],['prompt'=>'请选择']);?>
 
             <?= $form->field(
                 $model,
@@ -117,19 +117,19 @@ use backend\models\Departments;
                 ],
             ])->label('普通话水平');?>
 
-            <?= $form->field(
-                $model,
-                'good_at',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
-                ]
-            )->widget(Select2::classname(),[
-                'data' =>   Departments::getList(),
-                'options' => ['placeholder' => '请选择','style'=>'width:160px'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ])->label('擅长护理疾病');?>
+<!--            --><?//= $form->field(
+//                $model,
+//                'good_at',
+//                [
+//                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+//                ]
+//            )->widget(Select2::classname(),[
+//                'data' =>   Departments::getList(),
+//                'options' => ['placeholder' => '请选择','style'=>'width:160px'],
+//                'pluginOptions' => [
+//                    'allowClear' => true
+//                ],
+//            ])->label('擅长护理疾病');?>
 
             <div class="form-group" style="margin-top: 30px;">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>

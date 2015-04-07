@@ -100,7 +100,7 @@ class OrderController extends ActiveController {
             $this->responseMsg = '创建订单失败';
             return null;
         }
-        $order = $orderModel->getAttributes();
+        $order = Order::findOne($orderModel->order_id);
 
         //用户数据
         $user = [

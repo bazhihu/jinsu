@@ -96,7 +96,7 @@ class Hospitals extends \yii\db\ActiveRecord
                     if($id){
                         $findArr = ['id' => $id];
                         $result = self::findOne($findArr);
-                        $data .= $result['name'] . "<br>";
+                        $data .= $result['name'] . " ";
                     }
                 }
             }

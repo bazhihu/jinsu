@@ -27,8 +27,8 @@ class UserSearch extends User
 
     public function search($params)
     {
-        $query = User::find();
-
+       // $query = User::find();
+        $query = User::find()->orderBy('id DESC');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -44,7 +44,8 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'mobile', $this->mobile])
             ->andFilterWhere(['like', 'nickname', $this->nickname])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['between', 'register_time', $this->register_date_begin, $this->register_date_end]);;
+            ->andFilterWhere(['between', 'register_time', $this->register_date_begin, $this->register_date_end]);
+        $query->orderBy('id DESC');
 
         return $dataProvider;
     }

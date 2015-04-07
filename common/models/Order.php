@@ -32,6 +32,16 @@ class Order extends \yii\db\ActiveRecord{
         self::ORDER_SOURCES_SERVICE => '客服电话',
     ];
 
+    //订单支付方式
+    const PAY_WAY_CASH = 1; //现金
+    const PAY_WAY_ALIPAY = 2; //支付宝
+    const PAY_WAY_WE_CHAT = 3; //微信
+    static public $orderPayWayLabels = [
+        self::PAY_WAY_CASH => '现金',
+        self::PAY_WAY_ALIPAY => '支付宝',
+        self::PAY_WAY_WE_CHAT => '微信'
+    ];
+
     //订单状态
     const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
     const ORDER_STATUS_WAIT_CONFIRM = 'wait_confirm'; //待确认
@@ -111,7 +121,7 @@ class Order extends \yii\db\ActiveRecord{
     {
         return [
             [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
-            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'customer_service_id', 'operator_id', 'is_continue'], 'integer'],
+            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
@@ -151,6 +161,7 @@ class Order extends \yii\db\ActiveRecord{
             'remark' => '订单备注',
             'start_time' => '开始时间',
             'end_time' => '结束时间',
+            'pay_way' => '支付方式',
             'reality_end_time' => '实际结束时间',
             'create_time' => '订单创建时间',
             'pay_time' => '订单支付时间',

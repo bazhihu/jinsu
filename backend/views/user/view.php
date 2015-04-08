@@ -11,7 +11,7 @@ use backend\models\AdminUser;
  * @var backend\models\User $model
  */
 
-$this->title = $model->id;
+$this->title = $this->title = '查看用户信息';;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

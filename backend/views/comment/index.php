@@ -28,7 +28,6 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
         'delay' => 2000
     ]);
   }
-
 ?>
 
 <div class="comment-index">

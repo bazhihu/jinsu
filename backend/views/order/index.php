@@ -5,7 +5,7 @@ use kartik\grid\GridView;
 //use yii\widgets\Pjax;
 use backend\models\OrderMaster;
 use backend\models\OrderPatient;
-
+use backend\models\Hospitals;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -24,11 +24,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php  //echo Html::a('新增订单', ['create'], ['class' => 'btn btn-success'])  ?>
-    </p>
+    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php
     $columns = [
@@ -36,11 +32,17 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         [
             'attribute'=>'order_no',
             'format'=>'raw',
-            'vAlign'=>'middle',
+            //'vAlign'=>'middle',
             'value'=>function ($model) {
                 return Html::a($model->order_no, Yii::$app->urlManager->createUrl(['order/view','id' => $model->order_id]));
-
-            },
+            }
+        ],
+        [
+            'label'=>'下单时间',
+            'attribute'=>'create_time',
+            'options' => [
+                'style' => 'width:100px',
+            ]
         ],
         [
             'attribute'=>'start_time',
@@ -69,6 +71,18 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         'worker_no',
         'worker_name',
         [
+            'attribute'=>'hospital_id',
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter'=>Hospitals::getList(),
+            'filterInputOptions'=>['placeholder'=>'请选择'],
+            'filterWidgetOptions'=>[
+                'pluginOptions'=>['allowClear'=>true]
+            ],
+            'value'=>function($model){
+                return Hospitals::getName($model->hospital_id);
+            }
+        ],
+        [
             'attribute'=>'patient_state',
             'filterType'=>GridView::FILTER_SELECT2,
             'filter'=>OrderPatient::$patientStateLabels,
@@ -79,8 +93,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             ],
             'value'=>function($model){
                 return OrderPatient::$patientStateLabels[$model->patient_state];
-            },
-            'format'=>'raw'
+            }
         ],
         [
             'attribute'=>'total_amount',
@@ -121,7 +134,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                             'select-worker-url'=>Yii::$app->urlManager->createUrl([
                                 'worker/select',
                                 'order_id' => $model->order_id,
-                                'start_time' => $model->start_time
+                                'start_time' => $model->start_time,
+                                'hospital_id' => $model->hospital_id
                             ])
                         ]);
                     }
@@ -163,7 +177,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 },
                 'evaluate' => function ($url, $model) {
                     if(OrderMaster::checkOrderStatusAction($model->order_status, 'evaluate')){
-                        return Html::button('评论', [
+                        return Html::button('评价', [
                             'class'=>'btn btn-sm btn-primary jsEvaluateOrder',
                             'evaluate-url'=>Yii::$app->urlManager->createUrl([
                                 'comment/create',
@@ -195,7 +209,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                     return Html::button('办公室', [
                         'title' => '办公室',
                         'class'=>'btn btn-sm btn-primary jsBan',
-                        'callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
+                        'callid'=>Hospitals::getHospitalPhone($model->hospital_id)
+                        //'callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
                     ]);
                 },
             ]

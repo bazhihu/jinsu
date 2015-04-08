@@ -104,4 +104,14 @@ class Hospitals extends \yii\db\ActiveRecord
 
         return $data;
     }
+    //获取医院电话
+    static public function getHospitalPhone($id){
+        $find = ['id' => $id];
+        $call = self::findOne($find);
+        if(!empty($call)) {
+            return $call->phone;
+        }
+        return '';
+
+    }
 }

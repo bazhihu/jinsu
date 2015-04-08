@@ -71,11 +71,16 @@ class OrderController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-
+    public function actionCreate(){
         $model = new OrderMaster;
 
+        //从用户页面过来
+        $uid = Yii::$app->request->get('uid');
+        if(!empty($uid)){
+            $user = User::findOne($uid);
+            $model->mobile = $user->mobile;
+            $model->contact_name = $user->name;
+        }
         $orderPatientModel = new OrderPatient();
         if ($model->load(Yii::$app->request->post()) && $model->validate(['end_time'])) {
             $params = Yii::$app->request->post();
@@ -220,7 +225,16 @@ class OrderController extends Controller
      */
     public function actionFinish($id){
         $order = $this->findModel($id);
-        $response = $order->finish();
+
+        //判断完成时间
+        $startTime = strtotime($order->start_time);
+        $endTime = strtotime(date('Y-m-d'));
+        if($startTime >= $endTime){
+            $response = ['code' => '400', 'msg' => '订单时间至少满一天才能完成'];
+        }else{
+            $response = $order->finish();
+        }
+
         echo Json::encode($response);
     }
 

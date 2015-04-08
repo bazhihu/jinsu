@@ -20,6 +20,26 @@ $('body').on('click', 'button.jsPayOrder', function () {
         cache:false,
         timeout:30000,
         url: url,
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('支付');
+        },
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){
@@ -49,7 +69,26 @@ $('body').on('click', 'button.jsConfirmOrder', function () {
         cache:false,
         timeout:30000,
         url: url,
-        //data: "name=John&location=Boston",
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('确认');
+        },
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){
@@ -81,6 +120,26 @@ $('body').on('click', 'button.jsBeginServiceOrder', function () {
         cache:false,
         timeout:30000,
         url: url,
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('开始服务');
+        },
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){
@@ -110,6 +169,26 @@ $('body').on('click', 'button.jsFinishOrder', function () {
         cache:false,
         timeout:30000,
         url: url,
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('完成');
+        },
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){
@@ -138,6 +217,26 @@ $('body').on('click', 'button.jsCancelOrder', function () {
         cache:false,
         timeout:30000,
         url: url,
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('取消');
+        },
         success: function(json){
             alert(json.msg);
             if(json.code == '200'){

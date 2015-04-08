@@ -280,7 +280,7 @@ class Worker extends \yii\db\ActiveRecord
             'total_score' => '积分总数',
             'star' => '星级',
             'total_order' => '总订单数',
-            'good_rate' => '好评率',
+            'good_rate' => '好评率(%)',
             'total_comment' => '评论总数',
             'level' => '护工等级',
             'status' => '工作状态',
@@ -312,23 +312,23 @@ class Worker extends \yii\db\ActiveRecord
     static public function workerStar($star=5){
         if($star>=4.5){
             $star_str = '5';
-        }elseif(4.5>$star && $star>=4){
+        }elseif(4.5>=$star && $star>4){
             $star_str = '4.5';
-        }elseif(4>$star && $star>=3.5){
+        }elseif(4>=$star && $star>3.5){
             $star_str = '4';
-        }elseif(3.5>$star && $star>=3){
+        }elseif(3.5>=$star && $star>3){
             $star_str = '3.5';
-        }elseif(3>$star && $star>=2.5){
+        }elseif(3>=$star && $star>2.5){
             $star_str = '3';
-        }elseif(2.5>$star && $star>=2){
+        }elseif(2.5>=$star && $star>2){
             $star_str = '2.5';
-        }elseif(2>$star && $star>=1.5){
+        }elseif(2>=$star && $star>1.5){
             $star_str = '2';
-        }elseif(1.5>$star && $star>=1){
+        }elseif(1.5>=$star && $star>1){
             $star_str = '1.5';
-        }elseif(1>$star && $star>=0.5){
+        }elseif(1>=$star && $star>0.5){
             $star_str = '1';
-        }elseif(0.5>$star && $star>0){
+        }elseif(0.5>=$star && $star>0){
             $star_str = '0.5';
         }else{
             $star_str = null;
@@ -539,5 +539,16 @@ class Worker extends \yii\db\ActiveRecord
             return 'http://'.Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
         else
             return "img/no.jpg";
+    }
+
+    /**
+     * 更新护工订单总数
+     * @param $worker_id 护工编号
+     */
+    static public function plusTotalOrder($worker_id){
+        $update_sql = "update yayh_worker set total_order=total_order+1 where worker_id=".$worker_id;
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand($update_sql);
+        $command->query();
     }
 }

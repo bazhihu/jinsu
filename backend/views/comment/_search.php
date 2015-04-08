@@ -14,6 +14,12 @@ use kartik\datecontrol\DateControl;
         float:left;
         margin:5px;
     }
+    .field-commentsearch-comment_date_begin{
+        float:left;width:230px
+    }
+    .field-commentsearch-comment_date_end{
+        float:left;width:230px
+    }
 </style>
 <div class="comment-search">
     <?php $form = ActiveForm::begin([
@@ -55,7 +61,8 @@ use kartik\datecontrol\DateControl;
                 'options' => [
                     'pluginOptions' => [
                         'autoclose' => true
-                    ]
+                    ],
+                    'options'=>['style'=>'width:150px']
                 ]
             ]);?>
 
@@ -65,7 +72,8 @@ use kartik\datecontrol\DateControl;
                 'options' => [
                     'pluginOptions' => [
                         'autoclose' => true
-                    ]
+                    ],
+                    'options'=>['style'=>'width:150px']
                 ]
             ]);?>
 

@@ -85,7 +85,7 @@ use backend\models\Departments;
             <?= $form->field(
                 $model,
                 'level'
-            )->dropDownList([Worker::getWorkerLevel()],['prompt'=>'请选择']);?>
+            )->dropDownList(Worker::getWorkerLevel(),['prompt'=>'请选择']);?>
 
             <?= $form->field(
                 $model,

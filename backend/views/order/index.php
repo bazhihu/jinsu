@@ -40,7 +40,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         [
             'label'=>'下单时间',
             'attribute'=>'create_time',
-            'format'=>['datetime','yyyy-MM-dd hh:i:s'],
+            'format'=>['datetime','yyyy-MM-dd hh:i:ss'],
             'options' => [
                 'style' => 'width:100px',
             ]

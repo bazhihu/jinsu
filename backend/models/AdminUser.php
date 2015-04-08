@@ -116,29 +116,30 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function create()
     {
         #权限验证
-        $admin_uid = yii::$app->user->identity->getId();
+        /*$admin_uid = yii::$app->user->identity->getId();
         if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->staff_role))
+        {*/
+        $params = [
+            'created_id'    =>  yii::$app->user->identity->getId(),
+            'staff_id'      => $this->staff_name,
+            'password_hash' => \yii::$app->Security->generatePasswordHash($this->password),
+        ];
+
+        $this->setAttributes($params);
+        #保存信息
+        if($this->save())
         {
-            $params = [
-                'created_id'    =>  yii::$app->user->identity->getId(),
-                'staff_id'      => $this->staff_name,
-                'password_hash' => \yii::$app->Security->generatePasswordHash($this->password),
-            ];
+            #授予权限
+            $info = $this->findOne(['username'=>$this->username]);
+            yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
 
-            $this->setAttributes($params);
-            #保存信息
-            if($this->save())
-            {
-                #授予权限
-                $info = $this->findOne(['username'=>$this->username]);
-                yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
-
-                return true;
-            }
-        }else{
+            return true;
+        }
+        return false;
+        /*}else{
             $this->addError('staff_role','权限不足');
             return false;
-        }
+        }*/
     }
 
     /**
@@ -166,27 +167,47 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function up()
     {
         #权限验证
-        $admin_uid = Yii::$app->user->identity->getId();
+        /*$admin_uid = Yii::$app->user->identity->getId();
         #当前用户没有权限操作自己
-        if($admin_uid!==$this->getAttribute('admin_uid')/* && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role"))*/)
+        if($admin_uid!==$this->getAttribute('admin_uid')/* && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
+        {*/
+
+        $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
+
+        #保存信息
+        if($this->save())
         {
-            $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
+            #授予权限
+            $info = $this->findOne(['username'=>$this->username]);
+            yii::$app->authManager->revokeAll($info->getId());
+            yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+            #添加操作记录
 
-            #保存信息
-            if($this->save())
-            {
-                #授予权限
-                $info = $this->findOne(['username'=>$this->username]);
-                yii::$app->authManager->revokeAll($info->getId());
-                yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
-                #添加操作记录
-
-                return true;
-            }
-        }else{
+            return true;
+        }
+        /*}else{
             $this->addError('staff_role','权限不足');
             return false;
+        }*/
+    }
+
+    /**
+     * 权限验证
+     * @param $per 菜单路由地址
+     * @return bool
+     */
+    public static function checkPermissions($per)
+    {
+        #权限验证
+        $admin_uid = Yii::$app->user->identity->getId();
+
+        $past = Yii::$app->authManager->checkAccess($admin_uid,$per);
+        if(!$past)
+        {
+            if(!Yii::$app->authManager->checkAccess($admin_uid,'/*'))
+            return false;
         }
+        return true;
     }
 
     /**

@@ -540,4 +540,15 @@ class Worker extends \yii\db\ActiveRecord
         else
             return "img/no.jpg";
     }
+
+    /**
+     * 更新护工订单总数
+     * @param $worker_id 护工编号
+     */
+    static public function plusTotalOrder($worker_id){
+        $update_sql = "update yayh_worker set order_num=order_num+1 where worker_id=".$worker_id;
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand($update_sql);
+        $command->query();
+    }
 }

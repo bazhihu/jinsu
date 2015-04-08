@@ -65,6 +65,7 @@ use backend\models\Hospitals;
         'attributes' => [
             'name'=>[
                 'type'=> Form::INPUT_TEXT,
+                'class'=>'text-muted',
                 'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:30%']
             ],
 

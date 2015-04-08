@@ -118,7 +118,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         #权限验证
         /*$admin_uid = yii::$app->user->identity->getId();
         if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->staff_role))
-        {*/
+        */
+
         $params = [
             'created_id'    =>  yii::$app->user->identity->getId(),
             'staff_id'      => $this->staff_name,

@@ -88,6 +88,7 @@ class OrderController extends Controller
 
             $order = new Order();
             $order->createOrder($params);
+            $order->pay();
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -147,7 +148,7 @@ class OrderController extends Controller
         $orderPatientModel->weight = $oldOrderPatient->weight;
         $orderPatientModel->patient_state = $oldOrderPatient->patient_state;
         $orderPatientModel->in_hospital_reason = $oldOrderPatient->in_hospital_reason;
-        $orderPatientModel->admission_date = date('Y-m-d',strtotime($oldOrderPatient->admission_date));
+        $orderPatientModel->admission_date = empty($oldOrderPatient->admission_date) ? date('Y-m-d') : date('Y-m-d',strtotime($oldOrderPatient->admission_date));
         $orderPatientModel->room_no = $oldOrderPatient->room_no;
         $orderPatientModel->bed_no = $oldOrderPatient->bed_no;
 

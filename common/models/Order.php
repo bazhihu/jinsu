@@ -123,13 +123,14 @@ class Order extends \yii\db\ActiveRecord{
             [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
-            [['start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
+            [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
             [['worker_name', 'contact_name', 'contact_telephone', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
 
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
             [['contact_address','create_order_user_agent'], 'string', 'max' => 500],
-            [['order_no'], 'unique']
+            [['order_no'], 'unique'],
+            [['end_time'], 'compare', 'compareAttribute'=>'start_time', 'operator'=>'>=', 'message'=>'结束时间不能小于或等于开始时间']
         ];
     }
 
@@ -148,7 +149,7 @@ class Order extends \yii\db\ActiveRecord{
             'worker_no' => '护工编号',
             'worker_name' => '护工姓名',
             'worker_level' => '护工等级',
-            'mobile' => '用户帐号',
+            'mobile' => '手机号',
             'base_price' => '护工的基础价格（金额/天）',
             'patient_state_coefficient' => '患者状态价格系数',
             'hospital_id' => '医院',
@@ -175,6 +176,14 @@ class Order extends \yii\db\ActiveRecord{
             'create_order_user_agent' => '创建订单时客户端user agent',
             'is_continue' => '是否为续单（1：是；0：否）'
         ];
+    }
+
+    public function validateEndTime($attribute){
+        if (!$this->hasErrors()) {
+            if(strtotime($this->end_time) <= strtotime($this->start_time)){
+                $this->addError($attribute, '结束时间不能小于或等于开始时间。');
+            }
+        }
     }
 
     /**

@@ -102,6 +102,8 @@ class OrderController extends ActiveController {
         }
         $order = Order::findOne($orderModel->order_id);
 
+        $order->pay();
+
         //用户数据
         $user = [
             'mobile' => $order['mobile'],

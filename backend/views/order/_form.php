@@ -43,7 +43,7 @@ use backend\models\OrderMaster;
                             'maxlength'=>11,
                             'style'=>'width:25%',
                             //用户来电将电话号码显示在表单中
-                            'value'=>isset($_GET['callid'])? $_GET['callid'] : ''
+                            'value'=>isset($_GET['callid'])? $_GET['callid'] : $model->mobile
                         ],
                     ],
                     'contact_name'=>[
@@ -70,6 +70,96 @@ use backend\models\OrderMaster;
                     ],
                 ]
             ]);?>
+        </div>
+    </div>
+
+
+    <!--订单信息-->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">订单信息</h3>
+        </div>
+        <div class="panel-body">
+            <?php
+
+            echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
+                'data' => Hospitals::getList(),
+                'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+            echo $form->field($model, 'department_id')->widget(Select2::classname(), [
+                'data' => Departments::getList(),
+                'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+
+            //续单
+            if($model->is_continue){
+                echo $form->field($model, 'is_continue', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'worker_no', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'worker_name', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'base_price', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+            }
+
+            echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
+                'hideSearch' => true,
+                'data' => Worker::getWorkerLevel(),
+                'options' => ['placeholder' => '请选择护工等级...','style'=>'width:25%'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+
+            echo Form::widget([ // nesting attributes together (without labels for children)
+                'model'=>$model,
+                'form'=>$form,
+                'columns'=>1,
+                'attributeDefaults' => [
+                    'type' => Form::INPUT_TEXT,
+                    'labelOptions' => ['class'=>'col-md-2'],
+                    'inputContainer' => ['class'=>'col-md-10'],
+                ],
+                'attributes'=>[
+                    'date_range' => [
+                        'label' => '订单时间段',
+                        'attributes'=>[
+                            'start_time' => [
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\DatePicker',
+                                'hint'=>'请输入开始时间(yyyy-mm-dd)',
+                                'options'=>[
+                                    'options'=>['placeholder'=>'开始时间...'],
+                                    'pluginOptions'=>[
+                                        'todayHighlight' => true,
+                                        'autoclose' => true,
+                                        'format' => 'yyyy-mm-dd'
+                                    ]
+                                ]
+                            ],
+                            'end_time'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\DatePicker',
+                                'hint'=>'请输入结束时间(yyyy-mm-dd)',
+                                'options'=>[
+                                    'options'=>['placeholder'=>'结束时间...'],
+                                    'pluginOptions'=>[
+                                        'todayHighlight' => true,
+                                        'autoclose' => true,
+                                        'format' => 'yyyy-mm-dd'
+                                    ]
+                                ]
+                            ],
+                        ]
+                    ],
+
+                ]
+            ]);
+            echo $form->field($model, 'remark')->textarea(['rows'=>3]);
+            ?>
         </div>
     </div>
 
@@ -139,7 +229,10 @@ use backend\models\OrderMaster;
                         'type'=>Form::INPUT_WIDGET,
                         'widgetClass'=>'\kartik\widgets\DatePicker',
                         'options'=>[
-                            'options'=>['placeholder'=>'请选择住院日期...','style'=>'width:19%'],
+                            'options'=>[
+                                'placeholder'=>'请选择住院日期...',
+                                'style'=>'width:19%',
+                            ],
                             'pluginOptions'=>[
                                 'todayHighlight' => true,
                                 'autoclose' => true,
@@ -158,94 +251,6 @@ use backend\models\OrderMaster;
         </div>
     </div>
 
-    <!--订单信息-->
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title">订单信息</h3>
-        </div>
-        <div class="panel-body">
-            <?php
-
-            echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-                'data' => Hospitals::getList(),
-                'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]);
-            echo $form->field($model, 'department_id')->widget(Select2::classname(), [
-                'data' => Departments::getList(),
-                'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]);
-
-            //续单
-            if($model->is_continue){
-                echo $form->field($model, 'is_continue', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
-                echo $form->field($model, 'worker_no', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
-                echo $form->field($model, 'worker_name', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
-                echo $form->field($model, 'base_price', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
-            }
-
-            echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
-                'hideSearch' => true,
-                'data' => Worker::getWorkerLevel(),
-                'options' => ['placeholder' => '请选择护工等级...','style'=>'width:25%'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]);
-
-            echo Form::widget([ // nesting attributes together (without labels for children)
-                'model'=>$model,
-                'form'=>$form,
-                'columns'=>1,
-                'attributeDefaults' => [
-                    'type' => Form::INPUT_TEXT,
-                    'labelOptions' => ['class'=>'col-md-2'],
-                    'inputContainer' => ['class'=>'col-md-10'],
-                ],
-                'attributes'=>[
-                    'date_range' => [
-                        'label' => '时间段',
-                        'attributes'=>[
-                            'start_time' => [
-                                'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>'\kartik\widgets\DatePicker',
-                                'hint'=>'请输入开始时间(yyyy-mm-dd)',
-                                'options'=>[
-                                    'options'=>['placeholder'=>'开始时间...'],
-                                    'pluginOptions'=>[
-                                        'todayHighlight' => true,
-                                        'autoclose' => true,
-                                        'format' => 'yyyy-mm-dd'
-                                    ]
-                                ]
-                            ],
-                            'end_time'=>[
-                                'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>'\kartik\widgets\DatePicker',
-                                'hint'=>'请输入结束时间(yyyy-mm-dd)',
-                                'options'=>[
-                                    'options'=>['placeholder'=>'结束时间...'],
-                                    'pluginOptions'=>[
-                                        'todayHighlight' => true,
-                                        'autoclose' => true,
-                                        'format' => 'yyyy-mm-dd'
-                                    ]
-                                ]
-                            ],
-                        ]
-                    ],
-
-                ]
-            ]);
-            echo $form->field($model, 'remark')->textarea(['rows'=>3]);
-            ?>
-        </div>
-    </div>
 
     <?php
     $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';

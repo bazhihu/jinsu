@@ -1,5 +1,6 @@
 <?php
 
+use Yii;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 //use yii\widgets\Pjax;
@@ -177,7 +178,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     ];
 
     //判断是否是TQ
-    $juese = \backend\models\AdminUser::findOne(['admin_uid'=>$_SESSION['__id']])->staff_role;
+    $juese = \backend\models\AdminUser::findOne(['admin_uid'=>Yii::$app->user->id])->staff_role;
     if($juese=='客服'){
         $columns[] = [
             'class' => 'yii\grid\ActionColumn',
@@ -186,12 +187,16 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             'buttons' => [
                 'user' => function ($url, $model) {
                     return Html::button('用户', [
-                        'title' => '用户','class' => 'btn btn-sm btn-primary jsUser','callid' =>$model->mobile
+                        'title' => '用户',
+                        'class' => 'btn btn-sm btn-primary jsUser',
+                        'callid' =>$model->mobile
                     ]);
                 },
                 'office' => function ($url, $model) {
                     return Html::button('办公室', [
-                        'title' => '办公室','class'=>'btn btn-sm btn-primary jsBan','callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
+                        'title' => '办公室',
+                        'class'=>'btn btn-sm btn-primary jsBan',
+                        'callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
                     ]);
                 },
             ]

@@ -73,9 +73,11 @@ class OrderController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new OrderMaster;
+
         $orderPatientModel = new OrderPatient();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate(['end_time'])) {
             $params = Yii::$app->request->post();
 
             //检查手机号是否注册
@@ -88,8 +90,10 @@ class OrderController extends Controller
 
             $order = new Order();
             $order->createOrder($params);
+            $order->pay();
             return $this->redirect(['index']);
         } else {
+            //$model->addError('end_time', '结束时间不能小于或等于开始时间。');
             return $this->render('create', [
                 'model' => $model,
                 'orderPatientModel' => $orderPatientModel
@@ -147,7 +151,7 @@ class OrderController extends Controller
         $orderPatientModel->weight = $oldOrderPatient->weight;
         $orderPatientModel->patient_state = $oldOrderPatient->patient_state;
         $orderPatientModel->in_hospital_reason = $oldOrderPatient->in_hospital_reason;
-        $orderPatientModel->admission_date = date('Y-m-d',strtotime($oldOrderPatient->admission_date));
+        $orderPatientModel->admission_date = empty($oldOrderPatient->admission_date) ? date('Y-m-d') : date('Y-m-d',strtotime($oldOrderPatient->admission_date));
         $orderPatientModel->room_no = $oldOrderPatient->room_no;
         $orderPatientModel->bed_no = $oldOrderPatient->bed_no;
 

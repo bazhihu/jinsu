@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use backend\models\User;
 use backend\models\WalletDebitRecords;
 use backend\models\WalletIncrement;
 use backend\models\WalletRechargeRecords;
@@ -11,7 +10,6 @@ use Yii;
 use yii\base\Exception;
 use yii\web\NotFoundHttpException;
 use backend\models\WalletUser;
-use backend\models\WalletUserDetail;
 use yii\web\HttpException;
 
 /**
@@ -157,6 +155,7 @@ class Wallet
         }
 
         $wallet->money = $wallet->money + $money;
+        $wallet->money_consumption = $wallet->money_consumption - $money;
         if(!$wallet->save()){
             throw new HttpException(400, print_r($wallet->getErrors(), true));
         }

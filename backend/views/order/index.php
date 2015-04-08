@@ -1,12 +1,11 @@
 <?php
 
-use Yii;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 //use yii\widgets\Pjax;
 use backend\models\OrderMaster;
 use backend\models\OrderPatient;
-
+use backend\models\Hospitals;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -196,7 +195,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                     return Html::button('办公室', [
                         'title' => '办公室',
                         'class'=>'btn btn-sm btn-primary jsBan',
-                        'callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
+                        'callid'=>Hospitals::getHospitalPhone($model->hospital_id)
+                        //'callid'=>\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->phone
                     ]);
                 },
             ]

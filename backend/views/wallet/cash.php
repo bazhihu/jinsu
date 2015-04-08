@@ -64,10 +64,16 @@ $this->title = '申请提现确认-用户信息核对';
                         ),
                     ],
                     'payee_time'=>[
-                        'type'=> Form::INPUT_WIDGET,
-                        'widgetClass'=>DateControl::classname(),
+                        'type'=>Form::INPUT_WIDGET,
+                        'widgetClass'=>'\kartik\widgets\DateTimePicker',
+                        'hint'=>'请输入申请提现时间',
                         'options'=>[
-                            'type'=>DateControl::FORMAT_DATETIME
+                            'options'=>['placeholder'=>'开始时间...'],
+                            'pluginOptions'=>[
+                                'todayHighlight' => true,
+                                'autoclose' => true,
+                                'format' => 'yyyy-mm-dd hh:ii:ss'
+                            ]
                         ]
                     ],
                     'payee_name'=>[

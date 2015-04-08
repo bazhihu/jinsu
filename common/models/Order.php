@@ -130,7 +130,7 @@ class Order extends \yii\db\ActiveRecord{
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
             [['contact_address','create_order_user_agent'], 'string', 'max' => 500],
             [['order_no'], 'unique'],
-            [['end_time'], 'compare', 'compareAttribute'=>'start_time', 'operator'=>'>=', 'message'=>'结束时间不能小于或等于开始时间']
+            [['end_time'], 'validateEndTime']
         ];
     }
 
@@ -324,7 +324,7 @@ class Order extends \yii\db\ActiveRecord{
      * 计算价格
      * @param bool $returnDetail 是否返回价格明细
      * @return array|int|mixed
-     * @throws ErrorException
+     * @throws HttpException
      * @throws NotFoundHttpException
      * @author zhangbo
      */
@@ -332,7 +332,7 @@ class Order extends \yii\db\ActiveRecord{
         $startDate = date('Y-m-d', strtotime($this->start_time));
         $endDate = date('Y-m-d', strtotime($this->reality_end_time));
         if(strtotime($startDate) >= strtotime($endDate)){
-            throw new ErrorException('开始时间不能大于结束时间');
+            throw new HttpException(400, '订单时间至少满一天才能完成');
         }
 
         $totalPrice = 0;
@@ -565,7 +565,7 @@ class Order extends \yii\db\ActiveRecord{
             $orderOperatorLog->addLog($this->order_no, 'begin_service', $response);
             $response['msg'] = '开始服务成功';
             $transaction->commit();
-        }catch (Exception $e){
+        }catch (ErrorException $e){
             $transaction->rollBack();
             $response = [
                 'code' => '500',

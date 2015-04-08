@@ -73,9 +73,11 @@ class OrderController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new OrderMaster;
+
         $orderPatientModel = new OrderPatient();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate(['end_time'])) {
             $params = Yii::$app->request->post();
 
             //检查手机号是否注册
@@ -91,6 +93,7 @@ class OrderController extends Controller
             $order->pay();
             return $this->redirect(['index']);
         } else {
+            //$model->addError('end_time', '结束时间不能小于或等于开始时间。');
             return $this->render('create', [
                 'model' => $model,
                 'orderPatientModel' => $orderPatientModel

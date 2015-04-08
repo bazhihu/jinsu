@@ -35,8 +35,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             //'vAlign'=>'middle',
             'value'=>function ($model) {
                 return Html::a($model->order_no, Yii::$app->urlManager->createUrl(['order/view','id' => $model->order_id]));
-
-            },
+            }
         ],
         [
             'attribute'=>'start_time',
@@ -48,6 +47,14 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         [
             'attribute'=>'end_time',
             'format'=>['datetime','yyyy-MM-dd'],
+            'options' => [
+                'style' => 'width:100px',
+            ]
+        ],
+        [
+            'label'=>'下单时间',
+            'attribute'=>'create_time',
+            'format'=>['datetime','yyyy-MM-dd hh:i:ss'],
             'options' => [
                 'style' => 'width:100px',
             ]

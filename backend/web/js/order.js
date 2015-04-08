@@ -62,7 +62,7 @@ $('body').on('click', 'button.jsConfirmOrder', function () {
     button.attr('disabled', true);
     var url = $(this).attr('data-url');
     var selectWorkerUrl = $(this).attr('select-worker-url');
-    $.ajaxSetup({
+    $.ajax({
         type: "POST",
         dataType: "json",
         async:false,

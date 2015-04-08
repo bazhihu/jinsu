@@ -85,8 +85,11 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 ]);
             }
             if(OrderMaster::checkOrderStatusAction($model->order_status, 'evaluate')){
-                echo Html::button('评价', [
-                    'data-url'=>Yii::$app->urlManager->createUrl(['order/evaluate', 'id'=>$model->order_id]),
+                echo Html::button('评论', [
+                    'evaluate-url'=>Yii::$app->urlManager->createUrl([
+                        'comment/create',
+                        'order_no' => $model->order_no
+                    ]),
                     'class'=>'btn btn-primary jsEvaluateOrder'
                 ]);
             }

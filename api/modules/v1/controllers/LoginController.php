@@ -35,10 +35,6 @@ class LoginController extends ActiveController{
      * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate(){
-        $token = Yii::$app->security->encryptByKey('w43sM16q-6TWIjOITvsoAVh6SZGjxm9b', Yii::$app->params['encrypt_key']);
-        $token = urlencode(base64_encode($token));
-        echo $token;exit;
-
         $loginModel = new Login();
         $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
         if(!$loginModel->validate()){

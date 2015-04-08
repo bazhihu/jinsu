@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
@@ -15,13 +15,14 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'type' => ActiveForm::TYPE_VERTICAL,
+        'formConfig' => [
+            'showLabels' => true,
+        ],
     ]); ?>
 
-    <?= $form->field($model, 'order_id') ?>
 
     <?= $form->field($model, 'order_no') ?>
-
-    <?= $form->field($model, 'uid') ?>
 
     <?= $form->field($model, 'mobile') ?>
 
@@ -64,8 +65,7 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'create_order_user_agent') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

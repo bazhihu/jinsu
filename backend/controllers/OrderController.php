@@ -71,11 +71,16 @@ class OrderController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-
+    public function actionCreate(){
         $model = new OrderMaster;
 
+        //从用户页面过来
+        $uid = Yii::$app->request->get('uid');
+        if(!empty($uid)){
+            $user = User::findOne($uid);
+            $model->mobile = $user->mobile;
+            $model->contact_name = $user->name;
+        }
         $orderPatientModel = new OrderPatient();
         if ($model->load(Yii::$app->request->post()) && $model->validate(['end_time'])) {
             $params = Yii::$app->request->post();

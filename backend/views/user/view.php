@@ -17,7 +17,7 @@ $this->title = $this->title = '查看用户信息';;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="page-header"></div>
+<div class="page-header"> </div>
 <div class="user-view">
     <div class="panel panel-primary">
         <div class="panel-heading">

@@ -546,7 +546,7 @@ class Worker extends \yii\db\ActiveRecord
      * @param $worker_id 护工编号
      */
     static public function plusTotalOrder($worker_id){
-        $update_sql = "update yayh_worker set order_num=order_num+1 where worker_id=".$worker_id;
+        $update_sql = "update yayh_worker set total_order=total_order+1 where worker_id=".$worker_id;
         $connection = Yii::$app->db;
         $command = $connection->createCommand($update_sql);
         $command->query();

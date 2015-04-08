@@ -332,7 +332,7 @@ class Order extends \yii\db\ActiveRecord{
         $startDate = date('Y-m-d', strtotime($this->start_time));
         $endDate = date('Y-m-d', strtotime($this->reality_end_time));
         if(strtotime($startDate) >= strtotime($endDate)){
-            throw new HttpException(400, '订单时间至少满一天才能完成');
+            throw new HttpException(400, '订单时间错误');
         }
 
         $totalPrice = 0;
@@ -536,6 +536,8 @@ class Order extends \yii\db\ActiveRecord{
     /**
      * 订单开始服务
      * @return array
+     * @throws HttpException
+     * @throws \yii\db\Exception
      */
     public function beginService(){
         $response = ['code' => '200'];
@@ -625,6 +627,10 @@ class Order extends \yii\db\ActiveRecord{
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
             $orderOperatorLog->addLog($this->order_no, 'finish', $response);
+
+            //给护工加订单总数
+            Worker::plusTotalOrder($this->worker_no);
+
             $response['msg'] = '完成订单成功';
             $transaction->commit();
         }catch (Exception $e){

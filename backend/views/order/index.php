@@ -24,7 +24,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php
     $columns = [
@@ -32,7 +32,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         [
             'attribute'=>'order_no',
             'format'=>'raw',
-            'vAlign'=>'middle',
+            //'vAlign'=>'middle',
             'value'=>function ($model) {
                 return Html::a($model->order_no, Yii::$app->urlManager->createUrl(['order/view','id' => $model->order_id]));
 

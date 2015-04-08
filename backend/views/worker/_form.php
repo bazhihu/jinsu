@@ -19,6 +19,12 @@ use backend\models\Hospitals;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
+<style>
+    .file-preview {width:200px;border: none}
+    .close{width:0px;}
+    .input-group{width:30%}
+    .clearfix{width:205px;border: 1px solid #ccc}
+</style>
 
 <div class="worker-form">
     <div class="panel panel-info">
@@ -36,19 +42,21 @@ use backend\models\Hospitals;
         //echo $form->field($model, 'pic')->fileInput() ;
         echo $form->field($model, 'pic')->widget(\kartik\file\FileInput::classname(), [
             'pluginOptions' => [
+                'options'=>['style'=>'width:10%'],
                 'showUpload' => false,
                 'browseLabel' => '浏览',
                 'showRemove' => false,
-                'class'=>"file-loading",
-                'allowedFileExtensions' => ['jpg', 'png'],
-                'maxFileSize' =>2000,
+                //'class'=>"file-loading",
+                'allowedFileExtensions' => ['jpg'],
+                'maxFileSize' =>2048,
                 'initialPreview'=>[
-                    Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
+                    Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>160]),
                 ],
+
                 'initialCaption'=>"护工照片",
                 'overwriteInitial'=>true
             ]
-        ]);
+        ])->hint('要求：jpg格式，512*512，小于2M');
 
         echo Form::widget([
         'model' => $model,
@@ -57,12 +65,13 @@ use backend\models\Hospitals;
         'attributes' => [
             'name'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:50%']
+                'class'=>'text-muted',
+                'options'=>['placeholder'=>'请输入姓名...', 'maxlength'=>20,'style'=>'width:30%']
             ],
 
             'idcard'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:50%']
+                'options'=>['placeholder'=>'请输入身份证号...', 'maxlength'=>20,'style'=>'width:30%']
             ],
 
             'gender'=>[
@@ -72,16 +81,16 @@ use backend\models\Hospitals;
                 'options'=>['inline'=>true]
             ],
 
-            'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-                'options'=>[
-                    'options'=>[
-                        'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:30%']
-                    ],
-                    'type'=>DateControl::FORMAT_DATE,
-                    'displayFormat' => 'yyyy-MM-dd',
-                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
-                ],
-            ],
+//            'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
+//                'options'=>[
+//                    'options'=>[
+//                        'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:26%']
+//                    ],
+//                    'type'=>DateControl::FORMAT_DATE,
+//                    'displayFormat' => 'yyyy-MM-dd',
+//                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
+//                ],
+//            ],
 
             'marriage'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
@@ -118,12 +127,12 @@ use backend\models\Hospitals;
 
            /* 'phone1'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:50%']
+                'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:30%']
             ],
 
             'phone2'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:50%']
+                'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:30%']
             ],
             */
             'level'=>[
@@ -133,7 +142,9 @@ use backend\models\Hospitals;
 
             'price'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:50%']
+                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:30%'],
+                'contentAfter' => '元'
+
             ],
 
             'status'=>[
@@ -145,7 +156,7 @@ use backend\models\Hospitals;
                 'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
                 'options'=>[
                     'options'=>[
-                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:30%']
+                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:100%']
                     ],
                     'type'=>DateControl::FORMAT_DATE,
                     'displayFormat' => 'yyyy-MM-dd',
@@ -155,14 +166,14 @@ use backend\models\Hospitals;
 
             'place'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入户口所在地...', 'maxlength'=>255,'style'=>'width:50%']
+                'options'=>['placeholder'=>'请输入户口所在地...', 'maxlength'=>255,'style'=>'width:30%']
             ]
         ]
         ]);
 
         echo $form->field($model, 'nation')->widget(Select2::classname(), [
             'data' =>Worker::getNation(),
-            'options' => ['placeholder' => '请选择民族','style'=>'width:50%'],
+            'options' => ['placeholder' => '请选择民族','style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true
             ],
@@ -180,16 +191,16 @@ use backend\models\Hospitals;
 
         // 户口所在地 Child # 1
        // $model->birth_place_city = 140300;
-
         echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
             'options'=>[
                 'id'=>'birth_place_city',
                 'style'=>'width:30%'
+
             ],
             'pluginOptions'=>[
                 'depends'=>['birth_place'],
                 'placeholder'=>'请选择',
-                'url'=>Url::to(['worker/getcity/',['selected'=>$model->birth_place_city]]),
+                'url'=>Url::to(['worker/getcity/','selected'=>$model->birth_place_city]),
                 'initialize' => true
             ]
         ])->label('');
@@ -198,9 +209,9 @@ use backend\models\Hospitals;
         echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
             'options'=>['style'=>'width:30%'],
             'pluginOptions'=>[
-                'depends'=>[ 'birth_place_city'],
+                'depends'=>['birth_place_city'],
                 'placeholder'=>'请选择',
-                'url'=>Url::to(['worker/getarea']),
+                'url'=>Url::to(['worker/getarea','selected'=>$model->birth_place_area]),
                 'initialize' => true
             ]
         ])->label('');
@@ -208,7 +219,7 @@ use backend\models\Hospitals;
         //籍贯
         echo $form->field($model, 'native_province')->widget(Select2::classname(), [
             'data' => City::getList(1),
-            'options' => ['placeholder' => '请选择籍贯','style'=>'width:50%'],
+            'options' => ['placeholder' => '请选择籍贯','style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true
             ],
@@ -218,7 +229,7 @@ use backend\models\Hospitals;
         echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
             'data' =>   Hospitals::getList('110000'),
             'addon' => 1,
-            'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:50%'],
+            'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,
                 'maximumInputLength' => 10
@@ -229,7 +240,7 @@ use backend\models\Hospitals;
         echo $form->field($model, 'office_id')->widget(Select2::classname(), [
             'data' =>   Departments::getList(),
             'addon' => 1,
-            'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:50%'],
+            'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,
                 'maximumInputLength' => 10
@@ -237,15 +248,15 @@ use backend\models\Hospitals;
         ])->label('常驻科室');
 
         // 擅长护理的疾病
-        echo $form->field($model, 'good_at')->widget(Select2::classname(), [
-            'data' =>   Departments::getList(),
-            'addon' => 1,
-            'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:50%'],
-            'pluginOptions' => [
-                'allowClear' => true,
-                'maximumInputLength' => 10
-            ],
-        ])->label('擅长护理的疾病');
+//        echo $form->field($model, 'good_at')->widget(Select2::classname(), [
+//            'data' =>   Departments::getList(),
+//            'addon' => 1,
+//            'options' => ['placeholder' => '请选择擅长护理的疾病','multiple'=>true,'style'=>'width:30%'],
+//            'pluginOptions' => [
+//                'allowClear' => true,
+//                'maximumInputLength' => 10
+//            ],
+//        ])->label('擅长护理的疾病');
 
         echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存，下一步') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
         if(!$model->isNewRecord){

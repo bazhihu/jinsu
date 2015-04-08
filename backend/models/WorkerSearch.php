@@ -15,7 +15,7 @@ class WorkerSearch extends Worker
     {
         return [
             [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
-            [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'good_at', 'add_date', 'edit_date'], 'safe'],
+            [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'gender', 'add_date', 'edit_date'], 'safe'],
             [['price', 'good_rate'], 'number'],
         ];
     }
@@ -72,7 +72,7 @@ class WorkerSearch extends Worker
         $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':''])
-            ->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':''])
+            //->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':''])
           //  ->andFilterWhere(["($this->hospital_id,", "find_in_set", "hospital_id)"])
             /*->andFilterWhere(['like', 'birth_place', $this->birth_place])
             ->andFilterWhere(['like', 'native_province', $this->native_province])

@@ -64,7 +64,7 @@ class Comment extends \yii\db\ActiveRecord
             'status' => '状态',
             'comment_date' => '评论时间',
             'edit_date' => '编辑时间',
-            'comment_date_begin' => '时间范围',
+            'comment_date_begin' => '评论时间范围',
             'comment_date_end' => '至',
             'audit_date' => '审核时间',
             'adder' => '添加人',

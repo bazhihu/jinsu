@@ -55,7 +55,8 @@ use kartik\datecontrol\DateControl;
                 'options' => [
                     'pluginOptions' => [
                         'autoclose' => true
-                    ]
+                    ],
+                    'options'=>['style'=>'width:150px']
                 ]
             ]);?>
 
@@ -65,7 +66,8 @@ use kartik\datecontrol\DateControl;
                 'options' => [
                     'pluginOptions' => [
                         'autoclose' => true
-                    ]
+                    ],
+                    'options'=>['style'=>'width:150px']
                 ]
             ]);?>
 

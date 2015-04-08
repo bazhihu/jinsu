@@ -136,9 +136,9 @@ class WorkerController extends Controller
         if($model['office_id']){
             $model['office_id']= explode(',',$model['office_id']);
         }
-        if($model['good_at']){
-            $model['good_at']= explode(',',$model['good_at']);
-        }
+//        if($model['good_at']){
+//            $model['good_at']= explode(',',$model['good_at']);
+//        }
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();

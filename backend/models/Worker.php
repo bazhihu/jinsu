@@ -385,25 +385,31 @@ class Worker extends \yii\db\ActiveRecord
      */
     public function saveData($params,$op='create')
     {
-        if ($params['certificate']) {
+        if (!empty($params['certificate'])) {
             $params['certificate'] = ','.implode(',', $params['certificate']).',';
         }
 
-        if ($params['hospital_id']) {
+        if (!empty($params['hospital_id'])) {
             $params['hospital_id'] = ','.implode(',', $params['hospital_id']).',';
         }
 
-        if ($params['office_id']) {
+        if (!empty($params['office_id'])) {
             $params['office_id'] = ','.implode(',', $params['office_id']).',';
         }
 
-        if ($params['good_at']) {
-            $params['good_at'] = ','.implode(',', $params['good_at']).',';
-        }
+//        if ($params['good_at']) {
+//            $params['good_at'] = ','.implode(',', $params['good_at']).',';
+//        }
 
         //户口所在地
-        if ($params['birth_place']) {
-            $params['birth_place'] = ','.$params['birth_place'] . "," . $params['birth_place_city'] . "," . $params['birth_place_area'].',';
+        if (!empty($params['birth_place'])) {
+            $params['birth_place'] = ','.$params['birth_place'] . "," ;
+            if(!empty($params['birth_place_city'])){
+                $params['birth_place'].= $params['birth_place_city'] . "," ;
+            }
+            if(!empty($params['birth_place_area'])) {
+                $params['birth_place'] .= $params['birth_place_area'] . ',';
+            }
         }
 
         if ($op == 'create') {
@@ -527,6 +533,6 @@ class Worker extends \yii\db\ActiveRecord
         if($workerId)
             return 'http://'.Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
         else
-            return "uploads/no.jpg";
+            return "img/no.jpg";
     }
 }

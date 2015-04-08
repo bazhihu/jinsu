@@ -19,6 +19,12 @@ use backend\models\Hospitals;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
+<style>
+    .file-preview {width:200px;border: none}
+    .close{width:0px;}
+    .input-group{width:30%}
+    .clearfix{width:205px;border: 1px solid #ccc}
+</style>
 
 <div class="worker-form">
     <div class="panel panel-info">
@@ -35,7 +41,6 @@ use backend\models\Hospitals;
 
         //echo $form->field($model, 'pic')->fileInput() ;
         echo $form->field($model, 'pic')->widget(\kartik\file\FileInput::classname(), [
-            'class' =>'col-md-5',
             'pluginOptions' => [
                 'options'=>['style'=>'width:10%'],
                 'showUpload' => false,
@@ -45,13 +50,13 @@ use backend\models\Hospitals;
                 'allowedFileExtensions' => ['jpg'],
                 'maxFileSize' =>2048,
                 'initialPreview'=>[
-                    Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>200,'height'=>200]),
+                    Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>160]),
                 ],
 
                 'initialCaption'=>"护工照片",
                 'overwriteInitial'=>true
             ]
-        ])->hint('要求：jpg格式，200*200，小于2M');
+        ])->hint('要求：jpg格式，512*512，小于2M');
 
         echo Form::widget([
         'model' => $model,
@@ -75,16 +80,16 @@ use backend\models\Hospitals;
                 'options'=>['inline'=>true]
             ],
 
-            'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-                'options'=>[
-                    'options'=>[
-                        'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:26%']
-                    ],
-                    'type'=>DateControl::FORMAT_DATE,
-                    'displayFormat' => 'yyyy-MM-dd',
-                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
-                ],
-            ],
+//            'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
+//                'options'=>[
+//                    'options'=>[
+//                        'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:26%']
+//                    ],
+//                    'type'=>DateControl::FORMAT_DATE,
+//                    'displayFormat' => 'yyyy-MM-dd',
+//                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
+//                ],
+//            ],
 
             'marriage'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
@@ -150,7 +155,7 @@ use backend\models\Hospitals;
                 'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
                 'options'=>[
                     'options'=>[
-                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:26%']
+                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:100%']
                     ],
                     'type'=>DateControl::FORMAT_DATE,
                     'displayFormat' => 'yyyy-MM-dd',

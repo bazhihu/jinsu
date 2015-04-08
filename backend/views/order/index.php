@@ -65,6 +65,18 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         'worker_no',
         'worker_name',
         [
+            'attribute'=>'hospital_id',
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter'=>Hospitals::getList(),
+            'filterInputOptions'=>['placeholder'=>'请选择'],
+            'filterWidgetOptions'=>[
+                'pluginOptions'=>['allowClear'=>true]
+            ],
+            'value'=>function($model){
+                return Hospitals::getName($model->hospital_id);
+            }
+        ],
+        [
             'attribute'=>'patient_state',
             'filterType'=>GridView::FILTER_SELECT2,
             'filter'=>OrderPatient::$patientStateLabels,
@@ -75,8 +87,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             ],
             'value'=>function($model){
                 return OrderPatient::$patientStateLabels[$model->patient_state];
-            },
-            'format'=>'raw'
+            }
         ],
         [
             'attribute'=>'total_amount',

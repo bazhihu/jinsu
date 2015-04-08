@@ -12,7 +12,7 @@ use kartik\builder\Form;
 $this->title = '编辑用户: ' . ' ' . $model->username;
 ?>
 
-<div class="panel panel-info col-xs-8">
+<div class="panel panel-info"  style="margin: 8%;">
     <div class="panel-heading">
         <h3 class="panel-title"></h3>
     </div>
@@ -31,6 +31,10 @@ $this->title = '编辑用户: ' . ' ' . $model->username;
                     'form'          => $form,
                     'columns'       => 1,
                     'attributes'    => [
+                        'created_id'=>[
+                            'type'=> Form::INPUT_HIDDEN,
+                            'label'=>false,
+                        ],
                         'username'=>[
                             'type'=> Form::INPUT_TEXT,
                             'options'=>[
@@ -66,13 +70,13 @@ $this->title = '编辑用户: ' . ' ' . $model->username;
                         //'phone'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号', 'maxlength'=>255 ]],
                         //'password'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'请输入密码', 'maxlength'=>255,'minlength'=>6 ,'readonly'=>'readonly','value'=>'******']],
                         //'staff_id'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入员工号', 'maxlength'=>255 ,'readonly'=>'readonly']],
-
-                        'created_id'=>[
+                        'created_name'=>[
                             'type'=> Form::INPUT_TEXT,
                             'options'=>[
                                 'maxlength'=>255 ,
-                                'readonly'=>'readonly'
-                            ]
+                                'readonly'=>'readonly',
+                            ],
+                            'label'=>'创建人',
                         ],
                     ]
 

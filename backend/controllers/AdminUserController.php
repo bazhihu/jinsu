@@ -138,7 +138,7 @@ class AdminUserController extends Controller
                 $hospital[$val->id] = $val->name;
             }
 
-            $model->created_id = \backend\models\AdminUser::findOne(["admin_uid"=>$model->created_id])->username;
+            $model->created_name = \backend\models\AdminUser::findOne(["admin_uid"=>$model->created_id])->username;
             return $this->render('update', [
                 'model' => $model,
                 'staff_role'=>$staff_role,

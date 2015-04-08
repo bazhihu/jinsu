@@ -30,6 +30,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
     public $password;//密码
     public $pwd;//重复密码
+    public $created_name;//创建人姓名
 
     /**
      * @inheritdoc
@@ -63,18 +64,20 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     {
         return [
             ['username','filter','filter'=>'trim'],
-            ['username','unique','targetClass'=>'\backend\models\AdminUser', 'message' => '帐号已存在'],
+            ['username', 'unique', 'targetClass'=>'\backend\models\AdminUser', 'message' => '帐号已存在'],
             [['username','staff_name',],'string','min'=>2,'max'=>20],
 
-            [['username','staff_name','staff_role','hospital','phone'],'required'],
-            [['password','pwd'],'required','on'=>['create']],
-            [['password','pwd'],'string','min' => 6,'max'=>20],
+            [['username', 'staff_name', 'staff_role', 'hospital','phone'],'required'],
 
+            [['password','pwd'],'string','min' => 6,'max'=>20],
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
+            [['username','password','pwd'],'required','on'=>'create'],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+
+            [['phone'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}必须为1开头的11位纯数字'],
 
             [['hospital', 'phone', 'status'], 'integer'],
             [['created_at', 'updated_at' ,'created_id'], 'safe'],
@@ -115,11 +118,6 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public function create()
     {
-        #权限验证
-        /*$admin_uid = yii::$app->user->identity->getId();
-        if(yii::$app->authManager->checkAccess($admin_uid,"创建".$this->staff_role))
-        */
-
         $params = [
             'created_id'    =>  yii::$app->user->identity->getId(),
             'staff_id'      => $this->staff_name,
@@ -128,19 +126,14 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
         $this->setAttributes($params);
         #保存信息
-        if($this->save())
+        if(!$this->save())
         {
-            #授予权限
-            $info = $this->findOne(['username'=>$this->username]);
-            yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
-
-            return true;
-        }
-        return false;
-        /*}else{
-            $this->addError('staff_role','权限不足');
             return false;
-        }*/
+        }
+        #授予权限
+        $info = $this->findOne(['username'=>$this->username]);
+        yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+        return true;
     }
 
     /**
@@ -167,29 +160,17 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public function up()
     {
-        #权限验证
-        /*$admin_uid = Yii::$app->user->identity->getId();
-        #当前用户没有权限操作自己
-        if($admin_uid!==$this->getAttribute('admin_uid')/* && yii::$app->authManager->checkAccess($admin_uid,"创建".$this->getAttribute("staff_role")))
-        {*/
-
         $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
-
         #保存信息
-        if($this->save())
+        if(!$this->save())
         {
-            #授予权限
-            $info = $this->findOne(['username'=>$this->username]);
-            yii::$app->authManager->revokeAll($info->getId());
-            yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
-            #添加操作记录
-
-            return true;
-        }
-        /*}else{
-            $this->addError('staff_role','权限不足');
             return false;
-        }*/
+        }
+        #授予权限
+        $info = $this->findOne(['username'=>$this->username]);
+        yii::$app->authManager->revokeAll($info->getId());
+        yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+        return true;
     }
 
     /**

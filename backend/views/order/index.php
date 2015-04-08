@@ -38,6 +38,14 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             }
         ],
         [
+            'label'=>'下单时间',
+            'attribute'=>'create_time',
+            'format'=>['datetime','yyyy-MM-dd hh:i:s'],
+            'options' => [
+                'style' => 'width:100px',
+            ]
+        ],
+        [
             'attribute'=>'start_time',
             'options' => [
                 'style' => 'width:100px',
@@ -47,14 +55,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         [
             'attribute'=>'end_time',
             'format'=>['datetime','yyyy-MM-dd'],
-            'options' => [
-                'style' => 'width:100px',
-            ]
-        ],
-        [
-            'label'=>'下单时间',
-            'attribute'=>'create_time',
-            'format'=>['datetime','yyyy-MM-dd hh:i:s'],
             'options' => [
                 'style' => 'width:100px',
             ]

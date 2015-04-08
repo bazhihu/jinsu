@@ -111,6 +111,11 @@ class WorkerSearch extends Worker
             $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
         }
 
+        if(!empty($params['hospital_id'])){
+            $this->hospital_id = $params['hospital_id'];
+            $query->andFilterWhere(['like', 'hospital_id', ','.$params['hospital_id'].',']);
+        }
+
         if (!$this->load($params)) {
             return $dataProvider;
         }
@@ -125,12 +130,6 @@ class WorkerSearch extends Worker
             'star' => $this->star,
 
         ]);
-
-        $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':''])
-            ->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':'']);
-
 
         return $dataProvider;
     }

@@ -117,7 +117,8 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                             'select-worker-url'=>Yii::$app->urlManager->createUrl([
                                 'worker/select',
                                 'order_id' => $model->order_id,
-                                'start_time' => $model->start_time
+                                'start_time' => $model->start_time,
+                                'hospital_id' => $model->hospital_id
                             ])
                         ]);
                     }
@@ -159,7 +160,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 },
                 'evaluate' => function ($url, $model) {
                     if(OrderMaster::checkOrderStatusAction($model->order_status, 'evaluate')){
-                        return Html::button('评论', [
+                        return Html::button('评价', [
                             'class'=>'btn btn-sm btn-primary jsEvaluateOrder',
                             'evaluate-url'=>Yii::$app->urlManager->createUrl([
                                 'comment/create',

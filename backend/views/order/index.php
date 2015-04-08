@@ -24,11 +24,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?php  //echo Html::a('新增订单', ['create'], ['class' => 'btn btn-success'])  ?>
-    </p>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php
     $columns = [

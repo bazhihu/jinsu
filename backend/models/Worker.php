@@ -412,6 +412,11 @@ class Worker extends \yii\db\ActiveRecord
             }
         }
 
+        if (!empty($params['idcard'])) {
+            $params['birth'] = substr($params['idcard'],6,8);
+            $params['birth'] = date('Y-m-d',strtotime($params['birth']));
+        }
+
         if ($op == 'create') {
             //添加时间
             $params['add_date'] = date('Y-m-d H:i:s');

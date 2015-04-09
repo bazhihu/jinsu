@@ -17,6 +17,12 @@ use kartik\widgets\Growl;
         float:left;
         margin:5px;
     }
+    .field-usersearch-register_date_begin{
+        float:left;width:230px
+    }
+    .field-usersearch-register_date_end{
+        float:left;width:230px
+    }
 </style>
 <div class="user-search">
     <?php $form = ActiveForm::begin([

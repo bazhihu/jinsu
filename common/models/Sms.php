@@ -89,7 +89,8 @@ class Sms extends Model{
             'sn'=>self::$manRoad['serialNo'], ////替换成您自己的序列号
             'pwd'=>strtoupper(md5(self::$manRoad['serialNo'].self::$manRoad['pwd'])), //此处密码需要加密 加密方式为 md5(sn+password) 32位大写
             'mobile'=>$mobile,//手机号 多个用英文的逗号隔开 post理论没有长度限制.推荐群发一次小于等于10000个手机号
-            'content'=>iconv( "UTF-8", "gb2312//IGNORE" ,$content),//短信内容
+            //'content'=>iconv( "GB2312", "UTF-8//IGNORE" ,$content),//短信内容
+            'content'=>$content.'【优爱医护】',//短信内容
             'ext'=>'',
             'stime'=>'',//定时时间 格式为2011-6-29 11:09:21
             'msgfmt'=>'',

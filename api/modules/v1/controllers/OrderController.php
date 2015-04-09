@@ -8,15 +8,15 @@
 
 namespace api\modules\v1\controllers;
 
-use backend\models\WalletUser;
-use common\models\Order;
+use common\models\Payment;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
-use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
+use backend\models\WalletUser;
+use common\models\Order;
 
 class OrderController extends ActiveController {
     public $modelClass = 'common\models\Order';
@@ -29,20 +29,12 @@ class OrderController extends ActiveController {
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                //'class' => HttpBearerAuth::className()
+                'class' => QueryParamAuth::className()
             ],
         ]);
     }
-    public function actions()
-    {
-        $actions = parent::actions();
-
-        // disable the "delete" actions
-        unset($actions['index'], $actions['view'], $actions['update'], $actions['delete'], $actions['create']);
-
-        // customize the data provider preparation with the "prepareDataProvider()" method
-        //$actions['index']['prepareDataProvider'] = [$this, 'index'];
-        return $actions;
+    public function actions(){
+        return null;
     }
 
     /**
@@ -70,9 +62,10 @@ class OrderController extends ActiveController {
      */
     public function actionView(){
         $order_no = Yii::$app->request->get('id');
-        $query = Order::findOne(['order_no' => $order_no]);
+        $uid = Yii::$app->user->id;
+        $query = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
         $result = ArrayHelper::toArray($query);
-        $result['pic'] = null;
+
         if(!empty($result['worker_no'])){
             //获取护工照片
             $result['pic'] = Worker::workerPic($result['worker_no']);
@@ -87,22 +80,34 @@ class OrderController extends ActiveController {
      */
     public function actionCreate(){
         $post = Yii::$app->getRequest()->getBodyParams();
+        if(empty($post['pay_way'])){
+            $this->responseCode = 400;
+            $this->responseMsg = '支付方式为空';
+            return;
+        }
 
         $params = ['OrderMaster' => $post];
         $params['OrderPatient']['patient_state'] = isset($post['patient_state']) ? $post['patient_state'] : null;
 
         $params['OrderMaster']['create_order_sources'] = Order::ORDER_SOURCES_MOBILE;
 
-        $orderModel = new Order();
-        $res = $orderModel->createOrder($params);
-        if(!$res){
-            $this->responseCode = 500;
-            $this->responseMsg = '创建订单失败';
-            return null;
-        }
-        $order = Order::findOne($orderModel->order_id);
+//        $orderModel = new Order();
+//        $res = $orderModel->createOrder($params);
+//        if(!$res){
+//            $this->responseCode = 500;
+//            $this->responseMsg = '创建订单失败';
+//            return null;
+//        }
+//        $order = Order::findOne($orderModel->order_id);
 
-        $order->pay();
+
+        if($post['pay_way'] == Order::PAY_WAY_CASH){
+            //$order->pay();
+        }else{
+            $payment = new Payment($post['pay_way']);
+            exit;
+        }
+
 
         //用户数据
         $user = [
@@ -123,11 +128,11 @@ class OrderController extends ActiveController {
      * 更新订单
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionUpdate(){
-        $order_no = Yii::$app->request->get('id');
-        $post = Yii::$app->getRequest()->getBodyParams();
-        echo $order_no;exit;
-    }
+//    public function actionUpdate(){
+//        $order_no = Yii::$app->request->get('id');
+//        $post = Yii::$app->getRequest()->getBodyParams();
+//        echo $order_no;exit;
+//    }
 
     /**
      * 返回数据处理

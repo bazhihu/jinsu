@@ -9,6 +9,7 @@ namespace api\modules\v1\controllers;
 
 use backend\models\AdminUser;
 use backend\models\City;
+use backend\models\Comment;
 use backend\models\Departments;
 use backend\models\Hospitals;
 use backend\models\WalletWithdrawcash;
@@ -49,7 +50,9 @@ class WorkerController extends ActiveController {
     }
 
     /**
-     * list
+     * 获取护工列表信息
+     * @return array|\yii\db\ActiveRecord[]
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex()
     {
@@ -58,20 +61,30 @@ class WorkerController extends ActiveController {
         $params['start_time'] = '2014-05-12';
         $worker = \api\modules\v1\models\Worker::select($params);
 
-        $worker = \api\modules\v1\models\Worker::spliceWorker($worker);
+        if(!empty($worker)){
+            foreach($worker as $key => $item){
+                $item['pic'] = Worker::workerPic($item['worker_id']);
+                $worker[$key] = $item;
+            }
+        }
         return $worker;
     }
 
     /**
-     * read
+     * 获取护工详细信息
+     * @return array|null|static
      */
     public function actionView()
     {
-        $worker_id = Yii::$app->request->get('id');
+        $worker_id  = Yii::$app->request->get('id');
 
-        $worker = Worker::findOne(['worker_id'=>$worker_id]);
-
-        $worker = \api\modules\v1\models\Worker::spliceWorker(['0'=>$worker]);
+        $worker     = Worker::findOne(['worker_id'=>$worker_id]);
+        $worker     = ArrayHelper::toArray($worker);
+        if(!empty($worker)){
+            $worker['pic'] = Worker::workerPic($worker['worker_id']);
+        }
+        $comment    = Comment::find(['worker_id'=>$worker_id])->orderBy('comment_id DESC')->all();
+        $worker['comment'] = $comment;
         return $worker;
     }
 

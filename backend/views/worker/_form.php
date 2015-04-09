@@ -24,7 +24,11 @@ use backend\models\Hospitals;
     .close{width:0px;}
     .input-group{width:30%}
     .clearfix{width:205px;border: 1px solid #ccc}
+}
 </style>
+
+
+
 
 <div class="worker-form">
     <div class="panel panel-info">
@@ -48,7 +52,7 @@ use backend\models\Hospitals;
                 'showRemove' => false,
                 //'class'=>"file-loading",
                 'allowedFileExtensions' => ['jpg'],
-                'maxFileSize' =>2048,
+                //'maxFileSize' =>2048,
                 'initialPreview'=>[
                     Html::img(Worker::workerPic($model->worker_id), [ 'alt'=>'护工照片', 'title'=>'护工照片','width'=>160]),
                 ],
@@ -56,7 +60,7 @@ use backend\models\Hospitals;
                 'initialCaption'=>"护工照片",
                 'overwriteInitial'=>true
             ]
-        ])->hint('要求：jpg格式，512*512，小于2M');
+        ])->hint('要求：jpg格式，1024*1024');
 
         echo Form::widget([
         'model' => $model,
@@ -179,42 +183,100 @@ use backend\models\Hospitals;
             ],
         ])->label('民族');
 
-        //户口所在地
-       // $model->birth_place = 140000;
-        echo $form->field($model, 'birth_place')->dropDownList(
-            City::getList(1),
-            [
-                'id'=>'birth_place',
-                'style'=>'width:30%',
-                'prompt'=>'请选择',
-            ]);
-
-        // 户口所在地 Child # 1
-       // $model->birth_place_city = 140300;
-        echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
-            'options'=>[
-                'id'=>'birth_place_city',
-                'style'=>'width:30%'
-
+        echo Form::widget([       // 3 column layout
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>1,
+            'class'=>'',
+            'attributeDefaults' => [
+                'type' => Form::INPUT_TEXT,
+                'labelOptions' => ['class'=>'col-md-2'],
+                'inputContainer' => ['class'=>'col-md-10'],
             ],
-            'pluginOptions'=>[
-                'depends'=>['birth_place'],
-                'placeholder'=>'请选择',
-                'url'=>Url::to(['worker/getcity/','selected'=>$model->birth_place_city]),
-                'initialize' => true
+            'attributes'=>[
+                'date_range' => [
+                    'label' => '户口所在地',
+                    'attributes'=>[
+                        'birth_place'=>[
+                            'type'=>Form::INPUT_DROPDOWN_LIST,
+                            'items'=> City::getList(1),
+                            'value'=>$model->birth_place,
+                            'options'=>['prompt'=>'请选择'],
+                        ],
+                        'birth_place_city'=>[
+                            'type'=>Form::INPUT_WIDGET,
+                            'widgetClass'=>DepDrop::classname(),
+                            'options'=>[
+                                'data'=> $model->birth_place ? City::getList(['parent_id'=>$model->birth_place]):[''=>'请选择'],
+                                'pluginOptions'=>[
+                                    'depends'=>['worker-birth_place'],
+                                    'placeholder'=>'请选择',
+                                    'url'=>Url::to(['worker/getcity/']),
+                                ]
+                            ],
+                        ],
+                        'birth_place_area'=>[
+                            'type'=>Form::INPUT_WIDGET,
+                            'widgetClass'=>DepDrop::classname(),
+                            'options'=>[
+                                'data'=> $model->birth_place_city ? City::getList(['parent_id'=>$model->birth_place_city]):[''=>'请选择'],
+                                'pluginOptions'=>[
+                                    'allowClear'=>true,
+                                    'depends'=>['worker-birth_place_city'],
+                                    'placeholder'=>'请选择',
+                                    'url'=>Url::to(['worker/getarea']),
+                                ]
+                            ],
+                        ]
+                    ]
+                ]
             ]
-        ])->label('');
+        ]);
+        //户口所在地
+        //$model->birth_place = 140000;
+//        echo $form->field($model, 'birth_place')->dropDownList(
+//            City::getList(1),
+//            [
+//                'id'=>'birth_place',
+//                'style'=>'width:30%',
+//                'prompt'=>'请选择',
+//
+//            ]);
+//
+//        // 户口所在地 Child # 1
+//       // $model->birth_place_city = 140300;
+//        echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
+//            'data'=> $model->birth_place?\backend\models\City::getList(['parent_id'=>$model->birth_place]):"",
+//            'type' => DepDrop::TYPE_SELECT2,
+//            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+//            'options'=>[
+//                'id'=>'birth_place_city',
+//                'style'=>'width:30%',
+//                'labelOptions' => ['class'=>'col-md-2'],
+//                'inputContainer' => ['class'=>'col-md-4'],
+//
+//            ],
+//            'pluginOptions'=>[
+//                'depends'=>['birth_place'],
+//                'placeholder'=>'请选择',
+//                'url'=>Url::to(['worker/getcity/']),
+//            ]
+//        ])->label('');
+//
+//        //户口所在地 Child # 2
+//        echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
+//            'data'=> $model->birth_place_city?\backend\models\City::getList(['parent_id'=>$model->birth_place_city]):"",
+//            'type' => DepDrop::TYPE_SELECT2,
+//            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+//            'options'=>['style'=>'width:30%'],
+//            'pluginOptions'=>[
+//                'depends'=>['birth_place_city'],
+//                'placeholder'=>'请选择',
+//                'url'=>Url::to(['worker/getarea']),
+//            ]
+//        ])->label('');
 
-        //户口所在地 Child # 2
-        echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
-            'options'=>['style'=>'width:30%'],
-            'pluginOptions'=>[
-                'depends'=>['birth_place_city'],
-                'placeholder'=>'请选择',
-                'url'=>Url::to(['worker/getarea','selected'=>$model->birth_place_area]),
-                'initialize' => true
-            ]
-        ])->label('');
+
 
         //籍贯
         echo $form->field($model, 'native_province')->widget(Select2::classname(), [

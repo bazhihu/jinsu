@@ -3,13 +3,11 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
 use backend\models\Hospitals;
 use backend\models\Departments;
 use backend\models\Worker;
 use backend\models\OrderPatient;
-use backend\models\OrderMaster;
 
 /**
  * @var yii\web\View $this
@@ -41,6 +39,7 @@ use backend\models\OrderMaster;
                         'options'=>[
                             'placeholder'=>'请输入手机号...',
                             'maxlength'=>11,
+                            'class'=>'has-warning',
                             'style'=>'width:25%',
                             //用户来电将电话号码显示在表单中
                             'value'=>isset($_GET['callid'])? $_GET['callid'] : $model->mobile
@@ -233,6 +232,7 @@ use backend\models\OrderMaster;
                                 'placeholder'=>'请选择住院日期...',
                                 'style'=>'width:19%',
                             ],
+                            'pickerButton'=>['title'=>'请选择住院日期'],
                             'pluginOptions'=>[
                                 'todayHighlight' => true,
                                 'autoclose' => true,

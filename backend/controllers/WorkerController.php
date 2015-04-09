@@ -223,14 +223,13 @@ class WorkerController extends Controller
 
 
     // 获取选定省份下的城市
-    public function actionGetcity($selected='') {
-        $out = [];
+    public function actionGetcity() {
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $birth_place = $parents[0];
                 $data  = City::getListPlace($birth_place);
-                echo Json::encode(['output'=>$data,'selected'=>$selected]);
+                echo Json::encode(['output'=>$data,'selected'=>'']);
                 return;
             }
         }
@@ -238,13 +237,13 @@ class WorkerController extends Controller
     }
 
     //获取选定城市下的区县
-    public function actionGetarea($selected='') {
+    public function actionGetarea() {
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             $birth_place_city = $parents[0];
             if ($birth_place_city != null) {
                 $out = City::getListPlace($birth_place_city);
-                echo Json::encode(['output'=>$out, 'selected'=>$selected]);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }
         }

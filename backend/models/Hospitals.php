@@ -31,7 +31,7 @@ class Hospitals extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['province_id'], 'required'],
+            [['province_id', 'name', 'phone'], 'required'],
             [['province_id', 'city_id', 'area_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 11]

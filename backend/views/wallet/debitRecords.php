@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute'=>'time',
+                'attribute'=>'detail_time',
                 'format' => 'text',
                 'label' => '扣款时间',
             ],
@@ -104,9 +104,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '帐号',
             ],
             [
-                'attribute'=>'money',
+                'attribute'=>'detail_money',
                 'label' => '扣款金额',
-
             ],
         ],
         'panel' => [

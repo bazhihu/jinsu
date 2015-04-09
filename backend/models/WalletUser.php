@@ -42,8 +42,8 @@ class WalletUser extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'uid' => '用户ID',
-            'money' => 'Money',
+            'uid' => '用户帐号',
+            'money' => '账户余额',
             'money_pay' => 'Money Pay',
             'money_pay_s' => 'Money Pay S',
             'money_consumption' => 'Money Consumption',

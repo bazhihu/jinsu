@@ -9,8 +9,7 @@ use kartik\detail\DetailView;
  */
 
 $this->title = $model->id;
-//$this->params['breadcrumbs'][] = ['label' => 'Admin Users', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="admin-user-view">
     <div class="page-header">
@@ -32,7 +31,6 @@ $this->title = $model->id;
             ['label'=>'状态','value'=>$model->status?'正常':'关闭'],
             [
                 'attribute'=>'created_at',
-                //'value'=>date("Y-m-d H:i:s",$model->created_at),
             ],
             [
                 'attribute'=>'created_id',

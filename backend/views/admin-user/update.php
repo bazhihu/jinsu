@@ -59,7 +59,7 @@ $this->title = '编辑用户: ' . ' ' . $model->username;
                                 'prompt'=>'选择'
                             ]
                         ],
-                        'hospital'=>[
+                        'hospital_id'=>[
                             'type'=> Form::INPUT_DROPDOWN_LIST,
                             'items'=>\backend\models\Hospitals::getList(),
                             'options'=>[
@@ -67,9 +67,6 @@ $this->title = '编辑用户: ' . ' ' . $model->username;
                             ]
                         ],
 
-                        //'phone'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入手机号', 'maxlength'=>255 ]],
-                        //'password'=>['type'=> Form::INPUT_PASSWORD, 'options'=>['placeholder'=>'请输入密码', 'maxlength'=>255,'minlength'=>6 ,'readonly'=>'readonly','value'=>'******']],
-                        //'staff_id'=>['type'=> Form::INPUT_TEXT, 'options'=>['placeholder'=>'请输入员工号', 'maxlength'=>255 ,'readonly'=>'readonly']],
                         'created_name'=>[
                             'type'=> Form::INPUT_TEXT,
                             'options'=>[

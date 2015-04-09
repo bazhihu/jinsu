@@ -36,6 +36,7 @@ use kartik\widgets\Select2;
     ]);
     echo $form->field($model, 'province_id')->widget(Select2::classname(), [
             'data' => \backend\models\City::getList(1),
+            'options' => ['placeholder' => 'Select ...'],
     ]);
     echo $form->field($model, 'city_id')->widget(DepDrop::classname(), [
         'data'=> $model->province_id?\backend\models\City::getList(['parent_id'=>$model->province_id]):"",

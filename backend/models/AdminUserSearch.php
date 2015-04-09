@@ -30,7 +30,7 @@ class AdminUserSearch extends AdminUser
                 [
                     'username',
                     'auth_key',
-                    'hospital',
+                    'hospital_id',
                     'password_hash',
                     'password_reset_token',
                     'staff_id',
@@ -58,14 +58,14 @@ class AdminUserSearch extends AdminUser
                 'pageSize' => 20,
             ],
         ]);
-
+        $query->orderBy('admin_uid DESC');
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
         $query->andFilterWhere([
             'admin_uid' => $this->admin_uid,
-            'hospital' => $this->hospital,
+            'hospital_id' => $this->hospital_id,
             'phone' => $this->phone,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -27,15 +27,24 @@ $('body').on('click', 'button.jsPass', function () {
         }
     });
 });
+
+$('body').on('click', 'button.myModal', function () {
+    var myModal = $(this);
+
+    var dataUrl = myModal.attr('data-url'),
+        uid = myModal.parent().parent().attr('data-key');
+
+    $('.refusal').val(uid);
+    $('.refusal').attr('data-url',dataUrl);
+});
+
 //申请拒绝
 $('body').on('click', 'button.jsNix', function () {
-    if(!confirm('确认执行此操作吗？')){
-        return false;
-    }
-    var button = $(this);
-    var id = button.parent().parent().attr('data-key'),
+
+    var id = $('.refusal').val(),
         todo = 0;//拒绝
-    var url = $(this).attr('data-url');
+    var url = $('.refusal').attr('data-url'),
+        reason = $('.rejectReason').val();
     $.ajax({
         type    : "POST",
         dataType: "json",
@@ -43,11 +52,10 @@ $('body').on('click', 'button.jsNix', function () {
         cache   :false,
         timeout :30000,
         url     : url,
-        data    : {'id':id ,'todo':todo},
+        data    : {'id':id ,'todo':todo ,'reason':reason},
         success: function(json){
             if(json.code == '200'){
-                button.parent().prev().html('已拒绝');
-                button.parent().empty();
+                location.reload();
             }else{
                 alert(json.msg);
             }

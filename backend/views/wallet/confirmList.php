@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
-use kartik\widgets\DateTimePicker;
+use kartik\widgets\DatePicker;
 use backend\models\User;
 
 /* @var $this yii\web\View */
@@ -36,10 +36,14 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
         )->widget(
-            DateTimePicker::classname(),
+            DatePicker::classname(),
             [
                 'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => ['autoclose' => true]
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd'
+                ]
             ]
         )->label('起始时间');
         echo $form->field(
@@ -49,10 +53,14 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
         )->widget(
-            DateTimePicker::classname(),
+            DatePicker::classname(),
             [
                 'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => ['autoclose' => true]
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd'
+                ]
             ]
         )->label('结束时间');
         ?>
@@ -128,6 +136,13 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                     },
                 ],
                 'template'=>'{pay}',
+            ],
+            [
+                'header'=>'操作人',
+                'attribute'=>'admin_uid_payment',
+                'value'=>function($model){
+                    return \backend\models\AdminUser::getInfo($model->admin_uid_payment);
+                },
             ],
         ],
         'panel' => [

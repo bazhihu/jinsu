@@ -468,7 +468,7 @@ class Order extends \yii\db\ActiveRecord{
                     'wallet_money' => $response['money'],
                     'admin_uid' => \Yii::$app->user->id
                 ];
-                Wallet::addConRecords($params);
+                Wallet::addUserDetail($params);
                 $response['msg'] = '支付成功';
             }
 
@@ -615,7 +615,7 @@ class Order extends \yii\db\ActiveRecord{
                     'wallet_money' => $wallet->money,
                     'admin_uid' => \Yii::$app->user->id
                 ];
-                Wallet::addConRecords($params);
+                Wallet::addUserDetail($params);
             }
             if(!$this->save()){
                 throw new HttpException(400, print_r($this->getErrors(), true));
@@ -676,7 +676,7 @@ class Order extends \yii\db\ActiveRecord{
                     'wallet_money' => $wallet->money,
                     'admin_uid' => \Yii::$app->user->id
                 ];
-                Wallet::addConRecords($params);
+                Wallet::addUserDetail($params);
             }
 
             $this->order_status = self::ORDER_STATUS_CANCEL;

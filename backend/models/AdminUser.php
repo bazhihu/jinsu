@@ -63,26 +63,33 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['password','pwd'],'required','on'=>'create'],
+
             ['username','filter','filter'=>'trim'],
             ['username', 'unique', 'targetClass'=>'\backend\models\AdminUser', 'message' => '帐号已存在'],
             [['username','staff_name',],'string','min'=>2,'max'=>20],
-
-            [['username', 'staff_name', 'staff_role', 'hospital','phone'],'required'],
+            [['username', 'staff_name', 'staff_role', 'hospital_id','phone'],'required'],
 
             [['password','pwd'],'string','min' => 6,'max'=>20],
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
-            [['username','password','pwd'],'required','on'=>'create'],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
 
             [['phone'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}必须为1开头的11位纯数字'],
 
-            [['hospital', 'phone', 'status'], 'integer'],
+            [['hospital_id', 'status'], 'integer'],
             [['created_at', 'updated_at' ,'created_id'], 'safe'],
             [['username', 'password_hash', 'password_reset_token', 'staff_name', 'staff_role'], 'string', 'max' => 255],
             [['auth_key', 'staff_id'], 'string', 'max' => 32]
+        ];
+    }
+
+    public function scenarios(){
+        return [
+            'create'=>['username', 'password', 'pwd', 'password_hash', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id'],
+            'update'=>['username', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id']
         ];
     }
 
@@ -101,7 +108,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'staff_id' => '员工号',
             'staff_name' => '员工姓名',
             'staff_role' => '员工职位',
-            'hospital' => '所属医院',
+            'hospital_id' => '所属医院',
             'phone' => '电话号码',
             'created_at' => '创建时间',
             'updated_at' => 'Updated At',

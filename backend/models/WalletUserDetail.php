@@ -25,7 +25,6 @@ use common\models\Wallet;
  */
 class WalletUserDetail extends \yii\db\ActiveRecord
 {
-    public $mobile;//电话号码
     public $fromDate;
     public $toDate;
 
@@ -55,14 +54,15 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     {
         return [
             //[['pay_from'],'required'],
-            [['detail_money','uid'],'required','on'=>'pay_create'],
-            [['detail_money','uid'],'number','on'=>'pay_create'],
+            //[['detail_money','uid'],'required','on'=>'pay_create'],
 
-            [['detail_no','uid','detail_money','detail_type','wallet_money','detail_time'],'required','on'=>'consume'],
+            //[['detail_no','uid','detail_money','detail_type','wallet_money','detail_time'],'required','on'=>'consume'],
+
+            [['uid', 'detail_money', 'detail_type', 'wallet_money' ,'mobile'],'required'],
+            [['detail_money', 'uid' ,'wallet_money'],'number'],
 
             [['order_id', 'worker_id', 'uid', 'detail_type', 'admin_uid'], 'integer'],
-            [['wallet_money'], 'number'],
-            // [['detail_time'], 'safe'],
+            [['detail_time'], 'safe'],
             [['detail_no', 'order_no', 'pay_from', 'extract_to'], 'string', 'max' => 50],
             [['remark'], 'string', 'max' => 255]
         ];
@@ -72,13 +72,13 @@ class WalletUserDetail extends \yii\db\ActiveRecord
      * 定义场景
      * @return array
      */
-    public function scenarios()
+    /*public function scenarios()
     {
         return[
             'pay_create'=>['detail_money','uid'],
             'consume'=>['detail_no','order_id','order_no','uid','detail_money','detail_type','wallet_money','detail_time','pay_from','extract_to','remark','admin_uid']
         ];
-    }
+    }*/
     /**
      * @inheritdoc
      */
@@ -91,6 +91,7 @@ class WalletUserDetail extends \yii\db\ActiveRecord
             'order_no' => '订单编号',
             'worker_id' => '护工ID',
             'uid' => '用户帐号',
+            'mobile' => '用户帐号',
             'detail_money' => '充值金额(元)',
             'detail_type' => '交易类型',
             'wallet_money' => '账户余额',

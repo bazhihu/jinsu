@@ -88,7 +88,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             'withdrawcash_id' => '提现记录ID',
             'withdrawcash_no' => '提现记录编号',
             'uid' => '用户ID',
-            'mobile' => '用户手机号',
+            'mobile' => '用户帐号',
             'money' => '提现金额',
             'status' => '状态',
             'remark_audit' => '审核备注',
@@ -113,17 +113,21 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
      */
     public function create(){
 
-        if($this->payee_time<date('Y-m-d H:i:s')){
-            $this->addError('payee_type','取款时间错误！');
+        if($this->payee_time<date('Y-m-d')){
+            $this->addError('payee_time','取款时间错误！');
+            return false;
+        }
+        if($this->money<=0){
+            $this->addError('payee_type','取款金额不符合要求！');
             return false;
         }
         #补充必要操作记录
         $params = [
-            'status'=>0,
-            'mobile'=>User::findOne(['id'=>$this->uid])->mobile,
-            'withdrawcash_no'=>self::_generateWalletNo(),
-            'time_apply'=>date('Y-m-d H:i:s'),
-            'admin_uid_apply'=>\Yii::$app->user->getId(),
+            'status'            =>0,
+            'mobile'            =>User::findOne(['id'=>$this->uid])->mobile,
+            'withdrawcash_no'   =>self::_generateWalletNo(),
+            'time_apply'        =>date('Y-m-d H:i:s'),
+            'admin_uid_apply'   =>\Yii::$app->user->getId(),
         ];
         $this->setAttributes($params,false);
         if(!$this->save())
@@ -137,7 +141,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
      * @param $params
      * [
      *      'id'    =>'withdrawcash_id', //提现记录ID
-     *      'todo'  =>'todo',           //同意拒绝
+     *      'to do'  =>'to do',           //同意拒绝
      * ]
      * @return bool
      */
@@ -154,6 +158,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             }
         }else{
             $update['status'] =1;
+            $update['remark_audit'] = isset($params['reason'])?$params['reason']:'';
             if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
                 return true;
             }

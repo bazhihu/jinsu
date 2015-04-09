@@ -21,7 +21,6 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
 
     <?php Pjax::begin(); echo GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'hover'=>true,
         'columns' => [
             [
@@ -32,10 +31,10 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
             'staff_name',
             'staff_role',
             [
-                'attribute'=>'hospital',
+                'attribute'=>'hospital_id',
                 'value'=>
                     function($model){
-                        return \backend\models\Hospitals::findOne(['id'=>$model->hospital])->name;
+                        return \backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->name;
                     }
             ],
             [

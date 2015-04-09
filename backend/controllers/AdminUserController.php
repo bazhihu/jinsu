@@ -104,6 +104,7 @@ class AdminUserController extends Controller
     {
         //Yii::$app->log->getLogger()->log('系统操作',Logger::LEVEL_ERROR);exit;
         $model = new AdminUser;
+        $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -121,6 +122,7 @@ class AdminUserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->up()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

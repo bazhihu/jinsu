@@ -12,8 +12,11 @@ use backend\models\WalletWithdrawcash;
  */
 class WalletWithdrawcashSearch extends WalletWithdrawcash
 {
-    public $fromDate;   //开始时间
-    public $toDate;     //结束时间
+    public $fromDate;   //申请提现开始时间
+    public $toDate;     //申请提现结束时间
+
+    public $payStartDate;//付款开始时间
+    public $payEndDate;//付款开始时间
 
     public $start;      //起始状态
     public $end;        //结束状态
@@ -43,6 +46,8 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
             ],
         ]);
 
+        $query->orderBy('withdrawcash_id DESC');
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
@@ -67,11 +72,14 @@ class WalletWithdrawcashSearch extends WalletWithdrawcash
             ->andFilterWhere(['>=', 'status', $this->start])
             ->andFilterWhere(['<=', 'status', $this->end])
             ->andFilterWhere(['>=', 'time_apply', $this->fromDate])
-            ->andFilterWhere(['<=', 'time_apply', $this->toDate]);
+            ->andFilterWhere(['<=', 'time_apply', $this->toDate])
+            ->andFilterWhere(['<=', 'time_payment', $this->payStartDate])
+            ->andFilterWhere(['<=', 'time_payment', $this->payEndDate]);
             //->andFilterWhere(['like', 'payee_hospital', $this->payee_hospital])
             //->andFilterWhere(['like', 'payee_name', $this->payee_name])
             //->andFilterWhere(['like', 'payee_id_card', $this->payee_id_card]);
 
+        $query->orderBy('withdrawcash_id DESC');
         return $dataProvider;
     }
 }

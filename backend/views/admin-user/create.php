@@ -20,10 +20,6 @@ $this->title = '新增帐号';
             <div class="page-header">
                 <h1><?= Html::encode($this->title) ?></h1>
             </div>
-            <!--?= $this->render('_form', [
-                'model' => $model,
-                'staff_role'=>$staff_role,
-            ]) ?-->
             <div class="admin-user-form">
                 <?php
                 $form = ActiveForm::begin([
@@ -74,7 +70,7 @@ $this->title = '新增帐号';
                         ],
                     ]
                 ]);
-                echo $form->field($model, 'hospital')->widget(Select2::classname(), [
+                echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                     'data' => \backend\models\Hospitals::getList(),
                     'options' => [
                         'placeholder' => '请选择医院',

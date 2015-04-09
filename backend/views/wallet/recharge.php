@@ -9,7 +9,12 @@ use kartik\widgets\Growl;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\WalletUserDetail */
-$this->title = '账号充值 用户ID：'.$userRow['uid'];
+if($userRow['username']){
+    $this->title = '账号充值 用户名：'.$userRow['username'];
+}else{
+    $this->title = '账号充值';
+}
+
 ?>
 <div class="panel panel-success" style="margin: 100px 300px 100px 300px;">
     <div class="panel-heading">
@@ -29,6 +34,7 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
         <?= $form->field($model, 'uid')->hiddenInput(
                 [
                     'value'=>$userRow['uid'],
+                    'name'=>$userRow['username']?$userRow['username']:''
                 ]
             )->label("");
         ?>
@@ -49,13 +55,7 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
         )->label('经办人') ?>
 
         <div class="form-group">
-            <?= /*Html::submitButton(
-                '充值',
-                [
-                    'class' =>'btn btn-info btn-lg col-sm-4 col-md-offset-4',
-                ]
-            );*/
-            Html::button(
+            <?= Html::button(
                 '充值',
                 [
                     'class' =>'jsRecharge btn btn-info btn-lg col-sm-4 col-md-offset-4',
@@ -76,12 +76,13 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
     $('body').on('click', 'button.jsRecharge', function () {
 
         var value = $('#recharge-money').val(),
-            name = $('#recharge-uid').val(),
+            name = $('#recharge-uid').attr('name'),
+            uid = $('#recharge-uid').val(),
             url = $(this).attr('data-url'),
             jump = $(this).attr('jump-url');
 
-        if(value && name){
-            if(!confirm('确认给用户'+name+'：充值'+value+'元人民币？')){
+        if(value){
+            if(!confirm('确认给'+name+'用户：充值'+value+'元人民币？')){
                 return false;
             }
             $.ajax({
@@ -91,7 +92,7 @@ $this->title = '账号充值 用户ID：'.$userRow['uid'];
                 cache   :false,
                 timeout :30000,
                 url     : url,
-                data    : {'money':value ,'uid':name},
+                data    : {'money':value ,'uid':uid},
                 success: function(json){
                     if(json.code == '200'){
                         alert(json.msg);

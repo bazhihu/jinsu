@@ -64,6 +64,7 @@ class WalletController extends Controller
         $userRow = [
             'uid'       =>$uid,
             'mobile'    =>$user->mobile,  //电话帐号
+            'username'  =>$user->username,  //用户名
             'admin_name'=>Yii::$app->user->identity->username,  //操作者
         ];
 
@@ -86,22 +87,22 @@ class WalletController extends Controller
         if(Yii::$app->request->isAjax)
         {
             $params = Yii::$app->request->post();
-
             if($params['uid'] && $params['money'])
             {
                 #支付渠道-后台
-                $params['pay_from'] = WalletRechargeRecords::PAY_FROM_BACKEND;
+                $params['pay_from'] = WalletUserDetail::PAY_FROM_BACKEND;
                 $wallet = new Wallet();
-                if(!$wallet->recharge($params)){
-                    $response = [
-                        'code'  =>'400',
-                        'msg'   =>'充值失败',
-                    ];
+                if($wallet->recharge($params)){
+                    $response['msg'] = '成功充值';
                     echo Json::encode($response);
+                    exit;
                 }
             }
         }
-        $response['msg'] = '成功充值';
+        $response = [
+            'code'  =>'400',
+            'msg'   =>'充值失败',
+        ];
         echo Json::encode($response);
     }
     /**
@@ -110,16 +111,14 @@ class WalletController extends Controller
      */
     public function actionRechargeRecords($uid=null)
     {
-        $searchModel = new WalletRechargeRecordsSearch();
+        $searchModel = new WalletUserDetailSearch();
         $queryParams = Yii::$app->request->queryParams;
 
-        /*if(isset($queryParams['WalletUserDetailSearch']['uid']) && $queryParams['WalletUserDetailSearch']['uid']){
-            $user = User::findOne(['mobile'=>$queryParams['WalletUserDetailSearch']['uid']]);
-            $queryParams['WalletUserDetailSearch']['id'] = $user?$user->id:"";
-        }
         if($uid){
-            $queryParams['WalletUserDetailSearch']['id'] = $uid;
-        }*/
+            $queryParams['WalletUserDetailSearch']['uid'] = $uid;
+        }
+
+        $queryParams['WalletUserDetailSearch']['detail_type'] = '2';
 
         $dataProvider = $searchModel->search($queryParams);
 
@@ -135,8 +134,12 @@ class WalletController extends Controller
      */
     public function actionDebitRecords()
     {
-        $searchModel = new  WalletDebitRecordsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new WalletUserDetailSearch();
+        $queryParams = Yii::$app->request->queryParams;
+
+        $queryParams['WalletUserDetailSearch']['detail_type'] = '1';
+
+        $dataProvider = $searchModel->search($queryParams);
 
         return $this->render('debitRecords', [
             'searchModel' => $searchModel,
@@ -154,7 +157,7 @@ class WalletController extends Controller
     {
         $user = WalletUser::findOne(['uid'=>$uid]);
         if(empty($user)){
-            throw new NotFoundHttpException('Users wallet does not exist!');
+            throw new NotFoundHttpException('用户账户余额为零!');
         }
         $model = new WalletWithdrawcash(['scenario' => 'applyCash']);
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
@@ -178,7 +181,7 @@ class WalletController extends Controller
 
         #限定列表区间为申请审核
         $queryParams['WalletWithdrawcashSearch']['start'] = 0;
-        $queryParams['WalletWithdrawcashSearch']['end'] = 2;
+        $queryParams['WalletWithdrawcashSearch']['end'] = 3;
 
         $dataProvider = $searchModel->search($queryParams);
 
@@ -189,7 +192,7 @@ class WalletController extends Controller
     }
 
     /**
-     * ajax提现操作
+     * ajax提现操作(同意or拒绝)
      * @return string
      */
     public function actionAjaxCash(){
@@ -203,14 +206,19 @@ class WalletController extends Controller
             $params = Yii::$app->request->post();
             $id     = $params['id'];
             $todo   = $params['todo'];
+            $reason   = isset($params['reason'])?$params['reason']:'';
             if($id && isset($todo)) {
                 $walletWithdrawcash = new WalletWithdrawcash();
-                $params = [
+                $cash = [
                     'id'    =>$id,
                     'todo'  =>$todo,
                     'admin_uid'=>Yii::$app->user->identity->getId(),
                 ];
-                if($walletWithdrawcash->check($params)){
+                if($reason)
+                {
+                    $cash['reason'] = $reason;
+                }
+                if($walletWithdrawcash->check($cash)){
                     $response['msg'] = '操作成功';
                     return Json::encode($response);
                 }
@@ -284,10 +292,6 @@ class WalletController extends Controller
         $searchModel = new WalletWithdrawcashSearch();
         $queryParams = Yii::$app->request->queryParams;
 
-        if(isset($queryParams['WalletWithdrawcashSearch']['uid']) && $queryParams['WalletWithdrawcashSearch']['uid']){
-            $user = User::findOne(['mobile'=>$queryParams['WalletWithdrawcashSearch']['uid']]);
-            $queryParams['WalletWithdrawcashSearch']['id'] = $user?$user->id:"";
-        }
         #限定列表区间为提现记录
         $queryParams['WalletWithdrawcashSearch']['start'] = 3;
         $queryParams['WalletWithdrawcashSearch']['end'] = 3;

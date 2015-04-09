@@ -27,7 +27,7 @@ class Departments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'parent_id'], 'required'],
             [['parent_id'], 'integer'],
             [['name'], 'string', 'max' => 255]
         ];

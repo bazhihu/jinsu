@@ -5,6 +5,7 @@ use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\datecontrol\DateControl;
 use kartik\widgets\Select2;
+use kartik\detail\DetailView;
 
 
 /* @var $this yii\web\View */
@@ -14,16 +15,28 @@ $this->title = '申请提现确认-用户信息核对';
 ?>
 <div class="wallet-user-detail-create">
 
-    <div class="panel panel-info" style="margin: 111px">
+    <div class="panel panel-info" style="margin: 50px 200px 0 200px">
         <div class="panel-heading">
             <h1 class="panel-title" id="panel-title"><?= Html::encode($this->title) ?><a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h1>
         </div>
         <div class="panel-body">
             <label><big>用户信息</big></label><br/>
-
-            <div style='padding: 33px;'><strong><span>用户账号:</span>&nbsp;&nbsp;&nbsp;<?=$user->uid?\backend\models\User::findOne(['id'=>$user->uid])->mobile:'无' ?></strong></div>
-            <div style='padding: 33px;'><strong><span>账户余额:</span>&nbsp;&nbsp;&nbsp;<?=$user->money?$user->money:0?>元</strong></div>
-
+            <?= DetailView::widget([
+                'model'=>$user,
+                'condensed'=>true,
+                'hover'=>true,
+                'mode'=>DetailView::MODE_VIEW,
+                'attributes'=>[
+                    [
+                        'attribute'=>'uid',
+                        'value'=>$user->uid?\backend\models\User::findOne(['id'=>$user->uid])->mobile:'无',
+                    ],
+                    [
+                        'attribute'=>'money',
+                        'value'=>$user->money?$user->money.'元人民币':'0'.'元人民币',
+                    ],
+                ]
+            ]);?>
 
         </div>
         <div class="panel-body">
@@ -65,14 +78,14 @@ $this->title = '申请提现确认-用户信息核对';
                     ],
                     'payee_time'=>[
                         'type'=>Form::INPUT_WIDGET,
-                        'widgetClass'=>'\kartik\widgets\DateTimePicker',
-                        'hint'=>'请输入申请提现时间',
+                        'widgetClass'=>'\kartik\widgets\DatePicker',
+                        'hint'=>'请输入提现时间',
                         'options'=>[
                             'options'=>['placeholder'=>'开始时间...'],
                             'pluginOptions'=>[
                                 'todayHighlight' => true,
                                 'autoclose' => true,
-                                'format' => 'yyyy-mm-dd hh:ii:ss'
+                                'format' => 'yyyy-mm-dd'
                             ]
                         ]
                     ],

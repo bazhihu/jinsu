@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
-use kartik\widgets\DateTimePicker;
+use kartik\widgets\DatePicker;
 use backend\models\User;
 
 /* @var $this yii\web\View */
@@ -35,10 +35,14 @@ $this->title = '充值记录';
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
         )->widget(
-            DateTimePicker::classname(),
+            DatePicker::classname(),
             [
                 'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => ['autoclose' => true]
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd'
+                ]
             ]
         )->label('起始时间');
         echo $form->field(
@@ -48,10 +52,14 @@ $this->title = '充值记录';
                 'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
             ]
         )->widget(
-            DateTimePicker::classname(),
+            DatePicker::classname(),
             [
                 'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => ['autoclose' => true]
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd'
+                ]
             ]
         )->label('结束时间');
         ?>
@@ -85,8 +93,8 @@ $this->title = '充值记录';
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'trade_no',
-            'time',
+            'detail_no',
+            'detail_time',
             'mobile',
             [
                 'attribute'=>'pay_from',
@@ -101,12 +109,12 @@ $this->title = '充值记录';
                     }
                 }
             ],
-            'money',
-            'balance',
+            'detail_money',
+            'wallet_money',
             [
                 'attribute'=>'admin_uid',
                 'value'=>function($model){
-                    return \backend\models\AdminUser::findOne(['admin_uid'=>$model->admin_uid])->username;
+                    return \backend\models\AdminUser::getInfo($model->admin_uid);
                 }
             ],
         ],

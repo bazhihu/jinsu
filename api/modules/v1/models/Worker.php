@@ -75,6 +75,9 @@ class Worker extends ActiveRecord
      */
     public static function select($params)
     {
+        if(!isset($params['start_time'])){
+            $params['start_time'] = '';
+        }
         //获取在工作中的护工
         $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
 

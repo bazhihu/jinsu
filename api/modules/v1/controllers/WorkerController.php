@@ -58,7 +58,6 @@ class WorkerController extends ActiveController {
     {
         //随机十个护工
         $params = Yii::$app->getRequest()->getBodyParams();
-        $params['start_time'] = '2014-05-12';
         $worker = \api\modules\v1\models\Worker::select($params);
 
         if(!empty($worker)){

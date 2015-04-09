@@ -222,7 +222,7 @@ class DatePicker extends \kartik\base\InputWidget
         Html::addCssClass($options, 'input-group-addon kv-date-' . $icon);
         $icon = '<i class="glyphicon glyphicon-' . ArrayHelper::remove($options, 'icon', $icon) . '"></i>';
         if (empty($options['title'])) {
-            $title = ($type === 'picker') ? Yii::t('kvdate', 'Select date') : Yii::t('kvdate', 'Clear field');
+            $title = ($type === 'picker') ? 'Select date' : 'Clear field';
             if ($title != false) {
                 $options['title'] = $title;
             }

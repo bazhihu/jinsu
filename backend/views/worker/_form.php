@@ -258,7 +258,7 @@ use backend\models\Hospitals;
 //            ],
 //        ])->label('擅长护理的疾病');
 
-        echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存，下一步') : Yii::t('app', '编辑'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+        echo Html::submitButton($model->isNewRecord ? '保存，下一步' : '编辑', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
         if(!$model->isNewRecord){
             echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-primary' onclick=location.href='?r=workerother/update&worker_id=".$model->worker_id."' value='编辑其他信息'>";
         }?>

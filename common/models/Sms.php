@@ -10,8 +10,11 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use common\components\Curl;
 
 class Sms extends Model{
+
+    public $mobile;
 
     /**
      * 漫道科技序列号&密码
@@ -31,7 +34,8 @@ class Sms extends Model{
         'pwd'       => '25340961',
     ];
 
-    public $mobile;
+    const SMS_SANSANDEJIU = 'http://GATEWAY.IEMS.NET.CN/GsmsHttp'; //三三得玖
+    const SMS_MANDAOKEJI = 'http://sdk.entinfo.cn/webservice.asmx/mdSmsSend'; //漫道科技
 
     /**
      * @inheritdoc
@@ -83,67 +87,35 @@ class Sms extends Model{
      */
     protected function manRoadSend($mobile,$content){
 
-        $flag = 0;
-        //要post的数据
-        $argv = array(
+        $curl = new Curl();
+
+        $params = [
             'sn'=>self::$manRoad['serialNo'], ////替换成您自己的序列号
             'pwd'=>strtoupper(md5(self::$manRoad['serialNo'].self::$manRoad['pwd'])), //此处密码需要加密 加密方式为 md5(sn+password) 32位大写
             'mobile'=>$mobile,//手机号 多个用英文的逗号隔开 post理论没有长度限制.推荐群发一次小于等于10000个手机号
-            //'content'=>iconv( "GB2312", "UTF-8//IGNORE" ,$content),//短信内容
-            'content'=>$content.'【优爱医护】',//短信内容
+            'content'=>iconv( "UTF-8", "GB2312//IGNORE" ,$content.'【优爱医护】'),//短信内容
             'ext'=>'',
             'stime'=>'',//定时时间 格式为2011-6-29 11:09:21
             'msgfmt'=>'',
             'rrid'=>''
-        );
-        $params = '';
-        //构造要post的字符串
-        foreach ($argv as $key=>$value) {
-            if ($flag!=0) {
-                $params .= "&";
-                $flag = 1;
-            }
-            $params.= $key."="; $params.= urlencode($value);
-            $flag = 1;
-        }
-        $length = strlen($params);
-        //创建socket连接
-        $fp = fsockopen("sdk.entinfo.cn",8061,$errno,$errstr,10) or exit($errstr."--->".$errno);
-        //构造post请求的头
-        $header = "POST /webservice.asmx/mdsmssend HTTP/1.1\r\n";
-        $header .= "Host:sdk.entinfo.cn\r\n";
-        $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: ".$length."\r\n";
-        $header .= "Connection: Close\r\n\r\n";
-        //添加post的字符串
-        $header .= $params."\r\n";
-        //发送post的数据
-        fputs($fp,$header);
-        $inheader = 1;
-        while (!feof($fp)) {
-            $line = fgets($fp); //去除请求包的头只显示页面的返回数据
+        ];
 
-            if ($inheader && ($line == "\n" || $line == "\r\n")) {
-                $inheader = 0;
-            }
-        }
-        //<string xmlns="http://tempuri.org/">-5</string>
-        $line=str_replace("<string xmlns=\"http://tempuri.org/\">","",$line);
-        $line=str_replace("</string>","",$line);
-        $result=explode("-",$line);
-        // echo $line."-------------";
+        $curl->reset()
+            ->setOption(
+                CURLOPT_POSTFIELDS,
+                http_build_query($params)
+            )->post(Sms::SMS_MANDAOKEJI);
         $response = [
             'code'=>'200',
             'msg'=>'',
         ];
-        if(count($result)>1){
+        if($curl->responseCode != '200'){
             $response['code'] = '404！';
             $response['msg'] = '发送失败！';
-            return $response;
         }else{
             $response['msg'] = '发送短信成功！';
-            return $response;
         }
+        return $response;
     }
 
     /**
@@ -153,9 +125,10 @@ class Sms extends Model{
      * @return array
      */
     protected function nineSend($mobile,$content){
-        $flag = 0;
-        //要post的数据
-        $argv = array(
+
+        $curl = new Curl();
+
+        $params = array(
             'username'=>self::$nine['agencyId'].':'.self::$nine['username'],
             'password'=>self::$nine['pwd'],
             'from'=>'18810987761',
@@ -163,53 +136,21 @@ class Sms extends Model{
             'content'=>iconv( "UTF-8", "gbk//IGNORE" ,$content),//短信内容
             'presendTime'=>'',
         );
-        $params = '';
-        //构造要post的字符串
-        foreach ($argv as $key=>$value) {
-            if ($flag!=0) {
-                $params .= "&";
-                $flag = 1;
-            }
-            $params.= $key."="; $params.= urlencode($value);
-            $flag = 1;
-        }
-        $length = strlen($params);
-        //创建socket连接
-        $fp = fsockopen("GATEWAY.IEMS.NET.CN",80,$errno,$errstr,10) or exit($errstr."--->".$errno);
-        //构造post请求的头
-        $header = "POST /GsmsHttp HTTP/1.1\r\n";
-        $header .= "Host:GATEWAY.IEMS.NET.CN\r\n";
-        $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: ".$length."\r\n";
-        $header .= "Connection: Close\r\n\r\n";
-        //添加post的字符串
-        $header .= $params."\r\n";
-        //发送post的数据
-        fputs($fp,$header);
-        $inheader = 1;
-        while (!feof($fp)) {
-            $line = fgets($fp); //去除请求包的头只显示页面的返回数据
-
-            if ($inheader && ($line == "\n" || $line == "\r\n")) {
-                $inheader = 0;
-            }
-        }
-        //<string xmlns="http://tempuri.org/">-5</string>
-        $line=str_replace("<string xmlns=\"http://tempuri.org/\">","",$line);
-        $line=str_replace("</string>","",$line);
-        $result=explode("-",$line);
-        // echo $line."-------------";
+        $curl->reset()
+            ->setOption(
+                CURLOPT_POSTFIELDS,
+                http_build_query($params)
+            )->post(Sms::SMS_SANSANDEJIU);
         $response = [
             'code'=>'200',
             'msg'=>'',
         ];
-        if(count($result)>1){
+        if($curl->responseCode != '200'){
             $response['code'] = '404！';
             $response['msg'] = '发送失败！';
-            return $response;
         }else{
             $response['msg'] = '发送短信成功！';
-            return $response;
         }
+        return $response;
     }
 }

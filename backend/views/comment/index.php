@@ -59,7 +59,7 @@ if(Yii::$app->session->hasFlash('consol_v_error'))
             [
                 'attribute'=>'uid',
                 'value'=>function($model) {
-                    return ($model->uid)? User::findOne(['id',$model->uid])['mobile'] :null;
+                    return ($model->uid)? substr_replace(User::findOne(['id',$model->uid])['mobile'],'****',3,4) :null;
                 }
             ],
             'worker_id',

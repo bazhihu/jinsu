@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'mobile',
                 'format'=>'raw',
                 'value'=>function ($model) {
-                    return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id'=>$model->id]));
+                    return Html::a(substr_replace($model->mobile,'****',3,4), Yii::$app->urlManager->createUrl(['user/view','id'=>$model->id]));
                 },
                 'options' => [
                     'style' => 'width:110px',
@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{recharge}&nbsp;{cash}',
                 'buttons' => [
                     'recharge' => function ($url, $model) {
-                        return Html::a('<span class="btn btn-sm btn-primary">充值</span>',
+                        return Html::a('<span class="btn btn btn-primary">充值</span>',
                             Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]),
                             ['title' => '充值']
                         );
@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if(WalletUser::findOne(['uid'=>$model->id])){
                             $finace_status = WalletWithdrawcash::getWalletStatusByUid($model->id);
                             if($finace_status['code']==200 || $finace_status['code']==3|| $finace_status['code']==1){
-                                return Html::a('<span class="btn btn-sm btn-primary">提现</span>', Yii::$app->urlManager->createUrl(['wallet/cash','uid' => $model->id]), ['title' =>'提现']);
+                                return Html::a('<span class="btn btn btn-primary">提现</span>', Yii::$app->urlManager->createUrl(['wallet/cash','uid' => $model->id]), ['title' =>'提现']);
                            }
                         }
                     },

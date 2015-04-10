@@ -7,7 +7,7 @@ use yii\helpers\Html;
  * @var backend\models\User $model
  */
 
-$this->title = '编辑用户: ' . ' ' . $model->id;
+$this->title = '编辑用户: ' . ' ' . substr_replace($model->mobile,'****',3,4);
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

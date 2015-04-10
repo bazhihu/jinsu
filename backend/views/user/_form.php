@@ -11,7 +11,12 @@ use kartik\datecontrol\DateControl;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
-
+<style>
+    div.required label:before {
+        content: "* ";
+        color: red;
+    }
+</style>
 <div class="user-form">
     <div class="panel panel-info">
         <div class="panel-heading">

@@ -50,7 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'attributes' => [
             'id',
-            'mobile',
+            [
+                'attribute'=>'mobile',
+                'value'=> substr_replace($model->mobile,'****',3,4),
+            ],
             'nickname',
             'name',
             'gender',

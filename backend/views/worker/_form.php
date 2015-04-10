@@ -24,11 +24,11 @@ use backend\models\Hospitals;
     .close{width:0px;}
     .input-group{width:30%}
     .clearfix{width:205px;border: 1px solid #ccc}
-}
+    div.required label:before {
+        content: "* ";
+        color: red;
+    }
 </style>
-
-
-
 
 <div class="worker-form">
     <div class="panel panel-info">
@@ -170,7 +170,7 @@ use backend\models\Hospitals;
 
             'place'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入户口所在地...', 'maxlength'=>255,'style'=>'width:30%']
+                'options'=>['placeholder'=>'请输入居住地...', 'maxlength'=>255,'style'=>'width:30%']
             ]
         ]
         ]);
@@ -186,7 +186,7 @@ use backend\models\Hospitals;
         echo Form::widget([       // 3 column layout
             'model'=>$model,
             'form'=>$form,
-            'columns'=>1,
+            'columns'=>4,
             'class'=>'',
             'attributeDefaults' => [
                 'type' => Form::INPUT_TEXT,

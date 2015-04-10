@@ -11,7 +11,12 @@ use kartik\detail\DetailView;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
-
+<style>
+    div.required .label:before {
+        content: "* ";
+        color: red;
+    }
+</style>
 <div class="comment-form">
     <div class="panel panel-info">
         <div class="panel-heading">

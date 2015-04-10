@@ -115,7 +115,7 @@ class Comment extends \yii\db\ActiveRecord
                 $good_sql = "select count(star)  as sum_star from yayh_comment where worker_id=".$row['worker_id']." and star>=4 and status=2";
                 $good_command = $connection->createCommand($good_sql);
                 $good_star_num= $good_command->queryColumn()[0];
-                $good_rate = $star_num ? ceil($good_star_num/$star_num)*100:"";
+                $good_rate = $star_num ? ceil($good_star_num/$star_num)*100:"0";
 
                 //更新护工评价总数
                 $update_sql = "update yayh_worker  set total_comment=".$comment_num." ,star = ".$avg_star.",good_rate=".$good_rate." where worker_id=".$row['worker_id'];

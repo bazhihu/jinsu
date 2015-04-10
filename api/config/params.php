@@ -4,7 +4,7 @@ if($server_name=='api.youaiyihu.com')
     $pic_domain = "admin.youaiyihu.com";
 
 if($server_name=='uat.api.youaiyihu.com')
-    $pic_domain = "uat.admin.youaiyihu.com";
+    $pic_domain = "uat.img.youaiyihu.com";
 
 if($server_name=='sit.api.youaiyihu.com')
     $pic_domain = "sit.admin.youaiyihu.com";

@@ -70,7 +70,7 @@ class WorkerotherController extends Controller
             //先全部删除，再重新入库
             $this->delete($worker_id);
             $this->saveWorkerOther($model,$params);
-            return $this->redirect(['view', 'worker_id' => $worker_id]);
+            return $this->redirect(['worker/index']);
         }else{
             return $this->render('update', [
                 'model' => $model,

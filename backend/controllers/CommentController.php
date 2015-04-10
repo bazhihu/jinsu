@@ -47,11 +47,6 @@ class CommentController extends Controller
             $comment_ids = implode(',', $comment_id_array);
             Comment::commentAudit($comment_ids,$op);
         }
-
-
-       // die();
-      //  if($audit_yes)
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -82,7 +77,6 @@ class CommentController extends Controller
     public function actionCreate($order_no)
     {
         $model = new Comment;
-
         if ($model->load(Yii::$app->request->post())) {
             $params_all = Yii::$app->request->post();
             $params =  $params_all['Comment'];
@@ -104,10 +98,11 @@ class CommentController extends Controller
                 $orderModel = OrderMaster::findOne(['order_no'=>$order_no]);
                 if($orderModel){
                     $commentStatus = $orderModel->evaluate();
-                    Yii::$app->getSession()->setFlash('alert',$commentStatus['msg']);
+                    if($commentStatus){
+
+                    }
                     return $this->redirect(Url::toRoute('comment/index'));
                 }
-
             }else {
                 return $this->render('create', ['model' => $model]);
             }

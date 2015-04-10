@@ -281,7 +281,7 @@ class Worker extends \yii\db\ActiveRecord
             'star' => '星级',
             'total_order' => '总订单数',
             'good_rate' => '好评率(%)',
-            'total_comment' => '评论总数',
+            'total_comment' => '评价总数',
             'level' => '护工等级',
             'status' => '工作状态',
         ];

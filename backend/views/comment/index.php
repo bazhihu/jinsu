@@ -14,7 +14,7 @@ use yii\helpers\Url;
  * @var backend\models\CommentSearch $searchModel
  */
 $this->registerJsFile('js/comment.js?v=20150404', ['position'=>yii\web\View::POS_END]);
-$this->title = '评论管理';
+$this->title = '评价管理';
 $this->params['breadcrumbs'][] = $this->title;
 
 if(Yii::$app->session->hasFlash('consol_v_error'))

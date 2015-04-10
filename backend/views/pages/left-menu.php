@@ -31,7 +31,7 @@ $route = $controller->route;
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/comment/index')):?>hide <?php endif;?><?php if($route == 'comment/index'):?>active<?php endif;?>"><a href="<?=Url::toRoute('comment/index');?>">评论管理</a></li>
+    <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/comment/index')):?>hide <?php endif;?><?php if($route == 'comment/index'):?>active<?php endif;?>"><a href="<?=Url::toRoute('comment/index');?>">评价管理</a></li>
 </ul>
 
 <ul class="nav nav-sidebar">

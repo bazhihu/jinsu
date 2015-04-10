@@ -60,17 +60,17 @@ class Comment extends \yii\db\ActiveRecord
             'worker_id' => '护工编号',
             'worker_name' => '护工姓名',
             'star' => '星级',
-            'content' => '评论内容',
+            'content' => '评价内容',
             'status' => '状态',
-            'comment_date' => '评论时间',
+            'comment_date' => '评价时间',
             'edit_date' => '编辑时间',
-            'comment_date_begin' => '评论时间范围',
+            'comment_date_begin' => '评价时间范围',
             'comment_date_end' => '至',
             'audit_date' => '审核时间',
             'adder' => '添加人',
             'editer' => '编辑人',
             'auditer' => '审核人',
-            'comment_ip' => '评论IP',
+            'comment_ip' => '评价IP',
             'type' => '来源',
         ];
     }
@@ -84,19 +84,19 @@ class Comment extends \yii\db\ActiveRecord
             $status = 3;
         }
 
-        //更新评论状态
+        //更新评价状态
         $sql = "update yayh_comment set status = ".$status.",auditer=".$auditer.",audit_date='".date('Y-m-d H:i:s')."' where comment_id in ($comment_ids)";
         $command = $connection->createCommand($sql);
         $command->query();
 
 
-        //评论数
+        //评价数
         $worker_sql = "select DISTINCT worker_id from yayh_comment where comment_id in ($comment_ids)";
         $worker_command = $connection->createCommand($worker_sql);
         $worker_result = $worker_command->query();
         if($worker_result){
             foreach($worker_result as $row){
-                //查询护工评论数
+                //查询护工评价数
                 $comment_sql = "select count(*) as num, avg(star) as avg_star,count(star)  as star_num from yayh_comment where worker_id=".$row['worker_id']." and status=2";
                 //echo $comment_sql;die();
                 $comment_command = $connection->createCommand($comment_sql);
@@ -117,7 +117,7 @@ class Comment extends \yii\db\ActiveRecord
                 $good_star_num= $good_command->queryColumn()[0];
                 $good_rate = $star_num ? ceil($good_star_num/$star_num)*100:"";
 
-                //更新护工评论总数
+                //更新护工评价总数
                 $update_sql = "update yayh_worker  set total_comment=".$comment_num." ,star = ".$avg_star.",good_rate=".$good_rate." where worker_id=".$row['worker_id'];
                 $update_command = $connection->createCommand($update_sql);
                 $update_command->query();

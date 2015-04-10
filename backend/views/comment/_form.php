@@ -15,7 +15,7 @@ use kartik\detail\DetailView;
 <div class="comment-form">
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h3 class="panel-title">评论</h3>
+            <h3 class="panel-title">评价</h3>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]); echo Form::widget([

@@ -1,4 +1,4 @@
-//评论审核
+//评价审核
 $(function(){
     $("#audit_yes").click(function(){
         if(!confirm('确认执行此操作吗？')){

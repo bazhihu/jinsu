@@ -83,7 +83,7 @@ class OrderController extends ActiveController {
         if(empty($post['pay_way'])){
             $this->responseCode = 400;
             $this->responseMsg = '支付方式为空';
-            return;
+            return false;
         }
 
         $params = ['OrderMaster' => $post];
@@ -91,20 +91,20 @@ class OrderController extends ActiveController {
 
         $params['OrderMaster']['create_order_sources'] = Order::ORDER_SOURCES_MOBILE;
 
-//        $orderModel = new Order();
-//        $res = $orderModel->createOrder($params);
-//        if(!$res){
-//            $this->responseCode = 500;
-//            $this->responseMsg = '创建订单失败';
-//            return null;
-//        }
-//        $order = Order::findOne($orderModel->order_id);
+        $orderModel = new Order();
+        $res = $orderModel->createOrder($params);
+        if(!$res){
+            $this->responseCode = 500;
+            $this->responseMsg = '创建订单失败';
+            return null;
+        }
+        $order = Order::findOne($orderModel->order_id);
 
 
         if($post['pay_way'] == Order::PAY_WAY_CASH){
-            //$order->pay();
+            $order->pay();
         }else{
-            $payment = new Payment($post['pay_way']);
+            $payment = new Payment($post['pay_way'], null);
             exit;
         }
 

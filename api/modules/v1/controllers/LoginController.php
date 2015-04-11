@@ -10,10 +10,12 @@ namespace api\modules\v1\controllers;
 
 
 use Yii;
+use yii\log\Logger;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use backend\models\WalletUser;
 use common\models\Login;
+
 
 class LoginController extends ActiveController{
     public $modelClass = 'common\models\Login';
@@ -36,7 +38,7 @@ class LoginController extends ActiveController{
      */
     public function actionCreate(){
         $loginModel = new Login();
-        Yii:log(print_r(Yii::$app->getRequest()->getBodyParams(), true));
+        Yii::getLogger()->log(print_r(Yii::$app->getRequest()->getBodyParams(), true), Logger::LEVEL_INFO);
         $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
         if(!$loginModel->validate()){
             $this->responseCode = 400;

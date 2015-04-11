@@ -70,7 +70,7 @@ class Sms extends Model{
             if($manRoad['code']!='200')
             {
                 $response = [
-                    'code'  => '404',
+                    'code'  => '400',
                     'msg'   => '发送短信失败',
                 ];
                 return $response;

@@ -31,7 +31,9 @@
         "warrence/yii2-kartikgii": "dev-master",
         "almasaeed2010/adminlte": "~2.0",
         "kartik-v/yii2-widget-select2": "*",
-        "yiisoft/yii2-redis": "~2.0"
+        "yiisoft/yii2-redis": "~2.0",
+        "arturoliveira/yii2-excelview": "*",
+        "linslin/yii2-curl": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

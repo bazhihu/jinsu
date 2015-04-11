@@ -19,6 +19,7 @@ return array(
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
     'warrence\\kartikgii\\' => array($vendorDir . '/warrence/yii2-kartikgii'),
     'mdm\\admin\\' => array($vendorDir . '/mdmsoft/yii2-admin'),
+    'linslin\\yii2\\curl\\' => array($vendorDir . '/linslin/yii2-curl'),
     'kartik\\widgets\\' => array($vendorDir . '/kartik-v/yii2-widgets'),
     'kartik\\typeahead\\' => array($vendorDir . '/kartik-v/yii2-widget-typeahead'),
     'kartik\\tree\\' => array($vendorDir . '/kartik-v/yii2-tree-manager'),
@@ -57,5 +58,6 @@ return array(
     'kartik\\affix\\' => array($vendorDir . '/kartik-v/yii2-widget-affix'),
     'creocoder\\nestedsets\\' => array($vendorDir . '/creocoder/yii2-nested-sets/src'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
+    'arturoliveira\\' => array($vendorDir . '/arturoliveira/yii2-excelview'),
     'amnah\\yii2\\user\\' => array($vendorDir . '/amnah/yii2-user'),
 );

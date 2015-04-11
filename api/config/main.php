@@ -30,6 +30,12 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['api'],
+                    'logFile' => '@app/runtime/logs/api.log'
+                ],
             ],
         ],
         'urlManager' => [

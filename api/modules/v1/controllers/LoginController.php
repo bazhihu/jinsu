@@ -38,7 +38,7 @@ class LoginController extends ActiveController{
      */
     public function actionCreate(){
         $loginModel = new Login();
-        Yii::getLogger()->log(print_r(Yii::$app->getRequest()->getBodyParams(), true), Logger::LEVEL_INFO);
+
         $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
         if(!$loginModel->validate()){
             $this->responseCode = 400;

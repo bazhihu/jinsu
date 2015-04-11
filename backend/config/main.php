@@ -78,6 +78,18 @@ return [
 
     ],
     'components' => [
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@vendor/yiisoft/yii2/messages', // if advanced application, set @frontend/messages
+                    'sourceLanguage' => 'zh-CN',
+                    'fileMap' => [
+                        //'main' => 'main.php',
+                    ],
+                ],
+            ],
+        ],
         'user' => [
             'identityClass' => 'backend\models\AdminUser',
             'enableAutoLogin' => true,

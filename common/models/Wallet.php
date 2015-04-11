@@ -116,7 +116,6 @@ class Wallet
         $userDetail->setAttributes($detail,false);
         if(!$userDetail->save()){
             throw new HttpException(400, print_r($userDetail->getErrors(), true));
-            exit;
         }
         $response['msg'] = '记录成功';
         return $response;

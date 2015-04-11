@@ -2,10 +2,7 @@
 
 namespace common\models;
 
-use backend\models\WalletDebitRecords;
 use backend\models\WalletIncrement;
-use backend\models\WalletRechargeRecords;
-use backend\models\WalletRefundRecords;
 use backend\models\WalletUserDetail;
 use Yii;
 use yii\base\Exception;
@@ -97,7 +94,7 @@ class Wallet
         ];
         $userDetail = new WalletUserDetail();
         $detail = [
-            'detail_no'     =>self::_generateWalletNo(),
+            'detail_no'     =>self::generateWalletNo(),
             'order_id'      =>isset($params['order_id'])?$params['order_id']:'',
             'order_no'      =>isset($params['order_no'])?$params['order_no']:'',
             'worker_id'     =>isset($params['worker_id'])?$params['worker_id']:'',
@@ -230,7 +227,7 @@ class Wallet
      * @throws \Exception
      * @author HZQ
      */
-    private static function _generateWalletNo(){
+    public static function generateWalletNo(){
         $walletIncrement = new WalletIncrement();
         $walletIncrement->insert();
         return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);

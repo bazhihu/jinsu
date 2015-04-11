@@ -9,6 +9,7 @@
 namespace api\modules\v1\controllers;
 
 
+use linslin\yii2\curl\Curl;
 use Yii;
 //use yii\log\Logger;
 use yii\web\Response;

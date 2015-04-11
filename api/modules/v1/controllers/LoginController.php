@@ -10,7 +10,7 @@ namespace api\modules\v1\controllers;
 
 
 use Yii;
-use yii\log\Logger;
+//use yii\log\Logger;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use backend\models\WalletUser;
@@ -38,6 +38,7 @@ class LoginController extends ActiveController{
      */
     public function actionCreate(){
         $loginModel = new Login();
+        Yii::info(print_r(Yii::$app->getRequest()->getBodyParams(), true), 'api');
 
         $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
         if(!$loginModel->validate()){

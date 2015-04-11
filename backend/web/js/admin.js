@@ -66,3 +66,13 @@ $('body').on('click', 'span.glyphicon-ok', function () {
     });
     return false;
 });
+//所属医院隐藏
+$('body').on('change', 'select#adminuser-staff_role', function () {
+    var role = $(this).val();
+    if(role == '内勤人员'){
+        $('.hospitals_hide').removeClass('hide');
+    }else{
+        $('.hospitals_hide').addClass('hide');
+    }
+
+});

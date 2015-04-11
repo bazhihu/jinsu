@@ -12,6 +12,7 @@ use kartik\widgets\Select2;
  */
 
 $this->title = '新增帐号';
+$this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
 ?>
 
 <div class="panel panel-info" style="margin: 8%;">
@@ -70,16 +71,22 @@ $this->title = '新增帐号';
                         ],
                     ]
                 ]);
+                ?>
+                <div class="hospitals_hide
+                    <?php if($model->staff_role != \backend\models\AdminUser::BACKOFFICESTAFF){echo 'hide';}?>">
+                <?php
                 echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                     'data' => \backend\models\Hospitals::getList(),
                     'options' => [
                         'placeholder' => '请选择医院',
-                        'style'=>'width:100%'
+                        'style'=>'width:100%;'
                     ],
                     'pluginOptions' => [
                         'allowClear' => true
                     ],
-                ])->label('医院');
+                ])->label('医院');?>
+                </div>
+                <?php
                 echo $form->field($model, 'phone', [
                     'addon' => [
                         'prepend' => [

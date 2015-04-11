@@ -110,6 +110,7 @@ class Sms extends Model{
             if(!isset($params['account']) || !isset($params['money']) || !isset($params['balance'])) return false;
             return '已成功为账号'.$params['account'].'充值'.$params['money'].'元，当前账号余额为：'.$params['balance'].'元。您可以在优爱医护App“我的钱包”中随时查看消费记录。如有问题请联系我们~客服热线：'.self::$hotLine.'。';
         }
+
         return false;
     }
 

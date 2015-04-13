@@ -105,6 +105,7 @@ class OrderController extends ActiveController {
             $order->pay();
         }else{
             $payment = new Payment($post['pay_way'], null);
+            $payment;
             exit;
         }
 

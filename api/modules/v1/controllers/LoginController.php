@@ -39,7 +39,6 @@ class LoginController extends ActiveController{
      */
     public function actionCreate(){
         $loginModel = new Login();
-        Yii::info(print_r(Yii::$app->getRequest()->getBodyParams(), true), 'api');
 
         $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
         if(!$loginModel->validate()){

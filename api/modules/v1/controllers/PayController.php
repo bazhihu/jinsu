@@ -14,7 +14,7 @@ use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 use backend\models\WalletUser;
-class Pay extends ActiveController{
+class PayController extends ActiveController{
     public $modelClass = 'common\models\Order';
     public $responseCode = 200;
     public $responseMsg = null;

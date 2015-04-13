@@ -433,7 +433,7 @@ class Order extends \yii\db\ActiveRecord{
         $totalPrice = $this->total_amount;
         if($totalPrice <= 0){
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '支付失败:订单总价计算错误',
             ];
             return $response;
@@ -475,7 +475,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '支付失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
@@ -494,14 +494,14 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      */
     public function confirm($remark = null){
-        $response = ['code' => '200'];
+        $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'confirm')){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '订单状态错误';
             return $response;
         }
         if(empty($this->worker_no)){
-            $response['code'] = '202';
+            $response['code'] = 202;
             $response['msg'] = '没有选护工，请选择护工';
             $response['start_time'] = $this->start_time;
             return $response;
@@ -524,10 +524,19 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '确认失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
+        }
+
+        //发送短信
+        if($response['code'] == 200){
+            $params['mobile'] = $this->mobile;
+            $params['type'] = Sms::SMS_ORDERS_SUCCESSFUL_PAYMENT;
+            $params['time'] = $this->start_time;
+            $params['level'] = Worker::$workerLevelLabel[$this->worker_level];
+            Sms::send($params);
         }
         return $response;
     }
@@ -539,16 +548,16 @@ class Order extends \yii\db\ActiveRecord{
      * @throws \yii\db\Exception
      */
     public function beginService(){
-        $response = ['code' => '200'];
+        $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'begin_service')){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '订单状态错误';
             return $response;
         }
 
         //判断时间
         if(strtotime($this->start_time) > strtotime(date('Y-m-d'))){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '开始时间未到';
             return $response;
         }
@@ -569,7 +578,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (ErrorException $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '开始服务失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
@@ -582,9 +591,9 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      */
     public function finish(){
-        $response = ['code' => '200'];
+        $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'finish')){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '订单状态错误';
             return $response;
         }
@@ -635,7 +644,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '完成订单处理失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
@@ -648,9 +657,9 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      */
     public function cancel(){
-        $response = ['code' => '200'];
+        $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'cancel')){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '订单状态错误';
             return $response;
         }
@@ -694,7 +703,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '取消失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
@@ -708,9 +717,9 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      */
     public function evaluate(){
-        $response = ['code' => '200'];
+        $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'evaluate')){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '订单状态错误';
             return $response;
         }
@@ -731,7 +740,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '评价失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
@@ -745,9 +754,9 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      */
     public function continueOrder(){
-        $response = ['code' => '200'];
+        $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'continue')){
-            $response['code'] = '212';
+            $response['code'] = 212;
             $response['msg'] = '订单状态错误';
             return $response;
         }
@@ -767,18 +776,18 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      */
     static public function setWorker($orderId, $workerId, $workerName){
-        $response = ['code' => '200', 'msg' => ''];
+        $response = ['code' => 200, 'msg' => ''];
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $order = self::findOne($orderId);
             if(empty($order)){
-                $response['code'] = '404';
+                $response['code'] = 404;
                 $response['msg'] = '找不到订单';
                 return $response;
             }
             //判断是是否已选择护工
             if(!empty($order->worker_no)){
-                $response['code'] = '200';
+                $response['code'] = 200;
                 $response['msg'] = '已选择护工';
                 return $response;
             }
@@ -796,7 +805,7 @@ class Order extends \yii\db\ActiveRecord{
         }catch (Exception $e){
             $transaction->rollBack();
             $response = [
-                'code' => '500',
+                'code' => 500,
                 'msg' => '选择的护工失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];

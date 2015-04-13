@@ -27,7 +27,9 @@ class SmsController extends ActiveController{
     }
 
     public function actionCreate(){
-        echo 'sms';exit;
+        $post = Yii::$app->getRequest()->getBodyParams();
+        $mobile = $post['mobile'];
+
     }
 
     /**

@@ -163,7 +163,7 @@ class Sms extends Model{
      * @return array
      * @author HZQ
      */
-    public function send($params){
+    public static function send($params){
 
         $response = [
             'code'  => '200',

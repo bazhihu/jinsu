@@ -51,4 +51,8 @@ class Payment
     {
         $this->_tradeNo = Wallet::generateWalletNo();
     }
+
+    public function payLog(){
+
+    }
 }

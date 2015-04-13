@@ -95,7 +95,12 @@ $this->title = '充值记录';
             ['class' => 'yii\grid\SerialColumn'],
             'detail_no',
             'detail_time',
-            'mobile',
+            [
+                'attribute'=>'mobile',
+                'value'=>function($model){
+                    return $model->mobile?substr_replace($model->mobile,'****',3,4):'';
+                }
+            ],
             [
                 'attribute'=>'pay_from',
                 'value'=>function($model){

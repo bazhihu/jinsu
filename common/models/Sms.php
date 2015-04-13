@@ -8,14 +8,25 @@
 
 namespace common\models;
 
+use linslin\yii2\curl\Curl;
 use Yii;
 use yii\base\Model;
-use common\components\Curl;
 
 class Sms extends Model{
 
     public $mobile;
 
+    const SMS_LOGIN_CODE                    = '1';
+    const SMS_ORDERS_NOT_PAID               = '2';
+    const SMS_ORDERS_SUCCESSFUL_PAYMENT     = '3';
+    const SMS_ORDERS_OVER                   = '4';
+    const SMS_ORDER_CANCELED                = '5';
+    const SMS_ORDERS_MODIFIED_SUCCESSFULLY  = '6';
+    const SMS_ORDERS_COMPLETED              = '7';
+    const SMS_WITHDRAW_APPLICATION          = '8';
+    const SMS_SUCCESS_RECHARGE              = '9';
+
+    public static $hotLine = '400-12345678';//客服热线
     /**
      * 漫道科技序列号&密码
      * @var array
@@ -48,25 +59,129 @@ class Sms extends Model{
     }
 
     /**
-     * 发送短信验证码
-     * @param $mobile
-     * @param $code
-     * @return array
-     * @author zhangbo mod huzhiqiang
+     * 短信场景
+     * @param $params
+     * @return bool|string
      */
-    public function send($mobile,$code){
+    public static function smsScene($params){
+        #登录时的验证码
+        if($params['type'] == self::SMS_LOGIN_CODE){
+            if(!isset($params['code'])) return false;
+            return '您的验证码为：'.$params['code'].'，请在5分钟内填写，如非本人操作请忽略本短信。';
+        }
+        #订单未支付
+        if($params['type'] == self::SMS_ORDERS_NOT_PAID){
+            if(!isset($params['time']) || !isset($params['level'])) return false;
+            return '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单还未支付，10分钟未支付订单将自动取消，请尽快完成支付。如有问题请联系我们~客服热线：'.self::$hotLine.'。';
+        }
+        #订单支付成功
+        if($params['type'] == self::SMS_ORDERS_SUCCESSFUL_PAYMENT){
+            if(!isset($params['time']) || !isset($params['level'])) return false;
+            return '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务已确认，服务人员将在指定时间到达提供服务。您可以在优爱医护App“我的订单”中查看追踪订单状态。如有问题请联系我们~客服热线：'.self::$hotLine.'。';
+        }
+        #服务结束前24小时
+        if($params['type'] == self::SMS_ORDERS_OVER){
+            if(!isset($params['time']) || !isset($params['level'])) return false;
+            return '您的'.$params['level'].'级陪护服务将在'.$params['time'].'早上8:00即将结束，如您还需继续服务请在30分钟之内拨打客服热线：'.self::$hotLine.'进行续单，否则服务将在指定时间结束。';
+        }
+        #订单已取消
+        if($params['type'] == self::SMS_ORDER_CANCELED){
+            if(!isset($params['time']) || !isset($params['level'])) return false;
+            return '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单已取消，已支付金额会在3-10个工作日内退回您支付时的账号。如有问题请联系我们~客服热线：'.self::$hotLine.'，期待下次为您服务。';
+        }
+        #订单修改成功
+        if($params['type'] == self::SMS_ORDERS_MODIFIED_SUCCESSFULLY){
+            if(!isset($params['oldTime']) || !isset($params['oldLevel']) || !isset($params['newTime']) || !isset($params['newLevel']))
+                return false;
+            return '您预约的'.$params['oldTime'].'开始的'.$params['oldLevel'].'级陪护服务订单已成功修改为'.$params['newTime'].'开始的'.$params['newLevel'].'级陪护服务。您可以在优爱医护App“我的订单”中查看追踪订单状态。如有问题请联系我们~客服热线：'.self::$hotLine.'。';
+        }
+        #订单已完成
+        if($params['type'] == self::SMS_ORDERS_COMPLETED){
+            if(!isset($params['days']) || !isset($params['level'])) return false;
+            return '您的'.$params['days'].'天'.$params['level'].'级陪护服务已完成，为了您以后享受更好的服务，请对我们的工作人员进行评价，感谢您的信任，祝您健康快乐~客服热线：'.self::$hotLine.'。';
+        }
+        #提现申请
+        if($params['type'] == self::SMS_WITHDRAW_APPLICATION){
+            if(!isset($params['money']) || !isset($params['account'])) return false;
+            return '您有一笔'.$params['money'].'元的提现申请已确认，款项将在1-5个工作日内退回您指定的账号为：'.$params['account'].'的微信/支付宝账号，请注意查收。如有问题请联系我们~客服热线：'.self::$hotLine.'。';
+        }
+        #充值成功
+        if($params['type'] == self::SMS_SUCCESS_RECHARGE){
+            if(!isset($params['account']) || !isset($params['money']) || !isset($params['balance'])) return false;
+            return '已成功为账号'.$params['account'].'充值'.$params['money'].'元，当前账号余额为：'.$params['balance'].'元。您可以在优爱医护App“我的钱包”中随时查看消费记录。如有问题请联系我们~客服热线：'.self::$hotLine.'。';
+        }
 
-        $content    = '不能告诉任何人的短信验证码为:'.$code.'验证码10分钟内有效';  //内容
+        return false;
+    }
+
+    /**
+     * 发送短信接口
+     * @param $params
+     * [
+     *      'mobile'       电话号码     必
+     *      'type'         场景类型     必
+     *
+     *      #type = SMS_LOGIN_CODE  登录时的验证码 1
+     *      'code'         验证码
+     *
+     *      #type = SMS_ORDERS_NOT_PAID  订单未支付 2
+     *      'time'         订单开始时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_SUCCESSFUL_PAYMENT  订单支付成功 3
+     *      'time'         订单开始时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_OVER  服务结束前24小时 4
+     *      'time'         订单结束时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDER_CANCELED  订单已取消 5
+     *      'time'         订单开始时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_MODIFIED_SUCCESSFULLY  订单修改成功 6
+     *      'oldTime'         修改前订单时间
+     *      'oldLevel'        修改前陪护等级
+     *      'newTime'         订单时间
+     *      'newLevel'        陪护等级
+     *
+     *      #type = SMS_ORDERS_COMPLETED  订单已完成 7
+     *      'days'         订单持续天数
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_WITHDRAW_APPLICATION  提现申请 8
+     *      'money'         提现金额
+     *      'account'        提现帐号
+     *
+     *      #type = SMS_SUCCESS_RECHARGE  充值成功 9
+     *      'account'         账户
+     *      'money'            充值金额
+     *      'balance'         余额
+     *
+     * ]
+     * @return array
+     * @author HZQ
+     */
+    public function send($params){
 
         $response = [
             'code'  => '200',
             'msg'   => '',
         ];
 
-        $nine = self::nineSend($mobile,$content);
+        $content    = self::smsScene($params);  //内容
+
+        if(!$content)
+        {
+            $response['code'] =400;
+            $response['msg'] ='参数错误';
+        }
+
+        $nine = self::nineSend($params['mobile'],$content);
         if($nine['code'] != '200')
         {
-            $manRoad = self::manRoadSend($mobile,$content);
+            $manRoad = self::manRoadSend($params['mobile'],$content);
             if($manRoad['code']!='200')
             {
                 $response = [
@@ -86,7 +201,6 @@ class Sms extends Model{
      * @return array
      */
     protected function manRoadSend($mobile,$content){
-
         $curl = new Curl();
 
         $params = [

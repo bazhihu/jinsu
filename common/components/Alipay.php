@@ -6,7 +6,7 @@
  * Time: 20:27
  */
 
-namespace common\models;
+namespace common\components;
 
 
 class Alipay {

@@ -96,9 +96,9 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
             ],
             [
                 'header'=>'用户账号',
-                'attribute'=>'uid',
+                'attribute'=>'mobile',
                 'value'=>function($model){
-                    return User::findOne(['id'=>$model->uid])?User::findOne(['id'=>$model->uid])->mobile:"";
+                    return $model->mobile?substr_replace($model->mobile,'****',3,4):'';
                 },
             ],
             [

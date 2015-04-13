@@ -17,6 +17,26 @@ $('body').on('click', 'button.jsPass', function () {
         timeout :30000,
         url     : url,
         data    : {'id':id,'todo':todo},
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('支付');
+        },
         success: function(json){
             if(json.code == '200'){
                 button.parent().prev().html('已同意');
@@ -53,6 +73,26 @@ $('body').on('click', 'button.jsNix', function () {
         timeout :30000,
         url     : url,
         data    : {'id':id ,'todo':todo ,'reason':reason},
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('支付');
+        },
         success: function(json){
             if(json.code == '200'){
                 location.reload();
@@ -62,7 +102,7 @@ $('body').on('click', 'button.jsNix', function () {
         }
     });
 });
-//申请拒绝
+//提现支付
 $('body').on('click', 'button.jsPay', function () {
     if(!confirm('确认执行此操作吗？')){
         return false;
@@ -79,6 +119,26 @@ $('body').on('click', 'button.jsPay', function () {
         timeout :30000,
         url     : url,
         data    : {'id':id },
+        error:function(jqXHR, textStatus, errorThrown){
+            switch (jqXHR.status){
+                case(500):
+                    alert("服务器系统内部错误");
+                    break;
+                case(401):
+                    alert("未登录");
+                    break;
+                case(403):
+                    alert("无权限执行此操作");
+                    break;
+                case(408):
+                    alert("请求超时");
+                    break;
+                default:
+                    alert("未知错误");
+            }
+            button.attr('disabled', false);
+            button.text('支付');
+        },
         success: function(json){
             if(json.code == '200'){
                 button.parent().prev().html('已付款');

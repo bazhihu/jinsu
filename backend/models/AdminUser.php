@@ -32,6 +32,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public $pwd;//重复密码
     public $created_name;//创建人姓名
 
+    const  BACKOFFICESTAFF = '内勤人员';
     /**
      * @inheritdoc
      */
@@ -68,7 +69,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             ['username','filter','filter'=>'trim'],
             ['username', 'unique', 'targetClass'=>'\backend\models\AdminUser', 'message' => '帐号已存在'],
             [['username','staff_name',],'string','min'=>2,'max'=>20],
-            [['username', 'staff_name', 'staff_role', 'hospital_id','phone'],'required'],
+            [['username', 'staff_name', 'staff_role', 'phone'],'required'],
 
             [['password','pwd'],'string','min' => 6,'max'=>20],
             ['pwd','compare','compareAttribute'=>'password'],
@@ -125,6 +126,11 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public function create()
     {
+        if($this->staff_role == self::BACKOFFICESTAFF && empty($this->hospital_id)){
+            $this->addError('hospital_id','所属医院不能为空');
+            return false;
+        }
+
         $params = [
             'created_id'    =>  yii::$app->user->identity->getId(),
             'staff_id'      => $this->staff_name,
@@ -167,6 +173,13 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public function up()
     {
+        if($this->staff_role == self::BACKOFFICESTAFF && empty($this->hospital_id)){
+            $this->addError('hospital_id','医院不能为空');
+            return false;
+        }
+        if($this->staff_role != self::BACKOFFICESTAFF){
+            $this->hospital_id = '';
+        }
         $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
         #保存信息
         if(!$this->save())

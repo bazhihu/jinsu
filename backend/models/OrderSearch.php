@@ -15,9 +15,9 @@ class OrderSearch extends OrderMaster
     public function rules()
     {
         return [
-            [['order_id', 'uid', 'hospital_id', 'patient_state', 'worker_level', 'customer_service_id', 'operator_id'], 'integer'],
-            [['order_no', 'mobile', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'cancel_time', 'order_status', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'safe'],
-            [['base_price', 'total_amount'], 'number'],
+            [['order_no', 'uid', 'hospital_id', 'patient_state', 'worker_level', 'worker_no'], 'integer'],
+            [['order_no', 'mobile', 'start_time', 'end_time', 'order_status', 'create_order_ip'], 'safe'],
+            [['total_amount'], 'number'],
         ];
     }
 
@@ -43,30 +43,17 @@ class OrderSearch extends OrderMaster
         }
 
         $query->andFilterWhere([
-            'order_id' => $this->order_id,
+            'order_no' => $this->order_no,
             'uid' => $this->uid,
-            'base_price' => $this->base_price,
             'total_amount' => $this->total_amount,
             'hospital_id' => $this->hospital_id,
             'patient_state' => $this->patient_state,
-            'worker_level' => $this->worker_level,
-            'customer_service_id' => $this->customer_service_id,
-            'operator_id' => $this->operator_id,
+            'worker_no' => $this->worker_no,
+            'mobile' => $this->mobile,
+            'order_status' => $this->order_status,
             'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'reality_end_time' => $this->reality_end_time,
-            'create_time' => $this->create_time,
-            'pay_time' => $this->pay_time,
-            'confirm_time' => $this->confirm_time,
-            'cancel_time' => $this->cancel_time,
+            'end_time' => $this->end_time
         ]);
-
-        $query->andFilterWhere(['like', 'order_no', $this->order_no])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'order_status', $this->order_status])
-            ->andFilterWhere(['like', 'create_order_ip', $this->create_order_ip])
-            ->andFilterWhere(['like', 'create_order_sources', $this->create_order_sources])
-            ->andFilterWhere(['like', 'create_order_user_agent', $this->create_order_user_agent]);
 
         $query->orderBy('order_id DESC');
         return $dataProvider;

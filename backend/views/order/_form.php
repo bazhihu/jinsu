@@ -15,7 +15,12 @@ use backend\models\OrderPatient;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
-
+<style>
+    div.required label:before {
+        content: " *";
+        color: #ff0000;
+    }
+</style>
 <div class="order-master-form">
     <?php
     $form = ActiveForm::begin([
@@ -35,7 +40,7 @@ use backend\models\OrderPatient;
                 'columns' => 1,
                 'attributes' => [
                     'mobile'=>[
-                        'label'=>'<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 手机号',
+                        'label'=>'手机号',
                         'type'=> Form::INPUT_TEXT,
                         //'container'=>['class'=>'has-warning'],
                         'options'=>[
@@ -88,14 +93,14 @@ use backend\models\OrderPatient;
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 医院');
+            ])->label('医院');
             echo $form->field($model, 'department_id')->widget(Select2::classname(), [
                 'data' => Departments::getList(),
                 'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 科室');
+            ])->label('科室');
 
             //续单
             if($model->is_continue){
@@ -112,7 +117,7 @@ use backend\models\OrderPatient;
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 护工等级');
+            ])->label('护工等级');
 
             echo Form::widget([ // nesting attributes together (without labels for children)
                 'model'=>$model,
@@ -125,7 +130,7 @@ use backend\models\OrderPatient;
                 ],
                 'attributes'=>[
                     'date_range' => [
-                        'label' => '<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 订单时间段',
+                        'label' => '订单时间段',
                         'attributes'=>[
                             'start_time' => [
                                 'type'=>Form::INPUT_WIDGET,
@@ -216,7 +221,7 @@ use backend\models\OrderPatient;
                         OrderPatient::PATIENT_STATE_OK=>'能自理'
                     ],
                     ['inline'=>true]
-                )->label('<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 患者健康状况');
+                )->label('患者健康状况');
             echo $form->field($orderPatientModel, 'in_hospital_reason')
             ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:25%']);
 

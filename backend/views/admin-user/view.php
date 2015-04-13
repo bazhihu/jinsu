@@ -51,7 +51,7 @@ $this->title = $model->username;
     <?= Html::a('完成',
         Yii::$app->urlManager->createUrl(['admin-user/index']),
         [
-            'class' =>'btn btn-default'
+            'class' =>'btn btn-success'
         ]
     );?>
 </div>

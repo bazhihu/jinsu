@@ -35,7 +35,7 @@ $('body').on('click', 'button.jsPass', function () {
                     alert("未知错误");
             }
             button.attr('disabled', false);
-            button.text('支付');
+            button.text('同意');
         },
         success: function(json){
             if(json.code == '200'){
@@ -91,7 +91,7 @@ $('body').on('click', 'button.jsNix', function () {
                     alert("未知错误");
             }
             button.attr('disabled', false);
-            button.text('支付');
+            button.text('拒绝');
         },
         success: function(json){
             if(json.code == '200'){

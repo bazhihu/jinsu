@@ -8,12 +8,12 @@ use kartik\detail\DetailView;
  * @var backend\models\AdminUser $model
  */
 
-$this->title = $model->id;
+$this->title = $model->username;
 
 ?>
 <div class="admin-user-view">
     <div class="page-header">
-        <h1><?= Html::encode($this->title) ?></h1>
+        <h1><?= Html::encode($this->title); ?></h1>
     </div>
     <?= DetailView::widget([
             'model'     => $model,
@@ -46,6 +46,12 @@ $this->title = $model->id;
             ],
         ],
         'enableEditMode'=>false,
-    ]) ?>
-
+    ]);
+    ?>
+    <?= Html::a('完成',
+        Yii::$app->urlManager->createUrl(['admin-user/index']),
+        [
+            'class' =>'btn btn-success'
+        ]
+    );?>
 </div>

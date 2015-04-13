@@ -32,6 +32,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public $pwd;//重复密码
     public $created_name;//创建人姓名
 
+    const  BACKADMIN = 'admin';
+    const  BACKSYSTEMADMIN = '系统管理员';
     const  BACKOFFICESTAFF = '内勤人员';
     /**
      * @inheritdoc
@@ -173,6 +175,14 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public function up()
     {
+        #权限验证
+        $admin_uid = Yii::$app->user->identity->getId();
+        #当前用户没有权限操作自己
+        if($admin_uid ==$this->getAttribute('admin_uid')){
+            $this->addError('username','不能编辑自己的信息！');
+            return false;
+        }
+        #内勤人员-医院判断
         if($this->staff_role == self::BACKOFFICESTAFF && empty($this->hospital_id)){
             $this->addError('hospital_id','医院不能为空');
             return false;
@@ -180,6 +190,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         if($this->staff_role != self::BACKOFFICESTAFF){
             $this->hospital_id = '';
         }
+
         $this->setAttribute('modifier_id',yii::$app->user->identity->getId());
         #保存信息
         if(!$this->save())
@@ -211,20 +222,6 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         }
         return true;
     }
-
-    /**
-     * @注册时密码转换hash
-     * @param bool $insert
-     * @return bool
-     */
-    /*public function beforeSave($insert) {
-
-//        if(empty($this->staff_id))
-//            $this->staff_id = $this->staff_name;
-//        if(isset($this->password))
-//            $this->password_hash = \yii::$app->Security->generatePasswordHash($this->password);
-        return parent::beforeSave($insert);
-    }*/
 
     /**
      * @inheritdoc
@@ -358,14 +355,21 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @desc 获取所有职位
-     * @return $return[]
+     * 获取所有职位
+     * @param null $id
+     * @return mixed
      */
-    static function getRoles(){
+    static function getRoles($id=null){
         $staff_role = Yii::$app->authManager->getRoles();
         foreach(ArrayHelper::toArray($staff_role) as $val){
-            if($val['name'] !== '系统管理员'){
+            if($val['name'] !== self::BACKSYSTEMADMIN){
                 $return[$val['name']] = $val['name'];
+            }
+            if($id){
+                if(key(yii::$app->authManager->getRolesByUser($id)) == self::BACKSYSTEMADMIN)
+                {
+                    $return[$val['name']] = $val['name'];
+                }
             }
         }
         return $return;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * 第三方支付
  * User: zhangbo
  * Date: 2015/4/9
  * Time: 20:31
@@ -21,6 +21,7 @@ class Payment
     private $_tradeNo = null;
     private $_model = null;
 
+    //允许支付方式
     public static $allowPayWay = [
         Order::PAY_WAY_ALIPAY,
         Order::PAY_WAY_WE_CHAT
@@ -28,7 +29,6 @@ class Payment
 
     public function __construct($payWay, $data)
     {
-
         $this->_payWay = $payWay;
         $this->_payData = $data;
         if (!in_array($payWay, self::$allowPayWay)) {

@@ -74,7 +74,7 @@ class Sms extends Model{
             case self::SMS_ORDERS_NOT_PAID:
                 #订单未支付
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单还未支付，10分钟未支付订单将自动取消，请尽快完成支付。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单还未支付，请尽快完成支付。';
                 break;
             case self::SMS_ORDERS_SUCCESSFUL_PAYMENT:
                 #订单支付成功
@@ -180,13 +180,13 @@ class Sms extends Model{
             return $response;
         }
 
-        $response = self::_nineSend($params['mobile'],$content);
+        $response = self::_manRoadSend($params['mobile'],$content);
         if($response['code'] == 200)
         {
             return $response;
         }
 
-        $response = self::_manRoadSend($params['mobile'],$content);
+        $response = self::_nineSend($params['mobile'],$content);
 
         return $response;
     }

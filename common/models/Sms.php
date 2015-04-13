@@ -156,7 +156,7 @@ class Sms extends Model{
      *
      *      #type = SMS_SUCCESS_RECHARGE  充值成功 9
      *      'account'         账户
-     *      'money'            充值金额
+     *      'money'           充值金额
      *      'balance'         余额
      *
      * ]
@@ -200,7 +200,7 @@ class Sms extends Model{
      * @param $content
      * @return array
      */
-    protected function _manRoadSend($mobile,$content){
+    protected static function _manRoadSend($mobile,$content){
         $curl = new Curl();
 
         $params = [
@@ -238,7 +238,7 @@ class Sms extends Model{
      * @param $content
      * @return array
      */
-    protected function _nineSend($mobile,$content){
+    protected static function _nineSend($mobile,$content){
 
         $curl = new Curl();
 

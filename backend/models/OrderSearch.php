@@ -50,10 +50,11 @@ class OrderSearch extends OrderMaster
             'patient_state' => $this->patient_state,
             'worker_no' => $this->worker_no,
             'mobile' => $this->mobile,
-            'order_status' => $this->order_status,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time
+            'order_status' => $this->order_status
         ]);
+
+        $query->andFilterWhere(['>=', 'start_time', $this->start_time])
+            ->andFilterWhere(['<=', 'end_time', $this->end_time]);
 
         $query->orderBy('order_id DESC');
         return $dataProvider;

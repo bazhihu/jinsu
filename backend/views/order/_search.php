@@ -17,6 +17,12 @@ use kartik\datecontrol\DateControl;
         float:left;
         margin:5px;
     }
+    .field-ordersearch-start_time{
+        float:left;width:210px
+    }
+    .field-ordersearch-end_time{
+        float:left;width:210px
+    }
 </style>
 <div class="order-master-search">
 
@@ -57,7 +63,7 @@ use kartik\datecontrol\DateControl;
                     ],
                     'options'=>['style'=>'width:130px']
                 ]
-            ]); ?>
+            ])->label('订单时间范围'); ?>
 
             <?= $form->field($model, 'end_time')->widget(DateControl::classname(), [
                 'type'=>DateControl::FORMAT_DATE,
@@ -68,7 +74,7 @@ use kartik\datecontrol\DateControl;
                     ],
                     'options'=>['style'=>'width:130px']
                 ]
-            ]); ?>
+            ])->label('至'); ?>
 
             <div class="form-group" style="margin-top: 30px">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>

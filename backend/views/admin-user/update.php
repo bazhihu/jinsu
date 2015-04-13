@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
+use kartik\widgets\Select2;
 
 /**
  * @var yii\web\View $this
@@ -10,6 +11,7 @@ use kartik\builder\Form;
  */
 
 $this->title = '编辑用户: ' . ' ' . $model->username;
+$this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
 ?>
 
 <div class="panel panel-info"  style="margin: 8%;">
@@ -52,21 +54,6 @@ $this->title = '编辑用户: ' . ' ' . $model->username;
                                 'readonly'=>'readonly'
                             ]
                         ],
-                        'staff_role'=>[
-                            'type'=> Form::INPUT_DROPDOWN_LIST,
-                            'items'=>\backend\models\AdminUser::getRoles(),
-                            'options'=>[
-                                'prompt'=>'选择'
-                            ]
-                        ],
-                        'hospital_id'=>[
-                            'type'=> Form::INPUT_DROPDOWN_LIST,
-                            'items'=>\backend\models\Hospitals::getList(),
-                            'options'=>[
-                                'prompt'=>'选择',
-                            ]
-                        ],
-
                         'created_name'=>[
                             'type'=> Form::INPUT_TEXT,
                             'options'=>[
@@ -75,10 +62,37 @@ $this->title = '编辑用户: ' . ' ' . $model->username;
                             ],
                             'label'=>'创建人',
                         ],
+                        'staff_role'=>[
+                            'type'=> Form::INPUT_DROPDOWN_LIST,
+                            'items'=>\backend\models\AdminUser::getRoles(),
+                            'options'=>[
+                                'prompt'=>'选择'
+                            ]
+                        ],
+                       /*'hospital_id'=>[
+                            'type'=> Form::INPUT_DROPDOWN_LIST,
+                            'items'=>\backend\models\Hospitals::getList(),
+                            'options'=>[
+                                'prompt'=>'选择',
+                            ]
+                        ],*/
                     ]
-
-                ]);
-
+                ]);?>
+                <div class="hospitals_hide
+                    <?php if($model->staff_role != \backend\models\AdminUser::BACKOFFICESTAFF){echo 'hide';}?>">
+                <?php
+                echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
+                    'data' => \backend\models\Hospitals::getList(),
+                    'options' => [
+                        'placeholder' => '请选择医院',
+                        'style'=>'width:100%;'
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]);?>
+            </div>
+                <?php
                 echo $form->field($model, 'phone', [
                     'addon' => [
                         'prepend' => [

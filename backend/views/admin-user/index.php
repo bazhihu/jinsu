@@ -34,7 +34,7 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                 'attribute'=>'hospital_id',
                 'value'=>
                     function($model){
-                        return \backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->name;
+                        return $model->hospital_id?\backend\models\Hospitals::findOne(['id'=>$model->hospital_id])->name:'';
                     }
             ],
             [

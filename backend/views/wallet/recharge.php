@@ -42,7 +42,7 @@ if($userRow['username']){
             ->textInput(
                 [
                     'disabled'=>true,
-                    'value'=>$userRow['mobile'],
+                    'value'=>substr_replace($userRow['mobile'],'****',3,4),
                 ]
             )->label('充值帐号') ?>
 

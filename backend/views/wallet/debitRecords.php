@@ -102,6 +102,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'mobile',
                 'label' => '帐号',
+                'value'=>function($model){
+                    return $model->mobile?substr_replace($model->mobile,'****',3,4):'';
+                }
             ],
             [
                 'attribute'=>'detail_money',

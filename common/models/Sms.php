@@ -16,15 +16,15 @@ class Sms extends Model{
 
     public $mobile;
 
-    const SMS_LOGIN_CODE                    = '1';
-    const SMS_ORDERS_NOT_PAID               = '2';
-    const SMS_ORDERS_SUCCESSFUL_PAYMENT     = '3';
-    const SMS_ORDERS_OVER                   = '4';
-    const SMS_ORDER_CANCELED                = '5';
-    const SMS_ORDERS_MODIFIED_SUCCESSFULLY  = '6';
-    const SMS_ORDERS_COMPLETED              = '7';
-    const SMS_WITHDRAW_APPLICATION          = '8';
-    const SMS_SUCCESS_RECHARGE              = '9';
+    const SMS_LOGIN_CODE                    = '1'; //登录时的验证码
+    const SMS_ORDERS_NOT_PAID               = '2'; //订单未支付
+    const SMS_ORDERS_SUCCESSFUL_PAYMENT     = '3'; //订单支付成功
+    const SMS_ORDERS_OVER                   = '4'; //服务结束前24小时
+    const SMS_ORDER_CANCELED                = '5'; //订单已取消
+    const SMS_ORDERS_MODIFIED_SUCCESSFULLY  = '6'; //订单修改成功
+    const SMS_ORDERS_COMPLETED              = '7'; //订单已完成
+    const SMS_WITHDRAW_APPLICATION          = '8'; //提现申请
+    const SMS_SUCCESS_RECHARGE              = '9'; //充值成功
 
     public static $hotLine = '400-12345678';//客服热线
     /**
@@ -156,7 +156,7 @@ class Sms extends Model{
      *
      *      #type = SMS_SUCCESS_RECHARGE  充值成功 9
      *      'account'         账户
-     *      'money'            充值金额
+     *      'money'           充值金额
      *      'balance'         余额
      *
      * ]
@@ -178,10 +178,10 @@ class Sms extends Model{
             $response['msg'] ='参数错误';
         }
 
-        $nine = self::nineSend($params['mobile'],$content);
+        $nine = self::_nineSend($params['mobile'],$content);
         if($nine['code'] != '200')
         {
-            $manRoad = self::manRoadSend($params['mobile'],$content);
+            $manRoad = self::_manRoadSend($params['mobile'],$content);
             if($manRoad['code']!='200')
             {
                 $response = [
@@ -200,7 +200,7 @@ class Sms extends Model{
      * @param $content
      * @return array
      */
-    protected function manRoadSend($mobile,$content){
+    protected static function _manRoadSend($mobile,$content){
         $curl = new Curl();
 
         $params = [
@@ -238,7 +238,7 @@ class Sms extends Model{
      * @param $content
      * @return array
      */
-    protected function nineSend($mobile,$content){
+    protected static function _nineSend($mobile,$content){
 
         $curl = new Curl();
 

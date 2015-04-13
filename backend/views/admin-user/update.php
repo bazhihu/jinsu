@@ -64,7 +64,7 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                         ],
                         'staff_role'=>[
                             'type'=> Form::INPUT_DROPDOWN_LIST,
-                            'items'=>\backend\models\AdminUser::getRoles(),
+                            'items'=>\backend\models\AdminUser::getRoles($model->admin_uid),
                             'options'=>[
                                 'prompt'=>'选择'
                             ]

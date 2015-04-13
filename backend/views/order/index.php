@@ -18,13 +18,17 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 
 ?>
 <style>
-    td .btn{margin-left: 3px}
+td .btn{margin-left: 3px}
+.panel-body .form-group{
+    float:left;
+    margin:5px;
+}
 </style>
 <div class="order-master-index">
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php
     $columns = [
@@ -220,7 +224,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     //Pjax::begin(['enablePushState'=>true,'timeout'=>5000]);
     echo GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => $columns,
         //'export' => true,//是否显示导出
         'toggleData' => false,

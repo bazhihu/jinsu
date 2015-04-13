@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
+use backend\models\OrderPatient;
+use backend\models\OrderMaster;
+use kartik\datecontrol\DateControl;
 
 /**
  * @var yii\web\View $this
@@ -22,61 +25,54 @@ use kartik\widgets\ActiveForm;
             <h3 class="panel-title">检索</h3>
         </div>
         <div class="panel-body">
-        <?php $form = ActiveForm::begin([
-            'action' => ['index'],
-            'method' => 'get',
-            'type' => ActiveForm::TYPE_VERTICAL,
-            'formConfig' => [
-                'showLabels' => true,
-            ],
-        ]); ?>
+            <?php $form = ActiveForm::begin([
+                'action' => ['index'],
+                'method' => 'get',
+                'type' => ActiveForm::TYPE_VERTICAL,
+                'formConfig' => [
+                    'showLabels' => true,
+                ],
+            ]); ?>
 
 
-        <?= $form->field($model, 'order_no') ?>
+            <?= $form->field($model, 'order_no')->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:135px']) ?>
 
-        <?= $form->field($model, 'mobile') ?>
+            <?= $form->field($model, 'mobile')->input('text',['placeholder'=>'请输入手机号...','style'=>'width:125px']) ?>
 
-        <?= $form->field($model, 'base_price') ?>
+            <?= $form->field($model, 'worker_no')->input('text',['placeholder'=>'请输入护工编号...','style'=>'width:135px']) ?>
 
-        <?php // echo $form->field($model, 'disabled_amount') ?>
+            <?= $form->field($model, 'patient_state')->dropDownList(OrderPatient::$patientStateLabels,['prompt'=>'请选择']) ?>
 
-        <?php // echo $form->field($model, 'holiday_amount') ?>
+            <?= $form->field($model, 'order_status')->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']) ?>
 
-        <?php // echo $form->field($model, 'total_amount') ?>
+            <?= $form->field($model, 'total_amount')->input('text', ['placeholder'=>'请输入订单金额...','style'=>'width:125px']) ?>
 
-        <?php // echo $form->field($model, 'patient_state') ?>
 
-        <?php // echo $form->field($model, 'worker_level') ?>
+            <?= $form->field($model, 'start_time')->widget(DateControl::classname(), [
+                'type'=>DateControl::FORMAT_DATE,
+                'ajaxConversion'=>false,
+                'options' => [
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ],
+                    'options'=>['style'=>'width:130px']
+                ]
+            ]); ?>
 
-        <?php // echo $form->field($model, 'customer_service_id') ?>
+            <?= $form->field($model, 'end_time')->widget(DateControl::classname(), [
+                'type'=>DateControl::FORMAT_DATE,
+                'ajaxConversion'=>false,
+                'options' => [
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ],
+                    'options'=>['style'=>'width:130px']
+                ]
+            ]); ?>
 
-        <?php // echo $form->field($model, 'operator_id') ?>
-
-        <?php // echo $form->field($model, 'service_start_time') ?>
-
-        <?php // echo $form->field($model, 'service_end_time') ?>
-
-        <?php // echo $form->field($model, 'reality_end_time') ?>
-
-        <?php // echo $form->field($model, 'create_time') ?>
-
-        <?php // echo $form->field($model, 'pay_time') ?>
-
-        <?php // echo $form->field($model, 'confirm_time') ?>
-
-        <?php // echo $form->field($model, 'cancel_time') ?>
-
-        <?php // echo $form->field($model, 'order_status') ?>
-
-        <?php // echo $form->field($model, 'create_order_ip') ?>
-
-        <?php // echo $form->field($model, 'create_order_sources') ?>
-
-        <?php // echo $form->field($model, 'create_order_user_agent') ?>
-
-        <div class="form-group">
-            <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
-        </div>
+            <div class="form-group" style="margin-top: 30px">
+                <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
+            </div>
 
         <?php ActiveForm::end(); ?>
         </div>

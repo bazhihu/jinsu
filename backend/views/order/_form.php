@@ -20,6 +20,7 @@ use backend\models\OrderPatient;
         content: " *";
         color: #ff0000;
     }
+    red{color: #ff0000;}
 </style>
 <div class="order-master-form">
     <?php
@@ -130,7 +131,7 @@ use backend\models\OrderPatient;
                 ],
                 'attributes'=>[
                     'date_range' => [
-                        'label' => '订单时间段',
+                        'label' => '<red>*</red>订单时间段',
                         'attributes'=>[
                             'start_time' => [
                                 'type'=>Form::INPUT_WIDGET,

@@ -29,7 +29,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     </div>
 
     <!--订单操作-->
-    <?php if($model->order_status != OrderMaster::ORDER_STATUS_CANCEL):?>
+    <?php if($model->order_status != OrderMaster::ORDER_STATUS_END_SERVICE && $model->order_status != OrderMaster::ORDER_STATUS_CANCEL):?>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">订单操作</h3>

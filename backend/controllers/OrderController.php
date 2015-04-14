@@ -13,6 +13,8 @@ use backend\models\OrderPatient;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
 use backend\models\User;
+use common\models\Sms;
+use backend\models\Worker;
 
 /**
  * OrderController implements the CRUD actions for OrderMaster model.
@@ -96,6 +98,15 @@ class OrderController extends Controller
             $order = new Order();
             $order->createOrder($params);
             $order->pay();
+
+            //发送短信
+            if($order->sta != 200){
+                $params['mobile'] = $this->mobile;
+                $params['type'] = Sms::SMS_ORDERS_NOT_PAID;
+                $params['time'] = $this->start_time;
+                $params['level'] = Worker::$workerLevelLabel[$this->worker_level];
+                Sms::send($params);
+            }
             return $this->redirect(['index']);
         } else {
             //$model->addError('end_time', '结束时间不能小于或等于开始时间。');
@@ -246,6 +257,15 @@ class OrderController extends Controller
     public function actionCancel($id){
         $order = $this->findModel($id);
         $response = $order->cancel();
+
+        //发送短信
+        if($response['code'] == 200){
+            $params['mobile'] = $order->mobile;
+            $params['type'] = Sms::SMS_ORDER_CANCELED;
+            $params['time'] = $order->start_time;
+            $params['level'] = Worker::$workerLevelLabel[$order->worker_level];
+            Sms::send($params);
+        }
         echo Json::encode($response);
     }
 

@@ -171,7 +171,7 @@ class Sms extends Model{
      */
     public static function send($params){
 
-        $content    = self::smsScene($params);  //内容
+        $content = self::smsScene($params);  //内容
 
         if(!$content)
         {

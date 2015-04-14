@@ -8,12 +8,13 @@
 
 namespace api\modules\v1\controllers;
 
+use common\models\Sms;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 
 class SmsController extends ActiveController{
-    public $modelClass = 'common\models\Sms';
+    public $modelClass = false;
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -27,9 +28,20 @@ class SmsController extends ActiveController{
     }
 
     public function actionCreate(){
-        $post = Yii::$app->getRequest()->getBodyParams();
-        $mobile = $post['mobile'];
+        $sms = new Sms();
+        $sms->setAttributes(Yii::$app->getRequest()->getBodyParams());
 
+        if(!$sms->validate()){
+            $this->responseCode = 400;
+            $this->responseMsg = $sms->getFirstError('mobile');
+            return null;
+        }
+
+        $params['mobile'] = $sms->mobile;
+        $params['type'] = Sms::SMS_LOGIN_CODE;
+        $params['code'] = rand(100000, 999999);
+        Yii::$app->cache->set($sms->mobile, $params['code'], 5);
+        return $sms::send($params);
     }
 
     /**

@@ -285,6 +285,7 @@ class Order extends \yii\db\ActiveRecord{
             $transaction->rollBack();
             throw new HttpException(400, print_r($e, true));
         }
+
         return true;
     }
 
@@ -538,6 +539,7 @@ class Order extends \yii\db\ActiveRecord{
             $params['level'] = Worker::$workerLevelLabel[$this->worker_level];
             Sms::send($params);
         }
+
         return $response;
     }
 
@@ -648,6 +650,15 @@ class Order extends \yii\db\ActiveRecord{
                 'msg' => '完成订单处理失败:'.$e->getMessage(),
                 'errorMsg' => $e->getMessage()
             ];
+        }
+
+        //发送短信
+        if($response['code'] == 200){
+            $params['mobile'] = $this->mobile;
+            $params['type'] = Sms::SMS_ORDERS_COMPLETED;
+            $params['days'] = self::getOrderCycle($this->start_time, $this->reality_end_time);
+            $params['level'] = Worker::$workerLevelLabel[$this->worker_level];
+            Sms::send($params);
         }
         return $response;
     }

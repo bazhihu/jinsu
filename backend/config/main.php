@@ -116,6 +116,12 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['backend'],
+                    'logFile' => '@app/runtime/logs/backend.log'
+                ],
             ],
         ],
         'errorHandler' => [

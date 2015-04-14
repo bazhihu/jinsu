@@ -16,9 +16,9 @@ return [
         'cache' => [
             'class' => 'yii\redis\Cache',
         ],
-//        'session' => [
-//             'class' => 'yii\redis\Session'
-//        ],
+        'session' => [
+             'class' => 'yii\redis\Session'
+        ],
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=192.168.1.20;dbname=youaiyihu',

@@ -100,7 +100,7 @@ class OrderController extends Controller
             $order->pay();
 
             //发送短信
-            if($order->order_status != 200){
+            if($order->order_status == OrderMaster::ORDER_STATUS_WAIT_PAY){
                 $params['mobile'] = $order->mobile;
                 $params['type'] = Sms::SMS_ORDERS_NOT_PAID;
                 $params['time'] = $order->start_time;

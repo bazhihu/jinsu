@@ -19,7 +19,6 @@ class Payment
     private $_payWay = null;
     private $_payData = null;
     private $_tradeNo = null;
-    private $_model = null;
 
     //允许支付方式
     public static $allowPayWay = [
@@ -36,12 +35,19 @@ class Payment
         }
         switch ($payWay) {
             case Order::PAY_WAY_ALIPAY:
-                $this->_model = new Alipay();
+                $this->_aliPay();
                 break;
             case Order::PAY_WAY_WE_CHAT:
                 $this->_model = new Wechat();
                 break;
         }
+    }
+    private function _aliPay(){
+
+    }
+
+    private function _WeChat(){
+
     }
 
     /**

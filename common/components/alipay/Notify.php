@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: zhangbo
  * Date: 2015/4/9
- * Time: 17:30
+ * Time: 20:27
  */
 
-namespace api\modules\alipay\models;
+namespace common\components\alipay;
 
 
-class Notify{
+class Notify {
     /**
      * HTTPS形式消息验证地址
      */

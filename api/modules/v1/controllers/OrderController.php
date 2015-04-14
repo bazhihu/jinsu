@@ -100,11 +100,24 @@ class OrderController extends ActiveController {
         }
         $order = Order::findOne($orderModel->order_id);
 
+        $balance = WalletUser::getBalance($order['uid']);
 
+        //支付
         if($post['pay_way'] == Order::PAY_WAY_CASH){
             $order->pay();
         }else{
-            $payment = new Payment($post['pay_way'], null);
+            $payAmount = $order->total_amount - $balance;
+            if($payAmount <= 0){
+                $this->responseCode = 500;
+                $this->responseMsg = '支付金额错误';
+                return null;
+            }
+            $data = [
+                'order_id' => $order->order_id,
+                'order_no' => $order->order_no,
+                'amount' => $payAmount
+            ];
+            $payment = new Payment($post['pay_way'], $data);
             $payment;
             exit;
         }
@@ -115,7 +128,7 @@ class OrderController extends ActiveController {
             'mobile' => $order['mobile'],
             'uid' => $order['uid'],
             'wallet' => [
-                'money' => WalletUser::getBalance($order['uid'])
+                'money' => $balance
             ]
         ];
 

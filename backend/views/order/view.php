@@ -175,7 +175,10 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         ],
         'attributes' => [
             'uid',
-            'mobile',
+            [
+                'attribute'=>'mobile',
+                'value'=>substr_replace($model->mobile,'****',3,4)
+            ],
             'contact_name',
             'contact_telephone',
             'contact_address'

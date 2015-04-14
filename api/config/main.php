@@ -52,7 +52,8 @@ return [
                         'v1/order',
                         'v1/config',
                         'v1/sms',
-                        'v1/worker'
+                        'v1/worker',
+                        'v1/alipay'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

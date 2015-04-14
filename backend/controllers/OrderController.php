@@ -100,11 +100,11 @@ class OrderController extends Controller
             $order->pay();
 
             //发送短信
-            if($order->sta != 200){
-                $params['mobile'] = $this->mobile;
+            if($order->order_status != 200){
+                $params['mobile'] = $order->mobile;
                 $params['type'] = Sms::SMS_ORDERS_NOT_PAID;
-                $params['time'] = $this->start_time;
-                $params['level'] = Worker::$workerLevelLabel[$this->worker_level];
+                $params['time'] = $order->start_time;
+                $params['level'] = Worker::$workerLevelLabel[$order->worker_level];
                 Sms::send($params);
             }
             return $this->redirect(['index']);

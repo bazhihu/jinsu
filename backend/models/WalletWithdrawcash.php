@@ -162,7 +162,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
                     'mobile'    =>$cash->mobile,
                     'type'      =>Sms::SMS_WITHDRAW_APPLICATION,
                     'money'     =>$cash->money,
-                    'time'      =>date('Y年m月d日',time($cash->payee_time)),
+                    'time'      =>$cash->payee_time,
                     'hospital'  =>Hospitals::getName($cash->payee_hospital),
                 ];
                 $return = $sms->send($send);

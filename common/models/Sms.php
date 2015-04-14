@@ -74,12 +74,12 @@ class Sms extends Model{
             case self::SMS_ORDERS_NOT_PAID:
                 #订单未支付
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单还未支付，请尽快完成支付。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务订单还未支付，请尽快完成支付。';
                 break;
             case self::SMS_ORDERS_SUCCESSFUL_PAYMENT:
                 #订单支付成功
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务已确认。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务已确认。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
                 break;
             case self::SMS_ORDERS_OVER:
                 #服务结束前24小时
@@ -89,18 +89,18 @@ class Sms extends Model{
             case self::SMS_ORDER_CANCELED:
                 #订单已取消
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单已取消，已支付金额会在3-10个工作日内退回您支付时的账号，期待下次为您服务。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务订单已取消，已支付金额会在3-10个工作日内退回您支付时的账号，期待下次为您服务。';
                 break;
             case self::SMS_ORDERS_MODIFIED_SUCCESSFULLY:
                 #订单修改成功
                 if(!isset($params['time']) || !isset($params['level']))
                     return false;
-                $content = '您预约的陪护服务订单已成功修改为'.$params['newTime'].'开始的'.$params['newLevel'].'级陪护服务。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
+                $content = '您预约的陪护服务订单已成功修改为'.$params['newTime'].'开始的'.$params['newLevel'].'陪护服务。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
                 break;
             case self::SMS_ORDERS_COMPLETED:
                 #订单已完成
                 if(!isset($params['days']) || !isset($params['level'])) return false;
-                $content = '您的'.$params['days'].'天'.$params['level'].'级陪护服务已完成，为了您以后享受更好的服务，请对我们的工作人员进行评价，感谢您的信任，祝您健康快乐。';
+                $content = '您的'.$params['days'].'天'.$params['level'].'陪护服务已完成，为了您以后享受更好的服务，请对我们的工作人员进行评价，感谢您的信任，祝您健康快乐。';
                 break;
             case self::SMS_WITHDRAW_APPLICATION:
                 #提现申请

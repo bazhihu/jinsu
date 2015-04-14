@@ -68,6 +68,17 @@ class Wallet
             throw new HttpException(400, print_r($e, true));
         }
         #事务-END
+
+        #发送短信
+        $sms = new Sms();
+        $send = [
+            'mobile'    =>User::findOne(['id'=>$params['uid']])->mobile,
+            'type'      =>Sms::SMS_SUCCESS_RECHARGE,
+            'account'   =>User::findOne(['id'=>$params['uid']])->mobile,
+            'money'     =>$params['money'],
+            'balance'   =>$walletUser->money,
+        ];
+        $sms->send($send);
         return true;
     }
 

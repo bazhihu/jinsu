@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Sms;
 use common\models\Wallet;
 use Yii;
 use yii\web\UploadedFile;
@@ -154,6 +155,17 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
         if($params['todo']){
             $update['status'] =2;
             if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
+                $cash = $this->findOne(['withdrawcash_id'=>$params['id']]);
+                #发送短信
+                $sms = new Sms();
+                $send = [
+                    'mobile'    =>$cash->mobile,
+                    'type'      =>Sms::SMS_WITHDRAW_APPLICATION,
+                    'money'     =>$cash->money,
+                    'time'      =>date('Y年m月d日',time($cash->payee_time)),
+                    'hospital'  =>Hospitals::getName($cash->payee_hospital),
+                ];
+                $return = $sms->send($send);
                 return true;
             }
         }else{

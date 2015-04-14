@@ -64,57 +64,62 @@ class Sms extends Model{
      * @return bool|string
      */
     public static function smsScene($params){
-
+        $content = '';
         switch ($params['type']) {
             case self::SMS_LOGIN_CODE:
                 #登录时的验证码
                 if(!isset($params['code'])) return false;
-                return '您的验证码为：'.$params['code'].'，请在5分钟内填写，如非本人操作请忽略本短信。';
+                $content = '您的验证码为：'.$params['code'].'，请在5分钟内填写，如非本人操作请忽略本短信。';
                 break;
             case self::SMS_ORDERS_NOT_PAID:
                 #订单未支付
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                return '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单还未支付，10分钟未支付订单将自动取消，请尽快完成支付。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务订单还未支付，请尽快完成支付。';
                 break;
             case self::SMS_ORDERS_SUCCESSFUL_PAYMENT:
                 #订单支付成功
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                return '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务已确认。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务已确认。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
                 break;
             case self::SMS_ORDERS_OVER:
                 #服务结束前24小时
                 if(!isset($params['time'])) return false;
-                return '陪护服务将在'.$params['time'].'早上8:00结束，如还需继续服务请在30分钟内拨打客服热线：'.self::$hotLine.'进行续单，否则服务将在指定时间结束。';
+                $content = '陪护服务将在'.$params['time'].'早上8:00结束，如还需继续服务请在30分钟内拨打客服热线：'.self::$hotLine.'进行续单，否则服务将在指定时间结束。';
                 break;
             case self::SMS_ORDER_CANCELED:
                 #订单已取消
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                return '您预约的'.$params['time'].'开始的'.$params['level'].'级陪护服务订单已取消，已支付金额会在3-10个工作日内退回您支付时的账号，期待下次为您服务。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务订单已取消，已支付金额会在3-10个工作日内退回您支付时的账号，期待下次为您服务。';
                 break;
             case self::SMS_ORDERS_MODIFIED_SUCCESSFULLY:
                 #订单修改成功
                 if(!isset($params['time']) || !isset($params['level']))
                     return false;
-                return '您预约的陪护服务订单已成功修改为'.$params['newTime'].'开始的'.$params['newLevel'].'级陪护服务。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
+                $content = '您预约的陪护服务订单已成功修改为'.$params['newTime'].'开始的'.$params['newLevel'].'陪护服务。您可以在优爱医护App“我的订单”中查看追踪订单状态。';
                 break;
             case self::SMS_ORDERS_COMPLETED:
                 #订单已完成
                 if(!isset($params['days']) || !isset($params['level'])) return false;
-                return '您的'.$params['days'].'天'.$params['level'].'级陪护服务已完成，为了您以后享受更好的服务，请对我们的工作人员进行评价，感谢您的信任，祝您健康快乐。';
+                $content = '您的'.$params['days'].'天'.$params['level'].'陪护服务已完成，为了您以后享受更好的服务，请对我们的工作人员进行评价，感谢您的信任，祝您健康快乐。';
                 break;
             case self::SMS_WITHDRAW_APPLICATION:
                 #提现申请
                 if(!isset($params['money']) || !isset($params['time']) || !isset($params['hospital'])) return false;
-                return '您有一笔'.$params['money'].'元的提现申请已确认，请与'.$params['time'].'到'.$params['hospital'].'医院指定办公室办理提现手续。';
+                $content = '您有一笔'.$params['money'].'元的提现申请已确认，请与'.$params['time'].'到'.$params['hospital'].'医院指定办公室办理提现手续。';
                 break;
             case self::SMS_SUCCESS_RECHARGE:
                 #充值成功
                 if(!isset($params['account']) || !isset($params['money']) || !isset($params['balance'])) return false;
-                return '已成功为账号'.$params['account'].'充值'.$params['money'].'元，当前账号余额为：'.$params['balance'].'元。您可以在优爱医护App“我的钱包”中随时查看消费记录。';
+                $content = '已成功为账号'.$params['account'].'充值'.$params['money'].'元，当前账号余额为：'.$params['balance'].'元。您可以在优爱医护App“我的钱包”中随时查看消费记录。';
                 break;
             default:
-                return false;
+                $content = '';
         }
+        if(!$content)
+        {
+            return false;
+        }
+        return $content;
     }
 
     /**
@@ -175,13 +180,13 @@ class Sms extends Model{
             return $response;
         }
 
-        $response = self::_nineSend($params['mobile'],$content);
+        $response = self::_manRoadSend($params['mobile'],$content);
         if($response['code'] == 200)
         {
             return $response;
         }
 
-        $response = self::_manRoadSend($params['mobile'],$content);
+        $response = self::_nineSend($params['mobile'],$content);
 
         return $response;
     }

@@ -177,11 +177,22 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     {
         #权限验证
         $admin_uid = Yii::$app->user->identity->getId();
-        #当前用户没有权限操作自己
-        if($admin_uid ==$this->getAttribute('admin_uid')){
-            $this->addError('username','不能编辑自己的信息！');
+
+        $key = key(Yii::$app->authManager->getRolesByUser($this->admin_uid));
+        #当前用户没有权限操作自己的职位
+        if($admin_uid == $this->getAttribute('admin_uid')){
+            if($key!=$this->staff_role)
+            {
+                $this->addError('username','非法编辑');
+                return false;
+            }
+        }
+        #不能操作系统管理员的权限
+        if($key == self::BACKSYSTEMADMIN && $key !=$this->staff_role){
+            $this->addError('username','非法编辑');
             return false;
         }
+
         #内勤人员-医院判断
         if($this->staff_role == self::BACKOFFICESTAFF && empty($this->hospital_id)){
             $this->addError('hospital_id','医院不能为空');

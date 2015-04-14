@@ -26,7 +26,7 @@ class Sms extends Model{
     const SMS_WITHDRAW_APPLICATION          = '8'; //提现申请
     const SMS_SUCCESS_RECHARGE              = '9'; //充值成功
 
-    public static $hotLine = '400-630-6304';//客服热线
+    public static $hotLine = '400-630-6340';//客服热线
     /**
      * 漫道科技序列号&密码
      * @var array
@@ -94,18 +94,18 @@ class Sms extends Model{
             case self::SMS_ORDER_CANCELED:
                 #订单已取消
                 if(!isset($params['time']) || !isset($params['level'])) return false;
-                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务订单已取消，已支付金额会在3-10个工作日内退回您支付时的账号，期待下次为您服务。';
+                $content = '您预约的'.$params['time'].'开始的'.$params['level'].'陪护服务订单已取消，已支付金额会退回您优爱医护账号钱包，您可以拨打客服热线：'.self::$hotLine.'申请提现。';
                 break;
             case self::SMS_ORDERS_MODIFIED_SUCCESSFULLY:
                 #订单修改成功
                 if(!isset($params['time']) || !isset($params['level']))
                     return false;
-                $content = '您预约的陪护服务订单已成功修改为'.$params['time'].'开始的'.$params['newLevel'].'陪护服务。您可以拨打客服热线：'.self::$hotLine.'或使用优爱医护App追踪查看订单状态。';
+                $content = '您预约的陪护服务订单已成功修改为'.$params['time'].'开始的'.$params['level'].'陪护服务。您可以拨打客服热线：'.self::$hotLine.'或使用优爱医护App追踪查看订单状态。';
                 break;
             case self::SMS_ORDERS_COMPLETED:
                 #订单已完成
                 if(!isset($params['days']) || !isset($params['level'])) return false;
-                $content = '您的'.$params['days'].'天'.$params['level'].'陪护服务已完成，为了您以后享受更好的服务，请对我们的工作人员进行评价。如有问题请拨打客服热线：'.self::$hotLine.'。';
+                $content = '您的'.$params['days'].'天'.$params['level'].'陪护服务已完成，请使用优爱医护App对服务人员进行评价。如有问题请拨打客服热线：'.self::$hotLine.'。';
                 break;
             case self::SMS_WITHDRAW_APPLICATION:
                 #提现申请

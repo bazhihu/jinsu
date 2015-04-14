@@ -6,18 +6,16 @@
  * Time: 22:15
  */
 
-namespace api\modules\v1\controllers;
+namespace api\modules\alipay\controllers;
 
 use Yii;
 //use yii\log\Logger;
 use yii\web\Response;
 use yii\rest\ActiveController;
-use backend\models\WalletUser;
-use common\models\Login;
 
 
-class LoginController extends ActiveController{
-    public $modelClass = 'common\models\Login';
+class NotifyController extends ActiveController{
+    public $modelClass = false;
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -29,6 +27,10 @@ class LoginController extends ActiveController{
     public function actions(){
         return null;
     }
+    public function actionIndex(){
+        echo 'index';
+        exit;
+    }
 
     /**
      * 登录
@@ -36,25 +38,7 @@ class LoginController extends ActiveController{
      * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate(){
-        $loginModel = new Login();
-
-        $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
-        if(!$loginModel->validate()){
-            $this->responseCode = 400;
-            $this->responseMsg = print_r($loginModel->getErrors(), true);
-            return null;
-        }
-
-        $user = $loginModel->getUser();
-        $result = [
-            'uid' => $user->id,
-            'mobile' => $user->mobile,
-            'token' => Login::encryptToken($user->access_token),
-            'wallet' => [
-                'money' => WalletUser::getBalance($user->id)
-            ]
-        ];
-        return $result;
+        echo 'create';exit;
     }
 
     /**

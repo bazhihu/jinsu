@@ -12,10 +12,14 @@ return [
     'basePath' => dirname(__DIR__),    
     'bootstrap' => ['log'],
     'modules' => [
+        'alipay' => [
+            'basePath' => '@app/modules/alipay',
+            'class' => 'api\modules\alipay\Module'
+        ],
         'v1' => [
             'basePath' => '@app/modules/v1',
             'class' => 'api\modules\v1\Module'
-        ]
+        ],
     ],
     'components' => [        
         'user' => [
@@ -44,6 +48,17 @@ return [
             'showScriptName' => false,
             'rules' => [
                 [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'alipay/notify',
+                    ],
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\\w+>'
+                    ],
+                    'except' => ['delete']
+                ],
+                [
                     'class' => 'yii\rest\UrlRule', 
                     'controller' => [
                         'v1/login',
@@ -53,13 +68,11 @@ return [
                         'v1/config',
                         'v1/sms',
                         'v1/worker',
-                        'v1/alipay'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'
                     ],
                     'except' => ['delete']
-                    
                 ]
             ],        
         ]

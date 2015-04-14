@@ -185,13 +185,13 @@ class Sms extends Model{
             return $response;
         }
 
-        $response = self::_nineSend($params['mobile'],$content);var_dump($response);exit;
+        $response = self::_manRoadSend($params['mobile'],$content);
         if($response['code'] == 200)
         {
             return $response;
         }
 
-        $response = self::_manRoadSend($params['mobile'],$content);
+        $response = self::_nineSend($params['mobile'],$content);
 
         return $response;
     }

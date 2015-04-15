@@ -8,7 +8,9 @@
 
 namespace api\modules\v1\controllers;
 
+use common\models\Order;
 use common\models\User;
+use common\models\Wallet;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
@@ -55,6 +57,21 @@ class UserController extends ActiveController{
         }
         $userData = ArrayHelper::toArray(User::findIdentity($id));
         $userData['uid'] = $userData['id'];
+        $userData['wallet'] = Wallet::checkAccount($userData['id']);
+        $userData['order'] = [
+            'in_service'=>Order::find()
+                ->andFilterWhere(['uid'=>$userData['id']])
+                ->andFilterWhere(['order_status'=>'in_service'])
+                ->count(),
+            'wait_pay'=>Order::find()
+                ->andFilterWhere(['uid'=>$userData['id']])
+                ->andFilterWhere(['order_status'=>'wait_pay'])
+                ->count(),
+            'wait_evaluate'=>Order::find()
+                ->andFilterWhere(['uid'=>$userData['id']])
+                ->andFilterWhere(['order_status'=>'wait_evaluate'])
+                ->count(),
+        ];
         unset($userData['id'],$userData['access_token'],$userData['password']);
         return $userData;
     }

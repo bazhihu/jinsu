@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
            // 'nickname',
             'name',
-            'gender',
+           // 'gender',
             'type',
             [
                 'attribute'=>'status',
@@ -82,6 +82,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function($model) {
                     $finace_status = WalletWithdrawcash::getWalletStatusByUid($model->id);
                     return $finace_status['msg'];
+                }
+            ],
+            [
+                'attribute'=>'money',
+                'value'=>function($model) {
+                    $user_money =WalletUser::findOne($model->id);
+                    return $user_money['money'];
                 }
             ],
             [

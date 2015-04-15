@@ -52,15 +52,14 @@ class AlipayLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'subject', 'order_id', 'order_no', 'seller_id', 'seller_email', 'gmt_create', 'visit_ip'], 'required'],
+            [['uid', 'subject', 'transaction_no', 'seller_email', 'gmt_create', 'visit_ip'], 'required'],
             [['uid', 'order_id', 'refund_batch_num', 'refund_success_num'], 'integer'],
             [['total_fee'], 'number'],
             [['notify_time', 'gmt_create', 'gmt_payment', 'gmt_close', 'gmt_refund'], 'safe'],
             [['refund_batch_detail_data', 'refund_result_details'], 'string'],
             [['subject'], 'string', 'max' => 256],
-            [['order_no', 'notify_type'], 'string', 'max' => 50],
             [['trade_no'], 'string', 'max' => 64],
-            [['seller_id', 'buyer_id', 'refund_status'], 'string', 'max' => 30],
+            [['buyer_id', 'refund_status'], 'string', 'max' => 30],
             [['seller_email', 'seller_account_name', 'buyer_email', 'buyer_account_name'], 'string', 'max' => 100],
             [['body'], 'string', 'max' => 400],
             [['refund_batch_no'], 'string', 'max' => 32],
@@ -81,9 +80,7 @@ class AlipayLog extends \yii\db\ActiveRecord
             'order_id' => '订单ID',
             'order_no' => '订单编号',
             'trade_no' => '支付宝交易号',
-            'seller_id' => '卖家支付宝账户号',
             'seller_email' => '卖家支付宝账号',
-            'seller_account_name' => '卖家别名支付宝账号',
             'buyer_id' => '买家支付宝账户号',
             'buyer_email' => '买家支付宝账号',
             'buyer_account_name' => '买家别名支付宝账号',

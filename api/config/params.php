@@ -17,8 +17,5 @@ return [
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
     'pic_domain' =>$pic_domain,
-    'encrypt_key' => 'dcFGdq9drHEPzVY5hLhCJEi5uR1tkqMN',
-    'alipay' => [
-        'partner' => '121'
-    ]
+    'encrypt_key' => 'dcFGdq9drHEPzVY5hLhCJEi5uR1tkqMN'
 ];

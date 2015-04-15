@@ -106,18 +106,20 @@ class OrderController extends ActiveController {
         if($post['pay_way'] == Order::PAY_WAY_CASH){
             $order->pay();
         }else{
-            $payAmount = $order->total_amount - $balance;
-            if($payAmount <= 0){
+            $amount = $order->total_amount - $balance;
+            if($amount <= 0){
                 $this->responseCode = 500;
                 $this->responseMsg = '支付金额错误';
                 return null;
             }
-            $data = [
-                'order_id' => $order->order_id,
-                'order_no' => $order->order_no,
-                'amount' => $payAmount
+
+            //支付数据
+            $payment = [
+                'uid' => $post['uid'],
+                'subject' => '订单号：'.$order->order_no.'的付款',
+                'amount' => $amount,
             ];
-            $payment = new Payment($post['pay_way'], $data);
+            $paymentModel = new Payment($post['pay_way'], $payment);
             $payment;
             exit;
         }

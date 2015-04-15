@@ -9,9 +9,7 @@
 namespace common\models;
 
 use yii\base\InvalidParamException;
-use common\models\Wallet;
 use common\components\Alipay;
-use common\components\Wechat;
 
 
 class Payment
@@ -38,16 +36,9 @@ class Payment
                 $this->_aliPay();
                 break;
             case Order::PAY_WAY_WE_CHAT:
-                $this->_model = new Wechat();
+                $this->_WeChat();
                 break;
         }
-    }
-    private function _aliPay(){
-
-    }
-
-    private function _WeChat(){
-
     }
 
     /**
@@ -58,7 +49,27 @@ class Payment
         $this->_tradeNo = Wallet::generateWalletNo();
     }
 
-    public function payLog(){
+    /**
+     * 获取交易号
+     * @return null
+     */
+    public function getTradeNo(){
+        return $this->_tradeNo;
+    }
+
+    private function _aliPay(){
+        //生成交易号
+        $transactionNo = $this->generateTradeNo();
+
+        //支付日志
+        $aliPayLog = new AlipayLog();
+        $aliPayLog->setAttributes($this->_payData);
+    }
+
+    private function _WeChat(){
 
     }
+
+    
+
 }

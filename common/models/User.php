@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\base\ErrorException;
 
 /**
  * This is the model class for table "tbl_user".
@@ -249,6 +250,28 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return $default;
+    }
+
+    /**
+     * 自动注册
+     * @return $this
+     * @throws ErrorException
+     */
+    public function autoSignUp(){
+        $attributes = [
+            'type'      => self::REGISTER_TYPE_USER,
+            "register_ip" => Yii::$app->request->userIP,
+            'register_time' => date('Y-m-d H:i:s'),
+            "status"    => static::STATUS_NORMAL,
+        ];
+
+        $this->setAttributes($attributes, false);
+
+        if(!$this->save()){
+            throw new ErrorException(print_r($this->getErrors(), true));
+        }
+        return $this;
+
     }
 
 }

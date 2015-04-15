@@ -59,8 +59,9 @@ class WorkerController extends ActiveController {
         //随机十个护工
         $params = Yii::$app->getRequest()->getBodyParams();
         $worker = \api\modules\v1\models\Worker::select($params);
-
+        $worker     = \api\modules\v1\models\Worker::spliceWorker($worker);
         if(!empty($worker)){
+
             foreach($worker as $key => $item){
                 $item['pic'] = Worker::workerPic($item['worker_id']);
                 $worker[$key] = $item;
@@ -79,6 +80,7 @@ class WorkerController extends ActiveController {
 
         $worker     = Worker::findOne(['worker_id'=>$worker_id]);
         $worker     = ArrayHelper::toArray($worker);
+        $worker     = \api\modules\v1\models\Worker::spliceWorker($worker);
         if(!empty($worker)){
             $worker['pic'] = Worker::workerPic($worker['worker_id']);
         }

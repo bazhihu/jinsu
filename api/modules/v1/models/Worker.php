@@ -35,7 +35,7 @@ class Worker extends ActiveRecord
         {
             $params[$key]['native_province']        = $value['native_province']?City::findOne(['id'=>$value['native_province']])->name:'';
 
-            if($value['birth']){
+            /*if($value['birth']){
                 $params[$key]['birth']                    = date('Y')-$value['birth'];
             }
             if($value['start_work']){
@@ -61,7 +61,7 @@ class Worker extends ActiveRecord
                 $params[$key]['good_at']            = Departments::getDepartmentName($value['good_at']);
                 $params[$key]['birth_place']        = City::getCityName($value['birth_place']);
                 $params[$key]['adder']              = AdminUser::getInfo($value['adder']);
-            }
+            }*/
 
         }
 

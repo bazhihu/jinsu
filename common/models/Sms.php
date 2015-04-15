@@ -66,7 +66,7 @@ class Sms extends Model{
     public static function smsScene($params){
 
         if(isset($params['time'])){
-            $params['time'] = date('m月d日',time($params['time']));
+            $params['time'] = date('m月d日',strtotime($params['time']));
         }
 
         $content = '';

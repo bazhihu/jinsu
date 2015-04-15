@@ -60,14 +60,14 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                     },
                     'delete' => function ($url, $model) {
                         return $model->status?Html::a(
-                            '<span class="glyphicon col-md-offset-4 glyphicon-remove "></span>',
+                            '<span class="glyphicon col-md-offset-3 glyphicon-remove "></span>',
                             "#",
                             [
                                 'title' => Yii::t('yii', '关闭'),
                                 'data-url'=>$url
                             ]):
                             Html::a(
-                            '<span class="glyphicon col-md-offset-4 glyphicon-ok"></span>',
+                            '<span class="glyphicon col-md-offset-3 glyphicon-ok "></span>',
                             '#',
                             [
                                 'title' => Yii::t('yii', '恢复'),
@@ -75,8 +75,18 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                             ]
                         );
                     },
+                    'default' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon col-md-offset-2 default glyphicon-adjust "></span>',
+                            "#",
+                            [
+                                'title' => Yii::t('yii', '重置密码'),
+                                'data-url'=>$url
+                            ]
+                        );
+                    }
                 ],
-                'template'=>'{update}{delete}',
+                'template'=>'{update}{delete}{default}',
             ],
         ],
         //'responsive'=>true,

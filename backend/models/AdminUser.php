@@ -28,9 +28,11 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public $oldPwd;//原始密码
     public $password;//密码
     public $pwd;//重复密码
     public $created_name;//创建人姓名
+    public $authCode;//验证码
 
     const  BACKADMIN = 'admin';
     const  BACKSYSTEMADMIN = '系统管理员';
@@ -74,8 +76,13 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             [['username', 'staff_name', 'staff_role', 'phone'],'required'],
 
             [['password','pwd'],'string','min' => 6,'max'=>20],
+            [['password','pwd'], 'filter', 'filter' => 'trim'],
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
+
+            [['oldPwd'],'required','on'=>['reset']],
+            [['pwd'],'required','on'=>['reset']],
+            [['password'],'required','on'=>['reset']],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
@@ -92,7 +99,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function scenarios(){
         return [
             'create'=>['username', 'password', 'pwd', 'password_hash', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id'],
-            'update'=>['username', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id']
+            'update'=>['username', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id'],
+            'reset'=>['oldPwd','password','pwd'],
         ];
     }
 
@@ -104,8 +112,10 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'admin_uid' => '管理用户ID',
             'username' => '帐号',
             'auth_key' => 'Auth Key',
+            'oldPwd'=>'原始密码',
             'password'=>'密码',
             'pwd'=>'重复密码',
+            'authCode'=>'手机验证码',
             'password_hash' => '密码',
             'password_reset_token' => 'Password Reset Token',
             'staff_id' => '员工号',
@@ -216,6 +226,75 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * 重置密码
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function reset()
+    {
+        $id = yii::$app->user->identity->getId();
+        $password_hash = $this->findOne(['admin_uid'=>$id])->password_hash;
+
+        $oldPwd = $this->oldPwd;
+        $password = $this->password;
+
+        if(empty($oldPwd) && !Yii::$app->security->validatePassword($oldPwd, $password_hash)){
+            $this->addError('oldPwd','原密码错误！');
+            return false;
+        }
+
+        $params = [
+            'password_hash' => \yii::$app->Security->generatePasswordHash($this->password),
+        ];
+
+        #保存信息
+        if(!$this->updateAll($params,['admin_uid'=>$id]))
+        {
+            $this->addError('oldPwd','修改失败！');
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 重置默认密码
+     * @return mixed
+     */
+    public function defaultPwd()
+    {
+        $this->password_hash = Yii::$app->Security->generatePasswordHash('123456');
+        $this->setScenario('update');
+        if(!$this->save())
+        {
+            $response['code'] = 400;
+            $response['msg'] = '重置密码错误';
+        }else{
+            $response['code'] = 200;
+            $response['msg'] = '重置密码成功';
+        }
+        return $response;
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    public function accountChanges()
+    {
+        $this->status = $this->status?0:10;
+        $this->setScenario('update');
+        if(!$this->save())
+        {
+            $response['code'] = 400;
+            $response['msg'] = '操作失败';
+        }else{
+            $response['code'] = 200;
+            $response['msg'] = '操作成功';
+        }
+        return $response;
+    }
+
+    /**
      * 权限验证
      * @param $per 菜单路由地址
      * @return bool
@@ -232,6 +311,23 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             return false;
         }
         return true;
+    }
+
+    /**
+     * 验证短信验证码
+     *
+     * @param string $attribute the attribute currently being validated
+     */
+    public function validateAuthCode($attribute)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+            if (!$user || $this->authCode != $this->getAuthCode()) {
+                $this->addError($attribute, '验证码错误。');
+            }else{
+                $this->flushAccessToken();
+            }
+        }
     }
 
     /**

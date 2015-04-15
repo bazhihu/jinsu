@@ -66,6 +66,32 @@ $('body').on('click', 'span.glyphicon-ok', function () {
     });
     return false;
 });
+
+//充值帐号密码
+$('body').on('click', 'span.default', function () {
+    if(!confirm('确认执行此操作吗？')){
+        return false;
+    }
+    var num = $(this);
+    var key = num.parent().parent().parent().attr('data-key');
+    var url = $(this).parent().attr('data-url');
+    $.ajax({
+        type    :'POST',
+        cache   : false,
+        url     : url,
+        data    : {'id':key},
+        dataType : 'json' ,
+        success : function(response) {
+            if(response.code == '200'){
+                alert(response.msg);
+            }else{
+                alert(response.msg);
+            }
+        }
+    });
+    return false;
+});
+
 //所属医院隐藏
 $('body').on('change', 'select#adminuser-staff_role', function () {
     var role = $(this).val();

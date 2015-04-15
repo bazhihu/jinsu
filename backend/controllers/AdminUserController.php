@@ -23,11 +23,10 @@ class AdminUserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout', 'index', 'view', 'create','update','delete','reset'],
+                        'actions' => ['logout', 'index', 'view', 'create','update','delete','reset','default'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-
                 ],
             ],
             'verbs' => [
@@ -59,22 +58,15 @@ class AdminUserController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id="") {
+    public function actionDelete($id) {
 
-        if(Yii::$app->request->isAjax && Yii::$app->user->identity->getId())
+        if(Yii::$app->request->isAjax)
         {
-            #操作的id
-            $id = Yii::$app->request->post()['id'];
-            if($id){
-                //$ispass = yii::$app->authManager->checkAccess(Yii::$app->user->identity->getId(),'关闭'.$this->findModel($id)->staff_role);
 
-                $value = $this->findModel($id)->status?0:10;
-                if($this->findModel($id)->updateAttributes(['status'=>$value]))
-                    echo Json::encode(['code'=>200,'message'=>'success']);
-                exit;
-            }
+            $admin = $this->findModel($id);
+            $response = $admin->accountChanges();
+            echo Json::encode($response);
         }
-        echo Json::encode(['code'=>400,'message'=>'操作失败']);
         exit;
     }
     /**
@@ -165,9 +157,19 @@ class AdminUserController extends Controller
         ]);
     }
 
-    public function actionForgot()
+    /**
+     * 恢复默认密码 123456
+     * @throws NotFoundHttpException
+     */
+    public function actionDefault($id)
     {
-
+        if(Yii::$app->request->isAjax)
+        {
+            $admin = $this->findModel($id);
+            $response = $admin->defaultPwd();
+            echo Json::encode($response);
+        }
+        exit;
     }
 
     /**

@@ -28,6 +28,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public $oldPwd;//原始密码
     public $password;//密码
     public $pwd;//重复密码
     public $created_name;//创建人姓名
@@ -74,8 +75,12 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             [['username', 'staff_name', 'staff_role', 'phone'],'required'],
 
             [['password','pwd'],'string','min' => 6,'max'=>20],
+            [['password','pwd'], 'filter', 'filter' => 'trim'],
             ['pwd','compare','compareAttribute'=>'password'],
             ['pwd','safe'],
+
+            [['pwd'],'required','on'=>['reset']],
+            [['password'],'required','on'=>['reset']],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
@@ -92,7 +97,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function scenarios(){
         return [
             'create'=>['username', 'password', 'pwd', 'password_hash', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id'],
-            'update'=>['username', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id']
+            'update'=>['username', 'staff_id', 'staff_name', 'staff_role', 'hospital_id', 'phone', 'created_id'],
+            'reset'=>['oldPwd','password','pwd'],
         ];
     }
 
@@ -104,6 +110,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'admin_uid' => '管理用户ID',
             'username' => '帐号',
             'auth_key' => 'Auth Key',
+            'oldPwd'=>'原始密码',
             'password'=>'密码',
             'pwd'=>'重复密码',
             'password_hash' => '密码',
@@ -212,6 +219,37 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         $info = $this->findOne(['username'=>$this->username]);
         yii::$app->authManager->revokeAll($info->getId());
         yii::$app->authManager->assign(Yii::$app->authManager->getRole($this->getAttribute("staff_role")),$info->getId());
+        return true;
+    }
+
+    /**
+     * 重置密码
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function reset()
+    {
+        $id = yii::$app->user->identity->getId();
+        $password_hash = $this->findOne(['admin_uid'=>$id])->password_hash;
+
+        $oldPwd = $this->oldPwd;
+        $password = $this->password;
+
+        if(empty($oldPwd) && !Yii::$app->security->validatePassword($oldPwd, $password_hash)){
+            $this->addError('oldPwd','原密码错误！');
+            return false;
+        }
+
+        $params = [
+            'password_hash' => \yii::$app->Security->generatePasswordHash($this->password),
+        ];
+
+        #保存信息
+        if(!$this->updateAll($params,['admin_uid'=>$id]))
+        {
+            $this->addError('oldPwd','修改失败！');
+            return false;
+        }
         return true;
     }
 

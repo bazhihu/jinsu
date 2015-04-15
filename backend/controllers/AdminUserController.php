@@ -23,7 +23,7 @@ class AdminUserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout', 'index', 'view', 'create','update','delete'],
+                        'actions' => ['logout', 'index', 'view', 'create','update','delete','reset'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -147,6 +147,27 @@ class AdminUserController extends Controller
                 'hospital'=>$hospital,
             ]);
         }
+    }
+
+    /**
+     * 修改密码
+     * @return string|\yii\web\Response
+     */
+    public function actionReset()
+    {
+        $model = new AdminUser();
+        $model->setScenario('reset');
+        if ($model->load(Yii::$app->request->post()) && $model->reset()) {
+            return $this->redirect(['view', 'id' => yii::$app->user->identity->getId()]);
+        }
+        return $this->render('reset', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionForgot()
+    {
+
     }
 
     /**

@@ -53,8 +53,9 @@ class UserController extends ActiveController{
         if($id != \Yii::$app->user->id){
             throw new UnauthorizedHttpException('You are requesting with an invalid credential.');
         }
-        $userData = User::findIdentity($id);
-        unset($userData->access_token,$userData->password);
+        $userData = ArrayHelper::toArray(User::findIdentity($id));
+        $userData['uid'] = $userData['id'];
+        unset($userData['id'],$userData['access_token'],$userData['password']);
         return $userData;
     }
 

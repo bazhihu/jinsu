@@ -41,7 +41,7 @@ class LoginController extends ActiveController{
         $loginModel->setAttributes(Yii::$app->getRequest()->getBodyParams());
         if(!$loginModel->validate()){
             $this->responseCode = 400;
-            $this->responseMsg = print_r($loginModel->getErrors(), true);
+            $this->responseMsg = $loginModel->getFirstError('authCode');
             return null;
         }
 

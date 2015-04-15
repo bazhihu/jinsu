@@ -85,17 +85,6 @@ use backend\models\Hospitals;
                 'options'=>['inline'=>true]
             ],
 
-//            'birth'=>['type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-//                'options'=>[
-//                    'options'=>[
-//                        'options'=>['placeholder'=>'请选择出生日期...','style'=>'width:26%']
-//                    ],
-//                    'type'=>DateControl::FORMAT_DATE,
-//                    'displayFormat' => 'yyyy-MM-dd',
-//                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
-//                ],
-//            ],
-
             'marriage'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
                 'options'=>['placeholder'=>'请选择婚姻状况...'],
@@ -129,16 +118,6 @@ use backend\models\Hospitals;
                'options'=>['inline'=>true], 'maxlength'=>10
            ],
 
-           /* 'phone1'=>[
-                'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入手机号1...', 'maxlength'=>12,'style'=>'width:30%']
-            ],
-
-            'phone2'=>[
-                'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入手机号2...', 'maxlength'=>11,'style'=>'width:30%']
-            ],
-            */
             'level'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
                 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
@@ -146,9 +125,7 @@ use backend\models\Hospitals;
 
             'price'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:30%'],
-                'contentAfter' => '元'
-
+                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:30%', 'addon' => ['append' => ['content' => '元']],],
             ],
 
             'status'=>[
@@ -232,51 +209,6 @@ use backend\models\Hospitals;
                 ]
             ]
         ]);
-        //户口所在地
-        //$model->birth_place = 140000;
-//        echo $form->field($model, 'birth_place')->dropDownList(
-//            City::getList(1),
-//            [
-//                'id'=>'birth_place',
-//                'style'=>'width:30%',
-//                'prompt'=>'请选择',
-//
-//            ]);
-//
-//        // 户口所在地 Child # 1
-//       // $model->birth_place_city = 140300;
-//        echo $form->field($model, 'birth_place_city')->widget(DepDrop::classname(), [
-//            'data'=> $model->birth_place?\backend\models\City::getList(['parent_id'=>$model->birth_place]):"",
-//            'type' => DepDrop::TYPE_SELECT2,
-//            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
-//            'options'=>[
-//                'id'=>'birth_place_city',
-//                'style'=>'width:30%',
-//                'labelOptions' => ['class'=>'col-md-2'],
-//                'inputContainer' => ['class'=>'col-md-4'],
-//
-//            ],
-//            'pluginOptions'=>[
-//                'depends'=>['birth_place'],
-//                'placeholder'=>'请选择',
-//                'url'=>Url::to(['worker/getcity/']),
-//            ]
-//        ])->label('');
-//
-//        //户口所在地 Child # 2
-//        echo $form->field($model, 'birth_place_area')->widget(DepDrop::classname(), [
-//            'data'=> $model->birth_place_city?\backend\models\City::getList(['parent_id'=>$model->birth_place_city]):"",
-//            'type' => DepDrop::TYPE_SELECT2,
-//            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
-//            'options'=>['style'=>'width:30%'],
-//            'pluginOptions'=>[
-//                'depends'=>['birth_place_city'],
-//                'placeholder'=>'请选择',
-//                'url'=>Url::to(['worker/getarea']),
-//            ]
-//        ])->label('');
-
-
 
         //籍贯
         echo $form->field($model, 'native_province')->widget(Select2::classname(), [
@@ -294,7 +226,7 @@ use backend\models\Hospitals;
             'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,
-                'maximumInputLength' => 10
+                'maximumInputLength' => 20
             ],
         ])->label('常驻医院');
 
@@ -305,7 +237,7 @@ use backend\models\Hospitals;
             'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,
-                'maximumInputLength' => 10
+                'maximumInputLength' => 20
             ],
         ])->label('常驻科室');
 

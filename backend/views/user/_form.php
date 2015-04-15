@@ -30,11 +30,14 @@ use kartik\datecontrol\DateControl;
                 'columns' => 1,
                 'attributes' => [
                     'mobile'=>[
-                        'type'=> Form::INPUT_TEXT,
+                        'type'=> $model->isNewRecord ? Form::INPUT_TEXT:Form::INPUT_STATIC,
+                        'value'=>function ($model) {
+                            return Html::a(substr_replace($model->mobile,'****',3,4), Yii::$app->urlManager->createUrl(['user/view','id'=>$model->id]));
+                        },
                         'options'=>[
                             'placeholder'=>'请输入手机号...',
                             'maxlength'=>32,
-                            'style'=>'width:50%'
+                            'style'=>'width:50%',
                         ]
                     ],
 

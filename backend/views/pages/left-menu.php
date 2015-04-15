@@ -18,7 +18,6 @@ $route = $controller->route;
 </ul>
 
 <ul class="nav nav-sidebar">
-    <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/user/create')):?>hide <?php endif;?><?php if($route == 'user/create'):?>active<?php endif;?>"><a href="<?=Url::toRoute('user/create');?>">用户注册</a></li>
     <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/user/index')):?>hide <?php endif;?><?php if($route == 'user/index'):?>active<?php endif;?>"><a href="<?=Url::toRoute('user/index');?>">用户管理</a></li>
 </ul>
 

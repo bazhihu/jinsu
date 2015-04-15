@@ -52,6 +52,20 @@ class LoginController extends ActiveController{
             'token' => Login::encryptToken($user->access_token),
             'wallet' => [
                 'money' => WalletUser::getBalance($user->id)
+            ],
+            'order'=>[
+                'in_service'=>Order::find()
+                    ->andFilterWhere(['uid'=>$userData['id']])
+                    ->andFilterWhere(['order_status'=>'in_service'])
+                    ->count(),
+                'wait_pay'=>Order::find()
+                    ->andFilterWhere(['uid'=>$userData['id']])
+                    ->andFilterWhere(['order_status'=>'wait_pay'])
+                    ->count(),
+                'wait_evaluate'=>Order::find()
+                    ->andFilterWhere(['uid'=>$userData['id']])
+                    ->andFilterWhere(['order_status'=>'wait_evaluate'])
+                    ->count(),
             ]
         ];
         return $result;

@@ -68,6 +68,7 @@ return [
                         'v1/config',
                         'v1/sms',
                         'v1/worker',
+                        'v1/wallet',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

@@ -27,10 +27,6 @@ class NotifyController extends ActiveController{
     public function actions(){
         return null;
     }
-    public function actionIndex(){
-        echo 'index';
-        exit;
-    }
 
     /**
      * 登录

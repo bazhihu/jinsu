@@ -78,7 +78,7 @@ class NotifyController extends ActiveController{
                 if(!empty($orderNo)){
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
                     $response = $orderModel->pay();
-                    Yii::info(print_r($response, true), 'api');
+                    Yii::info('$response:'.print_r($response, true), 'api');
                 }
             }
             echo "success";

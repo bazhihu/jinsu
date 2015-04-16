@@ -71,6 +71,7 @@ class Payment
         $aliPayLog = new AlipayLog();
         $logData = $this->_payData;
         $logData['transaction_no'] = $this->_tradeNo;
+        $logData['total_fee'] = $this->_payData['amount'];
         $aliPayLog->setAttributes($logData);
         if(!$aliPayLog->save()){
             throw new HttpException(400, print_r($aliPayLog->getErrors(), true));

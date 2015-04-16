@@ -52,7 +52,7 @@ class AlipayLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'subject', 'transaction_no', 'seller_email', 'gmt_create', 'visit_ip'], 'required'],
+            [['uid', 'subject', 'transaction_no', 'total_fee'], 'required'],
             [['uid', 'refund_batch_num', 'refund_success_num'], 'integer'],
             [['total_fee'], 'number'],
             [['notify_time', 'gmt_create', 'gmt_payment', 'gmt_close', 'gmt_refund'], 'safe'],

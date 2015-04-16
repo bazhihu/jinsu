@@ -8,6 +8,7 @@
 
 namespace common\models;
 
+use Yii;
 use yii\base\InvalidParamException;
 use yii\web\HttpException;
 use common\components\Alipay;
@@ -74,6 +75,7 @@ class Payment
         $logData['total_fee'] = $this->_payData['amount'];
         $aliPayLog->setAttributes($logData);
         if(!$aliPayLog->save()){
+            Yii::info(print_r($aliPayLog->getErrors(), true), 'api');
             throw new HttpException(400, print_r($aliPayLog->getErrors(), true));
         }
 

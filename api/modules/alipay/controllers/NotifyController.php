@@ -40,7 +40,7 @@ class NotifyController extends ActiveController{
      */
     public function actionCreate(){
         $post = Yii::$app->getRequest()->getBodyParams();
-        Yii::info('回调开始：'.print_r($post, true), 'api');
+        Yii::info('======================回调开始：'.print_r($post, true), 'api');
 
         $notify = new Notify(Yii::$app->params['aliPay']);
         $verifyResult = $notify->verifyNotify($post);
@@ -90,7 +90,7 @@ class NotifyController extends ActiveController{
         }else {
             //验证失败
             echo "fail";
-            Yii::info('回调结束：fail', 'api');
+            Yii::info('======================回调结束：fail', 'api');
         }
     }
 
@@ -116,7 +116,9 @@ class NotifyController extends ActiveController{
 
         //保存支付日志
         $aliPayLog->setAttributes($post);
-        $aliPayLog->save();
+        if(!$aliPayLog->save()){
+            Yii::info('支付日志保存失败');
+        }
         $this->_logModel = $aliPayLog;
         return 'ok';
     }

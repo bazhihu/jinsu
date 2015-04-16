@@ -90,6 +90,7 @@ class Wallet
      *      'order_no'   string  订单编号                           必填
      *      'uid'           int  用户id                           必填
      *      'detail_money'  int  交易金额                          必填
+     *      'detail_type'  int  交易类型                          必填
      *      'wallet_money'  int  当前账户余额                       必填
      *      'remark'        varchar 备注
      *      'admin_uid'     int  管理员ID
@@ -242,6 +243,7 @@ class Wallet
         $wallet = new WalletUserDetail();
         $details = $wallet->find()
             ->andFilterWhere(['uid'=>$uid])
+            ->orderBy('detail_id DESC')
             ->all();
 
         return $details;

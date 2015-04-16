@@ -39,6 +39,10 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const PAY_FROM_ALIPAY = 'alipay'; //Alipay(支付宝)
     const PAY_FROM_WECHAT = 'wechat'; //Wechat(微信)
 
+    #提现渠道
+    const WITHDRAW_CHANNELS_BACKEND = 'backend'; //后台现金
+    const WITHDRAW_CHANNELS_ALIPAY = 'alipay'; //Alipay(支付宝)
+    const WITHDRAW_CHANNELS_WECHAT = 'wechat'; //Wechat(微信)
     /**
      * @inheritdoc
      */

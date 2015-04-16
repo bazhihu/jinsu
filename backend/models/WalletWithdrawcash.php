@@ -240,7 +240,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
 
             #账户清零
             $walletUser = new WalletUser();
-            if(!$walletUser->purseCleared($withdrawcash->uid)){
+            if(!$walletUser->purseCleared($withdrawcash->uid,$withdrawcash->money)){
                 return false;
             }
             $transaction->commit();

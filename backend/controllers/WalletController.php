@@ -279,7 +279,7 @@ class WalletController extends Controller
         }
         $response = [
             'code  '    =>'400',
-            'msg'   =>'账户余额为零',
+            'msg'   =>'账户金额不足',
         ];
         return Json::encode($response);
     }

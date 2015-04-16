@@ -137,7 +137,7 @@ $('body').on('click', 'button.jsPay', function () {
                     alert("未知错误");
             }
             button.attr('disabled', false);
-            button.text('支付');
+            button.text('付款');
         },
         success: function(json){
             if(json.code == '200'){

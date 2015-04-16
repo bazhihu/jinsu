@@ -52,6 +52,7 @@ class PayController extends ActiveController{
 
         //支付数据
         $payment = [
+            'uid' => $post['uid'],
             'subject' => '用户充值',
             'amount' => $amount
         ];

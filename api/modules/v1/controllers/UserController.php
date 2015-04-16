@@ -11,6 +11,7 @@ namespace api\modules\v1\controllers;
 use backend\models\WalletUser;
 use common\models\Order;
 use common\models\User;
+use common\models\Wallet;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
@@ -61,17 +62,17 @@ class UserController extends ActiveController{
             'money'=>WalletUser::getBalance($userData['id'])
         ];
         $userData['order'] = [
-            'in_service'=>Order::find()
+            Order::ORDER_STATUS_IN_SERVICE=>Order::find()
                 ->andFilterWhere(['uid'=>$userData['id']])
-                ->andFilterWhere(['order_status'=>'in_service'])
+                ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_IN_SERVICE])
                 ->count(),
-            'wait_pay'=>Order::find()
+            Order::ORDER_STATUS_WAIT_PAY=>Order::find()
                 ->andFilterWhere(['uid'=>$userData['id']])
-                ->andFilterWhere(['order_status'=>'wait_pay'])
+                ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_WAIT_PAY])
                 ->count(),
-            'wait_evaluate'=>Order::find()
+            Order::ORDER_STATUS_WAIT_EVALUATE=>Order::find()
                 ->andFilterWhere(['uid'=>$userData['id']])
-                ->andFilterWhere(['order_status'=>'wait_evaluate'])
+                ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_WAIT_EVALUATE])
                 ->count(),
         ];
         unset($userData['id'],$userData['access_token'],$userData['password']);

@@ -8,6 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
+use common\models\Order;
 use Yii;
 //use yii\log\Logger;
 use yii\web\Response;
@@ -54,17 +55,17 @@ class LoginController extends ActiveController{
                 'money' => WalletUser::getBalance($user->id)
             ],
             'order'=>[
-                'in_service'=>Order::find()
-                    ->andFilterWhere(['uid'=>$userData['id']])
-                    ->andFilterWhere(['order_status'=>'in_service'])
+                Order::ORDER_STATUS_IN_SERVICE=>Order::find()
+                    ->andFilterWhere(['uid'=>$user->id])
+                    ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_IN_SERVICE])
                     ->count(),
-                'wait_pay'=>Order::find()
-                    ->andFilterWhere(['uid'=>$userData['id']])
-                    ->andFilterWhere(['order_status'=>'wait_pay'])
+                Order::ORDER_STATUS_WAIT_PAY=>Order::find()
+                    ->andFilterWhere(['uid'=>$user->id])
+                    ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_WAIT_PAY])
                     ->count(),
-                'wait_evaluate'=>Order::find()
-                    ->andFilterWhere(['uid'=>$userData['id']])
-                    ->andFilterWhere(['order_status'=>'wait_evaluate'])
+                Order::ORDER_STATUS_WAIT_EVALUATE=>Order::find()
+                    ->andFilterWhere(['uid'=>$user->id])
+                    ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_WAIT_EVALUATE])
                     ->count(),
             ]
         ];

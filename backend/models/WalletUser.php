@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Wallet;
 use Yii;
 
 /**
@@ -56,13 +57,30 @@ class WalletUser extends \yii\db\ActiveRecord
      * @param $uid 用户ID
      * @return bool
      */
-    public function purseCleared($uid){
+    public function purseCleared($uid,$money){
         $user = $this->findOne(['uid'=>$uid]);
         $params = [
-            'money'=>0,
-            'money_extract'=>$user->money_extract + $user->money,
+            'money'=>$user->money-$money,
+            'money_extract'=>$user->money_extract + $money,
         ];
+
+        if($params['money']<0){
+            return false;
+        }
         if(!$this->updateAll($params,['uid'=>$uid])){
+            return false;
+        }
+
+        #添加消费记录
+        $detail = [
+            'uid'=>$uid,
+            'detail_money'=>$money,
+            'detail_type'=>WalletUserDetail::WALLET_TYPE_WITHDRAWALS,
+            'wallet_money'=>$params['money'],
+            'extract_to'=>WalletUserDetail::WITHDRAW_CHANNELS_BACKEND,
+            'admin_uid'=>Yii::$app->user->identity->getId(),
+        ];
+        if(!Wallet::addUserDetail($detail)){
             return false;
         }
         return true;

@@ -28,7 +28,7 @@ class Notify{
         $config['ali_public_key_path'] = $basePath.'/../common/certificate/'.$config['ali_public_key_path'];
         $config['private_key_path'] = $basePath.'/../common/certificate/'.$config['private_key_path'];
         $config['cacert'] = $basePath.'/../common/certificate/'.$config['cacert'];
-        $this->alipayConfig = $config;
+        self::$alipayConfig = $config;
     }
 
     /**
@@ -119,9 +119,9 @@ class Notify{
         //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
         $preStr = Functions::createLinkstring($paramSort);
 
-        switch (strtoupper(trim($this->alipayConfig['sign_type']))) {
+        switch (strtoupper(trim(self::$alipayConfig['sign_type']))) {
             case "RSA" :
-                $isSign = Rsa::rsaVerify($preStr, trim($this->alipayConfig['ali_public_key_path']), $sign);
+                $isSign = Rsa::rsaVerify($preStr, trim(self::$alipayConfig['ali_public_key_path']), $sign);
                 break;
             default :
                 $isSign = false;
@@ -140,8 +140,8 @@ class Notify{
      * false 请检查防火墙或者是服务器阻止端口问题以及验证时间是否超过一分钟
      */
     public function getResponse($notify_id) {
-        $transport = strtolower(trim($this->alipayConfig['transport']));
-        $partner = trim($this->alipayConfig['partner']);
+        $transport = strtolower(trim(self::$alipayConfig['transport']));
+        $partner = trim(self::$alipayConfig['partner']);
 
         if($transport == 'https') {
             $verifyUrl = self::$httpsVerifyUrl;
@@ -149,7 +149,7 @@ class Notify{
             $verifyUrl = self::$httpVerifyUrl;
         }
         $verifyUrl = $verifyUrl."partner=" . $partner . "&notify_id=" . $notify_id;
-        $responseTxt = Functions::getHttpResponseGET($verifyUrl, $this->alipayConfig['cacert']);
+        $responseTxt = Functions::getHttpResponseGET($verifyUrl, self::$alipayConfig['cacert']);
 
         return $responseTxt;
     }

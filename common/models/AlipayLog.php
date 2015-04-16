@@ -60,7 +60,7 @@ class AlipayLog extends \yii\db\ActiveRecord
             [['order_no', 'notify_type'], 'string', 'max' => 50],
             [['trade_no'], 'string', 'max' => 64],
             [['buyer_id', 'refund_status'], 'string', 'max' => 30],
-            [['seller_email', 'seller_account_name', 'buyer_email', 'buyer_account_name'], 'string', 'max' => 100],
+            [['seller_email', 'buyer_email', 'buyer_account_name'], 'string', 'max' => 100],
             [['body'], 'string', 'max' => 400],
             [['refund_batch_no'], 'string', 'max' => 32],
             [['trade_status', 'visit_ip'], 'string', 'max' => 20]

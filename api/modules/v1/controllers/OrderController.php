@@ -129,19 +129,8 @@ class OrderController extends ActiveController {
             unset($payment['uid'], $payment['order_no']);
         }
 
-
-        //用户数据
-        $user = [
-            'mobile' => $order['mobile'],
-            'uid' => $order['uid'],
-            'wallet' => [
-                'money' => $balance
-            ]
-        ];
-
         return [
             'order' => $order,
-            'user' => $user,
             'payment' => $payment
         ];
     }

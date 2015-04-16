@@ -54,7 +54,7 @@ class NotifyController extends ActiveController{
 
             if($post['trade_status'] == 'TRADE_FINISHED') {
                 //判断该笔订单是否在商户网站中已经做过处理
-                AlipayLog::findOne(['order_no'=>$transactionNo]);
+                AlipayLog::findOne(['order_no' => $transactionNo]);
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
 

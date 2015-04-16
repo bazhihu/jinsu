@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\alipay\Alipay;
 use Yii;
 
 /**
@@ -99,5 +100,13 @@ class AlipayLog extends \yii\db\ActiveRecord
             'refund_status' => '退款状态',
             'visit_ip' => '访问者IP',
         ];
+    }
+
+    public function beforeSave($insert){
+        $this->seller_email = Yii::$app->params['aliPay']['seller_email'];
+        $this->gmt_create = date('Y-m-d H:i:s');
+        $this->visit_ip = Yii::$app->request->userIP;
+
+        return parent::beforeSave($insert);
     }
 }

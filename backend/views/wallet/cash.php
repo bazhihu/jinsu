@@ -29,7 +29,7 @@ $this->title = '申请提现确认-用户信息核对';
                 'attributes'=>[
                     [
                         'attribute'=>'uid',
-                        'value'=>$user->uid?\backend\models\User::findOne(['id'=>$user->uid])->mobile:'无',
+                        'value'=>$user->uid?substr_replace(\backend\models\User::findOne(['id'=>$user->uid])->mobile,'****',3,4):'无',
                     ],
                     [
                         'attribute'=>'money',
@@ -81,12 +81,13 @@ $this->title = '申请提现确认-用户信息核对';
                         'widgetClass'=>'\kartik\widgets\DatePicker',
                         'hint'=>'请输入提现时间',
                         'options'=>[
-                            'options'=>['placeholder'=>'开始时间...'],
+                            'options'=>['placeholder'=>'提现时间...'],
                             'pluginOptions'=>[
                                 'todayHighlight' => true,
                                 'autoclose' => true,
-                                'format' => 'yyyy-mm-dd'
-                            ]
+                                'format' => 'yyyy-mm-dd',
+                            ],
+                            'readonly' => true,
                         ]
                     ],
                     'payee_name'=>[

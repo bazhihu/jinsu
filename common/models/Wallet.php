@@ -233,6 +233,21 @@ class Wallet
     }
 
     /**
+     * 获取用户的交易明细
+     * @param $uid
+     * @return array|bool|\yii\db\ActiveRecord[]
+     */
+    public static function getDetailsByUid($uid)
+    {
+        $wallet = new WalletUserDetail();
+        $details = $wallet->find()
+            ->andFilterWhere(['uid'=>$uid])
+            ->all();
+
+        return $details;
+    }
+
+    /**
      * 生成钱包流水号
      * @return string
      * @throws \Exception

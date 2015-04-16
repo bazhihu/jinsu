@@ -88,6 +88,7 @@ class NotifyController extends ActiveController{
             echo "fail";
             Yii::info('======================回调结束：fail', 'api');
         }
+        exit();
     }
 
     /**
@@ -117,21 +118,5 @@ class NotifyController extends ActiveController{
         }
         $this->_logModel = $aliPayLog;
         return 'ok';
-    }
-
-    /**
-     * 返回数据处理
-     * @inheritdoc
-     */
-    public function afterAction($action, $result)
-    {
-        $response = [
-            'code' => $this->responseCode,
-            'msg' => $this->responseMsg,
-            'data' => null
-        ];
-        $result = parent::afterAction($action, $result);
-        $response['data'] = $result;
-        return $this->serializeData($response);
     }
 }

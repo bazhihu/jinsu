@@ -66,6 +66,7 @@ return [
                         'v1/user',
                         'v1/order',
                         'v1/config',
+                        'v1/pay',
                         'v1/sms',
                         'v1/worker',
                         'v1/wallet',

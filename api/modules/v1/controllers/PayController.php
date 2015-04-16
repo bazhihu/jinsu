@@ -14,6 +14,7 @@ use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 use common\models\Payment;
+use common\components\alipay\Alipay;
 
 class PayController extends ActiveController{
     public $modelClass = 'common\models\Order';

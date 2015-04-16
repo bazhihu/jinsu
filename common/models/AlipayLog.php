@@ -11,7 +11,6 @@ use Yii;
  * @property string $uid
  * @property string $subject
  * @property string $total_fee
- * @property string $order_id
  * @property string $order_no
  * @property string $trade_no
  * @property string $seller_id
@@ -53,7 +52,7 @@ class AlipayLog extends \yii\db\ActiveRecord
     {
         return [
             [['uid', 'subject', 'transaction_no', 'seller_email', 'gmt_create', 'visit_ip'], 'required'],
-            [['uid', 'order_id', 'refund_batch_num', 'refund_success_num'], 'integer'],
+            [['uid', 'refund_batch_num', 'refund_success_num'], 'integer'],
             [['total_fee'], 'number'],
             [['notify_time', 'gmt_create', 'gmt_payment', 'gmt_close', 'gmt_refund'], 'safe'],
             [['refund_batch_detail_data', 'refund_result_details'], 'string'],
@@ -78,7 +77,6 @@ class AlipayLog extends \yii\db\ActiveRecord
             'uid' => '用户ID',
             'subject' => '商品名称',
             'total_fee' => '交易金额',
-            'order_id' => '订单ID',
             'order_no' => '订单编号',
             'trade_no' => '支付宝交易号',
             'seller_email' => '卖家支付宝账号',

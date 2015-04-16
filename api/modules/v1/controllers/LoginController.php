@@ -8,6 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
+use common\models\Order;
 use Yii;
 //use yii\log\Logger;
 use yii\web\Response;
@@ -52,6 +53,20 @@ class LoginController extends ActiveController{
             'token' => Login::encryptToken($user->access_token),
             'wallet' => [
                 'money' => WalletUser::getBalance($user->id)
+            ],
+            'order'=>[
+                Order::ORDER_STATUS_IN_SERVICE=>Order::find()
+                    ->andFilterWhere(['uid'=>$user->id])
+                    ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_IN_SERVICE])
+                    ->count(),
+                Order::ORDER_STATUS_WAIT_PAY=>Order::find()
+                    ->andFilterWhere(['uid'=>$user->id])
+                    ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_WAIT_PAY])
+                    ->count(),
+                Order::ORDER_STATUS_WAIT_EVALUATE=>Order::find()
+                    ->andFilterWhere(['uid'=>$user->id])
+                    ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_WAIT_EVALUATE])
+                    ->count(),
             ]
         ];
         return $result;

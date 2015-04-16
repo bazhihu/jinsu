@@ -11,7 +11,7 @@ namespace common\components\alipay;
 use Yii;
 
 class Alipay {
-    public static $notifyUrl = 'http://sit.api.youaiyihu.com/alipay/notify';
+    public static $notifyUrl = 'http://uat.api.youaiyihu.com/alipay/notify';
     private $_config = null;
 
     public function __construct(){

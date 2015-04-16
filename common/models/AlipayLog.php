@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\alipay\Alipay;
 use Yii;
 
 /**
@@ -11,7 +12,6 @@ use Yii;
  * @property string $uid
  * @property string $subject
  * @property string $total_fee
- * @property string $order_id
  * @property string $order_no
  * @property string $trade_no
  * @property string $seller_id
@@ -52,8 +52,8 @@ class AlipayLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'subject', 'transaction_no', 'seller_email', 'gmt_create', 'visit_ip'], 'required'],
-            [['uid', 'order_id', 'refund_batch_num', 'refund_success_num'], 'integer'],
+            [['uid', 'subject', 'transaction_no', 'total_fee'], 'required'],
+            [['uid', 'refund_batch_num', 'refund_success_num'], 'integer'],
             [['total_fee'], 'number'],
             [['notify_time', 'gmt_create', 'gmt_payment', 'gmt_close', 'gmt_refund'], 'safe'],
             [['refund_batch_detail_data', 'refund_result_details'], 'string'],
@@ -61,7 +61,7 @@ class AlipayLog extends \yii\db\ActiveRecord
             [['order_no', 'notify_type'], 'string', 'max' => 50],
             [['trade_no'], 'string', 'max' => 64],
             [['buyer_id', 'refund_status'], 'string', 'max' => 30],
-            [['seller_email', 'seller_account_name', 'buyer_email', 'buyer_account_name'], 'string', 'max' => 100],
+            [['seller_email', 'buyer_email', 'buyer_account_name'], 'string', 'max' => 100],
             [['body'], 'string', 'max' => 400],
             [['refund_batch_no'], 'string', 'max' => 32],
             [['trade_status', 'visit_ip'], 'string', 'max' => 20]
@@ -78,7 +78,6 @@ class AlipayLog extends \yii\db\ActiveRecord
             'uid' => '用户ID',
             'subject' => '商品名称',
             'total_fee' => '交易金额',
-            'order_id' => '订单ID',
             'order_no' => '订单编号',
             'trade_no' => '支付宝交易号',
             'seller_email' => '卖家支付宝账号',
@@ -101,5 +100,13 @@ class AlipayLog extends \yii\db\ActiveRecord
             'refund_status' => '退款状态',
             'visit_ip' => '访问者IP',
         ];
+    }
+
+    public function beforeSave($insert){
+        $this->seller_email = Yii::$app->params['aliPay']['seller_email'];
+        $this->gmt_create = date('Y-m-d H:i:s');
+        $this->visit_ip = Yii::$app->request->userIP;
+
+        return parent::beforeSave($insert);
     }
 }

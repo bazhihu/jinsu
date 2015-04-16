@@ -65,6 +65,9 @@ class NotifyController extends ActiveController{
                     echo $result;
                     return false;
                 }
+
+
+
             }else if ($tradeStatus == 'TRADE_SUCCESS') {
                 //判断该笔订单是否在商户网站中已经做过处理
                 $result = $this->_checkNotify($transactionNo);

@@ -62,8 +62,6 @@ class NotifyController extends ActiveController{
                     return false;
                 }
 
-
-
             }else if ($tradeStatus == 'TRADE_SUCCESS') {
                 //判断该笔订单是否在商户网站中已经做过处理
                 $result = $this->_checkNotify($post);
@@ -77,9 +75,11 @@ class NotifyController extends ActiveController{
 
                 //调用订单支付接口方法
                 $orderNo = $this->_logModel->order_no;
-                $orderModel = Order::findOne(['order_no' => $orderNo]);
-                $response = $orderModel->pay();
-                Yii::info(print_r($response, true), 'api');
+                if(!empty($orderNo)){
+                    $orderModel = Order::findOne(['order_no' => $orderNo]);
+                    $response = $orderModel->pay();
+                    Yii::info(print_r($response, true), 'api');
+                }
             }
             echo "success";
             Yii::info('回调结束：success', 'api');

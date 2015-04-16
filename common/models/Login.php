@@ -106,6 +106,7 @@ class Login extends Model{
         if ($this->_user === false) {
             $this->_user = User::findByMobile($this->mobile);
             if(empty($this->_user)){
+                //注册一手机用户
                 $userModel = new User();
                 $userModel->mobile = $this->mobile;
                 $this->_user = $userModel->autoSignUp();

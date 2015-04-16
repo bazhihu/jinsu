@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * 支付宝回调接口
  * User: zhangbo
  * Date: 2015/4/3
  * Time: 22:15
@@ -8,6 +8,7 @@
 
 namespace api\modules\alipay\controllers;
 
+use api\modules\alipay\models\Notify;
 use Yii;
 //use yii\log\Logger;
 use yii\web\Response;
@@ -29,12 +30,16 @@ class NotifyController extends ActiveController{
     }
 
     /**
-     * 登录
+     * 支付宝回调方法
      * @return array|null
      * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate(){
-        echo 'create';exit;
+        $post = Yii::$app->getRequest()->getBodyParams();
+        Yii::info(print_r($post, true), 'api');
+
+        $notify = new Notify(Yii::$app->params['aliPay']);
+
     }
 
     /**

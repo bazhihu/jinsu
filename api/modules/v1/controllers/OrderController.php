@@ -8,6 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
+use common\components\alipay\Alipay;
 use common\models\Payment;
 use Yii;
 use yii\web\Response;
@@ -17,6 +18,7 @@ use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
 use backend\models\WalletUser;
 use common\models\Order;
+//use yii\web\UnauthorizedHttpException;
 
 class OrderController extends ActiveController {
     public $modelClass = 'common\models\Order';
@@ -39,10 +41,10 @@ class OrderController extends ActiveController {
 
     /**
      * 订单列表
-     * @param $uid
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function actionIndex($uid){
+    public function actionIndex(){
+        $uid = Yii::$app->user->id;
         $query = Order::find()
             ->andFilterWhere(['uid' => $uid])
             ->orderBy(['order_id' => SORT_DESC])->all();
@@ -103,6 +105,7 @@ class OrderController extends ActiveController {
         $balance = WalletUser::getBalance($order['uid']);
 
         //支付
+        $payment = null;
         if($post['pay_way'] == Order::PAY_WAY_CASH){
             $order->pay();
         }else{
@@ -116,12 +119,14 @@ class OrderController extends ActiveController {
             //支付数据
             $payment = [
                 'uid' => $post['uid'],
+                'order_no' => $order->order_no,
                 'subject' => '订单号：'.$order->order_no.'的付款',
-                'amount' => $amount,
+                'amount' => $amount
             ];
             $paymentModel = new Payment($post['pay_way'], $payment);
-            $payment;
-            exit;
+            $payment['transaction_no'] = $paymentModel->getTradeNo();
+            $payment['notify_url'] = Alipay::$notifyUrl;
+            unset($payment['uid'], $payment['order_no']);
         }
 
 
@@ -136,7 +141,8 @@ class OrderController extends ActiveController {
 
         return [
             'order' => $order,
-            'user' => $user
+            'user' => $user,
+            'payment' => $payment
         ];
     }
 
@@ -144,11 +150,11 @@ class OrderController extends ActiveController {
      * 更新订单
      * @throws \yii\base\InvalidConfigException
      */
-//    public function actionUpdate(){
-//        $order_no = Yii::$app->request->get('id');
-//        $post = Yii::$app->getRequest()->getBodyParams();
-//        echo $order_no;exit;
-//    }
+    public function actionUpdate(){
+        $order_no = Yii::$app->request->get('id');
+        $post = Yii::$app->getRequest()->getBodyParams();
+        echo $order_no;exit;
+    }
 
     /**
      * 返回数据处理

@@ -1,19 +1,19 @@
 <?php
-$server_name = $_SERVER['SERVER_NAME'] ; //图片服务器
-$pic_domain = null;
-if($server_name=='admin.youaiyihu.com')
-    $pic_domain = 'admin.youaiyihu.com';
-if($server_name=='uat.admin.youaiyihu.com')
-    $pic_domain = 'uat.img.youaiyihu.com';
-if($server_name=='sit.admin.youaiyihu.com')
-    $pic_domain = 'sit.admin.youaiyihu.com';
-if($server_name=='dev.admin.youaiyihu.com')
-    $pic_domain = 'dev.admin.youaiyihu.com';
+$serverName = $_SERVER['SERVER_NAME'] ; //图片服务器
+$picDomain = null;
+if($serverName=='admin.youaiyihu.com')
+    $picDomain = 'admin.youaiyihu.com';
+if($serverName=='uat.admin.youaiyihu.com')
+    $picDomain = 'uat.img.youaiyihu.com';
+if($serverName=='sit.admin.youaiyihu.com')
+    $picDomain = 'sit.admin.youaiyihu.com';
+if($serverName=='dev.admin.youaiyihu.com')
+    $picDomain = 'dev.admin.youaiyihu.com';
 return [
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
-    'pic_domain' =>$pic_domain, //图片服务器
+    'pic_domain' =>$picDomain, //图片服务器
     'aliPay' => [
         'partner' => '2088911035311653',
         'seller_email' => 'pay@youaiyihu.com',

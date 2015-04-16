@@ -9,6 +9,7 @@
 namespace common\models;
 
 use yii\base\InvalidParamException;
+use yii\web\HttpException;
 use common\components\Alipay;
 
 
@@ -44,7 +45,7 @@ class Payment
     /**
      * 生成交易号
      */
-    public function generateTradeNo()
+    private function _generateTradeNo()
     {
         $this->_tradeNo = Wallet::generateWalletNo();
     }
@@ -57,17 +58,29 @@ class Payment
         return $this->_tradeNo;
     }
 
+    /**
+     * 支付宝
+     * @return bool
+     * @throws HttpException
+     */
     private function _aliPay(){
         //生成交易号
-        $transactionNo = $this->generateTradeNo();
+        $this->_generateTradeNo();
 
         //支付日志
         $aliPayLog = new AlipayLog();
-        $aliPayLog->setAttributes($this->_payData);
+        $logData = $this->_payData;
+        $logData['transaction_no'] = $this->_tradeNo;
+        $aliPayLog->setAttributes($logData);
+        if(!$aliPayLog->save()){
+            throw new HttpException(400, print_r($aliPayLog->getErrors(), true));
+        }
+
+        return true;
     }
 
     private function _WeChat(){
-
+        //微信支付@TODO...
     }
 
     

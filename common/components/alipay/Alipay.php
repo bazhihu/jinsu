@@ -8,7 +8,14 @@
 
 namespace common\components\alipay;
 
+use Yii;
 
 class Alipay {
+    public static $notifyUrl = 'http://sit.api.youaiyihu.com/alipay/notify';
+    private $_config = null;
 
+    public function __construct(){
+        $this->_config = Yii::$app->params['aliPay'];
+
+    }
 }

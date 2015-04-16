@@ -58,6 +58,7 @@ class AlipayLog extends \yii\db\ActiveRecord
             [['notify_time', 'gmt_create', 'gmt_payment', 'gmt_close', 'gmt_refund'], 'safe'],
             [['refund_batch_detail_data', 'refund_result_details'], 'string'],
             [['subject'], 'string', 'max' => 256],
+            [['order_no', 'notify_type'], 'string', 'max' => 50],
             [['trade_no'], 'string', 'max' => 64],
             [['buyer_id', 'refund_status'], 'string', 'max' => 30],
             [['seller_email', 'seller_account_name', 'buyer_email', 'buyer_account_name'], 'string', 'max' => 100],

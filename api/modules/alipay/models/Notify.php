@@ -8,6 +8,9 @@
 
 namespace api\modules\alipay\models;
 
+use Yii;
+use common\components\alipay\Functions;
+use common\components\alipay\Rsa;
 
 class Notify{
     /**
@@ -20,35 +23,38 @@ class Notify{
     public static $httpVerifyUrl = 'http://notify.alipay.com/trade/notify_query.do?';
     public static $alipayConfig;
 
-    public function __construct($alipayConfig){
-        $this->alipayConfig = $alipayConfig;
+    public function __construct($config){
+        $basePath = Yii::$app->basePath;
+        $config['ali_public_key_path'] = $basePath.'/../common/certificate/'.$config['ali_public_key_path'];
+        $config['private_key_path'] = $basePath.'/../common/certificate/'.$config['private_key_path'];
+        $config['cacert'] = $basePath.'/../common/certificate/'.$config['cacert'];
+        $this->alipayConfig = $config;
     }
 
     /**
      * 针对notify_url验证消息是否是支付宝发出的合法消息
+     * @param array $post
      * @return 验证结果
      */
-    public function verifyNotify(){
-        if(empty($_POST)) {//判断POST来的数组是否为空
+    public function verifyNotify($post){
+        if(empty($post)) {//判断POST来的数组是否为空
             return false;
-        }
-        else {
+        }else {
             //生成签名结果
-            $isSign = $this->getSignVerify($_POST, $_POST["sign"]);
+            $isSign = $this->getSignVerify($post, $post["sign"]);
             //获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
             $responseTxt = 'true';
-            if (! empty($_POST["notify_id"])) {$responseTxt = $this->getResponse($_POST["notify_id"]);}
+            if (! empty($post["notify_id"])) {$responseTxt = $this->getResponse($post["notify_id"]);}
 
             //写日志记录
-            //if ($isSign) {
-            //	$isSignStr = 'true';
-            //}
-            //else {
-            //	$isSignStr = 'false';
-            //}
-            //$log_text = "responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
-            //$log_text = $log_text.createLinkString($_POST);
-            //logResult($log_text);
+            if ($isSign) {
+            	$isSignStr = 'true';
+            }else {
+            	$isSignStr = 'false';
+            }
+            $logText = "responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
+            $logText = $logText.Functions::createLinkString($post);
+            Yii::info($logText);
 
             //验证
             //$responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
@@ -63,29 +69,28 @@ class Notify{
 
     /**
      * 针对return_url验证消息是否是支付宝发出的合法消息
-     * @return 验证结果
+     * @param array $get
+     * @return bool 验证结果
      */
-    public function verifyReturn(){
-        if(empty($_GET)) {//判断POST来的数组是否为空
+    public function verifyReturn($get){
+        if(empty($get)) {//判断POST来的数组是否为空
             return false;
-        }
-        else {
+        }else {
             //生成签名结果
-            $isSign = $this->getSignVerify($_GET, $_GET["sign"]);
+            $isSign = $this->getSignVerify($get, $get["sign"]);
             //获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
             $responseTxt = 'true';
-            if (! empty($_GET["notify_id"])) {$responseTxt = $this->getResponse($_GET["notify_id"]);}
+            if (! empty($_GET["notify_id"])) {$responseTxt = $this->getResponse($get["notify_id"]);}
 
             //写日志记录
-            //if ($isSign) {
-            //	$isSignStr = 'true';
-            //}
-            //else {
-            //	$isSignStr = 'false';
-            //}
-            //$log_text = "responseTxt=".$responseTxt."\n return_url_log:isSign=".$isSignStr.",";
-            //$log_text = $log_text.createLinkString($_GET);
-            //logResult($log_text);
+            if ($isSign) {
+            	$isSignStr = 'true';
+            }else {
+            	$isSignStr = 'false';
+            }
+            $logText = "responseTxt=".$responseTxt."\n return_url_log:isSign=".$isSignStr.",";
+            $logText = $logText.Functions::createLinkString($get);
+            Yii::info($logText);
 
             //验证
             //$responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
@@ -100,36 +105,35 @@ class Notify{
 
     /**
      * 获取返回时的签名验证结果
-     * @param $para_temp 通知返回来的参数数组
-     * @param $sign 返回的签名结果
-     * @return 签名验证结果
+     * @param array $paramsTemp 通知返回来的参数数组
+     * @param string $sign 返回的签名结果
+     * @return bool 签名验证结果
      */
-    public function getSignVerify($para_temp, $sign) {
+    public function getSignVerify($paramsTemp, $sign) {
         //除去待签名参数数组中的空值和签名参数
-        $para_filter = paraFilter($para_temp);
+        $paramFilter = Functions::paramFilter($paramsTemp);
 
         //对待签名参数数组排序
-        $para_sort = argSort($para_filter);
+        $paramSort = Functions::argSort($paramFilter);
 
         //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        $prestr = createLinkstring($para_sort);
+        $preStr = Functions::createLinkstring($paramSort);
 
-        $isSgin = false;
         switch (strtoupper(trim($this->alipayConfig['sign_type']))) {
             case "RSA" :
-                $isSgin = rsaVerify($prestr, trim($this->alipayConfig['ali_public_key_path']), $sign);
+                $isSign = Rsa::rsaVerify($preStr, trim($this->alipayConfig['ali_public_key_path']), $sign);
                 break;
             default :
-                $isSgin = false;
+                $isSign = false;
         }
 
-        return $isSgin;
+        return $isSign;
     }
 
     /**
      * 获取远程服务器ATN结果,验证返回URL
-     * @param $notify_id 通知校验ID
-     * @return 服务器ATN结果
+     * @param int $notify_id 通知校验ID
+     * @return string 服务器ATN结果
      * 验证结果集：
      * invalid命令参数不对 出现这个错误，请检测返回处理中partner和key是否为空
      * true 返回正确信息
@@ -140,12 +144,12 @@ class Notify{
         $partner = trim($this->alipayConfig['partner']);
 
         if($transport == 'https') {
-            $verifyUrl = $this->httpsVerifyUrl;
+            $verifyUrl = self::$httpsVerifyUrl;
         }else {
-            $verifyUrl = $this->httpVerifyUrl;
+            $verifyUrl = self::$httpVerifyUrl;
         }
         $verifyUrl = $verifyUrl."partner=" . $partner . "&notify_id=" . $notify_id;
-        $responseTxt = getHttpResponseGET($verifyUrl, $this->alipayConfig['cacert']);
+        $responseTxt = Functions::getHttpResponseGET($verifyUrl, $this->alipayConfig['cacert']);
 
         return $responseTxt;
     }

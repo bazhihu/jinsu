@@ -8,7 +8,6 @@
 
 namespace api\modules\alipay\controllers;
 
-
 use common\models\Order;
 use Yii;
 use yii\web\Response;
@@ -100,7 +99,8 @@ class NotifyController extends ActiveController{
      * @return string
      */
     private function _checkNotify($post){
-        $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
+        $transactionNo = $post['out_trade_no'];
+        $aliPayLog = AlipayLog::findOne(['transaction_no' => $transactionNo]);
         if(empty($aliPayLog)){
             Yii::info('未找到订单');
             return 'fail';

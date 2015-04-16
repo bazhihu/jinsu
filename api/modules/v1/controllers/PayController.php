@@ -13,7 +13,8 @@ use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
-use backend\models\WalletUser;
+use common\models\Payment;
+
 class PayController extends ActiveController{
     public $modelClass = 'common\models\Order';
     public $responseCode = 200;
@@ -41,10 +42,23 @@ class PayController extends ActiveController{
             $this->responseMsg = '支付方式为空';
             return false;
         }
+        $amount = $post['amount'];
+        if($amount <= 0){
+            $this->responseCode = 400;
+            $this->responseMsg = '支付金额错误';
+            return null;
+        }
 
+        //支付数据
+        $payment = [
+            'subject' => '用户充值',
+            'amount' => $amount
+        ];
+        $paymentModel = new Payment($post['pay_way'], $payment);
+        $payment['transaction_no'] = $paymentModel->getTradeNo();
+        $payment['notify_url'] = Alipay::$notifyUrl;
 
-
-
+        return $payment;
     }
 
     /**

@@ -40,7 +40,7 @@ class NotifyController extends ActiveController{
      */
     public function actionCreate(){
         $post = Yii::$app->getRequest()->getBodyParams();
-        Yii::info(print_r($post, true), 'api');
+        Yii::info('回调开始：'.print_r($post, true), 'api');
 
         $notify = new Notify(Yii::$app->params['aliPay']);
         $verifyResult = $notify->verifyNotify($post);
@@ -86,9 +86,11 @@ class NotifyController extends ActiveController{
                 Yii::info(print_r($response, true), 'api');
             }
             echo "success";
+            Yii::info('回调结束：success', 'api');
         }else {
             //验证失败
             echo "fail";
+            Yii::info('回调结束：fail', 'api');
         }
     }
 

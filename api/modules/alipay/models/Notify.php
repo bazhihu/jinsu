@@ -44,7 +44,9 @@ class Notify{
             $isSign = $this->getSignVerify($post, $post["sign"]);
             //获取支付宝远程服务器ATN结果（验证是否是支付宝发来的消息）
             $responseTxt = 'true';
-            if (! empty($post["notify_id"])) {$responseTxt = $this->getResponse($post["notify_id"]);}
+            if (! empty($post["notify_id"])) {
+                $responseTxt = $this->getResponse($post["notify_id"]);
+            }
 
             //写日志记录
             if ($isSign) {
@@ -54,7 +56,7 @@ class Notify{
             }
             $logText = "responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
             $logText = $logText.Functions::createLinkString($post);
-            Yii::info($logText);
+            Yii::info($logText, 'api');
 
             //验证
             //$responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关

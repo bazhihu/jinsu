@@ -48,9 +48,6 @@ class NotifyController extends ActiveController{
             //交易号
             $transactionNo = $post['out_trade_no'];
 
-            //支付宝交易号
-            $tradeNo = $post['trade_no'];
-
             //交易状态
             $tradeStatus = $post['trade_status'];
 
@@ -69,7 +66,7 @@ class NotifyController extends ActiveController{
 
             }else if ($tradeStatus == 'TRADE_SUCCESS') {
                 //判断该笔订单是否在商户网站中已经做过处理
-                $result = $this->_checkNotify($transactionNo);
+                $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
                     return false;
@@ -99,9 +96,7 @@ class NotifyController extends ActiveController{
      * @return string
      */
     private function _checkNotify($post){
-        $transactionNo = $post['out_trade_no'];
-        Yii::info('$transactionNo:'.$transactionNo, 'api');
-        $aliPayLog = AlipayLog::findOne(['transaction_no' => $transactionNo]);
+        $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
         if(empty($aliPayLog)){
             Yii::info('未找到订单');
             return 'fail';

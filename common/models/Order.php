@@ -72,8 +72,8 @@ class Order extends \yii\db\ActiveRecord{
         ],
         //更新
         'update' => [
-            self::ORDER_STATUS_WAIT_CONFIRM,
-            self::ORDER_STATUS_WAIT_SERVICE,
+            //self::ORDER_STATUS_WAIT_CONFIRM,
+            //self::ORDER_STATUS_WAIT_SERVICE,
             self::ORDER_STATUS_IN_SERVICE
         ],
         //确认

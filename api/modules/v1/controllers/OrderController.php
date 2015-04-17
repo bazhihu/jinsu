@@ -50,7 +50,9 @@ class OrderController extends ActiveController {
         $uid = Yii::$app->user->id;
         $page = Yii::$app->request->get('page');
         if(empty($page)){
-            $page = 1;
+            $page = 0;
+        }else{
+            $page = $page-1;
         }
         $perPage = 10;
 

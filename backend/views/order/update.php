@@ -85,7 +85,13 @@ $this->title = '修改订单';
         </div>
         <?php ActiveForm::end(); ?>
 
+
         <?php
+        $orderStatus = [
+            OrderMaster::ORDER_STATUS_IN_SERVICE
+        ];
+        if(in_array($model->order_status, $orderStatus)):
+
         $form = ActiveForm::begin([
             'type'=>ActiveForm::TYPE_HORIZONTAL
         ]);
@@ -105,7 +111,7 @@ $this->title = '修改订单';
                             'type'=>Form::INPUT_WIDGET,
                             'widgetClass'=>DateControl::classname(),
                             'options'=>[
-                                'type'=>DateControl::FORMAT_DATETIME,
+                                'type'=>DateControl::FORMAT_DATE,
                                 'options'=>[
                                     'options'=>[
                                         'placeholder'=>'请选择结束时间...',
@@ -117,24 +123,15 @@ $this->title = '修改订单';
                     ]
                 ]);
 
-                $disabled = true;
-                $orderStatus = [
-                    OrderMaster::ORDER_STATUS_WAIT_CONFIRM,
-                    OrderMaster::ORDER_STATUS_WAIT_SERVICE,
-                    OrderMaster::ORDER_STATUS_IN_SERVICE
-                ];
-                if(in_array($model->order_status, $orderStatus)){
-                    $disabled = false;
-                }
                 echo Html::submitButton('更新结束时间', [
                     'class'=>'btn btn-primary',
                     'name'=>'update_end_time',
-                    'value'=>'true',
-                    'disabled'=>$disabled,
+                    'value'=>'true'
                 ]);
                 ?>
             </div>
         </div>
+        <?php endif;?>
         <div style="margin-bottom: 15px"></div>
     </div>
 

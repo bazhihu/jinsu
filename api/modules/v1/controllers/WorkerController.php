@@ -100,16 +100,18 @@ class WorkerController extends ActiveController {
             ->all();
         $worker['comments'] = \api\modules\v1\models\Worker::getMobile($worker['comments']);
         #护工自我介绍
-        $worker['other']['selfIntros'] = Workerother::find()
+        $worker['selfIntros'] = Workerother::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->andFilterWhere(['info_type'=>self::$workerSelf])
             ->all();
+        $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:'';
         #护工订单信息
         $worker['orders'] = Order::find()
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)
             ->all();
+        $worker['orders'] = $worker['orders']?$worker['orders']:"";
         return $worker;
     }
 

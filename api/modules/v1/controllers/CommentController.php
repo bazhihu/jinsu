@@ -39,6 +39,11 @@ class CommentController extends ActiveController {
         return $actions;
     }
 
+    /**
+     * 评价列表
+     * @param $id 护工ID
+     * @return array|\yii\db\ActiveRecord[]
+     */
     public function actionView($id)
     {
         $worker_id = $id;
@@ -49,8 +54,20 @@ class CommentController extends ActiveController {
         return $comments;
     }
 
+    /**
+     * 评价
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionCreate(){
+        $post = Yii::$app->getRequest()->getBodyParams();
 
+        $comment = \common\models\Comment::createComment($post);
+        if(!$comment){
+            $this->responseCode = 500;
+            $this->responseMsg = '评论失败';
+            return null;
+        }
+        return [];
     }
 
     /**

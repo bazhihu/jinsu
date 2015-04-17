@@ -536,7 +536,10 @@ class Worker extends \yii\db\ActiveRecord
      */
     static public function workerPic($workerId){
         if($workerId)
-            return 'http://'.Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
+            if(Yii::$app->params['pic_domain']=='uat.img.youaiyihu.com')
+                return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.".jpg";
+            else
+                return 'http://'.Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
         else
             return "img/no.jpg";
     }

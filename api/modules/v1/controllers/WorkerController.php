@@ -14,7 +14,9 @@ use backend\models\Departments;
 use backend\models\Hospitals;
 use backend\models\WalletWithdrawcash;
 use backend\models\Worker;
+use backend\models\Workerother;
 use backend\models\WorkerSearch;
+use common\models\Order;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
@@ -26,6 +28,9 @@ class WorkerController extends ActiveController {
     public $modelClass = '';
     public $responseCode = 200;
     public $responseMsg = null;
+
+    public static $commentOffset = 3;//三条评价
+    public static $workerSelf = 3;//自我介绍
 
     public function behaviors()
     {
@@ -59,7 +64,7 @@ class WorkerController extends ActiveController {
         //随机十个护工
         $params = Yii::$app->getRequest()->getBodyParams();
         $worker = \api\modules\v1\models\Worker::select($params);
-        $worker     = \api\modules\v1\models\Worker::spliceWorker($worker);
+        $worker = \api\modules\v1\models\Worker::spliceWorker($worker);
         if(!empty($worker)){
 
             foreach($worker as $key => $item){
@@ -78,14 +83,31 @@ class WorkerController extends ActiveController {
     {
         $worker_id  = Yii::$app->request->get('id');
 
-        $worker     = Worker::findOne(['worker_id'=>$worker_id]);
-        $worker     = ArrayHelper::toArray($worker);
-        $worker     = \api\modules\v1\models\Worker::spliceWorker($worker);
+        $worker = Worker::findOne(['worker_id'=>$worker_id]);
+        $worker = ArrayHelper::toArray($worker);
+        #拼接护工信息
+        $worker = \api\modules\v1\models\Worker::spliceWorker(['0'=>$worker]);
+        $worker = $worker[0];
+        #护工头像
         if(!empty($worker)){
             $worker['pic'] = Worker::workerPic($worker['worker_id']);
         }
-        $comment    = Comment::find(['worker_id'=>$worker_id])->orderBy('comment_id DESC')->all();
-        $worker['comment'] = $comment;
+        #护工评价
+        $worker['comment'] = Comment::find(['worker_id'=>$worker_id])
+            ->orderBy('comment_id DESC')
+            ->limit(self::$commentOffset)
+            ->all();
+        #护工自我介绍
+        $worker['other'] = Workerother::find()
+            ->andFilterWhere(['worker_id'=>$worker_id])
+            ->andFilterWhere(['info_type'=>self::$workerSelf])
+            ->all();
+        #护工订单信息
+        $worker['order'] = Order::find()
+            ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
+            ->orderBy('order_id DESC')
+            ->limit(self::$commentOffset)
+            ->all();
         return $worker;
     }
 

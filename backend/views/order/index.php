@@ -56,7 +56,7 @@ td .btn{margin: 2px}
             'format'=>['datetime','yyyy-MM-dd']
         ],
         [
-            'attribute'=>'end_time',
+            'attribute'=>'reality_end_time',
             'format'=>['datetime','yyyy-MM-dd'],
             'options' => [
                 'style' => 'width:100px',

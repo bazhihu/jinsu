@@ -39,6 +39,7 @@ class Worker extends ActiveRecord
             $params[$key]['nation']          = $value['nation']?\backend\models\Worker::getNation($value['nation']):"";
             $params[$key]['chinese_level']   = $value['chinese_level']?\backend\models\Worker::getChineseLevel($value['chinese_level']):'';
             $params[$key]['education']       = $value['education']?\backend\models\Worker::getEducationLevel($value['education']):'';
+            $params[$key]['certificate']        = $value['certificate']?\backend\models\Worker::getCertificate($value['certificate']):'';
             /*if($value['birth']){
                 $params[$key]['birth']                    = date('Y')-$value['birth'];
             }
@@ -58,7 +59,6 @@ class Worker extends ActiveRecord
                 $params[$key]['nation']             = $value['nation']?\backend\models\Worker::getNation($value['nation']):"";
                 $params[$key]['politics']           = $value['politics']?\backend\models\Worker::getPoliticsLevel($value['politics']):'';
                 $params[$key]['chinese_level']      = $value['chinese_level']?\backend\models\Worker::getChineseLevel($value['chinese_level']):'';
-                $params[$key]['certificate']        = $value['certificate']?\backend\models\Worker::getCertificate($value['certificate']):'';
                 $params[$key]['hospital_id']        = Hospitals::getHospitalsName($value['hospital_id']);
                 $params[$key]['office_id']          = Departments::getDepartmentName($value['office_id']);
                 $params[$key]['good_at']            = Departments::getDepartmentName($value['good_at']);

@@ -98,10 +98,12 @@ class Departments extends \yii\db\ActiveRecord
             $ids = explode(',',$IdStr);
             if($ids) {
                 foreach ($ids as $id) {
-                    $findArr = ['id' => $id];
-                    $result = self::findOne($findArr);
-                    $data .= $result['name']." ";
+                    if($id){
+                        $findArr = ['id' => $id];
+                        $result[] = self::findOne($findArr)['name'];
+                    }
                 }
+                $data .= implode('、',$result);
             }
         }
         return $data;

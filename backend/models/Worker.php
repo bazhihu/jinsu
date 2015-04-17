@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
 
 /**
@@ -504,12 +505,13 @@ class Worker extends \yii\db\ActiveRecord
         $data = null;
         if($certificateStr){
             $certificates = explode(',',$certificateStr);
-            if($certificates) {
-                foreach ($certificates as $certificate) {
-                    if($certificate)
-                        $data.= self::getCertificate($certificate)." ";
+            $return = [];
+            foreach($certificates as $key=>$val){
+                if($val){
+                    $return[] = self::getCertificate($val);
                 }
             }
+            $data =  implode('、',$return);
         }
         return $data;
     }

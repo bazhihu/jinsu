@@ -133,7 +133,7 @@ class WorkerotherController extends Controller
                     if($params['begin_dt'.$j])
                         $ext1 = $params['begin_dt'.$j];
                     if($params['end_dt'.$j])
-                        $ext1 = "至".$params['end_dt'.$j];
+                        $ext1 = $ext1."至".$params['end_dt'.$j];
                 }else{
                     $ext1 = $params[$key1][$j];
                 }

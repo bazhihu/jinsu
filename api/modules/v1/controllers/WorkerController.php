@@ -30,7 +30,7 @@ class WorkerController extends ActiveController {
     public $responseMsg = null;
 
     public static $commentOffset = 3;//三条评价
-    public static $workerSelf = 3;//自我介绍
+    public static $workerSelf = 2;//自我介绍
 
     public function behaviors()
     {
@@ -104,14 +104,14 @@ class WorkerController extends ActiveController {
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->andFilterWhere(['info_type'=>self::$workerSelf])
             ->all();
-        $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:'';
+        $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
         #护工订单信息
         $worker['orders'] = Order::find()
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)
             ->all();
-        $worker['orders'] = $worker['orders']?$worker['orders']:"";
+        $worker['orders'] = $worker['orders']?$worker['orders']:[];
         return $worker;
     }
 

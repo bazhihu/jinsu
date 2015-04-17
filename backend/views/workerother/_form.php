@@ -11,6 +11,7 @@ use kartik\builder\Form;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
+
 <div class="workerother-form">
     <?php $form = ActiveForm::begin([
             'type'=>ActiveForm::TYPE_HORIZONTAL,
@@ -34,26 +35,28 @@ use kartik\builder\Form;
                 </tr>
                 <tr>
                     <td  align="left">
-                        <?
-                        echo DateControl::widget([
-                            'name'=>'begin_dt0',
-                            'value'=>isset($model[0]['ext1'])? substr($model[0]['ext1'],0,10):"",
-                            'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
-                            'options'=>["options"=>[ 'style'=>'width:60%']],
-                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true, 'inline'=>true],
-                        ]);?>
+                        <input id="begin_dt0" name="begin_dt0" class="time" type="text" value=<?=empty($model[0]['ext1']) ? "": substr($model[0]['ext1'],0,7)?>>
+<!--                        --><?//
+//                        echo DateControl::widget([
+//                            'name'=>'begin_dt0',
+//                            'value'=>isset($model[0]['ext1'])? substr($model[0]['ext1'],0,10):"",
+//                            'type'=>DateControl::FORMAT_DATE,
+//                            'displayFormat' => 'yyyy-MM-dd',
+//                            'options'=>["options"=>[ 'style'=>'width:60%']],
+//                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true, 'inline'=>true],
+//                        ]);?>
                     </td>
                     <td  align="left">
-                        <?
-                        echo DateControl::widget([
-                            'name'=>'end_dt0',
-                            'value'=>isset($model[0]['ext1'])? substr($model[0]['ext1'],13,10):"",
-                            'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
-                            'options'=>["options"=>[ 'style'=>'width:60%']],
-                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true, 'inline'=>true],
-                        ]);?>
+                        <input id="end_dt0" name="end_dt0" class="time" type="text" value=<?=empty($model[0]['ext1']) ? "": substr($model[0]['ext1'],10,17)?>>
+<!--                        --><?//
+//                        echo DateControl::widget([
+//                            'name'=>'end_dt0',
+//                            'value'=>isset($model[0]['ext1'])? substr($model[0]['ext1'],13,10):"",
+//                            'type'=>DateControl::FORMAT_DATE,
+//                            'displayFormat' => 'yyyy-MM-dd',
+//                            'options'=>["options"=>[ 'style'=>'width:60%']],
+//                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true, 'inline'=>true],
+//                        ]);?>
                     </td>
                     <td  align="left"><input name="ext2_1[]" value="<?=empty($model) ?"":$model[0]['ext2']?>"></td>
                     <td  align="left"><input name="ext3_1[]" value="<?=empty($model) ?"":$model[0]['ext3']?>"></td>
@@ -61,26 +64,28 @@ use kartik\builder\Form;
                 </tr>
                 <tr>
                     <td>
-                        <?
-                        echo DateControl::widget([
-                            'name'=>'begin_dt1',
-                            'value'=>isset($model[1]['ext1'])? substr($model[1]['ext1'],0,10):"",
-                            'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
-                            'options'=>["options"=>[ 'style'=>'width:60%']],
-                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true,'style'=>'width:100px'],
-                        ]);?>
+                        <input id="begin_dt1" name="begin_dt1" class="time" type="text" value=<?=empty($model[1]['ext1']) ? "": substr($model[1]['ext1'],0,7)?>>
+<!--                        --><?//
+//                        echo DateControl::widget([
+//                            'name'=>'begin_dt1',
+//                            'value'=>isset($model[1]['ext1'])? substr($model[1]['ext1'],0,10):"",
+//                            'type'=>DateControl::FORMAT_DATE,
+//                            'displayFormat' => 'yyyy-MM-dd',
+//                            'options'=>["options"=>[ 'style'=>'width:60%']],
+//                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true,'style'=>'width:100px'],
+//                        ]);?>
                     </td>
                     <td align="left">
-                        <?
-                        echo DateControl::widget([
-                            'name'=>'end_dt1',
-                            'value'=>isset($model[1]['ext1'])? substr($model[1]['ext1'],13,10):"",
-                            'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
-                            'options'=>["options"=>[ 'style'=>'width:60%']],
-                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
-                        ]);?>
+                        <input id="end_dt1" name="end_dt1" class="time" type="text" value=<?=empty($model[1]['ext1']) ? "": substr($model[1]['ext1'],10,17)?>>
+<!--                        --><?//
+//                        echo DateControl::widget([
+//                            'name'=>'end_dt1',
+//                            'value'=>isset($model[1]['ext1'])? substr($model[1]['ext1'],13,10):"",
+//                            'type'=>DateControl::FORMAT_DATE,
+//                            'displayFormat' => 'yyyy-MM-dd',
+//                            'options'=>["options"=>[ 'style'=>'width:60%']],
+//                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
+//                        ]);?>
                     </td>
                     <td><input name="ext2_1[]" value="<?=empty($model) ?"":$model[1]['ext2']?>"></td>
                     <td><input name="ext3_1[]" value="<?=empty($model) ?"":$model[1]['ext3']?>"></td>
@@ -88,26 +93,28 @@ use kartik\builder\Form;
                 </tr>
                 <tr>
                     <td>
-                        <?
-                        echo DateControl::widget([
-                            'name'=>'begin_dt2',
-                            'value'=>isset($model[2]['ext1'])? substr($model[2]['ext1'],0,10):"",
-                            'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
-                            'options'=>["options"=>[ 'style'=>'width:60%']],
-                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
-                        ]);?>
+                        <input id="begin_dt2" name="begin_dt2" class="time" type="text" value=<?=empty($model[2]['ext1']) ? "": substr($model[2]['ext1'],0,7)?>>
+<!--                        --><?//
+//                        echo DateControl::widget([
+//                            'name'=>'begin_dt2',
+//                            'value'=>isset($model[2]['ext1'])? substr($model[2]['ext1'],0,10):"",
+//                            'type'=>DateControl::FORMAT_DATE,
+//                            'displayFormat' => 'yyyy-MM-dd',
+//                            'options'=>["options"=>[ 'style'=>'width:60%']],
+//                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
+//                        ]);?>
                     </td>
                     <td  align="left">
-                        <?
-                        echo DateControl::widget([
-                            'name'=>'end_dt2',
-                            'value'=>isset($model[2]['ext1'])? substr($model[2]['ext1'],13,10):"",
-                            'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
-                            'options'=>["options"=>[ 'style'=>'width:60%']],
-                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
-                        ]);?>
+                        <input id="end_dt2" name="end_dt2" class="time" type="text" value=<?=empty($model[2]['ext1']) ? "": substr($model[2]['ext1'],10,17)?>>
+<!--                        --><?//
+//                        echo DateControl::widget([
+//                            'name'=>'end_dt2',
+//                            'value'=>isset($model[2]['ext1'])? substr($model[2]['ext1'],13,10):"",
+//                            'type'=>DateControl::FORMAT_DATE,
+//                            'displayFormat' => 'yyyy-MM-dd',
+//                            'options'=>["options"=>[ 'style'=>'width:60%']],
+//                            'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
+//                        ]);?>
                     </td>
                     <td><input name="ext2_1[]" value="<?=empty($model) ?"":$model[2]['ext2']?>"></td>
                     <td><input name="ext3_1[]" value="<?=empty($model) ?"":$model[2]['ext3']?>"></td>
@@ -187,7 +194,31 @@ use kartik\builder\Form;
             </table>
         </div>
     </div>
+    <style>
+        .ui-datepicker-calendar {
+            display: none;
+        }
+    </style>
         <input type="submit" class="btn btn-success" value="保存">
     <?//php echo Html::submitButton($model->isNewRecord ? Yii::t('app', '保存') : Yii::t('app', '保存'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
 </div>
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $('#begin_dt0').unbind('focus');
+        $('#begin_dt0').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'});});
+        $('#end_dt0').unbind('focus')
+        $('#end_dt0').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'begin_dt0\')}'});});
+
+        $('#begin_dt1').unbind('focus');
+        $('#begin_dt1').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'});});
+        $('#end_dt1').unbind('focus')
+        $('#end_dt1').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'begin_dt1\')}'});});
+
+        $('#begin_dt2').unbind('focus');
+        $('#begin_dt2').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'});});
+        $('#end_dt2').unbind('focus')
+        $('#end_dt2').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'begin_dt2\')}'});});
+    });
+</script>
+<script type="text/javascript" src="/js/wdatepicker/wdatepicker.js"></script>

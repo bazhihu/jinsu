@@ -134,10 +134,10 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
             ],
 
 
-            [
-                'attribute'=>'good_at',
-                'value'=>Departments::getDepartmentName($model->good_at)
-            ],
+//            [
+//                'attribute'=>'good_at',
+//                'value'=>Departments::getDepartmentName($model->good_at)
+//            ],
 
             'total_score',
 

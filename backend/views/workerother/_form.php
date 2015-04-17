@@ -39,7 +39,7 @@ use kartik\builder\Form;
                             'name'=>'begin_dt0',
                             'value'=>isset($model[0]['ext1'])? substr($model[0]['ext1'],0,10):"",
                             'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
+                            'displayFormat' => 'yyyy-MM-dd',
                             'options'=>["options"=>[ 'style'=>'width:60%']],
                             'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true, 'inline'=>true],
                         ]);?>
@@ -50,7 +50,7 @@ use kartik\builder\Form;
                             'name'=>'end_dt0',
                             'value'=>isset($model[0]['ext1'])? substr($model[0]['ext1'],13,10):"",
                             'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
+                            'displayFormat' => 'yyyy-MM-dd',
                             'options'=>["options"=>[ 'style'=>'width:60%']],
                             'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true, 'inline'=>true],
                         ]);?>
@@ -66,7 +66,7 @@ use kartik\builder\Form;
                             'name'=>'begin_dt1',
                             'value'=>isset($model[1]['ext1'])? substr($model[1]['ext1'],0,10):"",
                             'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
+                            'displayFormat' => 'yyyy-MM-dd',
                             'options'=>["options"=>[ 'style'=>'width:60%']],
                             'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true,'style'=>'width:100px'],
                         ]);?>
@@ -77,7 +77,7 @@ use kartik\builder\Form;
                             'name'=>'end_dt1',
                             'value'=>isset($model[1]['ext1'])? substr($model[1]['ext1'],13,10):"",
                             'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
+                            'displayFormat' => 'yyyy-MM-dd',
                             'options'=>["options"=>[ 'style'=>'width:60%']],
                             'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
                         ]);?>
@@ -93,7 +93,7 @@ use kartik\builder\Form;
                             'name'=>'begin_dt2',
                             'value'=>isset($model[2]['ext1'])? substr($model[2]['ext1'],0,10):"",
                             'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
+                            'displayFormat' => 'yyyy-MM-dd',
                             'options'=>["options"=>[ 'style'=>'width:60%']],
                             'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
                         ]);?>
@@ -104,7 +104,7 @@ use kartik\builder\Form;
                             'name'=>'end_dt2',
                             'value'=>isset($model[2]['ext1'])? substr($model[2]['ext1'],13,10):"",
                             'type'=>DateControl::FORMAT_DATE,
-                            'displayFormat' => 'yyyy-MM',
+                            'displayFormat' => 'yyyy-MM-dd',
                             'options'=>["options"=>[ 'style'=>'width:60%']],
                             'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true],
                         ]);?>

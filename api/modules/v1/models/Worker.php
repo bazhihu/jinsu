@@ -128,6 +128,6 @@ class Worker extends ActiveRecord
             }
             return $comment;
         }
-        return false;
+        return '';
     }
 }

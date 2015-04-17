@@ -7,6 +7,7 @@
  */
 namespace api\modules\v1\models;
 
+use common\models\User;
 use Yii;
 use backend\models\AdminUser;
 use backend\models\City;
@@ -14,6 +15,7 @@ use backend\models\Departments;
 use backend\models\Hospitals;
 use backend\models\WorkerSchedule;
 use \yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Config Model
@@ -116,5 +118,16 @@ class Worker extends ActiveRecord
         }
 
         return $query->all();
+    }
+
+    public static function getMobile($comment){
+        if(!empty($comment)){
+            $comment = ArrayHelper::toArray($comment);
+            foreach($comment as $key=>$val){
+                $comment[$key]['mobile'] = substr_replace(User::findOne(['id'=>$val['uid']])->mobile,'****',3,4);
+            }
+            return $comment;
+        }
+        return false;
     }
 }

@@ -98,6 +98,7 @@ class WorkerController extends ActiveController {
             ->orderBy('comment_id DESC')
             ->limit(self::$commentOffset)
             ->all();
+        $worker['comments'] = \api\modules\v1\models\Worker::getMobile($worker['comments']);
         #护工自我介绍
         $worker['other']['selfIntros'] = Workerother::find()
             ->andFilterWhere(['worker_id'=>$worker_id])

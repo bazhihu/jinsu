@@ -3,10 +3,6 @@
 namespace backend\controllers;
 
 use backend\models\Recharge;
-use backend\models\WalletDebitRecords;
-use backend\models\WalletDebitRecordsSearch;
-use backend\models\WalletRechargeRecords;
-use backend\models\WalletRechargeRecordsSearch;
 use common\models\Wallet;
 use Yii;
 use backend\models\WalletWithdrawcashSearch;

@@ -24,6 +24,10 @@ class OrderController extends ActiveController {
     public $modelClass = 'common\models\Order';
     public $responseCode = 200;
     public $responseMsg = null;
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items',
+    ];
 
     public function behaviors()
     {
@@ -31,7 +35,7 @@ class OrderController extends ActiveController {
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                'class' => QueryParamAuth::className()
+                //'class' => QueryParamAuth::className()
             ],
         ]);
     }

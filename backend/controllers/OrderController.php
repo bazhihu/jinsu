@@ -243,7 +243,7 @@ class OrderController extends Controller
         if($startTime >= $endTime){
             $response = ['code' => '400', 'msg' => '订单时间至少满一天才能完成'];
         }else{
-            $response = $order->finish();
+            $response = $order->finish($endTime);
         }
 
         echo Json::encode($response);

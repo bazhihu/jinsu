@@ -72,9 +72,9 @@ class Order extends \yii\db\ActiveRecord{
         ],
         //更新
         'update' => [
-            //self::ORDER_STATUS_WAIT_CONFIRM,
-            //self::ORDER_STATUS_WAIT_SERVICE,
-            //self::ORDER_STATUS_IN_SERVICE
+            self::ORDER_STATUS_WAIT_CONFIRM,
+            self::ORDER_STATUS_WAIT_SERVICE,
+            self::ORDER_STATUS_IN_SERVICE
         ],
         //确认
         'confirm' => [
@@ -590,9 +590,10 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单完成
+     * @param string $endTime
      * @return array
      */
-    public function finish(){
+    public function finish($endTime){
         $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'finish')){
             $response['code'] = 212;
@@ -603,7 +604,7 @@ class Order extends \yii\db\ActiveRecord{
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
-            $this->reality_end_time = date('Y-m-d H:i:s');
+            $this->reality_end_time = date('Y-m-d', $endTime);
             $this->operator_id = \Yii::$app->user->id;
 
             //计算实际金额

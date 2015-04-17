@@ -80,12 +80,14 @@ class WorkerController extends ActiveController {
 
         $worker     = Worker::findOne(['worker_id'=>$worker_id]);
         $worker     = ArrayHelper::toArray($worker);
-        $worker     = \api\modules\v1\models\Worker::spliceWorker($worker);
+        $worker     = \api\modules\v1\models\Worker::spliceWorker(['0'=>$worker]);
         if(!empty($worker)){
-            $worker['pic'] = Worker::workerPic($worker['worker_id']);
+            $worker[0]['pic'] = Worker::workerPic($worker[0]['worker_id']);
         }
-        $comment    = Comment::find(['worker_id'=>$worker_id])->orderBy('comment_id DESC')->all();
-        $worker['comment'] = $comment;
+        $comment    = Comment::find(['worker_id'=>$worker_id]);
+        if($comment){
+            $worker[0]['comment'] = $comment->orderBy('comment_id DESC')->all();
+        }
         return $worker;
     }
 

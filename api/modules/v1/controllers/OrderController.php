@@ -18,7 +18,6 @@ use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
 use backend\models\WalletUser;
 use common\models\Order;
-//use yii\web\UnauthorizedHttpException;
 
 class OrderController extends ActiveController {
     public $modelClass = 'common\models\Order';
@@ -49,9 +48,20 @@ class OrderController extends ActiveController {
      */
     public function actionIndex(){
         $uid = Yii::$app->user->id;
+        $page = Yii::$app->request->get('page');
+        if(empty($page)){
+            $page = 1;
+        }
+        $perPage = 10;
+
         $query = Order::find()
             ->andFilterWhere(['uid' => $uid])
-            ->orderBy(['order_id' => SORT_DESC])->all();
+            ->orderBy(['order_id' => SORT_DESC])
+            ->offset($perPage*$page)
+            ->limit($perPage)
+            ->all();
+
+        $totalCount = Order::find()->andFilterWhere(['uid' => $uid])->count();
 
         $result = ArrayHelper::toArray($query);
         if(!empty($result)){
@@ -60,7 +70,13 @@ class OrderController extends ActiveController {
                 $result[$key] = $item;
             }
         }
-        return $result;
+        $meta = [
+            'totalCount' => $totalCount,
+            'pageCount' => ceil($totalCount/$perPage),
+            'currentPage' => $page,
+            'perPage' => $perPage
+        ];
+        return ['items' => $result, '_meta' => $meta];
     }
 
     /**

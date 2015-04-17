@@ -114,7 +114,7 @@ class NotifyController extends ActiveController{
         //保存支付日志
         $aliPayLog->setAttributes($post);
         if(!$aliPayLog->save()){
-            Yii::info('支付日志保存失败');
+            Yii::info('支付日志保存失败:'.print_r($aliPayLog->getErrors(), true));
         }
         $this->_logModel = $aliPayLog;
         return 'ok';

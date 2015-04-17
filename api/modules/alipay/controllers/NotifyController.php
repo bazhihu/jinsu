@@ -99,7 +99,7 @@ class NotifyController extends ActiveController{
     private function _checkNotify($post){
         $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
         if(empty($aliPayLog)){
-            Yii::info('未找到订单');
+            Yii::info('未找到订单', 'api');
             return 'fail';
         }
         if($aliPayLog->trade_status == 'TRADE_FINISHED' || $aliPayLog->trade_status == 'TRADE_SUCCESS'){
@@ -107,14 +107,14 @@ class NotifyController extends ActiveController{
         }
 
         if($aliPayLog->total_fee != $post['total_fee']){
-            Yii::info('交易金额错误');
-            return 'fail';
+            Yii::info('交易金额错误', 'api');
+            //return 'fail';
         }
 
         //保存支付日志
         $aliPayLog->setAttributes($post);
         if(!$aliPayLog->save()){
-            Yii::info('支付日志保存失败:'.print_r($aliPayLog->getErrors(), true));
+            Yii::info('支付日志保存失败:'.print_r($aliPayLog->getErrors(), true), 'api');
         }
         $this->_logModel = $aliPayLog;
         return 'ok';

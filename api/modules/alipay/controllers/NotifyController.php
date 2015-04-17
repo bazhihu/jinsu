@@ -45,9 +45,6 @@ class NotifyController extends ActiveController{
         $verifyResult = $notify->verifyNotify($post);
 
         if($verifyResult) {//验证成功
-            //交易号
-            $transactionNo = $post['out_trade_no'];
-
             //交易状态
             $tradeStatus = $post['trade_status'];
 
@@ -59,6 +56,7 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
+                    Yii::info($result, 'api');
                     return false;
                 }
 
@@ -67,6 +65,7 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
+                    Yii::info($result, 'api');
                     return false;
                 }
 
@@ -108,7 +107,7 @@ class NotifyController extends ActiveController{
 
         if($aliPayLog->total_fee != $post['total_fee']){
             Yii::info('交易金额错误', 'api');
-            return 'fail';
+            //return 'fail';
         }
 
         //保存支付日志

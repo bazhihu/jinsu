@@ -253,6 +253,7 @@ class Order extends \yii\db\ActiveRecord{
                 if(isset($orderData['worker_no'])){
                     $worker = Worker::findOne($orderData['worker_no']);
                     $orderData['base_price'] = $worker->price;
+                    $orderData['worker_name'] = $worker->name;
                 }elseif(!empty($orderData['worker_level'])){
                     $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
                 }

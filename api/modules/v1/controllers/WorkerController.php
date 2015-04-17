@@ -30,7 +30,7 @@ class WorkerController extends ActiveController {
     public $responseMsg = null;
 
     public static $commentOffset = 3;//三条评价
-    public static $workerSelf = 3;//自我介绍
+    public static $workerSelf = 2;//自我介绍
 
     public function behaviors()
     {

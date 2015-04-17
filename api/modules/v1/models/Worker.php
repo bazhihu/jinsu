@@ -39,7 +39,7 @@ class Worker extends ActiveRecord
             $params[$key]['nation']          = $value['nation']?\backend\models\Worker::getNation($value['nation']):"";
             $params[$key]['chinese_level']   = $value['chinese_level']?\backend\models\Worker::getChineseLevel($value['chinese_level']):'';
             $params[$key]['education']       = $value['education']?\backend\models\Worker::getEducationLevel($value['education']):'';
-            $params[$key]['certificate']        = $value['certificate']?\backend\models\Worker::getCertificate($value['certificate']):'';
+            $params[$key]['certificate']     = $value['certificate']?\backend\models\Worker::getCertificateName($value['certificate']):'';
             /*if($value['birth']){
                 $params[$key]['birth']                    = date('Y')-$value['birth'];
             }

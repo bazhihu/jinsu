@@ -507,7 +507,7 @@ class Worker extends \yii\db\ActiveRecord
             if($certificates) {
                 foreach ($certificates as $certificate) {
                     if($certificate)
-                        $data.= self::getCertificate($certificate)." ";
+                        $data.= self::getCertificate($certificate)."、";
                 }
             }
         }

@@ -100,7 +100,7 @@ class Departments extends \yii\db\ActiveRecord
                 foreach ($ids as $id) {
                     $findArr = ['id' => $id];
                     $result = self::findOne($findArr);
-                    $data .= $result['name']." ";
+                    $data .= $result['name']."、";
                 }
             }
         }

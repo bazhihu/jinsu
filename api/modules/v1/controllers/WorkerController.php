@@ -93,17 +93,19 @@ class WorkerController extends ActiveController {
             $worker['pic'] = Worker::workerPic($worker['worker_id']);
         }
         #护工评价
-        $worker['comment'] = Comment::find(['worker_id'=>$worker_id])
+        $worker['comments'] = Comment::find()
+            ->andFilterWhere(['worker_id'=>$worker_id])
             ->orderBy('comment_id DESC')
             ->limit(self::$commentOffset)
             ->all();
+        $worker['comments'] = \api\modules\v1\models\Worker::getMobile($worker['comments']);
         #护工自我介绍
-        $worker['other'] = Workerother::find()
+        $worker['other']['selfIntros'] = Workerother::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->andFilterWhere(['info_type'=>self::$workerSelf])
             ->all();
         #护工订单信息
-        $worker['order'] = Order::find()
+        $worker['orders'] = Order::find()
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)

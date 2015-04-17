@@ -34,7 +34,7 @@ class OrderController extends ActiveController {
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                //'class' => QueryParamAuth::className()
+                'class' => QueryParamAuth::className()
             ],
         ]);
     }
@@ -75,7 +75,7 @@ class OrderController extends ActiveController {
         $meta = [
             'totalCount' => $totalCount,
             'pageCount' => ceil($totalCount/$perPage),
-            'currentPage' => $page,
+            'currentPage' => $page+1,
             'perPage' => $perPage
         ];
         return ['items' => $result, '_meta' => $meta];

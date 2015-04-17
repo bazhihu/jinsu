@@ -187,6 +187,7 @@ class OrderController extends Controller
     {
         $model = $this->findModel($id);
         $orderPatientModel = OrderPatient::findOne(['order_id'=>$id]);
+        $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->order_id]);
         } else {

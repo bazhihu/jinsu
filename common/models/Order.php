@@ -160,8 +160,8 @@ class Order extends \yii\db\ActiveRecord{
             'customer_service_id' => '下单客服ID',
             'operator_id' => '订单操作者ID',
             'remark' => '订单备注',
-            'start_time' => '开始时间',
-            'end_time' => '结束时间',
+            'start_time' => '订单开始时间',
+            'end_time' => '订单结束时间',
             'pay_way' => '支付方式',
             'reality_end_time' => '实际结束时间',
             'create_time' => '订单创建时间',
@@ -610,10 +610,10 @@ class Order extends \yii\db\ActiveRecord{
             //计算实际金额
             $realAmount = $this->calculateTotalPrice();
             $refundAmount = $this->total_amount - $realAmount;
+            $this->real_amount = $realAmount;
 
             //退款
             if($refundAmount > 0){
-                $this->real_amount = $realAmount;
                 $wallet = Wallet::addMoney($this->uid, $refundAmount);
 
                 //添加退款记录

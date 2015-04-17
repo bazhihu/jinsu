@@ -2,15 +2,12 @@
 
 namespace backend\controllers;
 
-use backend\models\OrderMaster;
-use backend\models\UploadForm;
-use backend\models\Workerother;
+use common\models\Order;
 use backend\models\WorkerSchedule;
 use Yii;
 use backend\models\Worker;
 use backend\models\WorkerSearch;
 use backend\models\City;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -276,7 +273,7 @@ class WorkerController extends Controller
                 return false;
             }
 
-            $response = OrderMaster::setWorker($orderId, $workerId, $worker->name);
+            $response = Order::setWorker($orderId, $workerId, $worker->name);
             echo Json::encode($response);
             return false;
         }

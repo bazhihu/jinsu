@@ -50,8 +50,12 @@ $this->title = '修改订单';
                     'form'=>$form,
                     'columns'=>3,
                     'attributes'=>[
-                        'start_time'=>['type'=>Form::INPUT_TEXT],
+                        'start_time'=>[
+                            'type'=>Form::INPUT_TEXT,
+                            'value'=>33
+                        ],
                         'end_time'=>['type'=>Form::INPUT_TEXT],
+                        'reality_end_time'=>['type'=>Form::INPUT_TEXT],
                     ]
                 ]);
 
@@ -115,7 +119,7 @@ $this->title = '修改订单';
                                 'options'=>[
                                     'options'=>[
                                         'placeholder'=>'请选择结束时间...',
-                                        'style'=>'width:19%'
+                                        'style'=>'width:130px'
                                     ]
                                 ]
                             ]

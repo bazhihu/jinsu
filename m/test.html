@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script src="js/jquery.js"></script>
+<body>
+<table id="worker_list"></table>
+
+<script type="text/javascript">
+    $().ready(function () {
+        $.getJSON("http://dev.api.youaiyihu.com/v1/workers", function(json){
+            var json_data =json.data;
+            alert(json_data);
+//            $.each(json_data, function(i,item){
+//                var name = item.name;
+//                var gender = item.gender;
+//                var level =item.level;
+//                $("#worker_list").html($("#worker_list").html() + "<br>" + name + " - " + gender + " - " + level + "<br/>");
+//                var str = '<tr><td>姓名：'+ name +'</td><td>性别 '+ gender +'</td><td>级别 '+ level + '</td></tr>';
+//                $("#worker_list").html($("#worker_list").html()+str);
+//            });
+        });
+    })
+</script>
+</body>
+</html>

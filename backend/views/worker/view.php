@@ -216,7 +216,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                                 if(empty($modelOther))
                                     echo "";
                                 elseif(1<strlen($modelOther[0]['ext1']) && strlen($modelOther[0]['ext1'])<13)
-                                    echo $modelOther[0]['ext1']."至今";
+                                    echo $modelOther[0]['ext1']."-至今";
                                 else
                                     echo $modelOther[0]['ext1'] ;?>
                         </td>
@@ -230,7 +230,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                             if(empty($modelOther))
                                 echo "";
                             elseif(1<strlen($modelOther[1]['ext1']) && strlen($modelOther[1]['ext1'])<13)
-                                echo $modelOther[1]['ext1']."至今";
+                                echo $modelOther[1]['ext1']."-至今";
                             else
                                 echo $modelOther[1]['ext1'] ;?>
                         </td>
@@ -244,7 +244,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                             if(empty($modelOther))
                                 echo "";
                             elseif(1<strlen($modelOther[2]['ext1']) && strlen($modelOther[2]['ext1'])<13)
-                                echo $modelOther[2]['ext1']."至今";
+                                echo $modelOther[2]['ext1']."-至今";
                             else
                                 echo $modelOther[2]['ext1'] ;?>
                         </td>

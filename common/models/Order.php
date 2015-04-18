@@ -42,6 +42,10 @@ class Order extends \yii\db\ActiveRecord{
         self::PAY_WAY_WE_CHAT => '微信'
     ];
 
+    //下单类型
+    const ORDER_TYPE_FAST = 1; //快速下单
+    const ORDER_TYPE_WORKER = 2; //选择护工下单
+
     //订单状态
     const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
     const ORDER_STATUS_WAIT_CONFIRM = 'wait_confirm'; //待确认
@@ -255,8 +259,10 @@ class Order extends \yii\db\ActiveRecord{
                     $worker = Worker::findOne($orderData['worker_no']);
                     $orderData['base_price'] = $worker->price;
                     $orderData['worker_name'] = $worker->name;
+                    $orderData['order_type'] = self::ORDER_TYPE_WORKER;
                 }elseif(!empty($orderData['worker_level'])){
                     $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+                    $orderData['order_type'] = self::ORDER_TYPE_FAST;
                 }
             }
 

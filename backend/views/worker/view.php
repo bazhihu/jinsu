@@ -94,7 +94,10 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                 'value'=>Worker::getWorkerLevel($model->level,'view')
             ],
 
-            'price',
+            [
+                'attribute'=>'price',
+                'value'=>$model->price."元/日"
+            ],
 
             [
                 'attribute'=>'status',
@@ -204,19 +207,19 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                         <td><b>主要职责与成绩</b></td>
                     </tr>
                     <tr>
-                        <td><?=empty($modelOther) ?"":$modelOther[0]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":strlen($modelOther[0]['ext1'])<8 ? $modelOther[0]['ext1']."至今":$modelOther[0]['ext1'] ?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[0]['ext2']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[0]['ext3']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[0]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=empty($modelOther) ?"":$modelOther[1]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":strlen($modelOther[1]['ext1'])<8 ? $modelOther[1]['ext1']."至今":$modelOther[1]['ext1']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[1]['ext2']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[1]['ext3']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[1]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=empty($modelOther) ?"":$modelOther[2]['ext1']?></td>
+                        <td><?=empty($modelOther) ?"":strlen($modelOther[2]['ext1'])<8 ? $modelOther[2]['ext1']."至今" : $modelOther[2]['ext1']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[2]['ext2']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[2]['ext3']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[2]['ext4']?></td>

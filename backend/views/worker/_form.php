@@ -125,7 +125,8 @@ use backend\models\Hospitals;
 
             'price'=>[
                 'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:30%', 'addon' => ['append' => ['content' => '元']],],
+                'addon' => ['append' => ['content'=>'.00']],
+                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:30%','addon' => ['prepend' => ['contentAfter'=>'@']]],
             ],
 
             'status'=>[

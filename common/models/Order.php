@@ -42,6 +42,10 @@ class Order extends \yii\db\ActiveRecord{
         self::PAY_WAY_WE_CHAT => '微信'
     ];
 
+    //下单类型
+    const ORDER_TYPE_FAST = 1; //快速下单
+    const ORDER_TYPE_WORKER = 2; //选择护工下单
+
     //订单状态
     const ORDER_STATUS_WAIT_PAY = 'wait_pay'; //待支付
     const ORDER_STATUS_WAIT_CONFIRM = 'wait_confirm'; //待确认
@@ -74,7 +78,7 @@ class Order extends \yii\db\ActiveRecord{
         'update' => [
             //self::ORDER_STATUS_WAIT_CONFIRM,
             //self::ORDER_STATUS_WAIT_SERVICE,
-            //self::ORDER_STATUS_IN_SERVICE
+            self::ORDER_STATUS_IN_SERVICE
         ],
         //确认
         'confirm' => [
@@ -120,8 +124,8 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'worker_level', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
-            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue'], 'integer'],
+            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent', 'order_type'], 'required'],
+            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue', 'order_type'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
@@ -160,8 +164,8 @@ class Order extends \yii\db\ActiveRecord{
             'customer_service_id' => '下单客服ID',
             'operator_id' => '订单操作者ID',
             'remark' => '订单备注',
-            'start_time' => '开始时间',
-            'end_time' => '结束时间',
+            'start_time' => '订单开始时间',
+            'end_time' => '订单结束时间',
             'pay_way' => '支付方式',
             'reality_end_time' => '实际结束时间',
             'create_time' => '订单创建时间',
@@ -174,7 +178,8 @@ class Order extends \yii\db\ActiveRecord{
             'create_order_ip' => '创建订单的IP',
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',
-            'is_continue' => '是否为续单（1：是；0：否）'
+            'is_continue' => '是否为续单（1：是；0：否）',
+            'order_type' => '下单类型（1：快速下单；2：选择护工下单）'
         ];
     }
 
@@ -253,8 +258,11 @@ class Order extends \yii\db\ActiveRecord{
                 if(isset($orderData['worker_no'])){
                     $worker = Worker::findOne($orderData['worker_no']);
                     $orderData['base_price'] = $worker->price;
+                    $orderData['worker_name'] = $worker->name;
+                    $orderData['order_type'] = self::ORDER_TYPE_WORKER;
                 }elseif(!empty($orderData['worker_level'])){
                     $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+                    $orderData['order_type'] = self::ORDER_TYPE_FAST;
                 }
             }
 
@@ -590,9 +598,10 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单完成
+     * @param string $endTime
      * @return array
      */
-    public function finish(){
+    public function finish($endTime){
         $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'finish')){
             $response['code'] = 212;
@@ -603,16 +612,16 @@ class Order extends \yii\db\ActiveRecord{
         $transaction = \Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
-            $this->reality_end_time = date('Y-m-d H:i:s');
+            $this->reality_end_time = date('Y-m-d', $endTime);
             $this->operator_id = \Yii::$app->user->id;
 
             //计算实际金额
             $realAmount = $this->calculateTotalPrice();
             $refundAmount = $this->total_amount - $realAmount;
+            $this->real_amount = $realAmount;
 
             //退款
             if($refundAmount > 0){
-                $this->real_amount = $realAmount;
                 $wallet = Wallet::addMoney($this->uid, $refundAmount);
 
                 //添加退款记录

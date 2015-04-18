@@ -18,12 +18,15 @@ use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
 use backend\models\WalletUser;
 use common\models\Order;
-//use yii\web\UnauthorizedHttpException;
 
 class OrderController extends ActiveController {
     public $modelClass = 'common\models\Order';
     public $responseCode = 200;
     public $responseMsg = null;
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items',
+    ];
 
     public function behaviors()
     {
@@ -45,9 +48,22 @@ class OrderController extends ActiveController {
      */
     public function actionIndex(){
         $uid = Yii::$app->user->id;
+        $page = Yii::$app->request->get('page');
+        if(empty($page)){
+            $page = 0;
+        }else{
+            $page = $page-1;
+        }
+        $perPage = 10;
+
         $query = Order::find()
             ->andFilterWhere(['uid' => $uid])
-            ->orderBy(['order_id' => SORT_DESC])->all();
+            ->orderBy(['order_id' => SORT_DESC])
+            ->offset($perPage*$page)
+            ->limit($perPage)
+            ->all();
+
+        $totalCount = Order::find()->andFilterWhere(['uid' => $uid])->count();
 
         $result = ArrayHelper::toArray($query);
         if(!empty($result)){
@@ -56,7 +72,13 @@ class OrderController extends ActiveController {
                 $result[$key] = $item;
             }
         }
-        return $result;
+        $meta = [
+            'totalCount' => $totalCount,
+            'pageCount' => ceil($totalCount/$perPage),
+            'currentPage' => $page+1,
+            'perPage' => $perPage
+        ];
+        return ['items' => $result, '_meta' => $meta];
     }
 
     /**
@@ -141,8 +163,25 @@ class OrderController extends ActiveController {
      */
     public function actionUpdate(){
         $order_no = Yii::$app->request->get('id');
-        $post = Yii::$app->getRequest()->getBodyParams();
-        echo $order_no;exit;
+        $uid = Yii::$app->user->id;
+
+        $orderModel = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
+        if(empty($orderModel)){
+            $this->responseCode = 404;
+            $this->responseMsg = '找不到要取消的订单';
+            return null;
+        }
+        $action = Yii::$app->getRequest()->getBodyParam('action');
+        if($action == 'cancel'){
+            $response = $orderModel->cancel();
+        }else{
+            $response['code'] = 2132;
+            $response['msg'] = '订单状态错误';
+        }
+
+        $this->responseCode = $response['code'];
+        $this->responseMsg = $response['msg'];
+        return null;
     }
 
     /**

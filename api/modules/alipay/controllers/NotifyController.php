@@ -8,7 +8,6 @@
 
 namespace api\modules\alipay\controllers;
 
-
 use common\models\Order;
 use Yii;
 use yii\web\Response;
@@ -40,18 +39,12 @@ class NotifyController extends ActiveController{
      */
     public function actionCreate(){
         $post = Yii::$app->getRequest()->getBodyParams();
-        Yii::info('回调开始：'.print_r($post, true), 'api');
+        Yii::info('======================回调开始：'.print_r($post, true), 'api');
 
         $notify = new Notify(Yii::$app->params['aliPay']);
         $verifyResult = $notify->verifyNotify($post);
 
         if($verifyResult) {//验证成功
-            //交易号
-            $transactionNo = $post['out_trade_no'];
-
-            //支付宝交易号
-            $tradeNo = $post['trade_no'];
-
             //交易状态
             $tradeStatus = $post['trade_status'];
 
@@ -63,16 +56,16 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
+                    Yii::info($result, 'api');
                     return false;
                 }
 
-
-
             }else if ($tradeStatus == 'TRADE_SUCCESS') {
                 //判断该笔订单是否在商户网站中已经做过处理
-                $result = $this->_checkNotify($transactionNo);
+                $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
+                    Yii::info($result, 'api');
                     return false;
                 }
 
@@ -81,17 +74,20 @@ class NotifyController extends ActiveController{
 
                 //调用订单支付接口方法
                 $orderNo = $this->_logModel->order_no;
-                $orderModel = Order::findOne(['order_no' => $orderNo]);
-                $response = $orderModel->pay();
-                Yii::info(print_r($response, true), 'api');
+                if(!empty($orderNo)){
+                    $orderModel = Order::findOne(['order_no' => $orderNo]);
+                    $response = $orderModel->pay();
+                    Yii::info('$response:'.print_r($response, true), 'api');
+                }
             }
             echo "success";
             Yii::info('回调结束：success', 'api');
         }else {
             //验证失败
             echo "fail";
-            Yii::info('回调结束：fail', 'api');
+            Yii::info('======================回调结束：fail', 'api');
         }
+        exit();
     }
 
     /**
@@ -100,9 +96,9 @@ class NotifyController extends ActiveController{
      * @return string
      */
     private function _checkNotify($post){
-        $aliPayLog = AlipayLog::findOne(['order_no' => $post['out_trade_no']]);
+        $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
         if(empty($aliPayLog)){
-            Yii::info('未找到订单');
+            Yii::info('未找到订单', 'api');
             return 'fail';
         }
         if($aliPayLog->trade_status == 'TRADE_FINISHED' || $aliPayLog->trade_status == 'TRADE_SUCCESS'){
@@ -110,30 +106,16 @@ class NotifyController extends ActiveController{
         }
 
         if($aliPayLog->total_fee != $post['total_fee']){
-            Yii::info('交易金额错误');
-            return 'fail';
+            Yii::info('交易金额错误', 'api');
+            //return 'fail';
         }
 
         //保存支付日志
         $aliPayLog->setAttributes($post);
-        $aliPayLog->save();
+        if(!$aliPayLog->save()){
+            Yii::info('支付日志保存失败:'.print_r($aliPayLog->getErrors(), true), 'api');
+        }
         $this->_logModel = $aliPayLog;
         return 'ok';
-    }
-
-    /**
-     * 返回数据处理
-     * @inheritdoc
-     */
-    public function afterAction($action, $result)
-    {
-        $response = [
-            'code' => $this->responseCode,
-            'msg' => $this->responseMsg,
-            'data' => null
-        ];
-        $result = parent::afterAction($action, $result);
-        $response['data'] = $result;
-        return $this->serializeData($response);
     }
 }

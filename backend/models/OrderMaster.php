@@ -43,4 +43,31 @@ class OrderMaster extends Order
     const IS_CONTINUE_YES = 1; //是续单
     const IS_CONTINUE_NO = 0; //不是续单
 
+    public function rules(){
+        $rules = parent::rules();
+        return array_merge($rules, [
+            [['worker_level'], 'required'],
+            [['reality_end_time'], 'required', 'on'=>'update'],
+            [['reality_end_time'], 'validateRealityEndTime', 'on'=>'update']
+        ]);
+    }
+
+    /**
+     * 验证实际结束时间
+     * @param $attribute
+     */
+    public function validateRealityEndTime($attribute){
+        if (!$this->hasErrors()) {
+            if(strtotime($this->reality_end_time) > strtotime($this->end_time)){
+                $this->addError($attribute, '实际结束时间不能大于订单结束时间。');
+            }
+            if(strtotime($this->reality_end_time) <= strtotime($this->start_time)){
+                $this->addError($attribute, '实际结束时间不能小于或等于订单开始时间。');
+            }
+            if(strtotime($this->reality_end_time) <= strtotime(date('Y-m-d'))){
+                $this->addError($attribute, '实际结束时间不能小于或等于当前时间。');
+            }
+        }
+    }
+
 }

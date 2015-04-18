@@ -41,7 +41,11 @@ class SmsController extends ActiveController{
         $params['type'] = Sms::SMS_LOGIN_CODE;
         $params['code'] = rand(100000, 999999);
         Yii::$app->cache->set($sms->mobile, $params['code'], 300);
-        return $sms::send($params);
+
+        $response = $sms::send($params);
+        $this->responseCode = $response['code'];
+        $this->responseMsg = $response['msg'];
+        return null;
     }
 
     /**

@@ -18,7 +18,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 
 ?>
 <style>
-td .btn{margin-left: 3px}
+td .btn{margin: 2px}
 .panel-body .form-group{
     float:left;
     margin:5px;
@@ -56,7 +56,7 @@ td .btn{margin-left: 3px}
             'format'=>['datetime','yyyy-MM-dd']
         ],
         [
-            'attribute'=>'end_time',
+            'attribute'=>'reality_end_time',
             'format'=>['datetime','yyyy-MM-dd'],
             'options' => [
                 'style' => 'width:100px',

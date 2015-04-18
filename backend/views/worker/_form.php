@@ -105,34 +105,6 @@ use backend\models\Hospitals;
                 'options'=>['inline'=>true]
             ],
 
-           'chinese_level'=>[
-               'type'=> Form::INPUT_RADIO_LIST,
-               'options'=>['placeholder'=>'请选择普通话水平...'],
-               'items'=>Worker::getChineseLevel(), 'options'=>['inline'=>true]
-           ],
-
-           'certificate'=>[
-               'type'=> Form::INPUT_CHECKBOX_LIST,
-               'options'=>['placeholder'=>'请选择资质证书...'],
-               'items'=>Worker::getCertificate(),
-               'options'=>['inline'=>true], 'maxlength'=>10
-           ],
-
-            'level'=>[
-                'type'=> Form::INPUT_RADIO_LIST,
-                'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
-            ],
-
-            'price'=>[
-                'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入服务价格...','style'=>'width:30%', 'addon' => ['append' => ['content' => '元']],],
-            ],
-
-            'status'=>[
-                'type'=> Form::INPUT_RADIO_LIST,
-                'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]
-            ],
-
             'start_work'=>[
                 'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
                 'options'=>[
@@ -145,12 +117,34 @@ use backend\models\Hospitals;
                 ],
             ],
 
-            'place'=>[
-                'type'=> Form::INPUT_TEXT,
-                'options'=>['placeholder'=>'请输入居住地...', 'maxlength'=>255,'style'=>'width:30%']
-            ]
+            'status'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择工作状态...'],'items'=>['1'=>'在职','2'=>'离职'], 'options'=>['inline'=>true]
+            ],
+
+            'chinese_level'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择普通话水平...'],
+                'items'=>Worker::getChineseLevel(), 'options'=>['inline'=>true]
+            ],
+
+            'certificate'=>[
+                'type'=> Form::INPUT_CHECKBOX_LIST,
+                'options'=>['placeholder'=>'请选择资质证书...'],
+                'items'=>Worker::getCertificate(),
+                'options'=>['inline'=>true], 'maxlength'=>10
+            ],
+
+            'level'=>[
+                'type'=> Form::INPUT_RADIO_LIST,
+                'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
+            ],
         ]
         ]);
+
+        echo $form->field($model, 'price', [
+            'addon' => ['append' => ['content'=>'元/日'],'groupOptions'=>['class'=>'col-md-3']]
+        ])->input('text', ['placeholder'=>'请输入服务价格...']);
 
         echo $form->field($model, 'nation')->widget(Select2::classname(), [
             'data' =>Worker::getNation(),
@@ -159,6 +153,10 @@ use backend\models\Hospitals;
                 'allowClear' => true
             ],
         ])->label('民族');
+
+        echo $form->field($model, 'place', [
+            'addon' => ['groupOptions'=>['class'=>'col-md-3']],
+        ])->input('text', ['placeholder'=>'请输入居住地...']);
 
         echo Form::widget([       // 3 column layout
             'model'=>$model,
@@ -210,6 +208,7 @@ use backend\models\Hospitals;
             ]
         ]);
 
+
         //籍贯
         echo $form->field($model, 'native_province')->widget(Select2::classname(), [
             'data' => City::getList(1),
@@ -222,7 +221,6 @@ use backend\models\Hospitals;
         // 常驻医院
         echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
             'data' =>   Hospitals::getList('110000'),
-            'addon' => 1,
             'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,
@@ -233,7 +231,6 @@ use backend\models\Hospitals;
         // 常驻科室
         echo $form->field($model, 'office_id')->widget(Select2::classname(), [
             'data' =>   Departments::getList(),
-            'addon' => 1,
             'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,

@@ -120,8 +120,8 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent'], 'required'],
-            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue'], 'integer'],
+            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent', 'order_type'], 'required'],
+            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue', 'order_type'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
@@ -174,7 +174,8 @@ class Order extends \yii\db\ActiveRecord{
             'create_order_ip' => '创建订单的IP',
             'create_order_sources' => '创建订单来源',
             'create_order_user_agent' => '创建订单时客户端user agent',
-            'is_continue' => '是否为续单（1：是；0：否）'
+            'is_continue' => '是否为续单（1：是；0：否）',
+            'order_type' => '下单类型（1：快速下单；2：选择护工下单）'
         ];
     }
 

@@ -175,7 +175,7 @@ class OrderController extends ActiveController {
         if($action == 'cancel'){
             $response = $orderModel->cancel();
         }else{
-            $response['code'] = 212;
+            $response['code'] = 2132;
             $response['msg'] = '订单状态错误';
         }
 

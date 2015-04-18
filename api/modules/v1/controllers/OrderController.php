@@ -179,9 +179,16 @@ class OrderController extends ActiveController {
             $response['msg'] = '订单状态错误';
         }
 
+        $result = ArrayHelper::toArray($orderModel);
+
+        if(!empty($result['worker_no'])){
+            //获取护工照片
+            $result['pic'] = Worker::workerPic($result['worker_no']);
+        }
+
         $this->responseCode = $response['code'];
         $this->responseMsg = $response['msg'];
-        return null;
+        return $result;
     }
 
     /**

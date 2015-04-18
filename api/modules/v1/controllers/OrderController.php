@@ -163,8 +163,25 @@ class OrderController extends ActiveController {
      */
     public function actionUpdate(){
         $order_no = Yii::$app->request->get('id');
-        $post = Yii::$app->getRequest()->getBodyParams();
-        echo $order_no;exit;
+        $uid = Yii::$app->user->id;
+
+        $orderModel = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
+        if(empty($orderModel)){
+            $this->responseCode = 404;
+            $this->responseMsg = '找不到要取消的订单';
+            return null;
+        }
+        $action = Yii::$app->getRequest()->getBodyParam('action');
+        if($action == 'cancel'){
+            $response = $orderModel->cancel();
+        }else{
+            $response['code'] = 212;
+            $response['msg'] = '订单状态错误';
+        }
+
+        $this->responseCode = $response['code'];
+        $this->responseMsg = $response['msg'];
+        return null;
     }
 
     /**

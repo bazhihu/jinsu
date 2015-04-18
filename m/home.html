@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />
+<script>
+if(/Android (\d+\.\d+)/.test(navigator.userAgent)){
+	if(parseFloat(RegExp.$1)>2.3){
+		var phoneScale = parseInt(window.screen.width)/640;
+		document.write('<meta name="viewport" content="width=640, minimum-scale='+ phoneScale +', maximum-scale='+ phoneScale +', target-densitydpi=device-dpi" />');
+	}else{
+		document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />');
+	}
+}else{
+	document.write('<meta name="viewport" content="width=640,user-scalable=no, target-densitydpi=device-dpi" />');
+}
+</script>
+<link href="/css/main1.0.css" rel="stylesheet" /> 
+<title>优爱医护</title>
+
+</head>
+
+<body>
+<header>
+	<a href="" class="login">登录</a>
+	<a href="/" class="logo"></a>
+	<span class="city">北京</span>
+	<span class="tell"></span>
+</header>
+</body>
+</html>

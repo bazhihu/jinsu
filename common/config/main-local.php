@@ -13,6 +13,7 @@ return [
             'username' => 'youaiyihu',
             'password' => 'swkqtyy',
             'charset' => 'utf8',
+            'tablePrefix' => 'yayh_'
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

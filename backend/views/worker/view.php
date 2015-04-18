@@ -151,31 +151,34 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
             'good_rate',
 
             'total_comment',
+            'add_date',
 
-            [
-                'attribute'=>'add_date',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
+//            [
+//                'attribute'=>'add_date',
+//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
+//                'type'=>DetailView::INPUT_WIDGET,
+//                'widgetOptions'=> [
+//                    'class'=>DateControl::classname(),
+//                    'type'=>DateControl::FORMAT_DATETIME
+//                ]
+//            ],
 
             [
                 'attribute'=>'adder',
                 'value'=>($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
 
-            [
-                'attribute'=>'edit_date',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
+            'edit_date',
+
+//            [
+//                'attribute'=>'edit_date',
+//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'yyyy-MM-dd H:i:s'],
+//                'type'=>DetailView::INPUT_WIDGET,
+//                'widgetOptions'=> [
+//                    'class'=>DateControl::classname(),
+//                    'type'=>DateControl::FORMAT_DATETIME
+//                ]
+//            ],
 
             [
                 'attribute'=>'editer',
@@ -199,7 +202,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                 <h3 class="panel-title">工作经验</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-striped">
+                <table class="table">
                     <tr>
                         <td><b>起止时间</b></td>
                         <td><b>工作单位</b></td>
@@ -207,19 +210,43 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                         <td><b>主要职责与成绩</b></td>
                     </tr>
                     <tr>
-                        <td><?=empty($modelOther) ?"":strlen($modelOther[0]['ext1'])<8 ? $modelOther[0]['ext1']."至今":$modelOther[0]['ext1'] ?></td>
+                        <td>
+                            <?
+                                if(empty($modelOther))
+                                    echo "";
+                                elseif(1<strlen($modelOther[0]['ext1']) && strlen($modelOther[0]['ext1'])<8)
+                                    echo $modelOther[0]['ext1']."至今";
+                                else
+                                    echo $modelOther[0]['ext1'] ;?>
+                        </td>
                         <td><?=empty($modelOther) ?"":$modelOther[0]['ext2']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[0]['ext3']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[0]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=empty($modelOther) ?"":strlen($modelOther[1]['ext1'])<8 ? $modelOther[1]['ext1']."至今":$modelOther[1]['ext1']?></td>
+                        <td>
+                            <?
+                            if(empty($modelOther))
+                                echo "";
+                            elseif(1<strlen($modelOther[1]['ext1']) && strlen($modelOther[1]['ext1'])<8)
+                                echo $modelOther[1]['ext1']."至今";
+                            else
+                                echo $modelOther[1]['ext1'] ;?>
+                        </td>
                         <td><?=empty($modelOther) ?"":$modelOther[1]['ext2']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[1]['ext3']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[1]['ext4']?></td>
                     </tr>
                     <tr>
-                        <td><?=empty($modelOther) ?"":strlen($modelOther[2]['ext1'])<8 ? $modelOther[2]['ext1']."至今" : $modelOther[2]['ext1']?></td>
+                        <td>
+                            <?
+                            if(empty($modelOther))
+                                echo "";
+                            elseif(1<strlen($modelOther[2]['ext1']) && strlen($modelOther[2]['ext1'])<8)
+                                echo $modelOther[2]['ext1']."至今";
+                            else
+                                echo $modelOther[2]['ext1'] ;?>
+                        </td>
                         <td><?=empty($modelOther) ?"":$modelOther[2]['ext2']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[2]['ext3']?></td>
                         <td><?=empty($modelOther) ?"":$modelOther[2]['ext4']?></td>

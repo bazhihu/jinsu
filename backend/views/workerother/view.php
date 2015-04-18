@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td><b>主要职责与成绩</b></td>
                 </tr>
                 <tr>
-                    <td>11:<?=count($model[0]['ext1'])?> <?=count($model[0]['ext1'])<8 ? $model[0]['ext1']."至今":$model[0]['ext1']?></td>
+                    <td><?=count($model[0]['ext1'])< 8 ? $model[0]['ext1']."至今":$model[0]['ext1']?></td>
                     <td><?=$model[0]['ext2']?></td>
                     <td><?=$model[0]['ext3']?></td>
                     <td><?=$model[0]['ext4']?></td>

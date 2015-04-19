@@ -37,12 +37,13 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => '节假日管理', 'url' => ['/holidays/index']],
         ['label' => '首页', 'url' => ['/site/index']],
+        ['label' => '修改密码', 'url' => ['/admin-user/reset']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
     } else {
         $menuItems[] = [
-            'label' => '退出 (' . Yii::$app->user->identity->username . ')',
+            'label' => '退出 (' . Yii::$app->user->identity->username . '|' . key(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->getId())). ')',
             'url' => ['/site/logout'],
             'linkOptions' => ['data-method' => 'post']
         ];

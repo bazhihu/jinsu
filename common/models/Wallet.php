@@ -119,7 +119,7 @@ class Wallet
             'remark'        =>isset($params['remark'])?$params['remark']:'',
             'pay_from'      =>isset($params['pay_from'])?$params['pay_from']:'',
             'extract_to'    =>isset($params['extract_to'])?$params['extract_to']:'',
-            'admin_uid'     =>isset($params['admin_uid'])?$params['admin_uid']:'',
+            'admin_uid'     =>isset($params['admin_uid'])?$params['admin_uid']:0,
         ];
 
         $userDetail->setAttributes($detail,false);

@@ -140,7 +140,6 @@ class OrderController extends ActiveController {
      * @return array|null
      */
     private function _payment($order, $payWay){
-        $payment = null;
         if($payWay == Order::PAY_WAY_CASH){
             $order->pay();
             return null;
@@ -187,9 +186,12 @@ class OrderController extends ActiveController {
         }
         $action = Yii::$app->getRequest()->getBodyParam('action');
 
+        $payment = null;
         if($action == 'cancel'){
             //取消订单
             $response = $orderModel->cancel();
+            $this->responseCode = $response['code'];
+            $this->responseMsg = $response['msg'];
         }elseif($action == 'payment'){
             //支付
             $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
@@ -200,15 +202,11 @@ class OrderController extends ActiveController {
             return null;
         }
         $order = ArrayHelper::toArray($orderModel);
-        if($response['code'] == 200){
-            if(!empty($order['worker_no'])){
-                //获取护工照片
-                $order['pic'] = Worker::workerPic($order['worker_no']);
-            }
+        if(!empty($order['worker_no'])){
+            //获取护工照片
+            $order['pic'] = Worker::workerPic($order['worker_no']);
         }
 
-        $this->responseCode = $response['code'];
-        $this->responseMsg = $response['msg'];
         return [
             'order' => $order,
             'payment' => $payment

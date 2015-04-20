@@ -124,13 +124,12 @@ class OrderController extends ActiveController {
         }
         $order = Order::findOne($orderModel->order_id);
 
-        $balance = WalletUser::getBalance($order['uid']);
-
         //支付
         $payment = null;
         if($post['pay_way'] == Order::PAY_WAY_CASH){
             $order->pay();
         }else{
+            $balance = WalletUser::getBalance($order['uid']);
             $amount = $order->total_amount - $balance;
             if($amount <= 0){
                 $this->responseCode = 500;
@@ -157,6 +156,10 @@ class OrderController extends ActiveController {
         ];
     }
 
+    private function _payment(){
+
+    }
+
     /**
      * 更新订单
      * @throws \yii\base\InvalidConfigException
@@ -172,18 +175,44 @@ class OrderController extends ActiveController {
             return null;
         }
         $action = Yii::$app->getRequest()->getBodyParam('action');
+        $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
         if($action == 'cancel'){
+            //取消订单
             $response = $orderModel->cancel();
+        }elseif($action == 'payment'){
+            //支付
+            $balance = WalletUser::getBalance($orderModel['uid']);
+            $amount = $orderModel->total_amount - $balance;
+            if($amount <= 0){
+                $this->responseCode = 500;
+                $this->responseMsg = '支付金额错误';
+                return null;
+            }
+
+            //支付数据
+            $payment = [
+                'uid' => $orderModel->uid,
+                'order_no' => $orderModel->order_no,
+                'subject' => '订单号：'.$orderModel->order_no.'的付款',
+                'amount' => $amount
+            ];
+            $paymentModel = new Payment($payWay, $payment);
+            $payment['transaction_no'] = $paymentModel->getTradeNo();
+            $payment['notify_url'] = Alipay::$notifyUrl;
+            unset($payment['uid'], $payment['order_no']);
         }else{
-            $response['code'] = 2132;
-            $response['msg'] = '订单状态错误';
+            $this->responseCode = 400;
+            $this->responseMsg = '参数错误';
+            return null;
         }
 
-        $result = ArrayHelper::toArray($orderModel);
-
-        if(!empty($result['worker_no'])){
-            //获取护工照片
-            $result['pic'] = Worker::workerPic($result['worker_no']);
+        $result = null;
+        if($response['code'] == 200){
+            $result = ArrayHelper::toArray($orderModel);
+            if(!empty($result['worker_no'])){
+                //获取护工照片
+                $result['pic'] = Worker::workerPic($result['worker_no']);
+            }
         }
 
         $this->responseCode = $response['code'];

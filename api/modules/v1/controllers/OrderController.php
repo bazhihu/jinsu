@@ -193,7 +193,7 @@ class OrderController extends ActiveController {
         }elseif($action == 'payment'){
             //支付
             $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
-            return $this->_payment($orderModel, $payWay);
+            $payment = $this->_payment($orderModel, $payWay);
         }else{
             $this->responseCode = 400;
             $this->responseMsg = '参数错误';
@@ -201,7 +201,6 @@ class OrderController extends ActiveController {
         }
         $order = ArrayHelper::toArray($orderModel);
         if($response['code'] == 200){
-
             if(!empty($order['worker_no'])){
                 //获取护工照片
                 $order['pic'] = Worker::workerPic($order['worker_no']);
@@ -210,7 +209,10 @@ class OrderController extends ActiveController {
 
         $this->responseCode = $response['code'];
         $this->responseMsg = $response['msg'];
-        return $order;
+        return [
+            'order' => $order,
+            'payment' => $payment
+        ];;
     }
 
     /**

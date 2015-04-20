@@ -129,25 +129,7 @@ class OrderController extends ActiveController {
         if($post['pay_way'] == Order::PAY_WAY_CASH){
             $order->pay();
         }else{
-            $balance = WalletUser::getBalance($order['uid']);
-            $amount = $order->total_amount - $balance;
-            if($amount <= 0){
-                $this->responseCode = 500;
-                $this->responseMsg = '支付金额错误';
-                return null;
-            }
-
-            //支付数据
-            $payment = [
-                'uid' => $post['uid'],
-                'order_no' => $order->order_no,
-                'subject' => '订单号：'.$order->order_no.'的付款',
-                'amount' => $amount
-            ];
-            $paymentModel = new Payment($post['pay_way'], $payment);
-            $payment['transaction_no'] = $paymentModel->getTradeNo();
-            $payment['notify_url'] = Alipay::$notifyUrl;
-            unset($payment['uid'], $payment['order_no']);
+            $payment = $this->_payment($order, $post['pay_way']);
         }
 
         return [
@@ -156,8 +138,36 @@ class OrderController extends ActiveController {
         ];
     }
 
-    private function _payment(){
+    /**
+     * 支付
+     * @param array $order 订单数据
+     * @param int $payWay 支付方式
+     * @return array|null
+     */
+    private function _payment($order, $payWay){
+        $uid = $order['uid'];
+        $balance = WalletUser::getBalance($uid);
 
+        $amount = $order['total_amount'] - $balance;
+        if($amount <= 0){
+            $this->responseCode = 500;
+            $this->responseMsg = '支付金额错误';
+            return null;
+        }
+
+        //支付数据
+        $payment = [
+            'uid' => $uid,
+            'order_no' => $order['order_no'],
+            'subject' => '订单号：'.$order['order_no'].'的付款',
+            'amount' => $amount
+        ];
+        $paymentModel = new Payment($payWay, $payment);
+        $payment['transaction_no'] = $paymentModel->getTradeNo();
+        $payment['notify_url'] = Alipay::$notifyUrl;
+        unset($payment['uid'], $payment['order_no']);
+
+        return $payment;
     }
 
     /**
@@ -175,49 +185,31 @@ class OrderController extends ActiveController {
             return null;
         }
         $action = Yii::$app->getRequest()->getBodyParam('action');
-        $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
+
+        $order = ArrayHelper::toArray($orderModel);
         if($action == 'cancel'){
             //取消订单
             $response = $orderModel->cancel();
         }elseif($action == 'payment'){
             //支付
-            $balance = WalletUser::getBalance($orderModel['uid']);
-            $amount = $orderModel->total_amount - $balance;
-            if($amount <= 0){
-                $this->responseCode = 500;
-                $this->responseMsg = '支付金额错误';
-                return null;
-            }
-
-            //支付数据
-            $payment = [
-                'uid' => $orderModel->uid,
-                'order_no' => $orderModel->order_no,
-                'subject' => '订单号：'.$orderModel->order_no.'的付款',
-                'amount' => $amount
-            ];
-            $paymentModel = new Payment($payWay, $payment);
-            $payment['transaction_no'] = $paymentModel->getTradeNo();
-            $payment['notify_url'] = Alipay::$notifyUrl;
-            unset($payment['uid'], $payment['order_no']);
+            $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
+            return $this->_payment($order, $payWay);
         }else{
             $this->responseCode = 400;
             $this->responseMsg = '参数错误';
             return null;
         }
-
-        $result = null;
         if($response['code'] == 200){
-            $result = ArrayHelper::toArray($orderModel);
-            if(!empty($result['worker_no'])){
+
+            if(!empty($order['worker_no'])){
                 //获取护工照片
-                $result['pic'] = Worker::workerPic($result['worker_no']);
+                $order['pic'] = Worker::workerPic($order['worker_no']);
             }
         }
 
         $this->responseCode = $response['code'];
         $this->responseMsg = $response['msg'];
-        return $result;
+        return $order;
     }
 
     /**

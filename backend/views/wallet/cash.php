@@ -76,7 +76,7 @@ $this->title = '申请提现确认-用户信息核对';
                             '0'=>'现金',
                         ),
                     ],
-                    'payee_time'=>[
+                    /*'payee_time'=>[
                         'type'=>Form::INPUT_WIDGET,
                         'widgetClass'=>'\kartik\widgets\DatePicker',
                         'hint'=>'请输入提现时间',
@@ -89,7 +89,7 @@ $this->title = '申请提现确认-用户信息核对';
                             ],
                             'readonly' => true,
                         ]
-                    ],
+                    ],*/
                     'payee_name'=>[
                         'type'=> Form::INPUT_TEXT,
                         'options'=>[

@@ -50,7 +50,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
                     'uid',
                     'money',
                     'payee_type',
-                    'payee_time',
+                    //'payee_time',
                     'payee_hospital',
                     'payee_name',
                     'payee_id_card',
@@ -77,7 +77,7 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return[
-            'applyCash'=>['uid','money','payee_type','payee_time','payee_hospital','payee_name','payee_id_card',],
+            'applyCash'=>['uid','money','payee_type',/*'payee_time',*/'payee_hospital','payee_name','payee_id_card',],
         ];
     }
     /**
@@ -114,10 +114,10 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
      */
     public function create(){
 
-        if($this->payee_time<date('Y-m-d')){
+        /*if($this->payee_time<date('Y-m-d')){
             $this->addError('payee_time','取款时间错误！');
             return false;
-        }
+        }*/
         if($this->money<=0){
             $this->addError('payee_type','取款金额不符合要求！');
             return false;
@@ -130,6 +130,9 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
             'time_apply'        =>date('Y-m-d H:i:s'),
             'admin_uid_apply'   =>\Yii::$app->user->getId(),
         ];
+
+        $params['payee_time']   = date('Y-m-d');//给一个默认的取款时间
+
         $this->setAttributes($params,false);
         if(!$this->save())
         {

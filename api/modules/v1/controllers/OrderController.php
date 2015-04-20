@@ -155,11 +155,9 @@ class OrderController extends ActiveController {
 
         $uid = $order['uid'];
         $balance = WalletUser::getBalance($uid);
-
         $amount = $order['total_amount'] - $balance;
         if($amount <= 0){
-            $this->responseCode = 500;
-            $this->responseMsg = '支付金额错误';
+            $order->pay();
             return null;
         }
 

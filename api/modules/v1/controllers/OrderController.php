@@ -125,12 +125,7 @@ class OrderController extends ActiveController {
         $order = Order::findOne($orderModel->order_id);
 
         //支付
-        $payment = null;
-        if($post['pay_way'] == Order::PAY_WAY_CASH){
-            $order->pay();
-        }else{
-            $payment = $this->_payment($order, $post['pay_way']);
-        }
+        $payment = $this->_payment($order, $post['pay_way']);
 
         return [
             'order' => $order,
@@ -145,6 +140,12 @@ class OrderController extends ActiveController {
      * @return array|null
      */
     private function _payment($order, $payWay){
+        $payment = null;
+        if($payWay == Order::PAY_WAY_CASH){
+            $order->pay();
+            return null;
+        }
+
         $uid = $order['uid'];
         $balance = WalletUser::getBalance($uid);
 
@@ -186,19 +187,19 @@ class OrderController extends ActiveController {
         }
         $action = Yii::$app->getRequest()->getBodyParam('action');
 
-        $order = ArrayHelper::toArray($orderModel);
         if($action == 'cancel'){
             //取消订单
             $response = $orderModel->cancel();
         }elseif($action == 'payment'){
             //支付
             $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
-            return $this->_payment($order, $payWay);
+            return $this->_payment($orderModel, $payWay);
         }else{
             $this->responseCode = 400;
             $this->responseMsg = '参数错误';
             return null;
         }
+        $order = ArrayHelper::toArray($orderModel);
         if($response['code'] == 200){
 
             if(!empty($order['worker_no'])){

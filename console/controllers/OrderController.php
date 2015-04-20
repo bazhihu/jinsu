@@ -8,6 +8,7 @@
 
 namespace console\controllers;
 
+use common\models\Order;
 use yii\console\Controller;
 
 class OrderController extends Controller {
@@ -15,6 +16,9 @@ class OrderController extends Controller {
      * 订单结束服务提醒
      */
     public function actionEnd(){
-        echo "end";
+        //获取还有一天将要结束的订单
+        $time = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+        $orderModel = Order::find();
+
     }
 }

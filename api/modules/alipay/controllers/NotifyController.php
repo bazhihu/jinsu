@@ -74,6 +74,7 @@ class NotifyController extends ActiveController{
 
                 //调用订单支付接口方法
                 $orderNo = $this->_logModel->order_no;
+                Yii::info('$orderNo:'.$orderNo, 'api');
                 if(!empty($orderNo)){
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
                     $response = $orderModel->pay();

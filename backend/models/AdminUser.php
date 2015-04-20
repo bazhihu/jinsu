@@ -77,7 +77,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
             [['password','pwd'],'string','min' => 6,'max'=>20],
             [['password','pwd'], 'filter', 'filter' => 'trim'],
-            ['pwd','compare','compareAttribute'=>'password'],
+            ['pwd','compare','compareAttribute'=>'password','message'=>'两次密码不一致'],
             ['pwd','safe'],
 
             [['oldPwd'],'required','on'=>['reset']],
@@ -238,7 +238,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         $oldPwd = $this->oldPwd;
         $password = $this->password;
 
-        if(empty($oldPwd) && !Yii::$app->security->validatePassword($oldPwd, $password_hash)){
+        if(empty($oldPwd) || !Yii::$app->security->validatePassword($oldPwd, $password_hash)){
             $this->addError('oldPwd','原密码错误！');
             return false;
         }

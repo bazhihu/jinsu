@@ -177,7 +177,6 @@ class Sms extends Model{
     public static function send($params){
 
         $content = self::smsScene($params);  //内容
-
         if(!$content)
         {
             $response['code'] =400;
@@ -185,13 +184,13 @@ class Sms extends Model{
             return $response;
         }
 
-        $response = self::_manRoadSend($params['mobile'],$content);
+        $response = self::_nineSend($params['mobile'],$content);
         if($response['code'] == 200)
         {
             return $response;
         }
 
-        $response = self::_nineSend($params['mobile'],$content);
+        $response = self::_manRoadSend($params['mobile'],$content);
 
         return $response;
     }

@@ -140,6 +140,14 @@ class OrderController extends ActiveController {
      * @return array|null
      */
     private function _payment($order, $payWay){
+        //保存支付方式
+        $order->pay_way = $payWay;
+        if(!$order->save()){
+            $this->responseCode = 500;
+            $this->responseMsg = '保存支付方式失败';
+            return null;
+        }
+
         if($payWay == Order::PAY_WAY_CASH){
             $order->pay();
             return null;

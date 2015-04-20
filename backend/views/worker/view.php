@@ -106,13 +106,18 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
 
             [
                 'attribute'=>'start_work',
-                'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'yyyy-MM-dd'],
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATE
-                ]
+                'value'=>$model->start_work=='0000-00-00'? "": str_replace('-','年',substr($model->start_work,0,7))."月"
             ],
+
+//            [
+//                'attribute'=>'start_work',
+//                'format'=>['date',(isset(Yii::$app->modules['datecontrol']['displaySettings']['date'])) ? Yii::$app->modules['datecontrol']['displaySettings']['date'] : 'yyyy-MM-dd'],
+//                'type'=>DetailView::INPUT_WIDGET,
+//                'widgetOptions'=> [
+//                    'class'=>DateControl::classname(),
+//                    'type'=>DateControl::FORMAT_DATE
+//                ]
+//            ],
 
             'place',
 

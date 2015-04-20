@@ -75,14 +75,19 @@ class WorkerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post();
+            $params['start_work'] = str_replace('年','-',$params['start_work']);
+            $params['start_work'] = str_replace('月','-',$params['start_work']);
+            $params['Worker']['start_work'] = $params['start_work']."01";
 
             $model->attributes = $model->saveData($params['Worker'], 'create');
+
             if ($model->save()) {
                 //上传照片
                 $params['Worker']['worker_id'] =  $model->worker_id;
                 $pic_name = $this->picUpload($params);
                 $params['Worker']['pic'] = $pic_name;
                 $model->attributes = $model->saveData($params['Worker'], 'create');
+
                 if ($model->save()) {
                     return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
                 }else {
@@ -133,6 +138,11 @@ class WorkerController extends Controller
         if($model['office_id']){
             $model['office_id']= explode(',',$model['office_id']);
         }
+
+        if($model['start_work']){
+            $model['start_work']= substr($model['start_work'],0,7);
+            $model['start_work']= str_replace('-','年',$model['start_work'])."月";
+        }
 //        if($model['good_at']){
 //            $model['good_at']= explode(',',$model['good_at']);
 //        }
@@ -144,6 +154,9 @@ class WorkerController extends Controller
             $params['Worker']['worker_id'] =  $model->worker_id;
             $pic_name = $this->picUpload($params);
             $params['Worker']['pic'] = $pic_name;
+            $params['start_work'] = str_replace('年','-',$params['start_work']);
+            $params['start_work'] = str_replace('月','-',$params['start_work']);
+            $params['Worker']['start_work'] = $params['start_work']."01";
             $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);

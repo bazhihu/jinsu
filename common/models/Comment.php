@@ -19,7 +19,7 @@ class Comment
     public static function createComment($comment)
     {
 
-        if(!$comment['star'] || !$comment['order_no'] || !$comment['uid'] || !$comment['content']) {
+        if(!$comment['star'] || !$comment['order_no'] || !$comment['uid']) {
             return false;
         }
 

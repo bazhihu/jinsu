@@ -108,7 +108,7 @@ class NotifyController extends ActiveController{
 
         if($aliPayLog->total_fee != $post['total_fee']){
             Yii::info('交易金额错误', 'api');
-            //return 'fail';
+            return 'fail';
         }
 
         //保存支付日志

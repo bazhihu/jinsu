@@ -40,7 +40,7 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             [['uid', 'worker_id', 'star', 'status', 'adder','editer', 'auditer'], 'integer'],
-            [['star','content'], 'required'],
+            [['star'], 'required'],
             [['comment_date','edit_date', 'audit_date'], 'safe'],
             ['worker_name', 'string', 'max' => 20],
             ['content', 'string'],

@@ -96,7 +96,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
 
             [
                 'attribute'=>'price',
-                'value'=>$model->price."元/日"
+                'value'=>$model->price."元/天"
             ],
 
             [

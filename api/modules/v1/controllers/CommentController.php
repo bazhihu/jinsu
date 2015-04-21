@@ -9,6 +9,7 @@
 namespace api\modules\v1\controllers;
 
 use common\models\Comment;
+use common\models\Order;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
@@ -70,7 +71,8 @@ class CommentController extends ActiveController {
             $this->responseMsg = '评论失败';
             return null;
         }
-        return [];
+        $order = Order::findOne(['order_no'=>$post['order_no']]);
+        return $order;
     }
 
     /**

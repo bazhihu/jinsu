@@ -138,6 +138,11 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
         {
             return false;
         }
+        #冻结金额
+        if(!WalletUser::freeze($this->uid))
+        {
+            return false;
+        }
         return true;
     }
     /**

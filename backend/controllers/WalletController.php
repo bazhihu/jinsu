@@ -125,15 +125,13 @@ class WalletController extends Controller
     }
 
     /**
-     * 扣款明细
+     * 交易明细
      * @return string
      */
     public function actionDebitRecords()
     {
         $searchModel = new WalletUserDetailSearch();
         $queryParams = Yii::$app->request->queryParams;
-
-        $queryParams['WalletUserDetailSearch']['detail_type'] = '1';
 
         $dataProvider = $searchModel->search($queryParams);
 
@@ -214,9 +212,9 @@ class WalletController extends Controller
                 {
                     $cash['reason'] = $reason;
                 }
-                if($walletWithdrawcash->check($cash)){
-                    $response['msg'] = '操作成功';
-                    return Json::encode($response);
+                $return = $walletWithdrawcash->check($cash);
+                if($return['code']==200){
+                    return Json::encode($return);
                 }
             }
         }

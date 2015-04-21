@@ -155,15 +155,30 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
      * @return bool
      */
     public function check($params){
+
+        $response = [
+            'code'    =>'400',
+            'msg'   =>'请求失败',
+        ];
+
         $update = [
             'time_audit'=>date('Y-m-d H:i:s'),
             'admin_uid_audit'=>$params['admin_uid'],
         ];
 
         if($params['todo']){
+
+            #判断是否有足够的余额
+            $cash = $this->findOne(['withdrawcash_id'=>$params['id']]);
+
+            if($cash->money>WalletUser::findOne(['uid'=>$cash->uid])->money){
+                $response['msg'] = '余额不足';
+                return $response;
+            }
+
             $update['status'] =2;
-            if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
-                $cash = $this->findOne(['withdrawcash_id'=>$params['id']]);
+            if($cash->updateAll($update,['withdrawcash_id'=>$params['id']])){
+
                 #发送短信
                 $sms = new Sms();
                 $send = [
@@ -173,17 +188,27 @@ class WalletWithdrawcash extends \yii\db\ActiveRecord
                     'time'      =>$cash->payee_time,
                     'hospital'  =>Hospitals::getName($cash->payee_hospital),
                 ];
-                $return = $sms->send($send);
-                return true;
+                $sms->send($send);
+
+                $response = [
+                    'code'    =>'200',
+                    'msg'   =>'操作成功',
+                ];
+                return $response;
             }
         }else{
             $update['status'] =1;
             $update['remark_audit'] = isset($params['reason'])?$params['reason']:'';
             if($this->updateAll($update,['withdrawcash_id'=>$params['id']])){
-                return true;
+                $response = [
+                    'code'    =>'200',
+                    'msg'   =>'操作成功',
+                ];
+                return $response;
             }
         }
-        return false;
+        $response['msg'] = '操作失败';
+        return $response;
     }
 
     /**

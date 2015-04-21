@@ -101,19 +101,4 @@ class WalletUser extends \yii\db\ActiveRecord
         }
         return true;
     }
-
-    /**
-     * 获取用户余额
-     * @param int $uid
-     * @return int|string
-     * @author zhangbo
-     */
-    public static function getBalance($uid){
-        $model = self::findOne(['uid'=>$uid]);
-        if(empty($model)){
-            return 0;
-        }else{
-            return $model->money-$model->freeze_money;
-        }
-    }
 }

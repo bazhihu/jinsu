@@ -13,72 +13,82 @@ use backend\models\User;
 $this->title = '提现记录';
 $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
+<style>
+    .panel-body .form-group{
+        float:left;
+        margin:5px;
+    }
+    .field-walletwithdrawcashsearch-paystartdate{
+        width:270px
+    }
+    .field-walletwithdrawcashsearch-payenddate{
+        width:270px
+    }
+</style>
 <div class="wallet-user-detail-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="page-header">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
     <!--?php  echo $this->render('_search', ['model' => $searchModel]); ?-->
-    <div class="wallet-apply-list" style="padding: 25px">
+    <div class="wallet-apply-list">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">检索</h3>
+            </div>
+            <div class="panel-body">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['cash-records'],
+                    'method' => 'get',
 
-        <?php $form = ActiveForm::begin([
-            'action' => ['cash-records'],
-            'method' => 'get',
+                    'type' => ActiveForm::TYPE_VERTICAL,
+                    'formConfig' => [
+                        'showLabels' => true,
+                    ],
+                ]); ?>
+                <?php
+                echo $form->field(
+                    $searchModel,
+                    'payStartDate'
+                )->widget(
+                    DatePicker::classname(),
+                    [
+                        'options' => ['placeholder' => 'Enter event time ...'],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
+                    ]
+                )->label('起始时间');
+                echo $form->field(
+                    $searchModel,
+                    'payEndDate'
+                )->widget(
+                    DatePicker::classname(),
+                    [
+                        'options' => ['placeholder' => 'Enter event time ...'],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
+                    ]
+                )->label('结束时间');
+                ?>
+                <?= $form->field(
+                    $searchModel,
+                    'mobile'
+                )->input('text',['placeholder'=>'请输入用户账号...'])->label('用户账号')?>
 
-            'type' => ActiveForm::TYPE_INLINE,
-            'formConfig'=>[
-                'labelSpan'=>1
-            ],
-        ]); ?>
-        <?php
-        echo $form->field(
-            $searchModel,
-            'payStartDate',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->widget(
-            DatePicker::classname(),
-            [
-                'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'todayHighlight' => true,
-                    'format' => 'yyyy-mm-dd'
-                ]
-            ]
-        )->label('起始时间');
-        echo $form->field(
-            $searchModel,
-            'payEndDate',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->widget(
-            DatePicker::classname(),
-            [
-                'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'todayHighlight' => true,
-                    'format' => 'yyyy-mm-dd'
-                ]
-            ]
-        )->label('结束时间');
-        ?>
-        <?= $form->field(
-            $searchModel,
-            'mobile',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:400px'])->label('用户账号')?>
+                <div class="form-group" style="padding-top: 25px">
+                    <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
+                    <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+                </div>
 
-        <div class="form-group" style="padding-top: 25px">
-            <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
-            <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
-
-        <?php ActiveForm::end(); ?>
-
     </div>
 
     <?= GridView::widget([

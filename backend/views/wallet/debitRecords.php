@@ -10,74 +10,91 @@ use backend\models\User;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '扣款明细';
+$this->title = '交易明细';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    .panel-body .form-group{
+        float:left;
+        margin:5px;
+    }
+    .field-walletuserdetailsearch-fromdate{
+        width:270px
+    }
+    .field-walletuserdetailsearch-todate{
+        width:270px
+    }
+</style>
 <div class="wallet-user-detail-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="page-header">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
     <!-- start -->
-    <div class="wallet-user-detail-search" style="padding:25px">
+    <div class="wallet-user-detail-search">
 
-        <?php $form = ActiveForm::begin([
-            'action' => ['debit-records'],
-            'method' => 'get',
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">检索</h3>
+            </div>
+            <div class="panel-body">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['debit-records'],
+                    'method' => 'get',
 
-            'type' => ActiveForm::TYPE_INLINE,
-            'formConfig'=>[
-                'labelSpan'=>1
-            ],
-        ]); ?>
-        <?php
-        echo $form->field(
-            $searchModel,
-            'fromDate',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->widget(
-            DateTimePicker::classname(),
-            [
-                'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => ['autoclose' => true]
-            ]
-        )->label('起始时间');
-        echo $form->field(
-            $searchModel,
-            'toDate',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->widget(
-            DateTimePicker::classname(),
-            [
-                'options' => ['placeholder' => 'Enter event time ...','style'=>'width:300px'],
-                'pluginOptions' => ['autoclose' => true]
-            ]
-        )->label('结束时间');
-        ?>
-        <?= $form->field(
-            $searchModel,
-            'mobile',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
-        <?= $form->field(
-            $searchModel,
-            'order_no',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:300px'])->label('订单编号') ?>
+                    'type' => ActiveForm::TYPE_VERTICAL,
+                    'formConfig' => [
+                        'showLabels' => true,
+                    ],
+                ]); ?>
+                <?php
+                echo $form->field(
+                    $searchModel,
+                    'fromDate'
 
-        <div class="form-group" style="padding-top: 25px">
-            <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
-            <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+                )->widget(
+                    DateTimePicker::classname(),
+                    [
+                        'options' => ['placeholder' => 'Enter event time ...','style'=>'width:200px'],
+                        'pluginOptions' => ['autoclose' => true]
+                    ]
+                )->label('起始时间');
+                echo $form->field(
+                    $searchModel,
+                    'toDate'
+
+                )->widget(
+                    DateTimePicker::classname(),
+                    [
+                        'options' => ['placeholder' => 'Enter event time ...','style'=>'width:200px'],
+                        'pluginOptions' => ['autoclose' => true]
+                    ]
+                )->label('结束时间');
+                ?>
+                <?= $form->field(
+                    $searchModel,
+                    'mobile'
+
+                )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:200px'])->label('用户账号')?>
+                <?= $form->field(
+                    $searchModel,
+                    'order_no'
+
+                )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:200px'])->label('订单编号') ?>
+
+                <?= $form->field(
+                    $searchModel,
+                    'detail_type'
+                )->dropDownList(['1'=>'消费','2'=>'充值','3'=>'提现','4'=>'退款'],['prompt'=>'选择','style'=>'width:200px'])->label('交易类型') ?>
+
+                <div class="form-group" style="padding-top: 25px">
+                    <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
+                    <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
-
-        <?php ActiveForm::end(); ?>
-
     </div>
     <!-- end -->
     <p>
@@ -107,8 +124,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute'=>'detail_type',
+                'format' => 'text',
+                'label' => '交易类型',
+                'value'=>function($model){
+                    if($model->detail_type == 1){
+                        return '消费';
+                    }elseif($model->detail_type == 2){
+                        return '充值';
+                    }elseif($model->detail_type == 3){
+                        return '提现';
+                    }elseif($model->detail_type == 4){
+                        return '退款';
+                    }
+                },
+            ],
+            [
                 'attribute'=>'detail_money',
-                'label' => '扣款金额',
+                'label' => '金额(元)',
+                'value'=>function($model){
+                    if($model->detail_type == 1){
+                        $symbol = '-';
+                    }elseif($model->detail_type == 2){
+                        $symbol = '+';
+                    }elseif($model->detail_type == 3){
+                        $symbol = '-';
+                    }elseif($model->detail_type == 4){
+                        $symbol = '+';
+                    }
+                    return $symbol.$model->detail_money;
+                }
             ],
         ],
         'panel' => [

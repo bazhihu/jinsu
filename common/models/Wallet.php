@@ -250,6 +250,21 @@ class Wallet
     }
 
     /**
+     * 获取用户余额
+     * @param int $uid
+     * @return int|string
+     * @author zhangbo mod by HZQ
+     */
+    public static function getBalance($uid){
+        $model = WalletUser::findOne(['uid'=>$uid]);
+        if(empty($model)){
+            return 0;
+        }else{
+            return $model->money-$model->freeze_money;
+        }
+    }
+
+    /**
      * 生成钱包流水号
      * @return string
      * @throws \Exception

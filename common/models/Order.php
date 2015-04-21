@@ -599,7 +599,7 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单完成
-     * @param string $endTime
+     * @param int $endTime
      * @return array
      */
     public function finish($endTime){

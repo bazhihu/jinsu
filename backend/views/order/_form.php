@@ -109,6 +109,7 @@ use backend\models\OrderPatient;
                 echo $form->field($model, 'worker_no', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                 echo $form->field($model, 'worker_name', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                 echo $form->field($model, 'base_price', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
+                echo $form->field($model, 'order_type', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
             }
 
             echo $form->field($model, 'worker_level')->widget(Select2::classname(), [

@@ -52,6 +52,10 @@ class CommentController extends ActiveController {
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->orderBy('comment_id DESC')
             ->all();
+        if($comments)
+        {
+            $comments = \api\modules\v1\models\Worker::getMobile($comments);
+        }
         return $comments;
     }
 

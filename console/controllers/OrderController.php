@@ -42,6 +42,7 @@ class OrderController extends Controller {
      */
     public function actionAutoComplete(){
         Yii::info('Game begin', 'console');
+
         //获取当前时间要结束的订单
         $dateTime = date('Y-m-d');
         $orders = Order::findAll(['reality_end_time' => $dateTime, 'order_status' => Order::ORDER_STATUS_IN_SERVICE]);

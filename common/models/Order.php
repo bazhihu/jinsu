@@ -7,6 +7,7 @@
  */
 namespace common\models;
 
+use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
@@ -456,7 +457,7 @@ class Order extends \yii\db\ActiveRecord{
                 //扣款成功，修改订单信息
                 $this->order_status = self::ORDER_STATUS_WAIT_CONFIRM;
                 $this->pay_time = date('Y-m-d H:i:s');
-                $this->operator_id = \Yii::$app->user->id;
+                $this->operator_id = Yii::$app->user->id;
                 if(!$this->save()) {
                     throw new HttpException(400, print_r($this->getErrors(), true));
                 }
@@ -475,7 +476,7 @@ class Order extends \yii\db\ActiveRecord{
                     'detail_money' => $totalPrice,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_CONSUME,
                     'wallet_money' => $response['money'],
-                    'admin_uid' => \Yii::$app->user->id
+                    'admin_uid' => Yii::$app->user->id
                 ];
                 Wallet::addUserDetail($params);
                 $response['msg'] = '支付成功';
@@ -517,11 +518,11 @@ class Order extends \yii\db\ActiveRecord{
             return $response;
         }
 
-        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_WAIT_SERVICE;
             $this->confirm_time = date('Y-m-d H:i:s');
-            $this->operator_id = \Yii::$app->user->id;
+            $this->operator_id = Yii::$app->user->id;
             if(!$this->save()) {
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -572,11 +573,11 @@ class Order extends \yii\db\ActiveRecord{
             $response['msg'] = '开始时间未到';
             return $response;
         }
-        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_IN_SERVICE;
             $this->begin_service_time = date('Y-m-d H:i:s');
-            $this->operator_id = \Yii::$app->user->id;
+            $this->operator_id = Yii::$app->user->id;
             if(!$this->save()) {
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -610,11 +611,11 @@ class Order extends \yii\db\ActiveRecord{
             return $response;
         }
 
-        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
             $this->reality_end_time = date('Y-m-d', $endTime);
-            $this->operator_id = \Yii::$app->user->id;
+            $this->operator_id = isset(Yii::$app->user) ? Yii::$app->user->id : 0;
 
             //计算实际金额
             $realAmount = $this->calculateTotalPrice();
@@ -633,10 +634,11 @@ class Order extends \yii\db\ActiveRecord{
                     'detail_money' => $refundAmount,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
                     'wallet_money' => $wallet->money,
-                    'admin_uid' => \Yii::$app->user->id
+                    'admin_uid' => $this->operator_id
                 ];
                 Wallet::addUserDetail($params);
             }
+
             if(!$this->save()){
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -685,7 +687,7 @@ class Order extends \yii\db\ActiveRecord{
             return $response;
         }
 
-        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try {
             //删除护工排期时间
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
@@ -703,14 +705,14 @@ class Order extends \yii\db\ActiveRecord{
                     'detail_money' => $refundAmount,
                     'detail_type' => WalletUserDetail::WALLET_TYPE_REFUND,
                     'wallet_money' => $wallet->money,
-                    'admin_uid' => \Yii::$app->user->id
+                    'admin_uid' => Yii::$app->user->id
                 ];
                 Wallet::addUserDetail($params);
             }
 
             $this->order_status = self::ORDER_STATUS_CANCEL;
             $this->cancel_time = date('Y-m-d H:i:s');
-            $this->operator_id = \Yii::$app->user->id;
+            $this->operator_id = Yii::$app->user->id;
             if(!$this->save()){
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -744,11 +746,11 @@ class Order extends \yii\db\ActiveRecord{
             $response['msg'] = '订单状态错误';
             return $response;
         }
-        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_END_SERVICE;
             $this->evaluate_time = date('Y-m-d H:i:s');
-            $this->operator_id = \Yii::$app->user->id;
+            $this->operator_id = Yii::$app->user->id;
             if(!$this->save()) {
                 throw new HttpException(400, print_r($this->getErrors(), true));
             }
@@ -798,7 +800,7 @@ class Order extends \yii\db\ActiveRecord{
      */
     static public function setWorker($orderId, $workerId, $workerName){
         $response = ['code' => 200, 'msg' => ''];
-        $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = Yii::$app->db->beginTransaction();
         try{
             $order = self::findOne($orderId);
             if(empty($order)){

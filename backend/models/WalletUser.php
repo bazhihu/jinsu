@@ -62,6 +62,7 @@ class WalletUser extends \yii\db\ActiveRecord
         $user = $this->findOne(['uid'=>$uid]);
         $params = [
             'money'=>$user->money-$money,
+            'freeze_money'=>0,
             'money_extract'=>$user->money_extract + $money,
         ];
 

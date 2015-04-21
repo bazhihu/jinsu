@@ -48,7 +48,7 @@ class CommentController extends ActiveController {
     public function actionView($id)
     {
         $worker_id = $id;
-        $comments = Comment::find()
+        $comments = \backend\models\Comment::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->orderBy('comment_id DESC')
             ->all();

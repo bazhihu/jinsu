@@ -8,7 +8,6 @@
 
 namespace api\modules\v1\controllers;
 
-use backend\models\WalletUser;
 use common\models\Order;
 use common\models\User;
 use common\models\Wallet;
@@ -59,7 +58,7 @@ class UserController extends ActiveController{
         $userData = ArrayHelper::toArray(User::findIdentity($id));
         $userData['uid'] = $userData['id'];
         $userData['wallet'] = [
-            'money'=>WalletUser::getBalance($userData['id'])
+            'money'=>Wallet::getBalance($userData['id'])
         ];
         $userData['order'] = [
             Order::ORDER_STATUS_IN_SERVICE=>Order::find()

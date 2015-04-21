@@ -13,7 +13,7 @@ use Yii;
 //use yii\log\Logger;
 use yii\web\Response;
 use yii\rest\ActiveController;
-use backend\models\WalletUser;
+use common\models\Wallet;
 use common\models\Login;
 
 
@@ -52,7 +52,7 @@ class LoginController extends ActiveController{
             'mobile' => $user->mobile,
             'token' => Login::encryptToken($user->access_token),
             'wallet' => [
-                'money' => WalletUser::getBalance($user->id)
+                'money' => Wallet::getBalance($user->id)
             ],
             'order'=>[
                 Order::ORDER_STATUS_IN_SERVICE=>Order::find()

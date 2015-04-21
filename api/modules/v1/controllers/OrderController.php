@@ -16,7 +16,7 @@ use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
-use backend\models\WalletUser;
+use common\models\Wallet;
 use common\models\Order;
 
 class OrderController extends ActiveController {
@@ -154,7 +154,7 @@ class OrderController extends ActiveController {
         }
 
         $uid = $order['uid'];
-        $balance = WalletUser::getBalance($uid);
+        $balance = Wallet::getBalance($uid);
         $amount = $order['total_amount'] - $balance;
         if($amount <= 0){
             $order->pay();

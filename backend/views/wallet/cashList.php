@@ -54,7 +54,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                     DatePicker::classname(),
                     [
                         'options' => [
-                            'placeholder' => 'Enter event time ...',
+                            'placeholder' => '请输入开始时间 ...',
                         ],
                         'pluginOptions' => [
                             'autoclose' => true,
@@ -70,7 +70,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
                     DatePicker::classname(),
                     [
                         'options' => [
-                            'placeholder' => 'Enter event time ...',
+                            'placeholder' => '请输入结束时间 ...',
                         ],
                         'pluginOptions' => [
                             'autoclose' => true,

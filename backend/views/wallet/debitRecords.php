@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 )->widget(
                     DatePicker::classname(),
                     [
-                        'options' => ['placeholder' => 'Enter event time ...'],
+                        'options' => ['placeholder' => '请输入开始时间 ...'],
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,
@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 )->widget(
                     DatePicker::classname(),
                     [
-                        'options' => ['placeholder' => 'Enter event time ...'],
+                        'options' => ['placeholder' => '请输入结束时间 ...'],
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,

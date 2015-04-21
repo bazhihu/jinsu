@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
-use kartik\widgets\DateTimePicker;
+use kartik\widgets\DatePicker;
 use backend\models\User;
 
 /* @var $this yii\web\View */
@@ -53,10 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'fromDate'
 
                 )->widget(
-                    DateTimePicker::classname(),
+                    DatePicker::classname(),
                     [
-                        'options' => ['placeholder' => 'Enter event time ...','style'=>'width:200px'],
-                        'pluginOptions' => ['autoclose' => true]
+                        'options' => ['placeholder' => 'Enter event time ...'],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
                     ]
                 )->label('起始时间');
                 echo $form->field(
@@ -64,10 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'toDate'
 
                 )->widget(
-                    DateTimePicker::classname(),
+                    DatePicker::classname(),
                     [
-                        'options' => ['placeholder' => 'Enter event time ...','style'=>'width:200px'],
-                        'pluginOptions' => ['autoclose' => true]
+                        'options' => ['placeholder' => 'Enter event time ...'],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
                     ]
                 )->label('结束时间');
                 ?>

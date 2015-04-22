@@ -43,6 +43,16 @@ class WorkerController extends Controller
         $searchModel = new WorkerSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+        $worker_id_array = Yii::$app->request->post('selection');
+        $op = Yii::$app->request->post('op');
+var_dump($worker_id_array);
+       // die();
+        //上线OR下线
+        if($worker_id_array) {
+            $worker_ids = implode(',', $worker_id_array);
+            Worker::workerAudit($worker_ids,$op);
+        }
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -324,4 +334,6 @@ class WorkerController extends Controller
             }
         }
     }
+
+
 }

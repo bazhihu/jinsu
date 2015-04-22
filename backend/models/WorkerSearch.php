@@ -14,7 +14,7 @@ class WorkerSearch extends Worker
     public function rules()
     {
         return [
-            [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
+            [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
             [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'gender', 'add_date', 'edit_date'], 'safe'],
             [['price', 'good_rate'], 'number'],
         ];
@@ -45,6 +45,7 @@ class WorkerSearch extends Worker
             'native_province' => $this->native_province,
             'level' => $this->level,
             'status' => $this->status,
+            'audit_status' => $this->audit_status,
             'chinese_level' => $this->chinese_level,
             'star' => $this->star,
             /*

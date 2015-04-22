@@ -14,7 +14,7 @@ $config = yii\helpers\ArrayHelper::merge(
 );
 
 
-header('Access-Control-Allow-Origin:http://m.youaiyihu.com');
+header('Access-Control-Allow-Origin:http://dev.m.youaiyihu.com');
 
 $application = new yii\web\Application($config);
 $application->run();

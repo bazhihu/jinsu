@@ -99,7 +99,7 @@ class NotifyController extends ActiveController{
     private function _checkNotify($post){
         $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
         if(empty($aliPayLog)){
-            Yii::info('未找到交易记录', 'api');
+            Yii::info('未找到交易记录:out_trade_no='.$post['out_trade_no'], 'api');
             return 'fail';
         }
         if($aliPayLog->trade_status == 'TRADE_FINISHED' || $aliPayLog->trade_status == 'TRADE_SUCCESS'){

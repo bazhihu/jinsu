@@ -106,20 +106,20 @@ class Wallet
         ];
         $userDetail = new WalletUserDetail();
         $detail = [
-            'detail_no'     => self::generateWalletNo(),
-            'order_id'      => isset($params['order_id'])?$params['order_id']:null,
-            'order_no'      => isset($params['order_no'])?$params['order_no']:null,
-            'worker_id'     => isset($params['worker_id'])?$params['worker_id']:null,
-            'uid'           => isset($params['uid'])?$params['uid']:null,
-            'mobile'        => isset($params['uid'])?User::findOne(['id'=>$params['uid']])->mobile:null,
-            'detail_money'  => isset($params['detail_money'])?$params['detail_money']:null,
-            'detail_type'   => isset($params['detail_type'])?$params['detail_type']:null,
-            'wallet_money'  => isset($params['wallet_money'])?$params['wallet_money']:null,
-            'detail_time'   => date('Y-m-d H:i:s'),
-            'remark'        => isset($params['remark'])?$params['remark']:null,
-            'pay_from'      => isset($params['pay_from'])?$params['pay_from']:null,
-            'extract_to'    => isset($params['extract_to'])?$params['extract_to']:null,
-            'admin_uid'     => isset($params['admin_uid']) ? $params['admin_uid'] : 0,
+            'detail_no'     =>self::generateWalletNo(),
+            'order_id'      =>isset($params['order_id'])?$params['order_id']:'',
+            'order_no'      =>isset($params['order_no'])?$params['order_no']:'',
+            'worker_id'     =>isset($params['worker_id'])?$params['worker_id']:'',
+            'uid'           =>isset($params['uid'])?$params['uid']:'',
+            'mobile'        =>isset($params['uid'])?User::findOne(['id'=>$params['uid']])->mobile:'',
+            'detail_money'  =>isset($params['detail_money'])?$params['detail_money']:'',
+            'detail_type'   =>isset($params['detail_type'])?$params['detail_type']:'',
+            'wallet_money'  =>isset($params['wallet_money'])?$params['wallet_money']:'',
+            'detail_time'   =>date('Y-m-d H:i:s'),
+            'remark'        =>isset($params['remark'])?$params['remark']:'',
+            'pay_from'      =>isset($params['pay_from'])?$params['pay_from']:'',
+            'extract_to'    =>isset($params['extract_to'])?$params['extract_to']:'',
+            'admin_uid'     =>$params['admin_uid'],
         ];
 
         $userDetail->setAttributes($detail,false);
@@ -212,7 +212,7 @@ class Wallet
         ];
         //判断金额是否足够
         $wallet = WalletUser::findOne($uid);
-        $money = self::getBalance($uid);
+        $money = empty($wallet->money) ? 0 : $wallet->money;
 
         $response['money'] = $money;
         if($amount > $money){

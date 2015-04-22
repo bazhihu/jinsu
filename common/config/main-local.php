@@ -1,19 +1,20 @@
 <?php
 return [
     'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=youaiyihu',
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+            'tablePrefix' => 'yayh_'
+        ],
+
         'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => '192.168.1.20',
             'port' => 6379,
             'database' => 0,
-        ],
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=192.168.1.20;dbname=youaiyihu',
-            'username' => 'youaiyihu',
-            'password' => 'swkqtyy',
-            'charset' => 'utf8',
-            'tablePrefix' => 'yayh_'
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

@@ -54,7 +54,7 @@ class PayController extends ActiveController{
         ];
         $paymentModel = new Payment($post['pay_way'], $payment);
         $payment['transaction_no'] = $paymentModel->getTradeNo();
-        $payment['notify_url'] = Alipay::$notifyUrl;
+        $payment['notify_url'] = Alipay::getNotifyUrl();
 
         return $payment;
     }

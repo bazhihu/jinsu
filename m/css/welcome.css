@@ -21,12 +21,12 @@ body{background:#41b672;color:#fff}
 .content { position: relative; width: 640px; margin: 0 auto; top: 50%; overflow: hidden; -webkit-transform: translate(0,-50%); transform: translate(0,-50%); }
 .slide h1{background:url(../images/logo1.png) 50% no-repeat;height:80px;color:rgba(0,0,0,0)}
 .slide{text-align:center;}
-.slide .title{font-size:34px}
+.slide .title{font-size:36px}
 .slide ul.title{width:70%;margin:0 auto}
 .slide li{width:50%;float:left}
 
-.slide .about{font-size:24px;line-height:40px;margin:20px 0}
-.slide .about b{font-size:36px}
+.slide .about{font-size:26px;line-height:40px;margin:20px 0}
+.slide .about b{font-size:38px}
 .slide img{margin-top:30px}
 .slide .download{background:url(../images/first-btnbg.png) 50% no-repeat;font-size:38px;line-height:80px;margin:20px auto 0;width:306px}
 

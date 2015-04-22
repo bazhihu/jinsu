@@ -9,7 +9,6 @@ return [
             'charset' => 'utf8',
             'tablePrefix' => 'yayh_'
         ],
-
         'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => '192.168.1.20',

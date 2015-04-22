@@ -45,18 +45,20 @@ class Wallet
      */
     public static function recharge($params)
     {
-        #事务-START
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             #更新wallet-user 表
             $walletUser = self::addMoney($params['uid'], $params['money']);
+            $money = $walletUser->money;
 
             $detail = array();//添加充值记录
             $detail['uid']          = $walletUser->uid;
             $detail['detail_money'] = $params['money'];
             $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
-            $detail['wallet_money'] = $walletUser->money;
+            $detail['wallet_money'] = $money;
             $detail['pay_from']     = $params['pay_from'];
+
+            //后台充值
             if($detail['pay_from'] == WalletUserDetail::PAY_FROM_BACKEND){
                 $detail['admin_uid']    = Yii::$app->user->identity->getId();
             }
@@ -70,9 +72,8 @@ class Wallet
             $transaction->rollBack();
             throw new HttpException(400, print_r($e, true));
         }
-        #事务-END
 
-        return $walletUser->money;
+        return $money;
     }
 
     /**

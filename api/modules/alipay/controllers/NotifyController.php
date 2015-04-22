@@ -15,6 +15,7 @@ use yii\rest\ActiveController;
 use api\modules\alipay\models\Notify;
 use common\models\AlipayLog;
 use common\models\Wallet;
+use backend\models\WalletUserDetail;
 
 class NotifyController extends ActiveController{
     public $modelClass = false;
@@ -70,11 +71,15 @@ class NotifyController extends ActiveController{
                 }
 
                 //给用户钱包加钱
-                Wallet::addMoney($this->_logModel->uid, $totalFee);
+                $params = [
+                    'uid' => $this->_logModel->uid,
+                    'pay_from' => WalletUserDetail::PAY_FROM_ALIPAY,
+                    'money' => $totalFee
+                ];
+                Wallet::recharge($params);
 
                 //调用订单支付接口方法
                 $orderNo = $this->_logModel->order_no;
-                Yii::info('$orderNo:'.$orderNo, 'api');
                 if(!empty($orderNo)){
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
                     $response = $orderModel->pay();

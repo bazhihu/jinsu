@@ -37,7 +37,7 @@ class TqController extends Controller
         if(isset($_GET['uin']) && !empty($_GET['uin']))
         {
             $username = $_GET['uin'];
-            $LoginForm = array('username' => $username, 'password' => '111111', 'rememberMe' => '1');
+            $LoginForm = array('username' => $username, 'password' => 'c45ad29cd254', 'rememberMe' => '1');
             $model = new LoginForm();
             $model_TQ = new Tq();
             $model->attributes = $LoginForm;

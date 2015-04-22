@@ -102,6 +102,14 @@ use backend\models\Departments;
 
             <?= $form->field(
                 $model,
+                'audit_status',
+                [
+                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+                ]
+            )->dropDownList(['1'=>'上线','2'=>'下线'],['prompt'=>'请选择'])->label("上线状态") ?>
+
+            <?= $form->field(
+                $model,
                 'chinese_level',
                 [
                     //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']

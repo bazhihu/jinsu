@@ -56,7 +56,7 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
-                    Yii::info($result, 'api');
+                    Yii::info('返回支付宝：'.$result, 'api');
                     return false;
                 }
 

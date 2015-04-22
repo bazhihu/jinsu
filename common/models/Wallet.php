@@ -6,6 +6,7 @@ use backend\models\WalletIncrement;
 use backend\models\WalletUserDetail;
 use Yii;
 use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use backend\models\WalletUser;
 use yii\web\HttpException;
@@ -42,7 +43,7 @@ class Wallet
      * @throws HttpException
      * @throws \yii\db\Exception
      */
-    public function recharge($params)
+    public static function recharge($params)
     {
         #事务-START
         $transaction = \Yii::$app->db->beginTransaction();
@@ -56,7 +57,9 @@ class Wallet
             $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
             $detail['wallet_money'] = $walletUser->money;
             $detail['pay_from']     = $params['pay_from'];
-            $detail['admin_uid']    = Yii::$app->user->identity->getId();
+            if($detail['pay_from'] == WalletUserDetail::PAY_FROM_BACKEND){
+                $detail['admin_uid']    = Yii::$app->user->identity->getId();
+            }
 
             $result = self::addUserDetail($detail);
             if ($result['code'] !== '200') {
@@ -69,17 +72,7 @@ class Wallet
         }
         #事务-END
 
-        #发送短信
-        $sms = new Sms();
-        $send = [
-            'mobile'    =>User::findOne(['id'=>$params['uid']])->mobile,
-            'type'      =>Sms::SMS_SUCCESS_RECHARGE,
-            'account'   =>User::findOne(['id'=>$params['uid']])->mobile,
-            'money'     =>$params['money'],
-            'balance'   =>$walletUser->money,
-        ];
-        $sms->send($send);
-        return true;
+        return $walletUser->money;
     }
 
     /**
@@ -106,21 +99,11 @@ class Wallet
         ];
         $userDetail = new WalletUserDetail();
         $detail = [
-            'detail_no'     =>self::generateWalletNo(),
-            'order_id'      =>isset($params['order_id'])?$params['order_id']:'',
-            'order_no'      =>isset($params['order_no'])?$params['order_no']:'',
-            'worker_id'     =>isset($params['worker_id'])?$params['worker_id']:'',
-            'uid'           =>isset($params['uid'])?$params['uid']:'',
-            'mobile'        =>isset($params['uid'])?User::findOne(['id'=>$params['uid']])->mobile:'',
-            'detail_money'  =>isset($params['detail_money'])?$params['detail_money']:'',
-            'detail_type'   =>isset($params['detail_type'])?$params['detail_type']:'',
-            'wallet_money'  =>isset($params['wallet_money'])?$params['wallet_money']:'',
-            'detail_time'   =>date('Y-m-d H:i:s'),
-            'remark'        =>isset($params['remark'])?$params['remark']:'',
-            'pay_from'      =>isset($params['pay_from'])?$params['pay_from']:'',
-            'extract_to'    =>isset($params['extract_to'])?$params['extract_to']:'',
-            'admin_uid'     =>$params['admin_uid'],
+            'detail_no'     => self::generateWalletNo(),
+            'mobile'        => isset($params['uid'])?User::findOne(['id'=>$params['uid']])->mobile:null,
+            'detail_time'   => date('Y-m-d H:i:s'),
         ];
+        $detail = ArrayHelper::merge($detail,$params);
 
         $userDetail->setAttributes($detail,false);
         if(!$userDetail->save()){

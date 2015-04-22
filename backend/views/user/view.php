@@ -63,37 +63,40 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=> ($model->status==User::STATUS_NORMAL) ? '正常':'禁用',
             ],
             'login_ip',
-            [
-                'attribute'=>'login_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
-            [
-                'attribute'=>'register_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
+            'login_time',
+//            [
+//                'attribute'=>'login_time',
+//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
+//                'type'=>DetailView::INPUT_WIDGET,
+//                'widgetOptions'=> [
+//                    'class'=>DateControl::classname(),
+//                    'type'=>DateControl::FORMAT_DATETIME
+//                ]
+//            ],
+            'register_time',
+//            [
+//                'attribute'=>'register_time',
+//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
+//                'type'=>DetailView::INPUT_WIDGET,
+//                'widgetOptions'=> [
+//                    'class'=>DateControl::classname(),
+//                    'type'=>DateControl::FORMAT_DATETIME
+//                ]
+//            ],
             [
                 'attribute'=>'adder',
                 'value'=>($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
-            [
-                'attribute'=>'edit_time',
-                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
-                'type'=>DetailView::INPUT_WIDGET,
-                'widgetOptions'=> [
-                    'class'=>DateControl::classname(),
-                    'type'=>DateControl::FORMAT_DATETIME
-                ]
-            ],
+            'edit_time',
+//            [
+//                'attribute'=>'edit_time',
+//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
+//                'type'=>DetailView::INPUT_WIDGET,
+//                'widgetOptions'=> [
+//                    'class'=>DateControl::classname(),
+//                    'type'=>DateControl::FORMAT_DATETIME
+//                ]
+//            ],
             [
                 'attribute'=>'editer',
                 'value'=>($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])->username : null,

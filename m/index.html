@@ -1,10 +1,25 @@
-<script>
-    var UA = window.navigator.userAgent;
-    var CLICK = 'click';
-    if(/ipad|iphone|android|/.test(UA)){
-        CLICK = 'tap';
-    }
-    var subnav = $('#subnav');
-    subnav[CLICK]
-
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/template.js"></script>
+    <script src="/js/zepto.min.js"></script>
+</head>
+<body>
+<table  id="content">
+    <script id="test" type="text/html">
+        {{each list as value}}
+        <tr>
+            <td>姓名：{{value}}</td>
+            {{/each}}
+    </script>
+</table>
+<script type="text/javascript">
+    ;(function($){
+        $.getJSON('//sit.api.youaiyihu.com', function(data){
+            var html = template('test', data);
+            document.getElementById('content').innerHTML = html;
+        })
+    })(Zepto);
 </script>
+</body>
+</html>

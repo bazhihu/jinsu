@@ -104,7 +104,7 @@ class UserController extends Controller
             $params = $params_all['User'];
 
             //编辑时间
-            $params['edit_date'] = date('Y-m-d H:i:s');
+            $params['edit_time'] = date('Y-m-d H:i:s');
             $params['editer'] = yii::$app->user->getId();
             $model->attributes = $params;
             if($model->save()) {

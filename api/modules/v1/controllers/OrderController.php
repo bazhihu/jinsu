@@ -170,7 +170,7 @@ class OrderController extends ActiveController {
         ];
         $paymentModel = new Payment($payWay, $payment);
         $payment['transaction_no'] = $paymentModel->getTradeNo();
-        $payment['notify_url'] = Alipay::$notifyUrl;
+        $payment['notify_url'] = Alipay::getNotifyUrl();
         unset($payment['uid'], $payment['order_no']);
 
         return $payment;

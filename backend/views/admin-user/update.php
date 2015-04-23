@@ -51,7 +51,6 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                             'options'=>[
                                 'placeholder'=>'请输入员工姓名',
                                 'maxlength'=>255 ,
-                                'readonly'=>'readonly'
                             ]
                         ],
                         'created_name'=>[

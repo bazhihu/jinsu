@@ -8,7 +8,8 @@
 
 namespace api\modules\v1\controllers;
 
-use backend\models\Comment;
+use common\models\Comment;
+use common\models\Order;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
@@ -16,7 +17,7 @@ use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 
 class CommentController extends ActiveController {
-    public $modelClass = 'backend\models\comment';
+    public $modelClass = 'common\models\comment';
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -47,10 +48,14 @@ class CommentController extends ActiveController {
     public function actionView($id)
     {
         $worker_id = $id;
-        $comments = Comment::find()
+        $comments = \backend\models\Comment::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->orderBy('comment_id DESC')
             ->all();
+        if($comments)
+        {
+            $comments = \api\modules\v1\models\Worker::getMobile($comments);
+        }
         return $comments;
     }
 
@@ -61,13 +66,17 @@ class CommentController extends ActiveController {
     public function actionCreate(){
         $post = Yii::$app->getRequest()->getBodyParams();
 
-        $comment = \common\models\Comment::createComment($post);
+        $post['status']       = Comment::COMMENT_PENDING;
+        $post['type']         = Comment::COMMENT_TYPE_USER;
+
+        $comment = Comment::createComment($post);
         if(!$comment){
             $this->responseCode = 500;
             $this->responseMsg = '评论失败';
             return null;
         }
-        return [];
+        $order = Order::findOne(['order_no'=>$post['order_no']]);
+        return $order;
     }
 
     /**

@@ -8,6 +8,7 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\models\Pay;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
@@ -17,7 +18,7 @@ use common\models\Payment;
 use common\components\alipay\Alipay;
 
 class PayController extends ActiveController{
-    public $modelClass = 'common\models\Order';
+    public $modelClass = 'api\modules\v1\models\Pay';
     public $responseCode = 200;
     public $responseMsg = null;
 
@@ -35,18 +36,13 @@ class PayController extends ActiveController{
         return null;
     }
 
-    public function actionCreate()
-    {
+    public function actionCreate(){
         $post = Yii::$app->getRequest()->getBodyParams();
-        if (empty($post['pay_way'])) {
+        $payModel = new Pay();
+        $payModel->setAttributes($post);
+        if(!$payModel->validate()){
             $this->responseCode = 400;
-            $this->responseMsg = '支付方式为空';
-            return false;
-        }
-        $amount = $post['amount'];
-        if($amount <= 0){
-            $this->responseCode = 400;
-            $this->responseMsg = '支付金额错误';
+            $this->responseMsg = print_r($payModel->getErrors(), true);
             return null;
         }
 
@@ -54,11 +50,11 @@ class PayController extends ActiveController{
         $payment = [
             'uid' => $post['uid'],
             'subject' => '用户充值',
-            'amount' => $amount
+            'amount' => $post['amount']
         ];
         $paymentModel = new Payment($post['pay_way'], $payment);
         $payment['transaction_no'] = $paymentModel->getTradeNo();
-        $payment['notify_url'] = Alipay::$notifyUrl;
+        $payment['notify_url'] = Alipay::getNotifyUrl();
 
         return $payment;
     }

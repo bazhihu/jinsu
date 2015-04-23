@@ -72,7 +72,7 @@ class OrderOperatorLog extends \yii\db\ActiveRecord
             'result' => json_encode($result),
             'remark' => $remark,
             'create_time' => date('Y-m-d H:i:s'),
-            'operator_id' => isset(Yii::$app->user->id) ? Yii::$app->user->id : 0
+            'operator_id' => isset(Yii::$app->user) ? Yii::$app->user->id : 0
         ];
         $this->setAttributes($attributes);
 

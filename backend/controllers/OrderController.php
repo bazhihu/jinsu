@@ -158,6 +158,7 @@ class OrderController extends Controller
         $model->start_time = date('Y-m-d',strtotime($oldOrder->reality_end_time));
         $model->remark = $oldOrder->remark;
         $model->is_continue = OrderMaster::IS_CONTINUE_YES;
+        $model->order_type = $oldOrder->order_type;
 
         $orderPatientModel = new OrderPatient();
         $orderPatientModel->name = $oldOrderPatient->name;
@@ -257,10 +258,12 @@ class OrderController extends Controller
      */
     public function actionCancel($id){
         $order = $this->findModel($id);
+        $orderStatus = $order->order_status;
         $response = $order->cancel();
 
         //发送短信
-        if($response['code'] == 200){
+        $isTrue = in_array($orderStatus, [Order::ORDER_STATUS_WAIT_CONFIRM,Order::ORDER_STATUS_WAIT_SERVICE]);
+        if($response['code'] == 200 && $isTrue){
             $params['mobile'] = $order->mobile;
             $params['type'] = Sms::SMS_ORDER_CANCELED;
             $params['time'] = $order->start_time;

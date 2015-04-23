@@ -230,7 +230,7 @@ class Worker extends \yii\db\ActiveRecord
         return [
             [['name','idcard'], 'required'],
             [['gender'],'string', 'max' => 1],
-            [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status'], 'integer'],
+            [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
             [['price', 'good_rate'], 'number'],
             [['name','native_province', 'nation','certificate'], 'string', 'max' => 20],
@@ -285,6 +285,7 @@ class Worker extends \yii\db\ActiveRecord
             'total_comment' => '评价总数',
             'level' => '护工等级',
             'status' => '工作状态',
+            'audit_status'=>'上线状态'
         ];
     }
 
@@ -538,10 +539,7 @@ class Worker extends \yii\db\ActiveRecord
      */
     static public function workerPic($workerId){
         if($workerId)
-            if(Yii::$app->params['pic_domain']=='uat.img.youaiyihu.com')
-                return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.".jpg";
-            else
-                return 'http://'.Yii::$app->params['pic_domain']."/uploads/".$workerId.".jpg";
+            return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.".jpg";
         else
             return "img/no.jpg";
     }
@@ -554,6 +552,26 @@ class Worker extends \yii\db\ActiveRecord
         $update_sql = "update yayh_worker set total_order=total_order+1 where worker_id=".$worker_id;
         $connection = Yii::$app->db;
         $command = $connection->createCommand($update_sql);
+        $command->query();
+    }
+
+    /**
+     * 审核护工 上线OR下线
+     * @param $worker_ids
+     * @param string $op
+     */
+    static public function  workerAudit($worker_ids,$op='audit_yes'){
+        $connection = Yii::$app->db;
+        $auditer = yii::$app->user->getId();
+        if($op=='audit_yes'){
+            $audit_status = 1;
+        }else{
+            $audit_status = 2;
+        }
+
+        //更新状态
+        $sql = "update yayh_worker set audit_status = ".$audit_status." where worker_id in ($worker_ids)";
+        $command = $connection->createCommand($sql);
         $command->query();
     }
 }

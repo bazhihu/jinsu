@@ -26,7 +26,7 @@ $route = $controller->route;
     <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/wallet/cash-list')):?>hide <?php endif;?><?php if($route == 'wallet/cash-list'):?>active<?php endif;?>"><a href="<?=Url::toRoute('wallet/cash-list');?>">提现申请</a></li>
     <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/wallet/confirm-list')):?>hide <?php endif;?><?php if($route == 'wallet/confirm-list'):?>active<?php endif;?>"><a href="<?=Url::toRoute('wallet/confirm-list');?>">提现支付</a></li>
     <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/wallet/cash-records')):?>hide <?php endif;?><?php if($route == 'wallet/cash-records'):?>active<?php endif;?>"><a href="<?=Url::toRoute('wallet/cash-records');?>">提现记录</a></li>
-    <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/wallet/debit-records')):?>hide <?php endif;?><?php if($route == 'wallet/debit-records'):?>active<?php endif;?>"><a href="<?=Url::toRoute('wallet/debit-records');?>">扣款明细</a></li>
+    <li class="<?php if(!\backend\models\AdminUser::checkPermissions('/wallet/debit-records')):?>hide <?php endif;?><?php if($route == 'wallet/debit-records'):?>active<?php endif;?>"><a href="<?=Url::toRoute('wallet/debit-records');?>">交易明细</a></li>
 </ul>
 
 <ul class="nav nav-sidebar">

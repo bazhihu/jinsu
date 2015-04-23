@@ -35,7 +35,7 @@ use kartik\builder\Form;
                 </tr>
                 <tr>
                     <td  align="left">
-                        <input id="begin_dt0" name="begin_dt0" class="time" type="text" value=<?=empty($model[0]['ext1']) ? "": substr($model[0]['ext1'],0,7)?>>
+                        <input id="begin_dt0" name="begin_dt0" class="time" type="text" value=<?=empty($model[0]['ext1']) ? "": substr($model[0]['ext1'],0,12)?>>
 <!--                        --><?//
 //                        echo DateControl::widget([
 //                            'name'=>'begin_dt0',
@@ -47,7 +47,7 @@ use kartik\builder\Form;
 //                        ]);?>
                     </td>
                     <td  align="left">
-                        <input id="end_dt0" name="end_dt0" class="time" type="text" value=<?=empty($model[0]['ext1']) ? "": substr($model[0]['ext1'],10,17)?>>
+                        <input id="end_dt0" name="end_dt0" class="time" type="text" value=<?=empty($model[0]['ext1']) ? "": substr($model[0]['ext1'],13,24)?>>
 <!--                        --><?//
 //                        echo DateControl::widget([
 //                            'name'=>'end_dt0',
@@ -64,7 +64,7 @@ use kartik\builder\Form;
                 </tr>
                 <tr>
                     <td>
-                        <input id="begin_dt1" name="begin_dt1" class="time" type="text" value=<?=empty($model[1]['ext1']) ? "": substr($model[1]['ext1'],0,7)?>>
+                        <input id="begin_dt1" name="begin_dt1" class="time" type="text" value=<?=empty($model[1]['ext1']) ? "": substr($model[1]['ext1'],0,12)?>>
 <!--                        --><?//
 //                        echo DateControl::widget([
 //                            'name'=>'begin_dt1',
@@ -76,7 +76,7 @@ use kartik\builder\Form;
 //                        ]);?>
                     </td>
                     <td align="left">
-                        <input id="end_dt1" name="end_dt1" class="time" type="text" value=<?=empty($model[1]['ext1']) ? "": substr($model[1]['ext1'],10,17)?>>
+                        <input id="end_dt1" name="end_dt1" class="time" type="text" value=<?=empty($model[1]['ext1']) ? "": substr($model[1]['ext1'],13,24)?>>
 <!--                        --><?//
 //                        echo DateControl::widget([
 //                            'name'=>'end_dt1',
@@ -93,7 +93,7 @@ use kartik\builder\Form;
                 </tr>
                 <tr>
                     <td>
-                        <input id="begin_dt2" name="begin_dt2" class="time" type="text" value=<?=empty($model[2]['ext1']) ? "": substr($model[2]['ext1'],0,7)?>>
+                        <input id="begin_dt2" name="begin_dt2" class="time" type="text" value=<?=empty($model[2]['ext1']) ? "": substr($model[2]['ext1'],0,12)?>>
 <!--                        --><?//
 //                        echo DateControl::widget([
 //                            'name'=>'begin_dt2',
@@ -105,7 +105,7 @@ use kartik\builder\Form;
 //                        ]);?>
                     </td>
                     <td  align="left">
-                        <input id="end_dt2" name="end_dt2" class="time" type="text" value=<?=empty($model[2]['ext1']) ? "": substr($model[2]['ext1'],10,17)?>>
+                        <input id="end_dt2" name="end_dt2" class="time" type="text" value=<?=empty($model[2]['ext1']) ? "": substr($model[2]['ext1'],13,24)?>>
 <!--                        --><?//
 //                        echo DateControl::widget([
 //                            'name'=>'end_dt2',
@@ -206,19 +206,19 @@ use kartik\builder\Form;
 <script type="text/javascript" >
     $(document).ready(function(){
         $('#begin_dt0').unbind('focus');
-        $('#begin_dt0').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'});});
+        $('#begin_dt0').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月'});});
         $('#end_dt0').unbind('focus')
-        $('#end_dt0').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'begin_dt0\')}'});});
+        $('#end_dt0').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月',minDate:'#F{$dp.$D(\'begin_dt0\')}'});});
 
         $('#begin_dt1').unbind('focus');
-        $('#begin_dt1').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'});});
+        $('#begin_dt1').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月'});});
         $('#end_dt1').unbind('focus')
-        $('#end_dt1').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'begin_dt1\')}'});});
+        $('#end_dt1').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月',minDate:'#F{$dp.$D(\'begin_dt1\')}'});});
 
         $('#begin_dt2').unbind('focus');
-        $('#begin_dt2').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM'});});
+        $('#begin_dt2').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月'});});
         $('#end_dt2').unbind('focus')
-        $('#end_dt2').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM',minDate:'#F{$dp.$D(\'begin_dt2\')}'});});
+        $('#end_dt2').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月',minDate:'#F{$dp.$D(\'begin_dt2\')}'});});
     });
 </script>
 <script type="text/javascript" src="/js/wdatepicker/wdatepicker.js"></script>

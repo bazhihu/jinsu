@@ -18,6 +18,12 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['console'],
+                    'logFile' => '@app/runtime/logs/console.log'
+                ],
             ],
         ],
     ],

@@ -11,7 +11,7 @@ use backend\models\Hospitals;
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var backend\models\WorkerSearch $searchModel
  */
-
+$this->registerJsFile('js/worker.js?v=20150421', ['position'=>yii\web\View::POS_END]);
 $this->title = '护工管理';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -25,10 +25,22 @@ $this->title = '护工管理';
         <?php /* echo Html::a('Create Worker', ['create'], ['class' => 'btn btn-success'])*/  ?>
     </p>
 
-    <?php Pjax::begin(); echo GridView::widget([
+    <form action="" method="post" name="worker" id="worker">
+        <input type="hidden" value="" name="op" id="op">
+        <?php
+        $buttons ='<input type="button" name="audit_yes" id="audit_yes" value="上线" class="btn btn-success">';
+        $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_no" id="audit_no" value="下线" class="btn btn-success">';
+
+        Pjax::begin();
+        echo GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
+            [
+                'class'=>'kartik\grid\CheckboxColumn',
+                'headerOptions'=>['class'=>'kartik-sheet-style'],
+            ],
+
             ['class' => 'yii\grid\SerialColumn'],
             'worker_id',
 
@@ -112,10 +124,12 @@ $this->title = '护工管理';
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 添加护工', ['create'], ['class' => 'btn btn-success']),
+            'before'=>$buttons."&nbsp;&nbsp;".Html::a('<i class="glyphicon glyphicon-plus"></i> 添加护工', ['create'], ['class' => 'btn btn-success']),
             'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>false
         ],
-    ]); Pjax::end(); ?>
+    ]);
 
+     echo '</form>';
+     Pjax::end(); ?>
 </div>

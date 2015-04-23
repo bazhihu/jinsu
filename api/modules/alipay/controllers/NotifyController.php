@@ -15,6 +15,7 @@ use yii\rest\ActiveController;
 use api\modules\alipay\models\Notify;
 use common\models\AlipayLog;
 use common\models\Wallet;
+use backend\models\WalletUserDetail;
 
 class NotifyController extends ActiveController{
     public $modelClass = false;
@@ -56,7 +57,7 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
-                    Yii::info($result, 'api');
+                    Yii::info('返回支付宝：'.$result, 'api');
                     return false;
                 }
 
@@ -65,12 +66,17 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
-                    Yii::info($result, 'api');
+                    Yii::info('返回支付宝:'.$result, 'api');
                     return false;
                 }
 
                 //给用户钱包加钱
-                Wallet::addMoney($this->_logModel->uid, $totalFee);
+                $params = [
+                    'uid' => $this->_logModel->uid,
+                    'pay_from' => WalletUserDetail::PAY_FROM_ALIPAY,
+                    'money' => $totalFee
+                ];
+                Wallet::recharge($params);
 
                 //调用订单支付接口方法
                 $orderNo = $this->_logModel->order_no;
@@ -78,10 +84,16 @@ class NotifyController extends ActiveController{
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
                     $response = $orderModel->pay();
                     Yii::info('$response:'.print_r($response, true), 'api');
+
+                    if($response != 200){
+                        echo "fail";
+                        Yii::info('返回支付宝：fail', 'api');
+                        return false;
+                    }
                 }
             }
             echo "success";
-            Yii::info('回调结束：success', 'api');
+            Yii::info('======================回调结束：success', 'api');
         }else {
             //验证失败
             echo "fail";
@@ -98,7 +110,7 @@ class NotifyController extends ActiveController{
     private function _checkNotify($post){
         $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
         if(empty($aliPayLog)){
-            Yii::info('未找到订单', 'api');
+            Yii::info('未找到交易记录:out_trade_no='.$post['out_trade_no'], 'api');
             return 'fail';
         }
         if($aliPayLog->trade_status == 'TRADE_FINISHED' || $aliPayLog->trade_status == 'TRADE_SUCCESS'){
@@ -107,7 +119,7 @@ class NotifyController extends ActiveController{
 
         if($aliPayLog->total_fee != $post['total_fee']){
             Yii::info('交易金额错误', 'api');
-            //return 'fail';
+            return 'fail';
         }
 
         //保存支付日志

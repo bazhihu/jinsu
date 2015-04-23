@@ -11,6 +11,7 @@ namespace common\models;
 use linslin\yii2\curl\Curl;
 use Yii;
 use yii\base\Model;
+use yii\base\Exception;
 
 class Sms extends Model{
 
@@ -177,23 +178,23 @@ class Sms extends Model{
     public static function send($params){
 
         $content = self::smsScene($params);  //内容
-
         if(!$content)
         {
             $response['code'] =400;
             $response['msg'] ='参数错误';
             return $response;
         }
-
-        $response = self::_manRoadSend($params['mobile'],$content);
-        if($response['code'] == 200)
-        {
+        try{
+            $response = self::_nineSend($params['mobile'],$content);
+            if($response['code'] == 200)
+            {
+                return $response;
+            }
+            $response = self::_manRoadSend($params['mobile'],$content);
             return $response;
+        }catch (Exception $e){
+            Yii::info($e->getMessage(), 'backend');
         }
-
-        $response = self::_nineSend($params['mobile'],$content);
-
-        return $response;
     }
 
     /**
@@ -222,13 +223,14 @@ class Sms extends Model{
                 http_build_query($params)
             )
             ->setOption( CURLOPT_RETURNTRANSFER, false)
+            ->setOption( CURLOPT_TIMEOUT , 30)
             ->post(Sms::SMS_MANDAOKEJI);
 
         $response = [
             'code'=>'200',
             'msg'=>'',
         ];
-        if($return<0){
+        if($return<0 || !$return){
             $response['code'] = '404！';
             $response['msg'] = '发送失败！';
         }else{
@@ -261,6 +263,7 @@ class Sms extends Model{
                 http_build_query($params)
             )
             ->setOption( CURLOPT_RETURNTRANSFER, false)
+            ->setOption( CURLOPT_TIMEOUT , 30)
             ->post(Sms::SMS_SANSANDEJIU);
         $return = explode(':',$return);
 

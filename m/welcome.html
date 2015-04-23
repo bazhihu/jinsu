@@ -1,0 +1,80 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />
+<script>
+if(/Android (\d+\.\d+)/.test(navigator.userAgent)){
+	if(parseFloat(RegExp.$1)>2.3){
+		var phoneScale = parseInt(window.screen.width)/640;
+		document.write('<meta name="viewport" content="width=640, minimum-scale='+ phoneScale +', maximum-scale='+ phoneScale +', target-densitydpi=device-dpi" />');
+	}else{
+		document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />');
+	}
+}else{
+	document.write('<meta name="viewport" content="width=640,user-scalable=no, target-densitydpi=device-dpi" />');
+}
+</script>
+<link href="/css/welcome.css" rel="stylesheet" /> 
+
+<title>首次登录页面</title>
+</head>
+
+<body>
+<div class="flipview" data-loop="false" data-initial-index="0">
+	<div class="container">
+		<div class="slide">
+		<div class="content">
+			<h1>优爱医护</h1>
+			<p class="title">您的贴身护理专家</p>
+			<img src="/images/first-1.png">111
+		</div>
+		</div>
+		<div class="slide">
+		<div class="content">
+			<p class="title">专业正规</p>
+			<p class="about">北京市卫生局直属管理团队<br>超过<b>4000</b>名专业护理师提供服务</p>
+			<img src="/images/first-2.png">
+		</div>
+		</div>
+		<div class="slide">
+		<div class="content">
+			<p class="title">方便快捷</p>
+			<p class="about">下单方式多样化<br>微信公众号、手机客户端、400客服电话</p>
+			<img src="/images/first-3.png">
+		</div>
+		</div>
+		<div class="slide">
+		<div class="content">
+			<p class="title">服务保障</p>
+			<p class="about">不满意，便换人<br>对护理师不满意，可随时找客服投诉换人</p>
+			<img src="/images/first-4.png">
+		</div>
+		</div>
+		<div class="slide">
+		<div class="content">
+			<p class="title">专业客服</p>
+			<p class="about">400-630-9860<br>专业客服，为您排忧解难</p>
+			<img src="/images/first-5.png">
+		</div>
+		</div>
+		<div class="slide">
+		<div class="content">
+			<ul class="title">
+				<li>手机选择</li>
+				<li>即刻下单</li>
+				<li>信息透明</li>
+				<li>真实可靠</li>
+			</ul>
+			<img src="/images/first-6.png">
+			<div class="download">立即下载客户端</div>
+			<p class="about"><a href="">继续浏览</a></p>
+		</div>
+		</div>
+	</div>
+</div>
+	<script src="/js/z.min.js"></script>
+
+	<script src="/js/z.flipview.js"></script>
+</body>
+</html>

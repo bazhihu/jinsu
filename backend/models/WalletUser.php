@@ -33,7 +33,7 @@ class WalletUser extends \yii\db\ActiveRecord
         return [
             [['uid'], 'required'],
             [['uid'], 'integer'],
-            [['money', 'money_pay', 'money_pay_s', 'money_consumption', 'money_extract'], 'number']
+            [['money', 'freeze_money', 'money_pay', 'money_pay_s', 'money_consumption', 'money_extract'], 'number']
         ];
     }
 
@@ -45,6 +45,7 @@ class WalletUser extends \yii\db\ActiveRecord
         return [
             'uid' => '用户帐号',
             'money' => '账户余额',
+            'freeze_money'=>'账户申请冻结金额',
             'money_pay' => 'Money Pay',
             'money_pay_s' => 'Money Pay S',
             'money_consumption' => 'Money Consumption',
@@ -61,6 +62,7 @@ class WalletUser extends \yii\db\ActiveRecord
         $user = $this->findOne(['uid'=>$uid]);
         $params = [
             'money'=>$user->money-$money,
+            'freeze_money'=>0,
             'money_extract'=>$user->money_extract + $money,
         ];
 
@@ -87,17 +89,17 @@ class WalletUser extends \yii\db\ActiveRecord
     }
 
     /**
-     * 获取用户余额
-     * @param int $uid
-     * @return int|string
-     * @author zhangbo
+     * 冻结金额
+     * @param $uid
+     * @return bool
      */
-    public static function getBalance($uid){
+    public static function freeze($uid){
         $model = self::findOne(['uid'=>$uid]);
-        if(empty($model)){
-            return 0;
-        }else{
-            return $model->money;
+        $model->freeze_money = $model->money;
+
+        if(!$model->save()){
+            return false;
         }
+        return true;
     }
 }

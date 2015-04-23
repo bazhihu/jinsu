@@ -99,7 +99,7 @@ $this->registerJsFile('js/admin.js', ['position'=>yii\web\View::POS_END]);
                     ],
                 ]);
 
-                echo Html::submitButton($model->isNewRecord ? Yii::t('app', '注册') : Yii::t('app', '修改'), ['class' => $model->isNewRecord ? 'btn btn-lg btn-success col-sm-offset-2' : 'btn btn-lg btn-primary col-sm-offset-2']);
+                echo Html::submitButton($model->isNewRecord ? '注册' : '修改', ['class' => $model->isNewRecord ? 'btn btn-lg btn-success col-sm-offset-2' : 'btn btn-lg btn-primary col-sm-offset-2']);
                 echo Html::resetButton('重置', ['class' => 'btn btn-primary btn-lg col-sm-offset-6', 'name' => 'reset-button']);
                 ActiveForm::end(); ?>
 

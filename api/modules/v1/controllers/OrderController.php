@@ -16,7 +16,7 @@ use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
-use backend\models\WalletUser;
+use common\models\Wallet;
 use common\models\Order;
 
 class OrderController extends ActiveController {
@@ -124,37 +124,56 @@ class OrderController extends ActiveController {
         }
         $order = Order::findOne($orderModel->order_id);
 
-        $balance = WalletUser::getBalance($order['uid']);
-
         //支付
-        $payment = null;
-        if($post['pay_way'] == Order::PAY_WAY_CASH){
-            $order->pay();
-        }else{
-            $amount = $order->total_amount - $balance;
-            if($amount <= 0){
-                $this->responseCode = 500;
-                $this->responseMsg = '支付金额错误';
-                return null;
-            }
-
-            //支付数据
-            $payment = [
-                'uid' => $post['uid'],
-                'order_no' => $order->order_no,
-                'subject' => '订单号：'.$order->order_no.'的付款',
-                'amount' => $amount
-            ];
-            $paymentModel = new Payment($post['pay_way'], $payment);
-            $payment['transaction_no'] = $paymentModel->getTradeNo();
-            $payment['notify_url'] = Alipay::$notifyUrl;
-            unset($payment['uid'], $payment['order_no']);
-        }
+        $payment = $this->_payment($order, $post['pay_way']);
 
         return [
             'order' => $order,
             'payment' => $payment
         ];
+    }
+
+    /**
+     * 支付
+     * @param array $order 订单数据
+     * @param int $payWay 支付方式
+     * @return array|null
+     */
+    private function _payment($order, $payWay){
+        //保存支付方式
+        $order->pay_way = $payWay;
+        if(!$order->save()){
+            $this->responseCode = 500;
+            $this->responseMsg = '保存支付方式失败';
+            return null;
+        }
+
+        if($payWay == Order::PAY_WAY_CASH){
+            $order->pay();
+            return null;
+        }
+
+        $uid = $order['uid'];
+        $balance = Wallet::getBalance($uid);
+        $amount = $order['total_amount'] - $balance;
+        if($amount <= 0){
+            $order->pay();
+            return null;
+        }
+
+        //支付数据
+        $payment = [
+            'uid' => $uid,
+            'order_no' => $order['order_no'],
+            'subject' => '订单号：'.$order['order_no'].'的付款',
+            'amount' => $amount
+        ];
+        $paymentModel = new Payment($payWay, $payment);
+        $payment['transaction_no'] = $paymentModel->getTradeNo();
+        $payment['notify_url'] = Alipay::getNotifyUrl();
+        unset($payment['uid'], $payment['order_no']);
+
+        return $payment;
     }
 
     /**
@@ -172,16 +191,32 @@ class OrderController extends ActiveController {
             return null;
         }
         $action = Yii::$app->getRequest()->getBodyParam('action');
+
+        $payment = null;
         if($action == 'cancel'){
+            //取消订单
             $response = $orderModel->cancel();
+            $this->responseCode = $response['code'];
+            $this->responseMsg = $response['msg'];
+        }elseif($action == 'payment'){
+            //支付
+            $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
+            $payment = $this->_payment($orderModel, $payWay);
         }else{
-            $response['code'] = 2132;
-            $response['msg'] = '订单状态错误';
+            $this->responseCode = 400;
+            $this->responseMsg = '参数错误';
+            return null;
+        }
+        $order = ArrayHelper::toArray($orderModel);
+        if(!empty($order['worker_no'])){
+            //获取护工照片
+            $order['pic'] = Worker::workerPic($order['worker_no']);
         }
 
-        $this->responseCode = $response['code'];
-        $this->responseMsg = $response['msg'];
-        return null;
+        return [
+            'order' => $order,
+            'payment' => $payment
+        ];;
     }
 
     /**

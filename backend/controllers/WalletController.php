@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Recharge;
+use common\models\Sms;
 use common\models\Wallet;
 use Yii;
 use backend\models\WalletWithdrawcashSearch;
@@ -87,8 +88,22 @@ class WalletController extends Controller
             {
                 #支付渠道-后台
                 $params['pay_from'] = WalletUserDetail::PAY_FROM_BACKEND;
-                $wallet = new Wallet();
-                if($wallet->recharge($params)){
+
+                $balance = Wallet::recharge($params);
+                if($balance){
+
+                    $mobile = User::findOne(['id'=>$params['uid']])->mobile;
+                    #发送短信
+                    $sms = new Sms();
+                    $send = [
+                        'mobile'    =>$mobile,
+                        'type'      =>Sms::SMS_SUCCESS_RECHARGE,
+                        'account'   =>$mobile,
+                        'money'     =>$params['money'],
+                        'balance'   =>$balance,
+                    ];
+                    $sms->send($send);
+
                     $response['msg'] = '成功充值';
                     echo Json::encode($response);
                     exit;
@@ -125,15 +140,13 @@ class WalletController extends Controller
     }
 
     /**
-     * 扣款明细
+     * 交易明细
      * @return string
      */
     public function actionDebitRecords()
     {
         $searchModel = new WalletUserDetailSearch();
         $queryParams = Yii::$app->request->queryParams;
-
-        $queryParams['WalletUserDetailSearch']['detail_type'] = '1';
 
         $dataProvider = $searchModel->search($queryParams);
 
@@ -214,9 +227,9 @@ class WalletController extends Controller
                 {
                     $cash['reason'] = $reason;
                 }
-                if($walletWithdrawcash->check($cash)){
-                    $response['msg'] = '操作成功';
-                    return Json::encode($response);
+                $return = $walletWithdrawcash->check($cash);
+                if($return['code']==200){
+                    return Json::encode($return);
                 }
             }
         }

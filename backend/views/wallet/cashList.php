@@ -13,85 +13,93 @@ use backend\models\User;
 $this->title = '提现申请';
 $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
+<style>
+    .panel-body .form-group{
+        float:left;
+        margin:5px;
+    }
+    .field-walletwithdrawcashsearch-fromdate{
+        width:270px
+    }
+    .field-walletwithdrawcashsearch-todate{
+        width:270px
+    }
+</style>
 <div class="wallet-user-detail-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="wallet-apply-list" style="padding: 25px">
-
-        <?php $form = ActiveForm::begin([
-            'action' => ['cash-list'],
-            'method' => 'get',
-
-            'type' => ActiveForm::TYPE_INLINE,
-            'formConfig'=>[
-                'labelSpan'=>1
-            ],
-        ]); ?>
-        <?php
-        echo $form->field(
-            $searchModel,
-            'fromDate',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->widget(
-            DatePicker::classname(),
-            [
-                'options' => [
-                    'placeholder' => 'Enter event time ...','style'=>'width:300px',
-                ],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'todayHighlight' => true,
-                    'format' => 'yyyy-mm-dd'
-                ]
-            ]
-        )->label('起始时间');
-        echo $form->field(
-            $searchModel,
-            'toDate',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->widget(
-            DatePicker::classname(),
-            [
-                'options' => [
-                    'placeholder' => 'Enter event time ...','style'=>'width:300px',
-                ],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'todayHighlight' => true,
-                    'format' => 'yyyy-mm-dd'
-                ]
-            ]
-        )->label('结束时间');
-        ?>
-        <?= $form->field(
-            $searchModel,
-            'mobile',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:300px'])->label('用户账号')?>
-        <?= $form->field(
-            $searchModel,
-            'status',
-            [
-                'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-            ]
-        )->dropDownList(['0'=>'提现申请中','1'=>'已拒绝','2'=>'已同意'],['prompt'=>'选择','style'=>'width:300px'])->label('申请状态') ?>
-
-        <div class="form-group" style="padding-top: 25px">
-            <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
-            <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
+    <div class="page-header">
+        <h1><?= Html::encode($this->title) ?></h1>
     </div>
 
+    <div class="wallet-apply-list">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">检索</h3>
+            </div>
+            <div class="panel-body">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['cash-list'],
+                    'method' => 'get',
+
+                    'type' => ActiveForm::TYPE_VERTICAL,
+                    'formConfig' => [
+                        'showLabels' => true,
+                    ],
+                ]); ?>
+                <?php
+                echo $form->field(
+                    $searchModel,
+                    'fromDate'
+                )->widget(
+                    DatePicker::classname(),
+                    [
+                        'options' => [
+                            'placeholder' => '请输入开始时间 ...',
+                        ],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
+                    ]
+                )->label('起始时间');
+                echo $form->field(
+                    $searchModel,
+                    'toDate'
+                )->widget(
+                    DatePicker::classname(),
+                    [
+                        'options' => [
+                            'placeholder' => '请输入结束时间 ...',
+                        ],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                            'format' => 'yyyy-mm-dd'
+                        ]
+                    ]
+                )->label('结束时间');
+                ?>
+                <?= $form->field(
+                    $searchModel,
+                    'mobile'
+                )->input('text',['placeholder'=>'请输入用户账号...'])->label('用户账号')?>
+                <?= $form->field(
+                    $searchModel,
+                    'status',
+                    [
+                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
+                    ]
+                )->dropDownList(['0'=>'提现申请中','1'=>'已拒绝','2'=>'已同意'],['prompt'=>'选择','style'=>'width:280px'])->label('申请状态') ?>
+
+                <div class="form-group" style="padding-top: 25px">
+                    <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
+                    <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+                </div>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    </div>
     <p>
         <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
     </p>

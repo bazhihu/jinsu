@@ -7,6 +7,6 @@ return [
         ],
         'session' => [
              'class' => 'yii\redis\Session'
-        ]
+        ],
     ],
 ];

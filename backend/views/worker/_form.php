@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -105,17 +104,17 @@ use backend\models\Hospitals;
                 'options'=>['inline'=>true]
             ],
 
-            'start_work'=>[
-                'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
-                'options'=>[
-                    'options'=>[
-                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:100%']
-                    ],
-                    'type'=>DateControl::FORMAT_DATE,
-                    'displayFormat' => 'yyyy-MM-dd',
-                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
-                ],
-            ],
+//            'start_work'=>[
+//                'type'=> Form::INPUT_WIDGET, 'widgetClass'=>DateControl::classname(),
+//                'options'=>[
+//                    'options'=>[
+//                        'options'=>['placeholder'=>'请选择入行时间...','style'=>'width:100%']
+//                    ],
+//                    'type'=>DateControl::FORMAT_DATE,
+//                    'displayFormat' => 'yyyy-MM-dd',
+//                    'pluginOptions'=>['todayHighlight' => true, 'autoclose' => true]
+//                ],
+//            ],
 
             'status'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
@@ -143,8 +142,22 @@ use backend\models\Hospitals;
         ]);
 
         echo $form->field($model, 'price', [
-            'addon' => ['append' => ['content'=>'元/日'],'groupOptions'=>['class'=>'col-md-3']]
+            'addon' => ['append' => ['content'=>'元/天'],'groupOptions'=>['class'=>'col-md-3']]
         ])->input('text', ['placeholder'=>'请输入服务价格...']);
+
+        echo '<div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group field-worker-start_work">
+                    <label for="worker-start_work" class="col-md-2 control-label">入行时间</label>
+                    <div class="col-md-10">
+                    <div id="worker-start_work">
+                    <input id="start_work" name="start_work"  style="width:30%" class="time" type="text" value="'.$model->start_work.'">
+                    </div>
+                    </div>
+                    <div class="col-md-offset-2 col-md-10"><div class="help-block"></div></div>
+                    </div>
+                </div>
+                </div>';
 
         echo $form->field($model, 'nation')->widget(Select2::classname(), [
             'data' =>Worker::getNation(),
@@ -259,3 +272,10 @@ use backend\models\Hospitals;
     <?ActiveForm::end(); ?>
 
 </div>
+<script type="text/javascript" >
+    $(document).ready(function(){
+        $('#start_work').unbind('focus');
+        $('#start_work').bind('focus',function(){WdatePicker({skin:'whyGreen',dateFmt:'yyyy年MM月'});});
+    });
+</script>
+<script type="text/javascript" src="/js/wdatepicker/wdatepicker.js"></script>

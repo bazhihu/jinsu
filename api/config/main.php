@@ -16,6 +16,10 @@ return [
             'basePath' => '@app/modules/alipay',
             'class' => 'api\modules\alipay\Module'
         ],
+        'wechat' => [
+            'basePath' => '@app/modules/wechat',
+            'class' => 'api\modules\wechat\Module'
+        ],
         'v1' => [
             'basePath' => '@app/modules/v1',
             'class' => 'api\modules\v1\Module'
@@ -51,6 +55,17 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
                         'alipay/notify',
+                    ],
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\\w+>'
+                    ],
+                    'except' => ['delete']
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'wechat/notify',
                     ],
                     'pluralize' => false,
                     'tokens' => [

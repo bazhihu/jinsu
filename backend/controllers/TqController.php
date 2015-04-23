@@ -22,7 +22,7 @@ class TqController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'select'],
+                        'actions' => ['index', 'select','login'],
                         'allow' => true,
                     ],
                 ],
@@ -37,11 +37,7 @@ class TqController extends Controller
         if(isset($_GET['uin']) && !empty($_GET['uin']))
         {
             $username = $_GET['uin'];
-            $LoginForm = array('username' => $username, 'password' => 'c45ad29cd254', 'rememberMe' => '1');
-            $model = new LoginForm();
-            $model_TQ = new Tq();
-            $model->attributes = $LoginForm;
-            if($model->login() && $model_TQ->load_TQ($LoginForm))
+            if($this->Login($username))
             {
                 return $this->redirect(['order/index']);
             } else {
@@ -54,17 +50,33 @@ class TqController extends Controller
  * */
     public function actionSelect()
     {
-            if(isset($_GET['callerid']) && !empty($_GET['callerid'])) {
-                $callid = $_GET['callerid'];
-                $userModel = new User();
-                $user = $userModel->findByMobile($callid);
-                if ($user && isset($user->id)) {
-                    $uid = $user->id;
-                    $this->redirect(['user/view', 'id' => $uid]);
-                } else {
-                    $this->redirect(['order/create', 'callid' => $callid]);
-                }
+        $username = empty($_GET['uin']) ? '' : $_GET['uin'];
+        if($this->Login($username) && (!empty($_GET['callerid']))) {
+            $callid = $_GET['callerid'];
+            $userModel = new User();
+            $user = $userModel->findByMobile($callid);
+            if ($user && isset($user->id)) {
+                $uid = $user->id;
+                $this->redirect(['user/view', 'id' => $uid]);
+            } else {
+                $this->redirect(['order/create', 'callid' => $callid]);
             }
+        }
     }
-
+/*
+ *
+ * */
+    function Login($username)
+    {
+        $LoginForm = array('username' => $username, 'password' => 'c45ad29cd254', 'rememberMe' => '1');
+        $model = new LoginForm();
+        $model_TQ = new Tq();
+        $model->attributes = $LoginForm;
+        if($model->login() && $model_TQ->load_TQ($LoginForm))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -29,9 +29,14 @@ class OrderSearch extends OrderMaster
 
     public function search($params)
     {
-        $query = OrderMaster::find()
-            ->andFilterWhere(['hospital_id' => Yii::$app->user->identity->hospital_id])
-            ->orderBy('order_id DESC');
+        $query = OrderMaster::find();
+
+        //内勤人员限制，只能看到本医院的订单
+        if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
+            $query->andFilterWhere(['hospital_id' => Yii::$app->user->identity->hospital_id]);
+        }
+
+        $query->orderBy('order_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

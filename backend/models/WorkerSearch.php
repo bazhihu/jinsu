@@ -28,9 +28,13 @@ class WorkerSearch extends Worker
 
     public function search($params)
     {
-        $query = Worker::find()
-            ->andFilterWhere(['like', 'hospital_id', ','.Yii::$app->user->identity->hospital_id.','])
-            ->orderBy('worker_id DESC');
+        $query = Worker::find();
+
+        //内勤人员限制，只能看到本医院的订单
+        if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
+            $query->andFilterWhere(['like', 'hospital_id', ','.Yii::$app->user->identity->hospital_id.',']);
+        }
+        $query->orderBy('worker_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -53,8 +57,8 @@ class WorkerSearch extends Worker
         ]);
 
         $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
-            ->andFilterWhere(['like', 'name', $this->name]);
-            //->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':''])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':'']);
             //->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':''])
             //->andFilterWhere(["($this->hospital_id,", "find_in_set", "hospital_id)"])
 

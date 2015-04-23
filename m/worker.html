@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Index</title>
+    <script src="/js/template.js"></script>
+    <script src="/js/zepto.min.js"></script>
+</head>
+<body>
+<script id="public_head" type="text/html">{{include 'public_head'}}</script>
+<script id="public_head_html"></script>
+<div id="worker_list_html"></div>
+<script id="worker_list" type="text/html">
+    <table>
+        {{each data as value index}}
+            <tr>
+                <td>护工编号：{{value.worker_id}}</td>
+                <td>护工姓名：{{value.name}}</td>
+                <td>护工性别：{{value.gender}}</td>
+                <td>护工照片：<img src="{{value.gender}}"></td>
+            </tr>
+        {{/each}}
+    </table>
+    <a href="tel:18610308130">打电话</a>
+</script>
+
+<script type="text/javascript">
+    ;(function($){
+        $.getJSON('//sit.api.youaiyihu.com/v1/workers', function(back_data){
+            var html = template('worker_list', back_data);
+            document.getElementById('worker_list_html').innerHTML = html;
+        })
+    })(Zepto);
+    var html = template('public_head', '');
+    document.getElementById('public_head_html').innerHTML = html;
+</script>

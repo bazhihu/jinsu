@@ -31,7 +31,8 @@ $this->title = '护工管理';
         $buttons ='<input type="button" name="audit_yes" id="audit_yes" value="上线" class="btn btn-success">';
         $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_no" id="audit_no" value="下线" class="btn btn-success">';
 
-        Pjax::begin(); echo GridView::widget([
+        Pjax::begin();
+        echo GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [

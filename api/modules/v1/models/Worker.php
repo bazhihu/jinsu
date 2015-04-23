@@ -111,6 +111,7 @@ class Worker extends ActiveRecord
         $query->andFilterWhere(['like', 'worker_id', !empty($params['worker_id'])?$params['worker_id']:''])
             ->andFilterWhere(['like', 'name', !empty($params['name'])?$params['name']:''])
             ->andFilterWhere(['like', 'hospital_id', !empty($params['hospital_id']) ? ','.$params['hospital_id'].',':''])
+            ->andFilterWhere(['like', 'office_id', !empty($params['office_id']) ? ','.$params['office_id'].',':''])
             ->andFilterWhere(['like', 'good_at', !empty($params['good_at'])? ','.$params['good_at'].',':'']);
 
         $count = $query->count();

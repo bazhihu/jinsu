@@ -6,8 +6,11 @@
     <script src="/js/zepto.min.js"></script>
 </head>
 <body>
+
+<!--公用头部-->
 <script id="public_head" type="text/html">{{include 'public_head'}}</script>
-<script id="public_head_html"></script>
+
+<!--护工列表-->
 <div id="worker_list_html"></div>
 <script id="worker_list" type="text/html">
     <table>
@@ -20,16 +23,13 @@
             </tr>
         {{/each}}
     </table>
-    <a href="tel:18610308130">打电话</a>
 </script>
 
 <script type="text/javascript">
     ;(function($){
         $.getJSON('//sit.api.youaiyihu.com/v1/workers', function(back_data){
-            var html = template('worker_list', back_data);
-            document.getElementById('worker_list_html').innerHTML = html;
+            var worker_list_html = template('worker_list', back_data);
+            $('#worker_list_html').html(worker_list_html);
         })
     })(Zepto);
-    var html = template('public_head', '');
-    document.getElementById('public_head_html').innerHTML = html;
 </script>

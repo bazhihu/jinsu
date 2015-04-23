@@ -29,7 +29,9 @@ class OrderSearch extends OrderMaster
 
     public function search($params)
     {
-        $query = OrderMaster::find()->orderBy('order_id DESC');
+        $query = OrderMaster::find()
+            ->andFilterWhere(['hospital_id' => Yii::$app->user->identity->hospital_id])
+            ->orderBy('order_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -46,7 +48,6 @@ class OrderSearch extends OrderMaster
             'order_no' => $this->order_no,
             'uid' => $this->uid,
             'total_amount' => $this->total_amount,
-            'hospital_id' => $this->hospital_id,
             'patient_state' => $this->patient_state,
             'worker_no' => $this->worker_no,
             'mobile' => $this->mobile,

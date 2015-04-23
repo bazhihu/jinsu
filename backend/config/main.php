@@ -135,8 +135,7 @@ return [
             'site/error',
             'site/logout',
             'tq/index',
-            'admin-user/reset',
-            'admin-user/default',
+            'tq/select',
         ]
     ],
     'params' => $params,

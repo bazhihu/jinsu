@@ -34,18 +34,54 @@ AppAsset::register($this);
         ],
     ]);
 
-    $menuItems = [
-        ['label' => '节假日管理', 'url' => ['/holidays/index']],
-        ['label' => '首页', 'url' => ['/site/index']],
-        ['label' => '修改密码', 'url' => ['/admin-user/reset']],
-    ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '登录', 'url' => ['/site/login']];
     } else {
+        $menuItems = [
+            [
+                'label' => '护工',
+                'url' => ['/worker/index']
+            ],
+            [
+                'label' => '订单',
+                'url' => ['/order/index']
+            ],
+            [
+                'label' => '用户',
+                'url' => ['/user/index']
+            ],
+            [
+                'label' => '评价',
+                'url' => ['/comment/index']
+            ],
+            [
+                'label' => '财务',
+                'items' => [
+                    ['label' => '提现申请', 'url' => ['/wallet/cash-list']],
+                    ['label' => '提现支付', 'url' => ['/wallet/confirm-list']],
+                    ['label' => '交易明细', 'url' => ['/wallet/debit-records']],
+                ]
+            ],
+            [
+                'label' => '帐号',
+                'url' => ['/admin-user/index']
+            ],
+            [
+                'label' => '其它',
+                'items' => [
+                    ['label' => '医院管理', 'url' => ['/hospitals/index']],
+                    ['label' => '科室管理', 'url' => ['/departments/index']],
+                    ['label' => '节假日管理', 'url' => ['/holidays/index']],
+                ]
+            ]
+        ];
         $menuItems[] = [
-            'label' => '退出 (' . Yii::$app->user->identity->username . '|' . key(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->getId())). ')',
-            'url' => ['/site/logout'],
-            'linkOptions' => ['data-method' => 'post']
+            'label' => Yii::$app->user->identity->username.'('.key(Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->getId())).')',
+            'items' => [
+                ['label' => '修改密码', 'url' => ['/admin-user/reset']],
+                ['label' => '退出', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
+            ]
         ];
     }
     echo Nav::widget([

@@ -38,7 +38,6 @@ class OrderController extends Controller
      * @return mixed
      */
     public function actionIndex(){
-
         //客服直接登录end
         $searchModel = new OrderSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());

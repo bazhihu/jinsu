@@ -28,12 +28,18 @@ class WorkerSearch extends Worker
 
     public function search($params)
     {
-//        $query = Worker::find();
-        $query = Worker::find()->orderBy('worker_id DESC');
+        $query = Worker::find();
+
+        //内勤人员限制，只能看到本医院的订单
+        if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
+            $query->andFilterWhere(['like', 'hospital_id', ','.Yii::$app->user->identity->hospital_id.',']);
+        }
+        $query->orderBy('worker_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
@@ -48,42 +54,14 @@ class WorkerSearch extends Worker
             'audit_status' => $this->audit_status,
             'chinese_level' => $this->chinese_level,
             'star' => $this->star,
-            /*
-            'marriage' => $this->marriage,
-            'education' => $this->education,
-            'politics' => $this->politics,
-
-            'start_work' => $this->start_work,
-            'phone1' => $this->phone1,
-            'phone2' => $this->phone2,
-            'price' => $this->price,
-            'add_date' => $this->add_date,
-            'adder' => $this->adder,
-            'edit_date' => $this->edit_date,
-            'editer' => $this->editer,
-            'total_score' => $this->total_score,
-            'star' => $this->star,
-            'total_order' => $this->total_order,
-            'good_rate' => $this->good_rate,
-            'total_comment' => $this->total_comment,
-*/
-
         ]);
 
         $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':''])
+            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':'']);
             //->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':''])
-          //  ->andFilterWhere(["($this->hospital_id,", "find_in_set", "hospital_id)"])
-            /*->andFilterWhere(['like', 'birth_place', $this->birth_place])
-            ->andFilterWhere(['like', 'native_province', $this->native_province])
-            ->andFilterWhere(['like', 'idcard', $this->idcard])
-            ->andFilterWhere(['like', 'certificate', $this->certificate])
-            ->andFilterWhere(['like', 'place', $this->place])
-            ->andFilterWhere(['like', 'hospital_id', $this->hospital_id])
-            ->andFilterWhere(['like', 'office_id', $this->office_id])
-            ->andFilterWhere(['like', 'good_at', $this->good_at])*/;
-       // $query->orderBy(['worker_id'=>'desc']);
+            //->andFilterWhere(["($this->hospital_id,", "find_in_set", "hospital_id)"])
+
        $query->orderBy('worker_id DESC');
 
         return $dataProvider;

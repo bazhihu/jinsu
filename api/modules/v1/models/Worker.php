@@ -38,7 +38,7 @@ class Worker extends ActiveRecord
             $params[$key]['native_province'] = $value['native_province']?City::findOne(['id'=>$value['native_province']])->name:'';
             $params[$key]['nation']          = $value['nation']?\backend\models\Worker::getNation($value['nation']):"";
             $params[$key]['chinese_level']   = $value['chinese_level']?\backend\models\Worker::getChineseLevel($value['chinese_level']):'';
-            $params[$key]['education']       = $value['education']?\backend\models\Worker::getEducationLevel($value['education']):'';
+            $params[$key]['education']       = ($value['education']<=3) ? "初中及以下": \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = $value['certificate']?\backend\models\Worker::getCertificateName($value['certificate']):'';
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
             $params[$key]['office_id']       = Departments::getDepartmentName($value['office_id']);

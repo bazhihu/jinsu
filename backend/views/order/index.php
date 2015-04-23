@@ -245,3 +245,8 @@ td .btn{margin: 2px}
     //Pjax::end(); ?>
 
 </div>
+<script type="text/javascript">
+    setInterval(function(){
+        window.location.reload();
+    },60000)
+</script>

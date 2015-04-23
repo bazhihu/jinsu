@@ -45,7 +45,7 @@ class WorkerController extends Controller
 
         $worker_id_array = Yii::$app->request->post('selection');
         $op = Yii::$app->request->post('op');
-var_dump($worker_id_array);
+
        // die();
         //上线OR下线
         if($worker_id_array) {

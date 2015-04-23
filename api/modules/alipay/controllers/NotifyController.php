@@ -66,7 +66,7 @@ class NotifyController extends ActiveController{
                 $result = $this->_checkNotify($post);
                 if($result != 'ok'){
                     echo $result;
-                    Yii::info($result, 'api');
+                    Yii::info('返回支付宝:'.$result, 'api');
                     return false;
                 }
 
@@ -84,10 +84,16 @@ class NotifyController extends ActiveController{
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
                     $response = $orderModel->pay();
                     Yii::info('$response:'.print_r($response, true), 'api');
+
+                    if($response != 200){
+                        echo "fail";
+                        Yii::info('返回支付宝：fail', 'api');
+                        return false;
+                    }
                 }
             }
             echo "success";
-            Yii::info('回调结束：success', 'api');
+            Yii::info('======================回调结束：success', 'api');
         }else {
             //验证失败
             echo "fail";

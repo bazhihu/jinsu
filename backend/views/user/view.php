@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <h3 class="panel-title">操作</h3>
         </div>
         <div class="panel-body">
-            <?
+            <?php
             echo Html::a('<span class="btn  btn-primary">充值</span>', Yii::$app->urlManager->createUrl(['wallet/recharge','uid' => $model->id]), ['title' => '充值']);
             if(WalletUser::findOne(['uid'=>$model->id])){
                 $finace_status = WalletWithdrawcash::getWalletStatusByUid($model->id);

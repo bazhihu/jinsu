@@ -328,8 +328,15 @@ class WorkerController extends Controller
         if (Yii::$app->request->isPost) {
             $model->pic = UploadedFile::getInstance($model, 'pic');
             if($model->pic){
-                $pic_name = $params['Worker']['worker_id'].".jpg";
-                $model->pic->saveAs('uploads/' . $pic_name);
+                $picName = $params['Worker']['worker_id'].".jpg";
+                $picNameSize = $params['Worker']['worker_id']."_360.jpg";
+                $model->pic->saveAs('uploads/' . $picName);
+
+                //图片压缩
+                $img = new \Imagick('uploads/' . $picName);
+                $img->thumbnailImage( 360, 0);
+                $img->writeImage('uploads/' .$picNameSize);
+
                 return $params['Worker']['worker_id'];
             }
         }

@@ -534,12 +534,13 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 护工照片
-     * @param $workerId 护工编号
+     * @param int $workerId 护工编号
+     * @param int $size 图片尺寸
      * @return string
      */
-    static public function workerPic($workerId){
+    static public function workerPic($workerId, $size = 360){
         if($workerId)
-            return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.".jpg";
+            return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
         else
             return "img/no.jpg";
     }

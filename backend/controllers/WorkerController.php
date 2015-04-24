@@ -334,6 +334,4 @@ class WorkerController extends Controller
             }
         }
     }
-
-
 }

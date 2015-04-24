@@ -1,35 +1,29 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index</title>
     <script src="/js/template.js"></script>
-    <script src="/js/zepto.min.js"></script>
+    <script type="text/javascript" src="/js/zepto.min.js"></script>
+    <script type="text/javascript" src="/js/public.js"></script>
+    <script type="text/javascript" src="/js/worker/worker.js"></script>
 </head>
 <body>
 
-<!--公用头部-->
-<script id="public_head" type="text/html">{{include 'public_head'}}</script>
+<div id="head"></div>
+<div id="body"></div>
+<div id="foot"></div>
 
-<!--护工列表-->
-<div id="worker_list_html"></div>
-<script id="worker_list" type="text/html">
+<script id="body_template" type='text/html'>
+    {{include 'head_template'}}
     <table>
         {{each data as value index}}
-            <tr>
-                <td>护工编号：{{value.worker_id}}</td>
-                <td>护工姓名：{{value.name}}</td>
-                <td>护工性别：{{value.gender}}</td>
-                <td>护工照片：<img src="{{value.gender}}"></td>
-            </tr>
+        <tr>
+            <td>护工编号：{{value.worker_id}}</td>
+            <td>护工姓名：{{value.name}}</td>
+            <td>护工性别：{{value.gender}}</td>
+        </tr>
         {{/each}}
     </table>
+    {{include 'foot_template'}}
 </script>
-
-<script type="text/javascript">
-    ;(function($){
-        $.getJSON('//sit.api.youaiyihu.com/v1/workers', function(back_data){
-            var worker_list_html = template('worker_list', back_data);
-            $('#worker_list_html').html(worker_list_html);
-        })
-    })(Zepto);
-</script>
+</body>

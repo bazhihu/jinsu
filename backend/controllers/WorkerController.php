@@ -334,7 +334,18 @@ class WorkerController extends Controller
 
                 //图片压缩
                 $img = new \Imagick('uploads/' . $picName);
-                $img->thumbnailImage( 360, 0);
+                $picNameSize = $params['Worker']['worker_id']."_120.jpg";
+                $img->thumbnailImage(120, 0);
+                $img->writeImage('uploads/' .$picNameSize);
+
+                $img = new \Imagick('uploads/' . $picName);
+                $picNameSize = $params['Worker']['worker_id']."_240.jpg";
+                $img->thumbnailImage(240, 0);
+                $img->writeImage('uploads/' .$picNameSize);
+
+                $img = new \Imagick('uploads/' . $picName);
+                $picNameSize = $params['Worker']['worker_id']."_360.jpg";
+                $img->thumbnailImage(360, 0);
                 $img->writeImage('uploads/' .$picNameSize);
 
                 return $params['Worker']['worker_id'];

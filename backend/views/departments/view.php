@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'method'=>'post',
         ],
         ],
-        'enableEditMode'=>true,
+        'enableEditMode'=>false,
     ]) ?>
 
 </div>

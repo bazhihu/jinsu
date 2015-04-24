@@ -538,7 +538,7 @@ class Worker extends \yii\db\ActiveRecord
      * @param int $size 图片尺寸
      * @return string
      */
-    static public function workerPic($workerId, $size = 120){
+    static public function workerPic($workerId, $size = 240){
         if($workerId)
             return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
         else

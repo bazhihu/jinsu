@@ -18,7 +18,7 @@ $('body').on('click', 'span.glyphicon-remove', function () {
                 {
                     num.parent().parent().parent().find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-remove');
                     num.removeClass();
-                    num.addClass('glyphicon col-md-offset-4 glyphicon-ok text-success');
+                    num.addClass('glyphicon col-md-offset-3 glyphicon-ok text-success');
                 }
                 else
                 {
@@ -52,7 +52,7 @@ $('body').on('click', 'span.glyphicon-ok', function () {
                 {
                     num.parent().parent().parent().find('.glyphicon-remove').removeClass('glyphicon-remove').addClass('glyphicon-ok');
                     num.removeClass();
-                    num.addClass('glyphicon col-md-offset-4 glyphicon-remove');
+                    num.addClass('glyphicon col-md-offset-3 glyphicon-remove');
                 }
                 else
                 {

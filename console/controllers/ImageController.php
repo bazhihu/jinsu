@@ -19,20 +19,20 @@ class ImageController extends Controller{
             }
 
             //图片压缩
-            $img = new \Imagick($img);
+            $im = new \Imagick($img);
             $picPath = $path['dirname'].'/'.$path['filename'].'_120.'.$path['extension'];
-            $img->thumbnailImage(120, 0);
-            $img->writeImage($picPath);
+            $im->thumbnailImage(120, 0);
+            $im->writeImage($picPath);
 
-            $img = new \Imagick($img);
+            $im = new \Imagick($img);
             $picPath = $path['dirname'].'/'.$path['filename'].'_240.'.$path['extension'];
-            $img->thumbnailImage(240, 0);
-            $img->writeImage($picPath);
+            $im->thumbnailImage(240, 0);
+            $im->writeImage($picPath);
 
-            $img = new \Imagick($img);
+            $im = new \Imagick($img);
             $picPath = $path['dirname'].'/'.$path['filename'].'_360.'.$path['extension'];
-            $img->thumbnailImage(360, 0);
-            $img->writeImage($picPath);
+            $im->thumbnailImage(360, 0);
+            $im->writeImage($picPath);
 
 
             echo $picPath."\n";

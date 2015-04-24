@@ -62,7 +62,9 @@ class ConfigController extends ActiveController {
             unset($hospitals['phone']);
         }
         #科室
-        $return['departments'] = Departments::find(['parent_id'])->all();
+        $return['departments'] = Departments::find()
+            ->andFilterWhere(['parent_id'=>0])
+            ->all();
         foreach($return['departments'] as $departments)
         {
             unset($departments['parent_id']);

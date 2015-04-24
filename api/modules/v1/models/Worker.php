@@ -38,7 +38,7 @@ class Worker extends ActiveRecord
             $params[$key]['native_province'] = $value['native_province']?City::findOne(['id'=>$value['native_province']])->name:'';
             $params[$key]['nation']          = $value['nation']?\backend\models\Worker::getNation($value['nation']):"";
             $params[$key]['chinese_level']   = $value['chinese_level']?\backend\models\Worker::getChineseLevel($value['chinese_level']):'';
-            $params[$key]['education']       = $value['education']?\backend\models\Worker::getEducationLevel($value['education']):'';
+            $params[$key]['education']       = ($value['education']<=3) ? "初中及以下": \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = $value['certificate']?\backend\models\Worker::getCertificateName($value['certificate']):'';
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
             $params[$key]['office_id']       = Departments::getDepartmentName($value['office_id']);
@@ -111,6 +111,7 @@ class Worker extends ActiveRecord
         $query->andFilterWhere(['like', 'worker_id', !empty($params['worker_id'])?$params['worker_id']:''])
             ->andFilterWhere(['like', 'name', !empty($params['name'])?$params['name']:''])
             ->andFilterWhere(['like', 'hospital_id', !empty($params['hospital_id']) ? ','.$params['hospital_id'].',':''])
+            ->andFilterWhere(['like', 'office_id', !empty($params['office_id']) ? ','.$params['office_id'].',':''])
             ->andFilterWhere(['like', 'good_at', !empty($params['good_at'])? ','.$params['good_at'].',':'']);
 
         $count = $query->count();

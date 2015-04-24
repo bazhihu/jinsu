@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=640, target-densitydpi=device-dpi" />
+</head>
+<body>
+<script src="/js/template.js"></script>
+<script id="public_head" type="text/html">{{include 'public_head'}}</script>
+<script id="public_head_html"></script>
+<table>
+    <tr>
+        <td>this is content!</td>
+    </tr>
+</table>
+<script>
+    var public_head_html = template('public_head', '');
+    document.getElementById('public_head_html').innerHTML = public_head_html;
+</script>
+</body>
+</html>

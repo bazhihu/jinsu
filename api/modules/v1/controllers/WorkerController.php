@@ -54,7 +54,7 @@ class WorkerController extends ActiveController {
         if(!empty($worker)){
 
             foreach($worker as $key => $item){
-                $item['pic'] = Worker::workerPic($item['worker_id']);
+                $item['pic'] = Worker::workerPic($item['worker_id'], 120);
                 $worker[$key] = $item;
             }
         }

@@ -1,3 +1,12 @@
+$(document).ready(function(){
+    var head_html="<script id='head_template' type='text/html'><table><tr><td>this is head</td></tr></table></script>";
+    $('#head').html(head_html);
+
+    var tongji = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
+    var foot_html="<script id='foot_template' type='text/html'> <table ><tr><td>this is foot</td> </tr></table>"+tongji+"</script>";
+    $('#foot').html(foot_html);
+});
+
 var UA = window.navigator.userAgent;
 var CLICK = 'click';
 if(/ipad|iPhone|android/.test(UA)){
@@ -7,6 +16,7 @@ var url = 'http://api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     TOKEN = 'youaiyihu';
+
 var configUrl = url+version+'configs',
     loginUrl = url+version+'logins',
     commentUrl = url+version+'comments',
@@ -17,6 +27,7 @@ var configUrl = url+version+'configs',
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
     urlToLogin = '#';
+
 function getStatus() {
     var id = getCookie(ID);
     var token = getCookie(TOKEN);
@@ -32,6 +43,7 @@ function setCookie(name,value) {
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
     document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 }
+
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
     if(arr=document.cookie.match(reg))
@@ -39,6 +51,7 @@ function getCookie(name) {
     else
         return null;
 }
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
@@ -46,6 +59,7 @@ function delCookie(name) {
     if(cval!=null)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
+
 function getConfigs(callback){
     $.getJSON(configUrl, function(e){
         if(e.code==200){
@@ -55,6 +69,7 @@ function getConfigs(callback){
         }
     })
 }
+
 function getComments(id, callback){
     $.getJSON(commentUrl+'/'+id, function(e){
         if(e.code==200){

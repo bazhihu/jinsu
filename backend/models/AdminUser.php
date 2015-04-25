@@ -296,7 +296,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
     /**
      * 权限验证
-     * @param $per 菜单路由地址
+     * @param string $per 菜单路由地址
      * @return bool
      */
     public static function checkPermissions($per)

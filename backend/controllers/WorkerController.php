@@ -13,7 +13,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
-use yii\web\UploadedFile;
 
 
 /**
@@ -43,13 +42,13 @@ class WorkerController extends Controller
         $searchModel = new WorkerSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        $worker_id_array = Yii::$app->request->post('selection');
+        $workerIdArray = Yii::$app->request->post('selection');
         $op = Yii::$app->request->post('op');
 
        // die();
         //上线OR下线
-        if($worker_id_array) {
-            $worker_ids = implode(',', $worker_id_array);
+        if($workerIdArray) {
+            $worker_ids = implode(',', $workerIdArray);
             Worker::workerAudit($worker_ids,$op);
         }
 
@@ -79,8 +78,7 @@ class WorkerController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate(){
         $model = new Worker;
 
         if ($model->load(Yii::$app->request->post())) {
@@ -90,21 +88,10 @@ class WorkerController extends Controller
             $params['Worker']['start_work'] = $params['start_work']."01";
 
             $model->attributes = $model->saveData($params['Worker'], 'create');
-
-            if ($model->save()) {
+            if ($model->save()){
                 //上传照片
-                $params['Worker']['worker_id'] =  $model->worker_id;
-                $pic_name = $this->picUpload($params);
-                $params['Worker']['pic'] = $pic_name;
-                $model->attributes = $model->saveData($params['Worker'], 'create');
-
-                if ($model->save()) {
-                    return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
-                }else {
-                    return $this->render('create', [
-                        'model' => $model,
-                    ]);
-                }
+                $model->uploadPic();
+                return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
             }else {
                 return $this->render('create', [
                     'model' => $model,
@@ -123,8 +110,7 @@ class WorkerController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id){
         $model = $this->findModel($id);
 
         //户口所在地
@@ -161,12 +147,10 @@ class WorkerController extends Controller
             $params = Yii::$app->request->post();
 
             //上传照片
-            $params['Worker']['worker_id'] =  $model->worker_id;
-            $pic_name = $this->picUpload($params);
-            $params['Worker']['pic'] = $pic_name;
-            $params['start_work'] = str_replace('年','-',$params['start_work']);
-            $params['start_work'] = str_replace('月','-',$params['start_work']);
-            $params['Worker']['start_work'] = $params['start_work']."01";
+            $model->uploadPic();
+
+            $startWork = str_replace('年', '-', str_replace('月', '-', $params['start_work']));
+            $params['Worker']['start_work'] = $startWork."01";
             $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
@@ -316,22 +300,5 @@ class WorkerController extends Controller
             'orderId' => $orderId,
             'startTime' => $startTime
         ]);
-    }
-
-    /**
-     * 护工照片上传
-     */
-
-    public function picUpload($params)
-    {
-        $model = new Worker();
-        if (Yii::$app->request->isPost) {
-            $model->pic = UploadedFile::getInstance($model, 'pic');
-            if($model->pic){
-                $pic_name = $params['Worker']['worker_id'].".jpg";
-                $model->pic->saveAs('uploads/' . $pic_name);
-                return $params['Worker']['worker_id'];
-            }
-        }
     }
 }

@@ -3,8 +3,8 @@
 namespace backend\models;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\web\HttpException;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%worker}}".
@@ -69,11 +69,9 @@ class Worker extends \yii\db\ActiveRecord
         self::WORKER_LEVEL_SUPER  => 300
     ];
 
-
     /**
      * 文化程度
      */
-
     const EDUCATION_1 = 1; //文盲
     const EDUCATION_2 = 2; //小学
     const EDUCATION_3 = 3; //初中
@@ -119,8 +117,6 @@ class Worker extends \yii\db\ActiveRecord
         self::POLITICS_6 => '其他'
     ];
 
-
-
     /**
      * 普通话水平chinese_level
      */
@@ -139,7 +135,6 @@ class Worker extends \yii\db\ActiveRecord
     /**
      *资质证书certificate  '1'=>'健康证','2'=>'护理证','3'=>'暂住证'
      */
-
     const CERTIFICATE_1 = 1;
     const CERTIFICATE_2 = 2;
     const CERTIFICATE_3 = 3;
@@ -211,8 +206,6 @@ class Worker extends \yii\db\ActiveRecord
 
     public $birth_place_city;
     public $birth_place_area;
-    //public $pic;
-
 
     /**
      * @inheritdoc
@@ -382,10 +375,11 @@ class Worker extends \yii\db\ActiveRecord
     }
     /**
      * @param int $params
+     * @param string $op
      * @return bool
      * @throws HttpException
      */
-    public function saveData($params,$op='create')
+    public function saveData($params, $op='create')
     {
         if (!empty($params['certificate'])) {
             $params['certificate'] = ','.implode(',', $params['certificate']).',';
@@ -430,12 +424,12 @@ class Worker extends \yii\db\ActiveRecord
         }
 
         return $params;
-
     }
 
-/**
+    /**
      * 文化程度
-     * @param null $level
+     * @param null $education
+     * @param string $op
      * @return array
      * @author tiancq
      */
@@ -448,10 +442,10 @@ class Worker extends \yii\db\ActiveRecord
          }
     }
 
-
     /**
      * 政治面貌
-     * @param null $level
+     * @param null $politics
+     * @param $op
      * @return array
      * @author tiancq
      */
@@ -464,26 +458,26 @@ class Worker extends \yii\db\ActiveRecord
         }
     }
 
-
     /**
      * 普通话水平
-     * @param null $chineselevel
+     * @param null $chineseLevel
+     * @param $op
      * @return array
      * @author tiancq
      */
-    static public function getChineseLevel($chineselevel = null,$op='')
+    static public function getChineseLevel($chineseLevel = null, $op='')
     {
-        if ($op && $chineselevel == null) {
+        if ($op && $chineseLevel == null) {
             return null;
         } else {
-            return isset(self::$chineselevelLabel[$chineselevel]) ? self::$chineselevelLabel[$chineselevel] : self::$chineselevelLabel;
+            return isset(self::$chineselevelLabel[$chineseLevel]) ? self::$chineselevelLabel[$chineseLevel] : self::$chineselevelLabel;
         }
     }
 
-
     /**
      * 资质证书
-     * @param null $chineselevel
+     * @param null $certificate
+     * @param $op
      * @return array
      * @author tiancq
      */
@@ -501,7 +495,6 @@ class Worker extends \yii\db\ActiveRecord
      * @param string $certificateStr
      * @return null|string
      */
-
     static public function getCertificateName($certificateStr=''){
         $data = null;
         if($certificateStr){
@@ -519,7 +512,7 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 民族
-     * @param null $chineselevel
+     * @param null $nationLevel
      * @return array
      * @author tiancq
      */
@@ -533,23 +526,56 @@ class Worker extends \yii\db\ActiveRecord
     }
 
     /**
+     * 上传护工照片
+     * @return bool
+     */
+    public function uploadPic(){
+        $workerId = $this->worker_id;
+        $this->pic = UploadedFile::getInstance($this, 'pic');
+        if($this->pic){
+            $picName = $workerId.".jpg";
+            $this->pic->saveAs('uploads/' . $picName);
+
+            //图片压缩
+            $img = new \Imagick('uploads/' . $picName);
+            $picNameSize = $workerId."_120.jpg";
+            $img->thumbnailImage(120, 0);
+            $img->writeImage('uploads/' .$picNameSize);
+
+            $img = new \Imagick('uploads/' . $picName);
+            $picNameSize = $workerId."_240.jpg";
+            $img->thumbnailImage(240, 0);
+            $img->writeImage('uploads/' .$picNameSize);
+
+            $img = new \Imagick('uploads/' . $picName);
+            $picNameSize = $workerId."_360.jpg";
+            $img->thumbnailImage(360, 0);
+            $img->writeImage('uploads/' .$picNameSize);
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 护工照片
-     * @param $workerId 护工编号
+     * @param int $workerId 护工编号
+     * @param int $size 图片尺寸
      * @return string
      */
-    static public function workerPic($workerId){
+    static public function workerPic($workerId, $size = 240){
         if($workerId)
-            return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.".jpg";
+            return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
         else
             return "img/no.jpg";
     }
 
     /**
      * 更新护工订单总数
-     * @param $worker_id 护工编号
+     * @param $workerId 护工编号
      */
-    static public function plusTotalOrder($worker_id){
-        $update_sql = "update yayh_worker set total_order=total_order+1 where worker_id=".$worker_id;
+    static public function plusTotalOrder($workerId){
+        $update_sql = "update yayh_worker set total_order=total_order+1 where worker_id=".$workerId;
         $connection = Yii::$app->db;
         $command = $connection->createCommand($update_sql);
         $command->query();
@@ -557,12 +583,12 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 审核护工 上线OR下线
-     * @param $worker_ids
+     * @param $workerIds
      * @param string $op
      */
-    static public function  workerAudit($worker_ids,$op='audit_yes'){
+    static public function  workerAudit($workerIds, $op='audit_yes'){
         $connection = Yii::$app->db;
-        $auditer = yii::$app->user->getId();
+        //$auditer = yii::$app->user->getId();
         if($op=='audit_yes'){
             $audit_status = 1;
         }else{
@@ -570,7 +596,7 @@ class Worker extends \yii\db\ActiveRecord
         }
 
         //更新状态
-        $sql = "update yayh_worker set audit_status = ".$audit_status." where worker_id in ($worker_ids)";
+        $sql = "update yayh_worker set audit_status = ".$audit_status." where worker_id in ($workerIds)";
         $command = $connection->createCommand($sql);
         $command->query();
     }

@@ -47,8 +47,10 @@ class OrderMaster extends Order
         $rules = parent::rules();
         return array_merge($rules, [
             [['worker_level'], 'required'],
-            [['reality_end_time'], 'required', 'on'=>'update'],
-            [['reality_end_time'], 'validateRealityEndTime', 'on'=>'update']
+            [['reality_end_time'], 'required', 'on'=>['calculate', 'update']],
+            [['reality_end_time'], 'validateRealityEndTime', 'on'=>['calculate', 'update']],
+            [['patient_state'], 'required', 'on'=>'calculate'],
+
         ]);
     }
 

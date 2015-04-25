@@ -361,6 +361,17 @@ class Worker extends \yii\db\ActiveRecord
         }
 
     }
+
+    /**
+     * @return string
+     */
+    public static function getWorkerPriceHint(){
+        $hint = '';
+        foreach(self::$workerPrice as $key => $val){
+            $hint .= self::$workerLevelLabel[$key].'：'.$val.'元/天；';
+        }
+        return $hint;
+    }
     /**
     * @param array $params
     * @return bool

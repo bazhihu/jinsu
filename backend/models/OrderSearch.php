@@ -36,7 +36,7 @@ class OrderSearch extends OrderMaster
             $query->andFilterWhere(['hospital_id' => Yii::$app->user->identity->hospital_id]);
         }
 
-        $query->orderBy('order_id DESC');
+        !isset($params['sort']) && $query->orderBy('order_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -44,6 +44,15 @@ class OrderSearch extends OrderMaster
                 'pageSize' => 10,
             ],
         ]);
+
+        // enable sorting for the related columns
+        $addSortAttributes = ["profile.full_name"];
+        foreach ($addSortAttributes as $addSortAttribute) {
+            $dataProvider->sort->attributes[$addSortAttribute] = [
+                'asc'   => [$addSortAttribute => SORT_ASC],
+                'desc'  => [$addSortAttribute => SORT_DESC],
+            ];
+        }
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
@@ -62,7 +71,7 @@ class OrderSearch extends OrderMaster
         $query->andFilterWhere(['>=', 'start_time', $this->start_time])
             ->andFilterWhere(['<=', 'end_time', $this->end_time]);
 
-        $query->orderBy('order_id DESC');
+        !isset($params['sort']) && $query->orderBy('order_id DESC');
         return $dataProvider;
     }
 }

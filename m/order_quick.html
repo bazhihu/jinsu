@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>快速预定</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link href="/css/h5.css" rel="stylesheet" />
+</head>
+<body id="page-express">
+
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">快速预定</h2>
+</header>
+
+<form>
+    <!-- 未登录状态 -->
+    <menu class="menu">
+        <a class="menuitem" role="menuitem" href="login.html"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录"></i></a>
+    </menu>
+
+    <!-- 已登录状态 -->
+    <menu class="menu">
+        <span class="menuitem" role="menuitem"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录">13900000000</i></span>
+    </menu>
+
+    <menu class="menu">
+        <a class="menuitem" role="menuitem"><em class="title">服务开始时间：</em><i class="value" data-placeholder="请选择"></i></a>
+        <a class="menuitem" role="menuitem"><em class="title">服务天数：</em><i class="value" data-placeholder="请选择"></i></a>
+        <a class="menuitem" role="menuitem" href="hospital.html"><em class="title">服务地点：</em><i class="value" data-placeholder="请选择"></i></a>
+
+        <!-- 搜索 begin -->
+        <div class="g-search-embed" id="J_SearchEmbed">
+            <div class="search-input noa " id="J_SearchBox">
+                <div class="input J_Input"><span>搜索医院，医生，科室，疾病</span></div>
+            </div>
+            <div class="search-bar has-cancel" id="J_SearchBar">
+                <div class="search-input g-clear J_Input">
+                    <div class="main">
+                        <form id="J_SearchForm">
+                            <span class="search-btn J_Search"><i class="g-icon icon-search"></i></span>
+                            <input id="J_Keyword" placeholder="搜索医院，医生，科室，疾病" data-noaction="1" data-action="http://wy.guahao.com/json/white/search/suggest" data-goto="http://wy.guahao.com/search" class="GJ_IngoreBlock" type="search">
+                            <span class="clear-btn J_Clear" style="display:none"><i class="g-icon icon-delete"></i></span>
+                        </form>
+                    </div>
+                    <span class="cancel-btn J_Cancel">取消</span>
+                    <input id="J_HiddenHospital" value="" type="hidden">
+                </div>
+                <div style="position: absolute; left: 0px; top: 46px; bottom: 50px; z-index: 999; width: 100%; overflow: hidden; display: block;" class="list J_ListScroll">
+                    <div style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+                        <div style="display: block;" class="more-list J_HistoryList">
+                            <ul></ul>
+                            <div style="display: none;" class="action J_ClearHistory">清除搜索历史</div>
+                        </div>
+                        <div style="display: none;" class="more-list J_SuggestList">
+                            <ul></ul>
+                        </div>
+                    </div>
+                    <div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="position: absolute; z-index: 9999; width: 7px; bottom: 2px; top: 2px; right: 1px; overflow: hidden; pointer-events: none; transform: translateZ(0px); transition-duration: 0ms; opacity: 0;"><div class="iScrollIndicator" style="box-sizing: border-box; position: absolute; background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 3px; width: 100%; transition-duration: 0ms; display: none; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div></div></div></div>
+        </div>
+        <!--搜索 end-->
+
+    </menu>
+
+    <menu class="menu">
+        <a class="menuitem" role="menuitem"><em class="title">病患状态：</em><i class="value" data-placeholder="请选择"></i></a>
+    </menu>
+    <menu class="menu">
+        <label class="menu-label">选择护理等级:</label>
+        <div class="care-levels care-additional menuitem" role="menuitem">
+            <label class="care-level" for="care-level-middle">
+                <span class="level care-level-middle">中级护理</span>
+                <input type="radio" name="care-level" id="care-level-middle" value="middle" />
+                <span class="price">￥<em>150</em>元/天</span>
+                <span class="additional">+30%</span>
+            </label>
+            <label class="care-level checked" for="care-level-hight">
+                <span class="level care-level-hight">高级护理</span>
+                <input type="radio" name="care-level" id="care-level-hight" value="hight" />
+                <span class="price">￥<em>180</em>元/天</span>
+                <span class="additional">+30%</span>
+            </label>
+            <label class="care-level" for="care-level-special">
+                <span class="level care-level-special">特级护理</span>
+                <input type="radio" name="care-level" id="care-level-special" value="special" />
+                <span class="price">￥<em>200</em>元/天</span>
+                <span class="additional">+30%</span>
+            </label>
+        </div>
+    </menu>
+
+    <input type="submit" value="立即下单" />
+</form>
+<script src="/js/zepto-with-touch.min.js"></script>
+<script src="/js/h5.js"></script>
+<script type="text/javascript" src="/js/zepto.js"></script>
+<script>
+    $('.care-level input[type="radio"]').on('click', function () {
+        [].forEach.call(this.form.elements[this.name], function (radio) {
+            $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
+        },this);
+    });
+</script>
+</body>
+</html>

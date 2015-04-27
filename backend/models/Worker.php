@@ -47,17 +47,17 @@ class Worker extends \yii\db\ActiveRecord
     /**
      * 护工等级
      */
-    const WORKER_LEVEL_MEDIUM = 1; //中级
-    const WORKER_LEVEL_HIGH = 2; //高级
-    const WORKER_LEVEL_SUPER = 3; //特级
+    const WORKER_LEVEL_MEDIUM = 1; //初级
+    const WORKER_LEVEL_HIGH = 2; //中级
+    const WORKER_LEVEL_SUPER = 3; //高级
 
     /**
      * 护工等级标签
      */
     static public $workerLevelLabel = [
-        self::WORKER_LEVEL_MEDIUM => '中级',
-        self::WORKER_LEVEL_HIGH   => '高级',
-        self::WORKER_LEVEL_SUPER  => '特级'
+        self::WORKER_LEVEL_MEDIUM => '初级',
+        self::WORKER_LEVEL_HIGH   => '中级',
+        self::WORKER_LEVEL_SUPER  => '高级'
     ];
 
     /**

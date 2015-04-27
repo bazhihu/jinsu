@@ -287,4 +287,28 @@ class OrderController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * 订单价格计算
+     * @return string
+     */
+    public function actionCalculate(){
+        $this->layout = "guest.php";
+        $post = Yii::$app->request->post();
+        $orderMaster = new OrderMaster();
+        $orderMaster->scenario = 'calculate';
+        if ($post) {
+            $orderMaster->setAttributes($post);
+            $orderMaster->reality_end_time = $orderMaster->end_time;
+            $orderMaster->base_price = Worker::getWorkerPrice($orderMaster->worker_level);
+
+            //能否自理价格系数
+            $patientState = $orderMaster->patient_state;
+            $orderMaster->patient_state_coefficient = OrderPatient::$patientStatePrice[$patientState];
+
+            return $this->render('calculate', [
+                'model' => $orderMaster
+            ]);
+        }
+    }
 }

@@ -21,6 +21,8 @@ use backend\models\OrderPatient;
         color: #ff0000;
     }
     red{color: #ff0000;}
+    .btn{margin:5px}
+    form{margin-bottom: 15px}
 </style>
 <div class="order-master-form">
     <?php
@@ -79,7 +81,6 @@ use backend\models\OrderPatient;
         </div>
     </div>
 
-
     <!--订单信息-->
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -87,7 +88,6 @@ use backend\models\OrderPatient;
         </div>
         <div class="panel-body">
             <?php
-
             echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                 'data' => Hospitals::getList(),
                 'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
@@ -119,7 +119,7 @@ use backend\models\OrderPatient;
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('护工等级');
+            ])->label('护工等级')->hint(Worker::getWorkerPriceHint());
 
             echo Form::widget([ // nesting attributes together (without labels for children)
                 'model'=>$model,
@@ -141,6 +141,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'options'=>['placeholder'=>'开始时间...'],
                                     'pluginOptions'=>[
+                                        'startDate'=>date('Y-m-d'),
                                         'todayHighlight' => true,
                                         'autoclose' => true,
                                         'format' => 'yyyy-mm-dd'
@@ -154,6 +155,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'options'=>['placeholder'=>'结束时间...'],
                                     'pluginOptions'=>[
+                                        'startDate'=>date('Y-m-d', mktime(0,0,0,date('m'),date('d')+1,date('Y'))),
                                         'todayHighlight' => true,
                                         'autoclose' => true,
                                         'format' => 'yyyy-mm-dd'
@@ -162,7 +164,6 @@ use backend\models\OrderPatient;
                             ],
                         ]
                     ],
-
                 ]
             ]);
             echo $form->field($model, 'remark')->textarea(['rows'=>3]);
@@ -176,9 +177,7 @@ use backend\models\OrderPatient;
             <h3 class="panel-title">患者信息</h3>
         </div>
         <div class="panel-body">
-
             <?php
-
             echo Form::widget([
                 'model' => $orderPatientModel,
                 'form' => $form,
@@ -259,10 +258,50 @@ use backend\models\OrderPatient;
         </div>
     </div>
 
-
     <?php
     $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';
-    echo Html::submitButton($model->isNewRecord ? '下单' : '更新', ['class' => $class,'name'=>'fast_submit', 'value'=>'true']);
+    echo Html::submitButton($model->isNewRecord ? '确定下单' : '更新', ['class'=>$class,'name'=>'fast_submit', 'value'=>'true']);
+    echo Html::button('计算订单价格', ['class'=>'btn btn-info js-calculate-price']);
     ActiveForm::end(); ?>
-    <div style="margin-bottom: 15px"></div>
+
 </div>
+<script type="text/javascript">
+    $('.js-calculate-price').click(function(){
+        var workerLevel = $('#ordermaster-worker_level').val();
+        var startTime = $('#ordermaster-start_time').val();
+        var endTime = $('#ordermaster-end_time').val();
+        var patientState = $('input[name="OrderPatient[patient_state]"]:checked').val();
+        if(workerLevel.length <= 0 || startTime.length <= 0 || endTime.length <= 0 || !patientState){
+            alert('护工等级、订单时间段、患者健康状况填后才能计算订单价格。');
+            return false;
+        }
+        var arr = startTime.split("-");
+        var sTime = new Date(arr[0], arr[1], arr[2]);
+        var arr = endTime.split("-");
+        var eTime = new Date(arr[0], arr[1], arr[2]);
+
+        if (sTime.getTime() >= eTime.getTime()) {
+            alert('开始时间不能大于等于结束时间。');
+            return false;
+        }
+
+        <?php $url = Yii::$app->urlManager->createUrl(['order/calculate']);?>
+
+        $("#priceDetail").load(
+            '<?php echo $url;?>',
+            {worker_level: workerLevel,start_time:startTime,end_time:endTime,patient_state:patientState}
+        );
+
+        jQuery('#orderPriceModal').modal({"show":true});
+    });
+</script>
+<?php
+\yii\bootstrap\Modal::begin([
+    'header' => '<strong>订单价格明细</strong>',
+    'id'=>'orderPriceModal',
+    'size'=>'modal-lg',
+]);
+echo '<div id="priceDetail"></div>';
+
+\yii\bootstrap\Modal::end()
+?>

@@ -102,7 +102,7 @@ return [
             ]
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'mdm\admin\components\DbManager',
             'itemTable' => 'yayh_auth_item',
             'assignmentTable' => 'yayh_auth_assignment',
             'itemChildTable' => 'yayh_auth_item_child',

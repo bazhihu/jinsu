@@ -83,30 +83,23 @@ class Hospitals extends \yii\db\ActiveRecord
 
     /**
      * 根据ID获取医院的NAME
-     * @param int $IdStr
-     * @return static[]
+     * @param string $IdStr
+     * @return null|string
      */
+    static public function getHospitalsName($IdStr){
+        $ids = explode(',', $IdStr);
+        if(empty($ids)) return null;
 
-    static public  function  getHospitalsName($IdStr=''){
-        $data = null;
-        if($IdStr) {
-            $ids = explode(',', $IdStr);
-            if ($ids) {
-                foreach ($ids as $id) {
-                    if($id){
-                        if($id)
-                        {
-                            $findArr = ['id' => $id];
-                            $result[] = self::findOne($findArr)['name'];
-                        }
-                    }
-                }
-                $data = implode('、',$result);
-            }
+        $result = null;
+        foreach ($ids as $id) {
+            if(empty($id)) continue;
+            $result[] = self::getName($id);
         }
+        $data = implode('、', $result);
 
         return $data;
     }
+
     //获取医院电话
     static public function getHospitalPhone($id){
         $find = ['id' => $id];

@@ -91,14 +91,7 @@ AppAsset::register($this);
     NavBar::end();
     ?>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-1 sidebar">
-                <?=Yii::$app->view->renderFile('@backend/views/pages/left-menu.php');?>
-            </div>
-            <div class="col-md-11 col-sm-offset-2 col-md-offset-1">
-                <?= $content ?>
-            </div>
-        </div>
+        <?= $content ?>
     </div>
     <?php $this->endBody() ?>
 </body>

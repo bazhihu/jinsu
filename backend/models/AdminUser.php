@@ -303,7 +303,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     {
         #权限验证
         $admin_uid = Yii::$app->user->identity->getId();
-
+        Yii::$app->authManager->cache = Yii::$app->cache;
         $past = Yii::$app->authManager->checkAccess($admin_uid,$per);
         if(!$past)
         {

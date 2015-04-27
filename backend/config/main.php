@@ -13,7 +13,6 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-
         'gridview' => [
             'class' => 'kartik\grid\Module'
             // enter optional module parameters below - only if you need to
@@ -136,6 +135,7 @@ return [
             'site/logout',
             'tq/index',
             'tq/select',
+            'order/calculate'
         ]
     ],
     'params' => $params,

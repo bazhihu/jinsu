@@ -90,11 +90,12 @@ class Hospitals extends \yii\db\ActiveRecord
         $ids = explode(',', $IdStr);
         if(empty($ids)) return null;
 
-        $result = null;
+        $result = [];
         foreach ($ids as $id) {
             if(empty($id)) continue;
             $result[] = self::getName($id);
         }
+
         $data = implode('、', $result);
 
         return $data;

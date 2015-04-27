@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use Yii\helpers\ArrayHelper;
+use common\models\Redis;
 
 /**
  * This is the model class for table "{{%hospitals}}".
@@ -17,6 +18,9 @@ use Yii\helpers\ArrayHelper;
  */
 class Hospitals extends \yii\db\ActiveRecord
 {
+    private static $_keyPrefix = 'hospitals';
+
+
     /**
      * @inheritdoc
      */
@@ -54,6 +58,17 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array|mixed
+     */
+    public static function getData(){
+        if(!$data = Redis::get(self::$_keyPrefix)){
+            $data = ArrayHelper::toArray(self::find()->all());
+            Redis::set(self::$_keyPrefix, $data);
+        }
+        return $data;
+    }
+
+    /**
      * 获取医院列表
      * @param int $provinceId 省ID
      * @param int $cityId 市ID
@@ -63,12 +78,18 @@ class Hospitals extends \yii\db\ActiveRecord
      */
     static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0)
     {
-        $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
-        if ($areaId > 0) {
-            $findArr['area_id'] = $areaId;
+        $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
+        if(!$data = Redis::get($cacheKey)){
+            $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
+            if ($areaId > 0) {
+                $findArr['area_id'] = $areaId;
+            }
+
+            $data = ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+            Redis::set($cacheKey, $data);
         }
 
-        return ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+        return $data;
     }
 
     /**
@@ -78,7 +99,13 @@ class Hospitals extends \yii\db\ActiveRecord
      * @author zhangbo
      */
     static function getName($id){
-        return self::findOne($id)->name;
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data['name'];
     }
 
     /**
@@ -101,14 +128,33 @@ class Hospitals extends \yii\db\ActiveRecord
         return $data;
     }
 
-    //获取医院电话
+    /**
+     * 获取医院电话
+     * @param $id
+     * @return string
+     */
     static public function getHospitalPhone($id){
-        $find = ['id' => $id];
-        $call = self::findOne($find);
-        if(!empty($call)) {
-            return $call->phone;
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = ArrayHelper::toArray(self::findOne($id));
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        if(!empty($data)) {
+            return $data['phone'];
         }
         return '';
+    }
 
+    public function afterSave($insert, $changedAttributes){
+        parent::afterSave($insert, $changedAttributes);
+        $keys = Redis::keys(self::$_keyPrefix.'/*');
+        Redis::del($keys);
+    }
+
+    public function afterDelete(){
+        parent::afterDelete();
+        $keys = Redis::keys(self::$_keyPrefix.'/*');
+        Redis::del($keys);
     }
 }

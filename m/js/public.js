@@ -29,7 +29,7 @@ if(/ipad|iPhone|android/.test(UA)){
 }
 function getStatus() {
     var id = getCookie(ID);
-    var token = getCookie(TOKEN);
+    var token = encodeURIComponent(getCookie(TOKEN));
     if(!id||!token){
         return false;
     }
@@ -80,11 +80,6 @@ function getComments(id, callback){
 function postComments(){
 
 }
-function stored(){
-    if(!getUser(configs)){
-
-    }
-}
 function postComment(param,callback){
     $.post(commentUrl,param,function(response){
         if(response.code == 200)
@@ -96,7 +91,7 @@ function postComment(param,callback){
 function getComment(workerId, callback){
     var user = getStatus();
     if(!user){
-        var token = encodeURIComponent(user.token),
+        var token = user.token,
             url = commentUrl+'/'+workerId+'?access-token='+token;
         $.getJSON(url, function (back){
             if(back.code ==200)
@@ -131,4 +126,15 @@ function deploy(callback){
             callback("error")
         }
     })
+}
+function getUsers(id, token, callback){
+    ;(function($){
+        var url = userUrl+'/'+id+'?access-token='+token;
+        $.getJSON(url, function(back){
+            if(back.code==200)
+                callback(back.data);
+            else
+                callback(false);
+        })
+    })(Zepto);
 }

@@ -6,17 +6,14 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
-var UA = window.navigator.userAgent;
-var CLICK = 'click';
-if(/ipad|iPhone|android/.test(UA)){
-    CLICK = 'tap';
-}
-var url = 'http://sit.api.youaiyihu.com/',
+var UA = window.navigator.userAgent,
+    CLICK = 'click',
+    url = 'http://api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     TOKEN = 'youaiyihu',
-    CONFIGS = 'configs';
-var configUrl = url+version+'configs',
+    CONFIGS = 'configs',
+    configUrl = url+version+'configs',
     loginUrl = url+version+'logins',
     commentUrl = url+version+'comments',
     orderUrl = url+version+'orders',
@@ -25,7 +22,11 @@ var configUrl = url+version+'configs',
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
-    urlToLogin = '#';
+    urlToLogin = '#',
+    INDEX = 'http://m.youaiyihu.com/';
+if(/ipad|iPhone|android/.test(UA)){
+    CLICK = 'tap';
+}
 function getStatus() {
     var id = getCookie(ID);
     var token = getCookie(TOKEN);

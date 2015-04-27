@@ -185,12 +185,12 @@ class Sms extends Model{
             return $response;
         }
         try{
-            $response = self::_nineSend($params['mobile'],$content);
+            $response = self::_manRoadSend($params['mobile'],$content);
             if($response['code'] == 200)
             {
                 return $response;
             }
-            $response = self::_manRoadSend($params['mobile'],$content);
+            $response = self::_nineSend($params['mobile'],$content);
             return $response;
         }catch (Exception $e){
             Yii::info($e->getMessage(), 'backend');

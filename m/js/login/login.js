@@ -63,7 +63,6 @@ function validateLogin(date, callback){
         }
     });
 }
-
 function validateSms(date, callback){
     var phone = /^(1[3|5|7|8|][0-9]{9})$/;
     $.map(date,function(item,index){

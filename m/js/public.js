@@ -6,7 +6,6 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
-
 var UA = window.navigator.userAgent;
 var CLICK = 'click';
 if(/ipad|iPhone|android/.test(UA)){
@@ -15,8 +14,8 @@ if(/ipad|iPhone|android/.test(UA)){
 var url = 'http://sit.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
-    TOKEN = 'youaiyihu';
-
+    TOKEN = 'youaiyihu',
+    CONFIGS = 'configs';
 var configUrl = url+version+'configs',
     loginUrl = url+version+'logins',
     commentUrl = url+version+'comments',
@@ -27,12 +26,10 @@ var configUrl = url+version+'configs',
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
     urlToLogin = '#';
-
 function getStatus() {
     var id = getCookie(ID);
     var token = getCookie(TOKEN);
     if(!id||!token){
-        window.location.href = urlToLogin;
         return false;
     }
     return JSON.parse('{"id":"'+id+'","token":"'+token+'"}');
@@ -43,7 +40,6 @@ function setCookie(name,value) {
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
     document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 }
-
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
     if(arr=document.cookie.match(reg))
@@ -64,7 +60,6 @@ function getDataJson(url){
         })
     })(Zepto);
 }
-
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
@@ -72,17 +67,6 @@ function delCookie(name) {
     if(cval!=null)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
-
-function getConfigs(callback){
-    $.getJSON(configUrl, function(e){
-        if(e.code==200){
-            callback(null, e.data);
-        }else{
-            callback("error")
-        }
-    })
-}
-
 function getComments(id, callback){
     $.getJSON(commentUrl+'/'+id, function(e){
         if(e.code==200){
@@ -95,10 +79,55 @@ function getComments(id, callback){
 function postComments(){
 
 }
-//例子
-/*getConfigs(function(err, data){
-    if(err){
-        return console.log(err);
+function stored(){
+    if(!getUser(configs)){
+
     }
-    console.log(data);
-});*/
+}
+function postComment(param,callback){
+    $.post(commentUrl,param,function(response){
+        if(response.code == 200)
+            callback(response.data);
+        else
+            callback(false);
+    });
+}
+function getComment(workerId, callback){
+    var user = getStatus();
+    if(!user){
+        var token = encodeURIComponent(user.token),
+            url = commentUrl+'/'+workerId+'?access-token='+token;
+        $.getJSON(url, function (back){
+            if(back.code ==200)
+                callback(null,back.data);
+        })
+    }else{
+        callback('error');
+    }
+
+}
+function getConfigs(callback){
+    var configs = JSON.parse(localStorage.getItem(CONFIGS));
+    if(!configs){
+        deploy(function(err,response){
+            if(!err){
+                callback(response);
+                setConfigs(JSON.stringify(response));
+            }
+        });
+    }else{
+        callback(configs);
+    }
+}
+function setConfigs(value){
+    localStorage.setItem(CONFIGS,value);
+}
+function deploy(callback){
+    $.getJSON(configUrl, function(e){
+        if(e.code==200){
+            callback(null, e.data);
+        }else{
+            callback("error")
+        }
+    })
+}

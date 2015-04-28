@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var headHtml="<script id='headTemplate' type='text/html'><table><tr><td>this is head</td></tr></table></script>";
+    var headHtml="<script id='headTemplate' type='text/html'></script>";
     $('#head').html(headHtml);
 
     var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
@@ -62,7 +62,6 @@ function getCookie(name) {
 function getDataJson(url){
     ;(function($){
         $.getJSON(url, function(backData){
-            alert(backData);
             var bodyHtml = template('bodyTemplate', backData);
             $('#body').html(bodyHtml);
         })

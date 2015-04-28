@@ -27,7 +27,7 @@ class Sms extends Model{
     const SMS_WITHDRAW_APPLICATION          = '8'; //提现申请
     const SMS_SUCCESS_RECHARGE              = '9'; //充值成功
 
-    public static $hotLine = '400-630-6340';//客服热线
+    public static $hotLine = '400-630-9860';//客服热线
     /**
      * 漫道科技序列号&密码
      * @var array
@@ -176,6 +176,12 @@ class Sms extends Model{
      * @author HZQ
      */
     public static function send($params){
+        #2015/4/28 屏蔽发送短信
+        $response = [
+            'code'=>200,
+            'msg'=>'发送短信成功'
+        ];
+        return $response;
 
         $content = self::smsScene($params);  //内容
         if(!$content)

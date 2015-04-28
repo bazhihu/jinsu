@@ -14,6 +14,7 @@ var host = window.location.host,
     ID = 'SID',
     TOKEN = 'youaiyihu',
     CONFIGS = 'configs',
+    CYCLE = 'cycle',
     configUrl = url+version+'configs',
     loginUrl = url+version+'logins',
     commentUrl = url+version+'comments',
@@ -75,27 +76,6 @@ function delCookie(name) {
     if(cval!=null)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
-
-function getComments(id, callback){
-    $.getJSON(commentUrl+'/'+id, function(e){
-        if(e.code==200){
-            callback(null, e.data);
-        }else{
-            callback("error")
-        }
-    })
-}
-
-function postComments(){
-
-}
-
-function stored(){
-    if(!getUser(configs)){
-
-    }
-}
-
 function postComment(param,callback){
     $.post(commentUrl,param,function(response){
         if(response.code == 200)
@@ -119,9 +99,23 @@ function getComment(workerId, callback){
     }
 }
 
+function cycles(){
+    var cycle = getCookie(CYCLE),
+        time = new Date().getTime(),
+        interval = 24*60*60;
+    if(!cycle){
+        setCookie(CYCLE, time);
+        return true;
+    }else if(Number(cycle)+Number(interval)<Number(time)){
+        setCookie(CYCLE, time);
+        return true;
+    }
+    return false;
+}
 function getConfigs(callback){
-    var configs = JSON.parse(localStorage.getItem(CONFIGS));
-    if(!configs){
+    var configs = JSON.parse(localStorage.getItem(CONFIGS)),
+        cycle = cycles();
+    if(!configs || cycle){
         deploy(function(err,response){
             if(!err){
                 callback(response);

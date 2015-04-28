@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'rememberMe')->checkbox()->label('记住我') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Login', ['class' => 'btn btn-lg btn-primary btn-block', 'name' => 'login-button']) ?>
+        <?= Html::submitButton('登录', ['class' => 'btn btn-lg btn-primary btn-block', 'name' => 'login-button']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 

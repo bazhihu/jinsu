@@ -77,8 +77,9 @@ class Login extends Model{
      * @return int
      */
     public function getAuthCode(){
-        $authCode = Yii::$app->cache->get($this->mobile);
-        return $authCode;
+        //$authCode = Yii::$app->cache->get($this->mobile);
+        //return $authCode;
+        return 123456;
     }
 
 

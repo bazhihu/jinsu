@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>我的订单</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="head"></div>
+<div id="body"></div>
+<div id="foot"></div>
+
+<script id="bodyTemplate" type='text/html'>
+    {{include 'headTemplate'}}
+    <ul class="order-list">
+        {{each data as value index}}
+        <li class="menu">
+            <div class="menuitem">
+                <div class="nurses-photo" style="background-image:url({{value.pic}})"></div>
+                <div class="order-info">
+                    <div class="status">订单状态：
+                        <em class="status-unpaid">待支付</em>
+                    </div>
+                    <h4 class="nurses-name">{{value.worker_name}}</h4>
+                    <p>{{value.start_time}}至{{{{value.end_time}}}}</p>
+                    <p>陪护服务10天</p>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+    {{include 'footTemplate'}}
+</script>
+<script type='text/javascript' src='/js/zepto.min.js'></script>
+<script src='/js/template.js'></script>
+<script type='text/javascript' src='/js/public.js'></script>
+<script type="text/javascript" src="/js/my/my-orders.js"></script>
+</body>
+</html>

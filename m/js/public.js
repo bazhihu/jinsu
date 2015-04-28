@@ -6,7 +6,8 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
-var UA = window.navigator.userAgent,
+var host = window.location.host,
+    UA = window.navigator.userAgent,
     CLICK = 'click',
     url = 'http://api.youaiyihu.com/',
     version = 'v1/',
@@ -22,8 +23,8 @@ var UA = window.navigator.userAgent,
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
-    urlToLogin = '#',
-    INDEX = 'http://m.youaiyihu.com/';
+    urlToLogin = host+'/login.html',
+    INDEX = host;
 if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }

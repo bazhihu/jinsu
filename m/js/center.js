@@ -9,7 +9,7 @@ if(user){
     logged.attr('style', null);
     getUsers(user.id, user.token, function(back){
         if(back){
-            console.log(back);
+            //console.log(back);
             document.getElementById('name').innerHTML=back.mobile;
             if(back.order.in_service){
                 $('.badge').attr('style',null);

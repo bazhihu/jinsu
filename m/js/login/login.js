@@ -2,6 +2,9 @@ var sub = $('.submit'),
     code = $('.retrieve-button'),
     validCode=true;
 var user = getStatus();
+if(user){
+    window.location.href = history.go(-1);
+}
 sub.on(CLICK,function(err){
     var data = $('form').serializeArray(),
         error = true;
@@ -16,8 +19,9 @@ sub.on(CLICK,function(err){
         {
             setCookie(ID, back.data.uid);
             setCookie(TOKEN, back.data.token);
-            window.location.href = INDEX;
-            //window.location.href = history.go(-1);
+            window.location.href = history.go(-1);
+        }else{
+
         }
     });
 });

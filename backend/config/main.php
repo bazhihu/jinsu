@@ -132,6 +132,7 @@ return [
         'allowActions' => [
             'site/login',
             'site/error',
+            'site/captcha',
             'site/logout',
             'tq/index',
             'tq/select',

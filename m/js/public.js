@@ -25,11 +25,15 @@ var host = window.location.host,
     workerUrl = url+version+'workers',
     urlToLogin = host+'/login.html',
     INDEX = host;
+
+
+
 if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }
 function getStatus() {
     var id = getCookie(ID);
+
     var token = encodeURIComponent(getCookie(TOKEN));
     if(!id||!token){
         return false;
@@ -42,6 +46,7 @@ function setCookie(name,value) {
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
     document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 }
+
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
     if(arr=document.cookie.match(reg))
@@ -57,11 +62,13 @@ function getCookie(name) {
 function getDataJson(url){
     ;(function($){
         $.getJSON(url, function(backData){
+            alert(backData);
             var bodyHtml = template('bodyTemplate', backData);
             $('#body').html(bodyHtml);
         })
     })(Zepto);
 }
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
@@ -80,6 +87,11 @@ function getComments(id, callback){
 }
 function postComments(){
 
+}
+function stored(){
+    if(!getUser(configs)){
+
+    }
 }
 function postComment(param,callback){
     $.post(commentUrl,param,function(response){

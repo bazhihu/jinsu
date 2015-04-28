@@ -578,7 +578,7 @@ class Worker extends \yii\db\ActiveRecord
         if($workerId)
             return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
         else
-            return "img/no.jpg";
+            return file_exists("/img/no.jpg")?"/img/no.jpg":'http://'.Yii::$app->params['pic_domain']."/no_api.jpg" ;
     }
 
     /**

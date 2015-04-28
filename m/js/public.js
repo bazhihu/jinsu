@@ -60,11 +60,16 @@ function getCookie(name) {
  * 通过json方式获取借口数据
  * @param url：接口url
  */
-function getDataJson(url){
+function getDataJson(url, callback){
     ;(function($){
         $.getJSON(url, function(backData){
-            var bodyHtml = template('bodyTemplate', backData);
-            $('#body').html(bodyHtml);
+            if(backData.code == 200){
+                callback(null,backData.data);
+            }else{
+                callback(error);
+            }
+            /*var bodyHtml = template('bodyTemplate', backData);
+            $('#body').html(bodyHtml);*/
         })
     })(Zepto);
 }

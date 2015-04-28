@@ -14,6 +14,7 @@ var host = window.location.host,
     ID = 'SID',
     TOKEN = 'youaiyihu',
     CONFIGS = 'configs',
+    CYCLE = 'cycle',
     configUrl = url+version+'configs',
     loginUrl = url+version+'logins',
     commentUrl = url+version+'comments',
@@ -90,9 +91,23 @@ function getComment(workerId, callback){
     }
 
 }
+function cycles(){
+    var cycle = getCookie(CYCLE),
+        time = new Date().getTime(),
+        interval = 24*60*60;
+    if(!cycle){
+        setCookie(CYCLE, time);
+        return true;
+    }else if(Number(cycle)+Number(interval)<Number(time)){
+        setCookie(CYCLE, time);
+        return true;
+    }
+    return false;
+}
 function getConfigs(callback){
-    var configs = JSON.parse(localStorage.getItem(CONFIGS));
-    if(!configs){
+    var configs = JSON.parse(localStorage.getItem(CONFIGS)),
+        cycle = cycles();
+    if(!configs || cycle){
         deploy(function(err,response){
             if(!err){
                 callback(response);

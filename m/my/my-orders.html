@@ -16,13 +16,13 @@
 <script id="bodyTemplate" type='text/html'>
     {{include 'headTemplate'}}
     <ul class="order-list">
-        {{each data as value index}}
+        {{each data.items as value index}}
         <li class="menu">
             <div class="menuitem">
                 <div class="nurses-photo" style="background-image:url({{value.pic}})"></div>
                 <div class="order-info">
                     <div class="status">订单状态：
-                        <em class="status-unpaid">待支付</em>
+                        <em class="status-unpaid">{{value.order_status}}</em>
                     </div>
                     <h4 class="nurses-name">{{value.worker_name}}</h4>
                     <p>{{value.start_time}}至{{{{value.end_time}}}}</p>

@@ -6,10 +6,11 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
+
 var host = window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://api.youaiyihu.com/',
+    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     TOKEN = 'youaiyihu',
@@ -26,11 +27,10 @@ var host = window.location.host,
     urlToLogin = host+'/login.html',
     INDEX = host;
 
-
-
 if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }
+
 function getStatus() {
     var id = getCookie(ID);
 
@@ -40,6 +40,7 @@ function getStatus() {
     }
     return JSON.parse('{"id":"'+id+'","token":"'+token+'"}');
 }
+
 function setCookie(name,value) {
     var Days = 30;
     var exp = new Date();
@@ -75,6 +76,7 @@ function delCookie(name) {
     if(cval!=null)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
+
 function getComments(id, callback){
     $.getJSON(commentUrl+'/'+id, function(e){
         if(e.code==200){
@@ -84,14 +86,17 @@ function getComments(id, callback){
         }
     })
 }
+
 function postComments(){
 
 }
+
 function stored(){
     if(!getUser(configs)){
 
     }
 }
+
 function postComment(param,callback){
     $.post(commentUrl,param,function(response){
         if(response.code == 200)
@@ -100,6 +105,7 @@ function postComment(param,callback){
             callback(false);
     });
 }
+
 function getComment(workerId, callback){
     var user = getStatus();
     if(!user){
@@ -112,8 +118,8 @@ function getComment(workerId, callback){
     }else{
         callback('error');
     }
-
 }
+
 function getConfigs(callback){
     var configs = JSON.parse(localStorage.getItem(CONFIGS));
     if(!configs){
@@ -127,9 +133,11 @@ function getConfigs(callback){
         callback(configs);
     }
 }
+
 function setConfigs(value){
     localStorage.setItem(CONFIGS,value);
 }
+
 function deploy(callback){
     $.getJSON(configUrl, function(e){
         if(e.code==200){
@@ -139,6 +147,7 @@ function deploy(callback){
         }
     })
 }
+
 function getUsers(id, token, callback){
     ;(function($){
         var url = userUrl+'/'+id+'?access-token='+token;

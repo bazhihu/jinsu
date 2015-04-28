@@ -23,7 +23,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'captcha'],
                         'allow' => true,
                     ],
                     [
@@ -51,6 +51,12 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'maxLength' => 6,
+                'minLength' => 6,
+                'height' => 45
+            ],
         ];
     }
 
@@ -69,6 +75,7 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+        $model->setScenario('login');
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
@@ -83,20 +90,5 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    public function actionTest(){
-        $user = new AdminUser();
-        $user->username = 'admin';
-        $user->email = 'admin@youaiyihu.com';
-        $user->created_at = $user->updated_at = time();
-        $user->setPassword('123456');
-        $user->generateAuthKey();
-        if ($user->save()) {
-            print_r($user);
-        }else{
-            $error = $user->getErrors();
-            print_r($error);
-        }
     }
 }

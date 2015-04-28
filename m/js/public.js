@@ -6,7 +6,6 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
-
 var host = window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',

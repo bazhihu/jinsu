@@ -9,7 +9,7 @@ $(document).ready(function(){
 var host = window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://api.youaiyihu.com/',
+    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     TOKEN = 'youaiyihu',
@@ -26,23 +26,28 @@ var host = window.location.host,
     workerUrl = url+version+'workers',
     urlToLogin = host+'/login.html',
     INDEX = host;
+
 if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }
+
 function getStatus() {
     var id = getCookie(ID);
+
     var token = encodeURIComponent(getCookie(TOKEN));
     if(!id||!token){
         return false;
     }
     return JSON.parse('{"id":"'+id+'","token":"'+token+'"}');
 }
+
 function setCookie(name,value) {
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
     document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
 }
+
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
     if(arr=document.cookie.match(reg))
@@ -50,18 +55,25 @@ function getCookie(name) {
     else
         return null;
 }
+
 /**
  * 通过json方式获取借口数据
  * @param url：接口url
  */
-function getDataJson(url){
+function getDataJson(url, callback){
     ;(function($){
         $.getJSON(url, function(backData){
-            var bodyHtml = template('bodyTemplate', backData);
-            $('#body').html(bodyHtml);
+            if(backData.code == 200){
+                callback(null,backData.data);
+            }else{
+                callback(error);
+            }
+            /*var bodyHtml = template('bodyTemplate', backData);
+            $('#body').html(bodyHtml);*/
         })
     })(Zepto);
 }
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
@@ -77,6 +89,7 @@ function postComment(param,callback){
             callback(false);
     });
 }
+
 function getComment(workerId, callback){
     var user = getStatus();
     if(!user){
@@ -89,8 +102,8 @@ function getComment(workerId, callback){
     }else{
         callback('error');
     }
-
 }
+
 function cycles(){
     var cycle = getCookie(CYCLE),
         time = new Date().getTime(),
@@ -118,9 +131,11 @@ function getConfigs(callback){
         callback(configs);
     }
 }
+
 function setConfigs(value){
     localStorage.setItem(CONFIGS,value);
 }
+
 function deploy(callback){
     $.getJSON(configUrl, function(e){
         if(e.code==200){
@@ -130,6 +145,7 @@ function deploy(callback){
         }
     })
 }
+
 function getUsers(id, token, callback){
     ;(function($){
         var url = userUrl+'/'+id+'?access-token='+token;

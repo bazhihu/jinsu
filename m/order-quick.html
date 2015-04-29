@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>快速预定</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-express">
+
+	<header id="header">
+		<a class="back" href="javascript:history.back(1)">返回</a>
+		<h2 class="title">快速预定</h2>
+	</header>
+
+	<form class="menu-form">
+
+		<menu class="menu">
+			<span class="menuitem" role="menuitem"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录">
+                <script>getUsers();</script>
+			</i></span>
+		</menu>
+
+		<menu class="menu">
+			<label class="menuitem" role="menuitem" for="care-start"><em class="title">服务开始时间：</em><i class="value" data-placeholder="请选择"></i></label>
+			<label class="menuitem" role="menuitem" for="care-days"><em class="title">服务天数：</em><i class="value" data-placeholder="请选择"></i></label>
+			<a href="#" class="menuitem" role="menuitem"><em class="title">服务地点：</em><label class="value" data-placeholder="请选择">协和医院神经内科</label></a>
+		</menu>
+
+		<menu class="menu">
+			<a href="patient-status.html" class="menuitem" role="menuitem"><em class="title">病患状态：</em><label class="value" data-placeholder="请选择" data-additional="护理费用每将天增加30%">不可自理</label></a>
+		</menu>
+		<input type="submit" value="确定" />
+	</form>
+    <div id="hospitals"></div>
+	<script src="../js/zepto-with-touch.min.js"></script>
+	<script src="../js/swiper.min.js"></script>
+	<script src="../js/popup.js"></script>
+	<script src="../js/wheel-selector.js"></script>
+    <script src="../js/public.js"></script>
+	<script>
+		$('.care-level input[type="radio"]').on('click', function () {
+			[].forEach.call(this.form.elements[this.name], function (radio) {
+				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
+			}, this);
+		});
+        $('#hospitals').load("hospitals.html");
+
+	</script>
+</body>
+</html>

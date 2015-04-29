@@ -1,14 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>我的订单</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">选择服务医院</h2>
+</header>
 <script id="hospitals_template" type='text/html'>
     <table>
         <tr>
             <td>
-                <select name="hospital">
-                    {{each data.hospitals as value index}}
+                <select name="hospital" id="hospital">
+                    {{each hospitals as value index}}
                         <option value="{{value.id}}">{{value.name}}</option>
                     {{/each}}
                 </select>
             </td>
         </tr>
     </table>
+    <input type="button" value="dianji" id="dianji" name="dianji">
+</script>
+<div id="hospitals"></div>
+<script type='text/javascript' src='/js/zepto.min.js'></script>
+<script src='/js/template.js'></script>
+<script type='text/javascript' src='/js/public.js'></script>
+<script src="/js/hospitals.js"></script>
+<script>
+    $("#dianji").on("click", function () {
+        alert("点击了父节点")
+    });
+    $('.input[type="button"]').on('click', function () {
+        alert("点击了父节点")
+    });
 </script>
 </body>
+</html>

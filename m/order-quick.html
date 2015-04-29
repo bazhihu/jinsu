@@ -8,18 +8,19 @@
 	<link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-express">
-
-	<header id="header">
-		<a class="back" href="javascript:history.back(1)">返回</a>
-		<h2 class="title">快速预定</h2>
-	</header>
-
-	<form class="menu-form">
-
+<div id="head"></div>
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">快速预订</h2>
+</header>
+<div id="body"></div>
+<div id="foot"></div>
+<script id="bodyTemplate" type='text/html'>
+    {{include 'headTemplate'}}
+	<form class="menu-form" action="order-confirm.html" method="post">
 		<menu class="menu">
-			<span class="menuitem" role="menuitem"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录">
-                <script>getUsers();</script>
-			</i></span>
+			<span class="menuitem" role="menuitem"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录"></i></span>
+            <input type="hidden" name="mobile" value="12">
 		</menu>
 
 		<menu class="menu">
@@ -33,20 +34,25 @@
 		</menu>
 		<input type="submit" value="确定" />
 	</form>
-    <div id="hospitals"></div>
+    <div id="hospitals_load"></div>
+    {{include 'footTemplate'}}
+</script>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/swiper.min.js"></script>
 	<script src="../js/popup.js"></script>
 	<script src="../js/wheel-selector.js"></script>
+    <script type='text/javascript' src='/js/zepto.min.js'></script>
+    <script src='/js/template.js'></script>
+    <script type='text/javascript' src='/js/public.js'></script>
     <script src="../js/public.js"></script>
+    <script src="../js/order/order-quick.js"></script>
 	<script>
 		$('.care-level input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
 			}, this);
 		});
-        $('#hospitals').load("hospitals.html");
-
+        $('#hospitals_load').load("hospitals.html");
 	</script>
 </body>
 </html>

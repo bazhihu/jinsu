@@ -198,7 +198,11 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         ],
         'attributes' => [
             'name',
-            'gender',
+            [
+                'attribute'=>'gender',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>$orderPatientModel->gender?OrderPatient::$genderLabels[$orderPatientModel->gender]:''
+            ],
             'age',
             'height',
             'weight',

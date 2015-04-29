@@ -77,7 +77,7 @@ $this->title = '护工管理';
                     return $model->level ? Worker::getWorkerLevel($model->level) : null;
                 }
             ],
-
+            'price',
             /*[
                 'attribute'=>  'status',
                 'value'=> function ($model) {

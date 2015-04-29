@@ -8,10 +8,15 @@
 	<link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-confirm">
-	<header id="header">
-		<a class="back" href="javascript:history.back(1)">返回</a>
-		<h2 class="title">确认订单</h2>
-	</header>
+<div id="head"></div>
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">确认订单</h2>
+</header>
+<div id="body"></div>
+<div id="foot"></div>
+<script id="bodyTemplate" type='text/html'>
+    {{include 'headTemplate'}}
 	<form class="menu-form">
 		<section class="menu">
 			<h3 class="menu-title">订单内容</h3>
@@ -93,6 +98,8 @@
 
 		<input type="submit" value="确认支付" />
 	</form>
+    {{include 'footTemplate'}}
+</script>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script>
 		$('.menuitemradio input[type="radio"]').on('click', function () {
@@ -100,6 +107,10 @@
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
 			}, this);
 		});
+
+        $.get('/whatevs.html', function(response){
+            $(document.body).append(response)
+        })
 	</script>
 </body>
 </html>

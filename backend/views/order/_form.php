@@ -141,7 +141,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'options'=>['placeholder'=>'开始时间...'],
                                     'pluginOptions'=>[
-                                        'startDate'=>date('Y-m-d'),
+                                        //'startDate'=>date('Y-m-d'),
                                         'todayHighlight' => true,
                                         'autoclose' => true,
                                         'format' => 'yyyy-mm-dd'

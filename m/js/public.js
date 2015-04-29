@@ -1,11 +1,10 @@
-$(document).ready(function(){
-    var headHtml="<script id='headTemplate' type='text/html'></script>";
-    $('#head').html(headHtml);
+var headHtml="<script id='headTemplate' type='text/html'></script>";
+$('#head').html(headHtml);
 
-    var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
-    var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
-    $('#foot').html(footHtml);
-});
+var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
+var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
+$('#foot').html(footHtml);
+
 var host = window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',

@@ -33,6 +33,7 @@
 		</menu>
 		<input type="submit" value="确定" />
 	</form>
+    <div id="hospitals"></div>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/swiper.min.js"></script>
 	<script src="../js/popup.js"></script>
@@ -44,6 +45,8 @@
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
 			}, this);
 		});
+        $('#hospitals').load("hospitals.html");
+
 	</script>
 </body>
 </html>

@@ -32,7 +32,7 @@
 		<menu class="menu">
 			<a href="patient-status.html" class="menuitem" role="menuitem"><em class="title">病患状态：</em><label class="value" data-placeholder="请选择" data-additional="护理费用每将天增加30%">不可自理</label></a>
 		</menu>
-		<input type="submit" value="确定" />
+		<input type="button" value="确定" id="post"/>
 	</form>
     <div id="hospitals_load"></div>
     {{include 'footTemplate'}}
@@ -52,6 +52,9 @@
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
 			}, this);
 		});
+        var elem = $('#post');
+        elem.on('click', function(e){ alert('d') })
+
         $('#hospitals_load').load("hospitals.html");
 	</script>
 </body>

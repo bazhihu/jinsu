@@ -56,24 +56,6 @@ function getCookie(name) {
         return null;
 }
 
-/**
- * 通过json方式获取借口数据
- * @param url：接口url
- */
-function getDataJson(url, callback){
-    ;(function($){
-        $.getJSON(url, function(backData){
-            if(backData.code == 200){
-                callback(null,backData.data);
-            }else{
-                callback(error);
-            }
-            /*var bodyHtml = template('bodyTemplate', backData);
-            $('#body').html(bodyHtml);*/
-        })
-    })(Zepto);
-}
-
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);

@@ -1,0 +1,14 @@
+<script id="hospitals_template" type='text/html'>
+    <table>
+        <tr>
+            <td>
+                <select name="hospital">
+                    {{each data.hospitals as value index}}
+                        <option value="{{value.id}}">{{value.name}}</option>
+                    {{/each}}
+                </select>
+            </td>
+        </tr>
+    </table>
+</script>
+</body>

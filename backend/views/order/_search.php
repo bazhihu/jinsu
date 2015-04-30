@@ -40,19 +40,19 @@ use kartik\datecontrol\DateControl;
                 ],
             ]); ?>
 
-
             <?= $form->field($model, 'order_no')->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:135px']) ?>
 
             <?= $form->field($model, 'mobile')->input('text',['placeholder'=>'请输入手机号...','style'=>'width:125px']) ?>
 
             <?= $form->field($model, 'worker_no')->input('text',['placeholder'=>'请输入护工编号...','style'=>'width:135px']) ?>
 
+            <?= $form->field($model, 'worker_name')->input('text',['placeholder'=>'请输入护工姓名...','style'=>'width:135px']) ?>
+
             <?= $form->field($model, 'patient_state')->dropDownList(OrderPatient::$patientStateLabels,['prompt'=>'请选择']) ?>
 
             <?= $form->field($model, 'order_status')->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']) ?>
 
             <?= $form->field($model, 'total_amount')->input('text', ['placeholder'=>'请输入订单金额...','style'=>'width:125px']) ?>
-
 
             <?= $form->field($model, 'start_time')->widget(DateControl::classname(), [
                 'type'=>DateControl::FORMAT_DATE,

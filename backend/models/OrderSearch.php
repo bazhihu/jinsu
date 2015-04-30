@@ -16,7 +16,7 @@ class OrderSearch extends OrderMaster
     {
         return [
             [['order_no', 'uid', 'hospital_id', 'patient_state', 'worker_level', 'worker_no'], 'integer'],
-            [['order_no', 'mobile', 'start_time', 'end_time', 'reality_end_time', 'order_status', 'create_order_ip'], 'safe'],
+            [['order_no', 'mobile', 'start_time', 'end_time', 'reality_end_time', 'order_status', 'worker_name'], 'safe'],
             [['total_amount'], 'number'],
         ];
     }
@@ -64,6 +64,7 @@ class OrderSearch extends OrderMaster
             'total_amount' => $this->total_amount,
             'patient_state' => $this->patient_state,
             'worker_no' => $this->worker_no,
+            'worker_name' => $this->worker_name,
             'mobile' => $this->mobile,
             'order_status' => $this->order_status
         ]);

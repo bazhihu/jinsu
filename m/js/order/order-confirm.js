@@ -1,35 +1,30 @@
-var access_token = getStatus(),
-    url = orderUrl+'?access-token='+access_token.token;
-
 $('.menuitemradio input[type="radio"]').on('click', function () {
     [].forEach.call(this.form.elements[this.name], function (radio) {
         $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
     }, this);
 });
 
-$.get('/whatevs.html', function(response){
-    $(document.body).append(response)
-})
+//$.get('/whatevs.html', function(response){
+//    $(document.body).append(response)
+//})
 
 
 $('#confirm').on(CLICK, function(e){
-    var start_time = $('#start_time').val();
-    var end_time = $('#end_time').val();
-    var hospital_id = $('#hospital_id').val();
-    var department_id = $('#department_id').val();
-    var patient_state = $('#patient_state').val();
-    var worker_level = $('#worker_level').val();
-    console.log(start_time);
     var param = {
-        start_time:start_time,
-        end_time:end_time,
-        hospital_id:hospital_id,
-        department_id:department_id,
-        patient_state:patient_state,
-        worker_level:worker_level
+        uid:userInfo.id,
+        mobile:userInfo.name,
+        start_time:$('#start_time').val(),
+        end_time:$('#end_time').val(),
+        hospital_id:$('#hospital_id').val(),
+        department_id:$('#department_id').val(),
+        patient_state:$('#patient_state').val(),
+        worker_level:$('#worker_level').val(),
+        //pay_way:$('#pay_way').val()
+        pay_way:1
     };
-    $.post(url,param,function(response){
-        console.log(param);
+    console.log(userInfo);
+    $.post(orderCreate,param,function(response){
+        //console.log($('#pay_way').val());
         if(response.code == 200){
             console.log('ok');
         }

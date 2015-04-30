@@ -9,7 +9,7 @@ $(document).ready(function(){
 var host = window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://api.youaiyihu.com/',
+    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',
@@ -21,6 +21,7 @@ var host = window.location.host,
     commentUrl = url+version+'comments',
     orderUrl = url+version+'orders',
     payUrl = url+version+'pays',
+    walletsUrl = url+version+'wallets',
     smsUrl = url+version+'sms',
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
@@ -64,6 +65,7 @@ function getDataJson(url){
         })
     })(Zepto);
 }
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);

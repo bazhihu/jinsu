@@ -237,15 +237,7 @@ class OrderController extends Controller
      */
     public function actionFinish($id){
         $order = $this->findModel($id);
-
-        //判断完成时间
-        $startTime = strtotime($order->start_time);
-        $endTime = strtotime(date('Y-m-d'));
-        if($startTime >= $endTime){
-            $response = ['code' => '400', 'msg' => '订单时间至少满一天才能完成'];
-        }else{
-            $response = $order->finish($endTime);
-        }
+        $response = $order->finish();
 
         echo Json::encode($response);
     }

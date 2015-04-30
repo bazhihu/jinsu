@@ -66,9 +66,9 @@ class OrderMaster extends Order
             if(strtotime($this->reality_end_time) <= strtotime($this->start_time)){
                 $this->addError($attribute, '实际结束时间不能小于或等于订单开始时间。');
             }
-            if(strtotime($this->reality_end_time) <= strtotime(date('Y-m-d'))){
-                $this->addError($attribute, '实际结束时间不能小于或等于当前时间。');
-            }
+//            if(strtotime($this->reality_end_time) <= strtotime(date('Y-m-d'))){
+//                $this->addError($attribute, '实际结束时间不能小于或等于当前时间。');
+//            }
         }
     }
 

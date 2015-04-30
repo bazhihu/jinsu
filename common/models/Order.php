@@ -600,10 +600,9 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单完成
-     * @param int $endTime
      * @return array
      */
-    public function finish($endTime){
+    public function finish(){
         $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'finish')){
             $response['code'] = 212;
@@ -614,7 +613,6 @@ class Order extends \yii\db\ActiveRecord{
         $transaction = Yii::$app->db->beginTransaction();
         try{
             $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
-            $this->reality_end_time = date('Y-m-d', $endTime);
             $this->operator_id = isset(Yii::$app->user) ? Yii::$app->user->id : 0;
 
             //计算实际金额

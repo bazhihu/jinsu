@@ -82,6 +82,7 @@ class OrderController extends Controller
             $model->mobile = $user->mobile;
             $model->contact_name = $user->name;
         }
+
         $orderPatientModel = new OrderPatient();
         if ($model->load(Yii::$app->request->post()) && $model->validate(['end_time'])) {
             $params = Yii::$app->request->post();

@@ -102,7 +102,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 
     <?php
     if($model->order_status == OrderMaster::ORDER_STATUS_WAIT_PAY){
-        $payButton = Html::a('充值', ['wallet/recharge', 'uid'=>$model->uid], ['class'=>'btn btn-primary']);
+        $payButton = Html::a('充值', ['wallet/recharge', 'uid'=>$model->uid], ['class'=>'btn btn-primary','target'=>'_blank']);
     }else{
         $payButton = null;
     }

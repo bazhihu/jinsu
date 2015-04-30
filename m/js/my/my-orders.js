@@ -1,10 +1,9 @@
 var access_token = getStatus(),
     url = orderUrl+'?access-token='+access_token.token;
-getDataJson(url, function(err,backData){
-    if(!err){
-        //getConfigs(function(configs) {
-        //    console.log(configs.worker_levels);
-        //});
+
+$.getJSON(url,function(response){
+    if(response.code == 200){
+        var backData = response.data;
         var lenth =backData['items'].length;
         for(var i =0;i<=lenth-1;i++){
             var worker_level = backData['items'][i]['worker_level'];
@@ -17,7 +16,7 @@ getDataJson(url, function(err,backData){
         var bodyHtml = template('bodyTemplate', backData);
         $('#body').html(bodyHtml);
     }
-});
+})
 
 /**
  * 时间差days

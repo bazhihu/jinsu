@@ -1,11 +1,10 @@
-$(document).ready(function(){
-    var headHtml="<script id='headTemplate' type='text/html'></script>";
-    $('#head').html(headHtml);
+var headHtml="<script id='headTemplate' type='text/html'></script>";
+$('#head').html(headHtml);
 
-    var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
-    var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
-    $('#foot').html(footHtml);
-});
+var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
+var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
+$('#foot').html(footHtml);
+
 var host = window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
@@ -54,24 +53,6 @@ function getCookie(name) {
         return unescape(arr[2]);
     else
         return null;
-}
-
-/**
- * 通过json方式获取借口数据
- * @param url：接口url
- */
-function getDataJson(url, callback){
-    ;(function($){
-        $.getJSON(url, function(backData){
-            if(backData.code == 200){
-                callback(null,backData.data);
-            }else{
-                callback(error);
-            }
-            /*var bodyHtml = template('bodyTemplate', backData);
-            $('#body').html(bodyHtml);*/
-        })
-    })(Zepto);
 }
 
 function delCookie(name) {

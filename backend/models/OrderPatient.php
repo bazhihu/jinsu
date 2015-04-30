@@ -39,6 +39,11 @@ class OrderPatient extends \yii\db\ActiveRecord
         self::PATIENT_STATE_DISABLED => '不可自理'
     ];
 
+    static public $genderLabels = [
+        1 => '男',
+        2 => '女'
+    ];
+
     /**
      * 患者健康状态对应价格系数
      * @var array

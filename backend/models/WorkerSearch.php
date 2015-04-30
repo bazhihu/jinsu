@@ -107,8 +107,8 @@ class WorkerSearch extends Worker
             'status' => $this->status,
             'chinese_level' => $this->chinese_level,
             'star' => $this->star,
-
         ]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

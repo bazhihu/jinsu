@@ -12,7 +12,6 @@ var host = window.location.host,
     url = 'http://api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
-    NAME = 'name',
     TOKEN = 'youaiyihu',
     CONFIGS = 'configs',
     CYCLE = 'cycle',
@@ -32,12 +31,11 @@ if(/ipad|iPhone|android/.test(UA)){
 }
 function getStatus() {
     var id = getCookie(ID);
-    var name = getCookie(NAME);
     var token = encodeURIComponent(getCookie(TOKEN));
-    if(!id||!token||!name){
+    if(!id||!token){
         return false;
     }
-    return JSON.parse('{"id":"'+id+'","mobile":"'+name+'","token":"'+token+'"}');
+    return JSON.parse('{"id":"'+id+'","token":"'+token+'"}');
 }
 function setCookie(name,value) {
     var Days = 30;

@@ -90,6 +90,7 @@ class OrderController extends ActiveController {
         $query = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
         $result = ArrayHelper::toArray($query);
 
+        $result['pic'] = '';
         if(!empty($result['worker_no'])){
             //获取护工照片
             $result['pic'] = Worker::workerPic($result['worker_no']);

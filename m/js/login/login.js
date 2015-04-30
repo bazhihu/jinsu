@@ -18,8 +18,9 @@ sub.on(CLICK,function(err){
         if(back.code == 200)
         {
             setCookie(ID, back.data.uid);
+            setCookie(NAME, back.data.mobile);
             setCookie(TOKEN, back.data.token);
-            window.location.href = history.go(-1);
+            window.location.href = host;
         }else{
 
         }

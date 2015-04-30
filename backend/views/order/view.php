@@ -101,6 +101,12 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     <?php endif;?>
 
     <?php
+    if($model->order_status == OrderMaster::ORDER_STATUS_WAIT_PAY){
+        $payButton = Html::a('充值', ['wallet/recharge', 'uid'=>$model->uid], ['class'=>'btn btn-primary']);
+    }else{
+        $payButton = null;
+    }
+
     echo DetailView::widget([
         'model' => $model,
         'condensed'=>false,
@@ -115,7 +121,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             [
                 'attribute'=>'order_status',
                 'type'=>DetailView::INPUT_WIDGET,
-                'value'=>'<font style="font-weight: bold;color: #aa0000">'.OrderMaster::$orderStatusLabels[$model->order_status].'</font>',
+                'value'=>'<font style="font-weight: bold;color: #aa0000">'.OrderMaster::$orderStatusLabels[$model->order_status].'</font> '.$payButton,
                 'format'=>'raw'
             ],
             'patient_state_coefficient',

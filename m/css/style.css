@@ -36,7 +36,7 @@ body { background: #f0efed; }
 #footer { position: static; width: 100%; bottom: 0; margin-top: 55px; text-align: center; font-size: 12px; color: #6c6b68; height: 30px; line-height: 30px; text-align: center; background: #f0efed url(data:image/gif;base64,R0lGODlhAQACAIAAAP///9LS0iH5BAAAAAAALAAAAAABAAIAAAICDAoAOw==) repeat-x 0 0; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    #footer { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	#footer { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 .page-tips { display: block; position: relative; font-size: 12px; padding: 5px 25px 5px 30px; margin-bottom: 4px; background: #fdf3d8 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAAJ1BMVEX////Osm/Osm/Osm/Osm/Osm/Osm/Osm/Osm/Osm/Osm/Osm/Osm/4YATaAAAADHRSTlMABgcpQn6VxeDi8f3SqWhyAAAAeElEQVR4XmMAAia3nhMpCgxgwBhzBgiOCoA5VmfAYDGIw3IGChwYGBhsYJzDDAyMa2CcUwIMrCC6gB3EC2DQQXAOMfggOEcYchCcYww9CM4JhjMIzhkUDqqynDNwcAxi9M7ZYKNRLEVxDopDUb2A6jmEt1EDBCWoADJMpRdbg//+AAAAAElFTkSuQmCC) no-repeat 10px 8px; -webkit-background-size: 12px 12px; background-size: 12px 12px; }
@@ -57,8 +57,8 @@ section.menu, section.menu:first-of-type { margin: 0; }
 .menu:first-of-type { margin-top: 15px; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    .menu, .menuitem { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
-    .menu { padding-bottom: 2px; }
+	.menu, .menuitem { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	.menu { padding-bottom: 2px; }
 }
 
 .menu-label { display: block; font-size: 12px; color: #999; line-height: 20px; padding: 0 11px; }
@@ -86,7 +86,7 @@ label.menuitem[for] { -webkit-tap-highlight-color: rgba(0,0,0,0); }
 .menu-detail tfoot td, .menu-detail tfoot td:last-child { padding: 11px 0; color: #6c6b68; font-size: 15px; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    .menu-detail tbody tr:last-child { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	.menu-detail tbody tr:last-child { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 .menuiteminput { display: -webkit-box; display: -ms-flexbox; display: flex; }
@@ -108,7 +108,6 @@ label.menuitem[for] { -webkit-tap-highlight-color: rgba(0,0,0,0); }
 
 .menu-form { }
 .menu-form input[type="submit"] { position: static; display: block; width: 100%; height: 43px; left: 0; bottom: 0; font-size: 18px; margin: 18px 0 5px 0; border: 0 none; border-top: 1px solid #3be1bb; border-bottom: 1px solid #2bab8d; color: #fff; background: #34cba8; }
-.menu-form input[type="button"] { position: static; display: block; width: 100%; height: 43px; left: 0; bottom: 0; font-size: 18px; margin: 18px 0 5px 0; border: 0 none; border-top: 1px solid #3be1bb; border-bottom: 1px solid #2bab8d; color: #fff; background: #34cba8; }
 
 .popup { position: fixed; width: 100%; height: 100%; left: 0; top: 0; pointer-events: none; opacity: 0; -webkit-transition: opacity .3s; transition: opacity .3s; z-index: 49; background: rgba(0,0,0,.5); }
 .popup > *, .popup > * { -webkit-transition: -webkit-transform .3s; transition: -webkit-transform .3s; }
@@ -156,7 +155,7 @@ select.wheel-selector { display: none; }
 #page-index .swiper-pagination-bullet-active { background: #fac13b; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    #page-index .swiper-pagination { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	#page-index .swiper-pagination { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 #page-index .tiles { position: relative; margin: 0 9px 16px 9px; padding: 20px 0 18px 0; border-left: 1px solid #e8e8e8; border-right: 1px solid #e8e8e8; background: #f8f8f8 url(data:image/gif;base64,R0lGODlhAQACAIAAAOjo6P///yH5BAAAAAAALAAAAAABAAIAAAICRAoAOw==) repeat-x 0 0; -webkit-background-size: 1px 1px; background-size: 1px 1px; }
@@ -180,7 +179,7 @@ select.wheel-selector { display: none; }
 .faq-list dt i:first-child { display: inline-block; float: left; width: 22px; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    .faq-list dt, .faq-list dd { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	.faq-list dt, .faq-list dd { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 .care-level-middle, .care-level-hight, .care-level-special { position: relative; padding-left: 18px; }
@@ -229,17 +228,17 @@ select.wheel-selector { display: none; }
 
 /* 屏幕尺寸太小，例如横屏时，不显示图片。 */
 @media screen and (max-height:360px) {
-    #page-splash .swiper-content img { display: none; }
+	#page-splash .swiper-content img { display: none; }
 }
 
 @-webkit-keyframes swiper-tips-ani {
-    0% { -webkit-transform: translate(0,0); }
-    50% { -webkit-transform: translate(0,-2px); }
+	0% { -webkit-transform: translate(0,0); }
+	50% { -webkit-transform: translate(0,-2px); }
 }
 
 @keyframes cswipe-swiper-ani {
-    0% { transform: translate(0,0); }
-    50% { transform: translate(0,-2px); }
+	0% { transform: translate(0,0); }
+	50% { transform: translate(0,-2px); }
 }
 
 #page-splash .logo { height: 38px; color: rgba(0,0,0,0); overflow: hidden; background: url(../images/splash/logo.png) no-repeat 50% 50%; -webkit-background-size: 134px 38px; background-size: 134px 38px; }
@@ -255,8 +254,8 @@ select.wheel-selector { display: none; }
 #page-splash .continue { font-size: 14px; }
 
 @media screen and (max-height:430px) {
-    #page-splash .swiper-slide:last-child .swiper-content img { margin: 5px auto; width: 200px; height: 200px; }
-    #page-splash .download { margin: 10px auto; }
+	#page-splash .swiper-slide:last-child .swiper-content img { margin: 5px auto; width: 200px; height: 200px; }
+	#page-splash .download { margin: 10px auto; }
 }
 
 #page-confirm .menuitem .value { color: #34cba8; margin-right: 0; }
@@ -289,7 +288,7 @@ select.wheel-selector { display: none; }
 .pay-success .requested { font-size: 19px; color: #34cba8; font-weight: 700; line-height: 30px; padding-top: 77px; height: 43px; background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAABsCAMAAACVZkoAAAAAYFBMVEX39vb29vYzyaZnzrUiqob5+Pjq9fJWvqIquJUwxKGDzrpBt5fe7eg0y6jF5NzT8ekuwJyt59mW1cWT4c8msY2r289P0bPn8e4wrou/7uM/zaz5/v122sP9/f3u+/j0+Pay6uj9AAAAAXRSTlMAQObYZgAAAkZJREFUeF7N2FmO3CAYRWGD57nGoadk/7tM2kp0HiwVIChu/xv4jl8scYsst7SmUN5UVaPR+l3XGqnf24Os4L75MwUaf6ZA428FpVH6W0Fuv8GnQOCrCgw+BUNG/4GftwD/8N/n+m7I5I/VZfP3BSeVT0E+X1bQ4u/P9t1V5VOQw5cVlPhPCo4in4Ilg68oGPDdBSqfApFPgUnsn/76/ex/a21S+12Q/0WAxk8bcA303360f120/lJVU5i/fPs2nX/puknnr9/Pib67v84/7vz9c9pSIPHnmQKNvxU0fn6VzOc5618wBfpnD593lLtgesn3UzA2qu+nQORTYHL5zd53bEv3tP4Df1eQxP90+gd8R0GEHzYnPNnXmrT+iO9X0DwifP85gQKRT8HgGICi/BbfUUBxvM/huwrwLyF+GeFz/b+CcP/28VXX0c9pFj7TJvVHfHfBKb1fDPh+BaH+r+d+YU74HgXXIZFPQP1JgcemcInz4wsOIf57g/+0YPYvsKG+KdIWzCl9CspX+Cu+oADf6+rIgvgBpv59U/kUqHwKND4FTURB3ABGgcin4F3qF6a+xxYwQEQUSHwKRD4Fq8qnQOVTYCN9WcEZP7pA5VOg8Sl4syqfAp1PQcwAEF9wtCqfApVPgcqnQOVToPEpOFvPAUhWUH7gKwpKBhhJwQ1fUMAAkqFA5DPiiHwKYPEb/AwFSp8JZT8ACQoEPgUqfz8jrfg5C84MYAwAeQvsFiDw+ScyQKgK8EUFR3xNAb6qAF9UkNTX3x9E8xF4mIuJRAAAAABJRU5ErkJggg==) no-repeat 50% 10px; -webkit-background-size: 64px 54px; background-size: 64px 54px; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    .pay-success { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	.pay-success { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 
@@ -316,7 +315,7 @@ select.wheel-selector { display: none; }
 .nurses-list .reserve-button, .nurses-list .reserve-button:visited { color: #fff; text-decoration: none; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    .nurses-list li { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	.nurses-list li { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 .patient-status .menuitem .title { float: none; font-size: 15px; color: #333; line-height: 30px; }
@@ -412,7 +411,7 @@ select.wheel-selector { display: none; }
 .euals ol > li { list-style-type: decimal; margin-left: 20px; }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) {
-    .euals { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
+	.euals { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
 

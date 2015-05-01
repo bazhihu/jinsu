@@ -6,10 +6,11 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
+
 var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://dev.api.youaiyihu.com/',
+    url = 'http://api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',

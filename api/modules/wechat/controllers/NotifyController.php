@@ -8,10 +8,10 @@
 
 namespace api\modules\wechat\controllers;
 
+use api\modules\wechat\models\Notify;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
-use common\models\Order;
 
 class NotifyController extends ActiveController{
     public $modelClass = false;
@@ -40,6 +40,15 @@ class NotifyController extends ActiveController{
 
         echo 444;
         exit();
+    }
+
+    /**
+     * 获取用户openId
+     */
+    public function actionIndex(){
+        $notify = new Notify();
+        $res = $notify->getCode();
+        var_dump($res);exit;
     }
 
     /**

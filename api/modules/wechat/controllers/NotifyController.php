@@ -35,11 +35,7 @@ class NotifyController extends ActiveController{
      * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate(){
-        $post = Yii::$app->getRequest()->getBodyParams();
-        Yii::info('======================回调开始：'.print_r($post, true), 'api');
-
-        echo 444;
-        exit();
+        notifyUrl();
     }
 
     /**
@@ -48,7 +44,16 @@ class NotifyController extends ActiveController{
     public function actionIndex(){
         $notify = new Notify();
         $res = $notify->getCode();
-        var_dump($res);exit;
+        return $res;
+    }
+
+    /**
+     * 统一下单接口
+     */
+    public function actionView($id){
+        $notify = new Notify();
+        $res = $notify->underSingle($id);
+        return $res;
     }
 
     /**

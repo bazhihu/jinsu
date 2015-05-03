@@ -182,7 +182,7 @@ select.wheel-selector { display: none; }
 	.faq-list dt, .faq-list dd { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
-.care-level-middle, .care-level-hight, .care-level-special { position: relative; padding-left: 18px;color: #6c6b68; }
+.care-level-middle, .care-level-hight, .care-level-special { position: relative; padding-left: 18px; }
 .care-level-middle:before, .care-level-hight:before, .care-level-special:before { content: ""; display: block; position: absolute; left: 0; top: 50%; margin-top: -7px; width: 14px; height: 14px; overflow: hidden; background: url(../images/care-levels-2.png) no-repeat 0 0; -webkit-background-size: 14px 114px; background-size: 14px 114px; }
 
 .care-level-middle:before { background-position: 0 0; }
@@ -309,7 +309,7 @@ select.wheel-selector { display: none; }
 .nurses-list .nurses-rate { line-height: 24px; height: 24px; vertical-align: top; }
 .nurses-list .nurses-intro { display: block; height: 14px; font-size: 12px; line-height: 14px; color: #969595; margin: 5px 0; vertical-align: top; }
 .nurses-list .nurses-reserve { height: 22px; line-height: 22px; font-size: 12px; color: #6c6b68; }
-.nurses-list .nurses-price { display: inline-block; margin-left: 10px;color: #6c6b68; }
+.nurses-list .nurses-price { display: inline-block; margin-left: 10px; }
 .nurses-list .nurses-price em { font-weight: 400; color: #fea62b; }
 .nurses-list .reserve-button { display: block; float: right; width: 59px; height: 20px; text-align: center; line-height: 20px; border: 1px solid #2fb89f; background: #34cba8; -webkit-border-radius: 3px; border-radius: 3px; }
 .nurses-list .reserve-button, .nurses-list .reserve-button:visited { color: #fff; text-decoration: none; }

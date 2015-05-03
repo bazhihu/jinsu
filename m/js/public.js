@@ -6,7 +6,8 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
 });
-var host = window.location.host,
+
+var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
     url = 'http://api.youaiyihu.com/',
@@ -21,6 +22,7 @@ var host = window.location.host,
     commentUrl = url+version+'comments',
     orderUrl = url+version+'orders',
     payUrl = url+version+'pays',
+    walletsUrl = url+version+'wallets',
     smsUrl = url+version+'sms',
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
@@ -64,6 +66,7 @@ function getDataJson(url){
         })
     })(Zepto);
 }
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);

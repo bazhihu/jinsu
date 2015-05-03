@@ -1,8 +1,9 @@
 var access_token = getStatus(),
     url = orderUrl+'?access-token='+access_token.token;
-
+    //url = orderUrl+'/'+access_token.id+'?access-token='+access_token.token;
+console.log(url);
 $.getJSON(url,function(response){
-    if(response.code == 200){
+    if(response.code == 200){console.log(response);
         var backData = response.data;
         var lenth =backData['items'].length;
         for(var i =0;i<=lenth-1;i++){

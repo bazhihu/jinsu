@@ -72,4 +72,23 @@ class OrderMaster extends Order
         }
     }
 
+    /**
+     * @param $mobile
+     * @param null $name
+     * @return $this|User|null|static
+     * @throws \backend\models\ErrorException
+     */
+    public function checkMobile($mobile, $name = null){
+        $user = User::findOne(['mobile' => $mobile]);
+        if(empty($user)){
+            //注册手机号
+            $user = new User();
+            $user->mobile = $mobile;
+            $user->name = $name;
+            $user = $user->SystemSignUp();
+        }
+        return $user;
+    }
+
+
 }

@@ -54,7 +54,7 @@
 		return this;
 	};
 
-	$.dismissPopup = function () {
+	$.dismissPopup = function (tag) {
 		popupTimeout && clearTimeout(popupTimeout);
 		var $container = $(container);
 		$container.removeClass('popup-visible');
@@ -77,7 +77,7 @@
 			popuped.length = 0;
 		}, 400);
 		popuped.forEach(function (k) {
-			$(k).trigger('dismiss');
+			$(k).trigger('dismiss', tag);
 		});
 	};
 }($);

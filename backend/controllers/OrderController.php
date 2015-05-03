@@ -88,7 +88,7 @@ class OrderController extends Controller
             $params = Yii::$app->request->post();
 
             //检查手机号是否注册
-            $user = $this->_checkMobile($params['OrderMaster']['mobile'], $params['OrderMaster']['contact_name']);
+            $user = $model->checkMobile($params['OrderMaster']['mobile'], $params['OrderMaster']['contact_name']);
 
             $params['OrderMaster']['uid'] = $user->id;
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
@@ -117,23 +117,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * @param $mobile
-     * @param null $name
-     * @return $this|User|null|static
-     * @throws \backend\models\ErrorException
-     */
-    private function _checkMobile($mobile, $name = null){
-        $user = User::findByMobile($mobile);
-        if(empty($user)){
-            //注册手机号
-            $user = new User();
-            $user->mobile = $mobile;
-            $user->name = $name;
-            $user = $user->SystemSignUp();
-        }
-        return $user;
-    }
 
     /**
      * 续单

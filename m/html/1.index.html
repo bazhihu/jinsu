@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>优爱医护</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-index">
+	<header id="header">
+		<a class="account" href="15.account.html">个人中心</a>
+		<h1 class="title">优爱医护</h1>
+		<select id="select-city">
+			<option value="beijing">北京</option>
+			<option value="shanghai">上海</option>
+			<option value="mars">火星</option>
+		</select>
+	</header>
+
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide" style="">
+				<img src="../images/slides/1.jpg" alt="优爱医护，您的贴身护理专家" />
+			</div>
+			<div class="swiper-slide" style="">
+				<img src="../images/slides/1.jpg" alt="优爱医护，您的贴身护理专家" />
+			</div>
+			<div class="swiper-slide" style="">
+				<img src="../images/slides/1.jpg" alt="优爱医护，您的贴身护理专家" />
+			</div>
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+
+	<div role="menu" class="tiles">
+		<a class="express" role="menuitem" href="2.express.html">快速预定</a>
+		<a class="nurses" role="menuitem" href="11.nurses-list.html">挑选护工</a>
+		<a class="orders" role="menuitem" href="17.my-orders.html">我的订单</a>
+		<a class="service" role="menuitem" href="tel:400-834-5678">呼叫客服</a>
+	</div>
+	<script src="../js/swiper.min.js"></script>
+	<script>
+		var focusSlides;
+		window.addEventListener('load', function () {
+			focusSlides = new Swiper('.swiper-container', {
+				mode: 'horizontal',
+				autoplay: 5000,
+				createPagination: true,
+				pagination: '.swiper-pagination',
+				loop: true
+			});
+		});
+	</script>
+</body>
+</html>

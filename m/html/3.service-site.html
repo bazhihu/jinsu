@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>服务地点</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-service-site">
+	
+	<header id="header">
+		<a class="back">返回</a>
+		<h2 class="title">服务地点</h2>
+	</header>
+	<script src="../js/zepto-with-touch.min.js"></script>
+	<script>
+
+		function setValueByHash(value) {
+			value && [].forEach.call(document.getElementsByName('service-site'), function (radio) {
+				$(radio).parent()[(radio.checked = value == radio.value) ? 'addClass' : 'removeClass']('menuitemradio-checked');
+			});
+		}
+		$('#header .back').click(function (e) {
+			var value, text;
+			[].forEach.call(document.getElementsByName('service-site'), function (radio) {
+				if (radio.checked) {
+					value = radio.value;
+					text = radio.title;
+				}
+			});
+			try {
+				window.parent.$.dismissPopup({ value: value, text: text });
+			} catch (error) {
+				window.history.back(1);
+			}
+		});
+	</script>
+</body>
+</html>

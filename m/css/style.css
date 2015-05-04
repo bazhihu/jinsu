@@ -65,7 +65,7 @@ section.menu, section.menu:first-of-type { margin: 0; }
 .menuitem:after { content: ""; display: table; clear: both; }
 .menuitem .title { display: block; float: left; font-size: 15px; color: #6c6b68; }
 .menuitem .detail { display: inline-block; margin-left: 6px; font-size: 13px; color: #c3c2c2; }
-.menuitem .value { display: block; float: right; font-size: 14px; margin-right: 34px; color: #6c6b68; vertical-align: top; }
+.menuitem .value { display: block; float: right; font-size: 14px; margin-right: 34px; max-width: 148px; color: #6c6b68; vertical-align: top; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .menuitem input.value, .menuitem select.value { float: right; height: 44px; line-height: 44px; text-align: right; padding: 0; -webkit-appearance: none; -webkit-border-image: none; -webkit-border-radius: 0; border-radius: 0; border-image: none; -webkit-box-shadow: none; box-shadow: none; border: 0 none; background: transparent; }
 .menuitem select.value { margin-right: 12px; }
 .menuitem select.empty { margin-right: 34px; }
@@ -103,8 +103,8 @@ label.menuitem[for] { -webkit-tap-highlight-color: rgba(0,0,0,0); }
 .menuitemradio input[type="radio"] { display: none; }
 .menuitem .badge { float: right; display: inline-block; height: 12px; line-height: 12px; font-size: 12px; padding: 0 7px; margin: 16px 30px 0 0; color: #fff; background: #ff981d; -webkit-border-radius: 10px; border-radius: 10px; }
 
-.menuitemradio:after { content: ""; display: block; position: absolute; width: 16px; height: 16px; right: 10px; top: 50%; margin-top: -8px; background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAclBMVEXc3Nz////c3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz39/f////d3d3l5eXu7u729vbi4uL8/Pz+/v7k5OTx8fHe3t5TyIOpAAAAGXRSTlMAAAEXHkBBUlRVVlh1l5iam9PV19na8fP1OuBd9wAAAOdJREFUeF6N0+tywiAQhuGVgMZDo4FG/YCc4/3fYmmdRqMw6/v7mSGBXVoxPQHKNsfyfC6Pm4wiQCiDuW8lXoEsga5p+2Ho26YDSrkAtAdG6+ZsDezpAegAP7lFk8eBZrDFzbqX7A27fyDhrXvLesg7EBqTizRBiz+gMLpoI9QvIAMbBxaGAsjQuUQdsgByNCnQYBvAF9oUaFEEYNCnQA8TwAVDCgy4sOCTIwrmI9nf5C+KKuaqVwp18rGY5zbio4EJ7ZiRY4f2PvZ1auzvSb1cHC3fVm9dYa5ai+jy5id9vepTvlxeph8YC0o/xOdhrAAAAABJRU5ErkJggg==) no-repeat 100% 50%; -webkit-background-size: 16px 16px; background-size: 16px 16px; }
-.menuitemradio-checked:after { background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABelBMVEU0y6b///80y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6bOk+7+AAAAfXRSTlOjAACioJ6dm+DOC7Dxqqjipffm0wEC3vO3ygfAps/FCKsh1dHcMUeXTzTv+9oYusw2suSt6LRW6cfIrww3ICa5TJjrw0C+S0b5GbwNM3Q6O1gPFrXXLXn1L0ViVGR7Ulx8CQqVfu1/BBArlNkXURz9iSiLE8FbA11XgiouIyQFAf0AAAH6SURBVHhehZPVkqQwGEb/EBKgG2va3WXadWZ23Nfd3d1d590XAr0wudlzyTlfUZVKAP2HQBA690ArdBOV2faFdcEjEJy+k28PZpoJufC+vLR9gw9u1qySCB4YL0eaj4JB7MmJMIEAmNSiZT+IgUowHIVmOxv/grsqBR4g/Z2LXnC+Qzgp6ukVQtK7cRYUjRHm/ErhbKpPaHKRBfeXCOfDkbpwcnyKlq5k7CCTn/A+uSAIQi87EXdadrCmivz+jODQMGCzFAN0TeG8OmQ+pKcAjEuAcpfZwVS6oujuF1yfH0iArauACprtTat1XNZFIKPrno8qEgDIe4Bqph1MbyF0O6LRkVp3vaJQcIIDQAkAc9BCNsfbm8m6v2fBFqBKDnLjDHK4dzj0/u95kBuAZmGA/WacFavMP6zOPRhrgB5nASRZcwvHF3er1PPYKgNaNLBT6HEvyByLzvegpYuAek8x2IWRi7GgWIjSucfVZwiQ0Fx2Cpogz+0gFNiDmCzbAdroEGAFXn/xMqVQ3yuS4ATCqwT7KGVf52spf4/1wzfujcp0s4RNTN0EH1F9O7+T7973KXBgkvzgX/uP0zRXiLr6KeYH6PMXtUQCc1GJfD36sr59r0xTGLtaq7ZpmX+baPXHxLBkm7GV/vmLf7yMeO/33sFWY/gnxKQb/AXcXzc53VlZPgAAAABJRU5ErkJggg==); }
+.menuitemradio:after, .sites .selected:before { content: ""; display: block; position: absolute; width: 16px; height: 16px; right: 10px; top: 50%; margin-top: -8px; background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAclBMVEXc3Nz////c3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nz39/f////d3d3l5eXu7u729vbi4uL8/Pz+/v7k5OTx8fHe3t5TyIOpAAAAGXRSTlMAAAEXHkBBUlRVVlh1l5iam9PV19na8fP1OuBd9wAAAOdJREFUeF6N0+tywiAQhuGVgMZDo4FG/YCc4/3fYmmdRqMw6/v7mSGBXVoxPQHKNsfyfC6Pm4wiQCiDuW8lXoEsga5p+2Ho26YDSrkAtAdG6+ZsDezpAegAP7lFk8eBZrDFzbqX7A27fyDhrXvLesg7EBqTizRBiz+gMLpoI9QvIAMbBxaGAsjQuUQdsgByNCnQYBvAF9oUaFEEYNCnQA8TwAVDCgy4sOCTIwrmI9nf5C+KKuaqVwp18rGY5zbio4EJ7ZiRY4f2PvZ1auzvSb1cHC3fVm9dYa5ai+jy5id9vepTvlxeph8YC0o/xOdhrAAAAABJRU5ErkJggg==) no-repeat 100% 50%; -webkit-background-size: 16px 16px; background-size: 16px 16px; }
+.menuitemradio-checked:after, .sites .selected:before { background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABelBMVEU0y6b///80y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6Y0y6bOk+7+AAAAfXRSTlOjAACioJ6dm+DOC7Dxqqjipffm0wEC3vO3ygfAps/FCKsh1dHcMUeXTzTv+9oYusw2suSt6LRW6cfIrww3ICa5TJjrw0C+S0b5GbwNM3Q6O1gPFrXXLXn1L0ViVGR7Ulx8CQqVfu1/BBArlNkXURz9iSiLE8FbA11XgiouIyQFAf0AAAH6SURBVHhehZPVkqQwGEb/EBKgG2va3WXadWZ23Nfd3d1d590XAr0wudlzyTlfUZVKAP2HQBA690ArdBOV2faFdcEjEJy+k28PZpoJufC+vLR9gw9u1qySCB4YL0eaj4JB7MmJMIEAmNSiZT+IgUowHIVmOxv/grsqBR4g/Z2LXnC+Qzgp6ukVQtK7cRYUjRHm/ErhbKpPaHKRBfeXCOfDkbpwcnyKlq5k7CCTn/A+uSAIQi87EXdadrCmivz+jODQMGCzFAN0TeG8OmQ+pKcAjEuAcpfZwVS6oujuF1yfH0iArauACprtTat1XNZFIKPrno8qEgDIe4Bqph1MbyF0O6LRkVp3vaJQcIIDQAkAc9BCNsfbm8m6v2fBFqBKDnLjDHK4dzj0/u95kBuAZmGA/WacFavMP6zOPRhrgB5nASRZcwvHF3er1PPYKgNaNLBT6HEvyByLzvegpYuAek8x2IWRi7GgWIjSucfVZwiQ0Fx2Cpogz+0gFNiDmCzbAdroEGAFXn/xMqVQ3yuS4ATCqwT7KGVf52spf4/1wzfujcp0s4RNTN0EH1F9O7+T7973KXBgkvzgX/uP0zRXiLr6KeYH6PMXtUQCc1GJfD36sr59r0xTGLtaq7ZpmX+baPXHxLBkm7GV/vmLf7yMeO/33sFWY/gnxKQb/AXcXzc53VlZPgAAAABJRU5ErkJggg==); }
 
 .menu-form { }
 .menu-form input[type="submit"] { position: static; display: block; width: 100%; height: 43px; left: 0; bottom: 0; font-size: 18px; margin: 18px 0 5px 0; border: 0 none; border-top: 1px solid #3be1bb; border-bottom: 1px solid #2bab8d; color: #fff; background: #34cba8; }
@@ -150,7 +150,7 @@ select.wheel-selector { display: none; }
 #page-index .swiper-slide { display: block; float: left; width: 10%; max-width: 414px; -webkit-transform: translate3d(0,0,0,0); }
 #page-index .swiper-container img { display: block; position: relative; width: 100%; border: 0 none; }
 
-#page-index .swiper-pagination { display: block; height: 21px; text-align: center; background: url(data:image/gif;base64,R0lGODlhAQACAIAAAP///9LS0iH5BAAAAAAALAAAAAABAAIAAAICDAoAOw==) repeat-x 0 0; -webkit-background-size: 1px 1px; background-size: 1px 1px; }
+#page-index .swiper-pagination { display: block; height: 21px; text-align: center; background: url(page-order-detailgif;base64,R0lGODlhAQACAIAAAP///9LS0iH5BAAAAAAALAAAAAABAAIAAAICDAoAOw==) repeat-x 0 0; -webkit-background-size: 1px 1px; background-size: 1px 1px; }
 #page-index .swiper-pagination-bullet { display: inline-block; width: 7px; height: 7px; margin: 7px 3px; overflow: hidden; color: rgba(0,0,0,0); background: #d3d3d3; -webkit-border-radius: 10px; border-radius: 10px; }
 #page-index .swiper-pagination-bullet-active { background: #fac13b; }
 
@@ -182,7 +182,7 @@ select.wheel-selector { display: none; }
 	.faq-list dt, .faq-list dd { -webkit-background-size: 1px 2px; background-size: 1px 2px; }
 }
 
-.care-level-middle, .care-level-hight, .care-level-special { position: relative; padding-left: 18px;color: #6c6b68; }
+.care-level-middle, .care-level-hight, .care-level-special { position: relative; padding-left: 18px; }
 .care-level-middle:before, .care-level-hight:before, .care-level-special:before { content: ""; display: block; position: absolute; left: 0; top: 50%; margin-top: -7px; width: 14px; height: 14px; overflow: hidden; background: url(../images/care-levels-2.png) no-repeat 0 0; -webkit-background-size: 14px 114px; background-size: 14px 114px; }
 
 .care-level-middle:before { background-position: 0 0; }
@@ -309,7 +309,7 @@ select.wheel-selector { display: none; }
 .nurses-list .nurses-rate { line-height: 24px; height: 24px; vertical-align: top; }
 .nurses-list .nurses-intro { display: block; height: 14px; font-size: 12px; line-height: 14px; color: #969595; margin: 5px 0; vertical-align: top; }
 .nurses-list .nurses-reserve { height: 22px; line-height: 22px; font-size: 12px; color: #6c6b68; }
-.nurses-list .nurses-price { display: inline-block; margin-left: 10px;color: #6c6b68; }
+.nurses-list .nurses-price { display: inline-block; margin-left: 10px; }
 .nurses-list .nurses-price em { font-weight: 400; color: #fea62b; }
 .nurses-list .reserve-button { display: block; float: right; width: 59px; height: 20px; text-align: center; line-height: 20px; border: 1px solid #2fb89f; background: #34cba8; -webkit-border-radius: 3px; border-radius: 3px; }
 .nurses-list .reserve-button, .nurses-list .reserve-button:visited { color: #fff; text-decoration: none; }
@@ -477,6 +477,11 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 #page-order-detail #history { overflow: hidden; min-height: 0; padding-bottom: 0; max-height: 0; height: 0; -webkit-transition: .2s; transition: .2s; -webkit-box-sizing: border-box; box-sizing: border-box; }
 #page-order-detail #history.expanded { max-height: 300px; padding-bottom: 15px; height: auto; }
 
+@media screen and (-webkit-max-device-pixel-ratio: 1) {
+	#page-order-detail .operations:before { -webkit-background-size: 2px 2px; background-size: 2px 2px; }
+}
+
+
 #page-nurses-detail .nurses-photo { position: relative; float: left; width: 105px; height: 105px; margin: 0 10px 0 6px; border: 7px solid #95dddd; -webkit-border-radius: 100px; border-radius: 100px; background: #f2f2f2 none no-repeat 50% 50%; -webkit-background-size: cover; background-size: cover; }
 #page-nurses-detail .nurses-photo:after { content: ""; display: block; position: absolute; width: 103px; height: 103px; left: -1px; top: -1px; border: 2px solid #fff; -webkit-border-radius: 100px; border-radius: 100px; }
 #page-nurses-detail .card { position: relative; margin: 0; padding: 4px 0 8px 0; height: 119px; overflow: hidden; }
@@ -494,8 +499,14 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 #page-nurses-detail .nurses-intro .mandarin { }
 #page-nurses-detail .nurses-intro .mandarin:before { content: ":)"; display: inline-block; width: 19px; color: rgba(0,0,0,0); overflow: hidden; background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAATlBMVEX39/b9t0f8vlz5zYf/7dL+5Lr+26P137z40ZH9vFP148f////9xWr9wF79yXX+15j+zoH+0oz/+/T+2Z3+2Z79uU3/8t3+2qD+4K//9unpkvkGAAAAAXRSTlMAQObYZgAAAJ5JREFUeF51kkcOwzAMBHdJdXen//+jQWDCMSx5ToKGRaAII6qQpGjEkSLju+eGlL9I2fnMnQRD+3XiEbX4873llLx6nikAxH9yJQSIQzezJkKnJ8nF2Wt7t1h/8b+T68ImQuesFt1Acg7WJwcrDHo2AcOVGC+EsIlA20IR2yICQj5eR27bSFDO4m5DRKJRfZXWnY1UxxtFSFbL0F6fL/zNBzqPhKwVAAAAAElFTkSuQmCC) no-repeat 0 50%; -webkit-background-size: 12px 12px; background-size: 12px 12px; }
 
+@media screen and (-webkit-max-device-pixel-ratio: 1) {
+	#page-nurses-detail .nurses-intro .info > * { -webkit-background-size: 2px 2px; background-size: 2px 2px; }
+}
 
-#page-nurses-detail .detail .menuitem { position: relative; font-size: 13px; line-height: 22px; color: #6c6b68; padding: 7px 32px 8px 48px; height: auto; min-height: 22px; }
+#page-nurses-detail .detail .menuitem { display: -webkit-box; position: relative; font-size: 13px; line-height: 24px; color: #6c6b68; padding: 6px 32px 6px 48px; height: auto; min-height: 22px; -webkit-box-orient: vertical; -webkit-line-clamp: 2; max-height: 44px; overflow: hidden; text-overflow: ellipsis; }
+#page-nurses-detail .detail .expanded { display: block; max-height: none; -webkit-line-clamp: 1000; }
+#page-nurses-detail .detail .menuitem:before { top: 50%; margin-top: -6px; }
+#page-nurses-detail .detail .expanded:before { content: none; }
 #page-nurses-detail .detail .menuitem, #page-nurses-detail .detail .menuitem:visited { color: #6c6b68; }
 #page-nurses-detail .detail .menuitem:after { content: ""; display: block; position: absolute; left: 0; top: 0; width: 48px; height: 100%; }
 #page-nurses-detail #self-intro:after { background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAMFBMVEX39/ZVxcNlzMnI6+q45uWa3dvz9vaN2dZ10c+o4d/a8PDR7u1Zx8Xi8/KB1dLq9fU11/6mAAAAAXRSTlMAQObYZgAAAQdJREFUeF5jwA7YFru42CILrHx0UEZvLgMcsLxpnTmz6JwBXGCS5n4Ght9zWuAKlLaBqGQlmJJFWhDa6C3UiocOEIHMoxCaWSMBIsDbsQBMsx6BuWYSRCm7FMx0mwlgik8WJrAxALsAO1zABiLAehhmqBPEUBZ1qLX8LzZA6EcLoA6Cyfg8g9A/tBkgIPU4WIbtkRvMsIevQNSKo1AdDJkHj34AGlUj5ABVUKMC0eIDVfL9xAeISq6eeLCtMWUMUHBdE6QkRe8CTIC7wwBIrVNmYIC7vRYUKtMY4OAr0HjuvgVwASDnAkMm2CCYniADhp8a75CAkgEDV80ZJKD5gYHh710kcI0BABZ1YlQlouEXAAAAAElFTkSuQmCC) no-repeat 16px 50%; -webkit-background-size: 16px 16px; background-size: 16px 16px; }
@@ -526,3 +537,11 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 #page-nurses-detail .pay-operation .price { font-size: 10px; color: #919598; }
 #page-nurses-detail .pay-operation .price em { font-weight: 700; font-size: 20px; color: #fea320; }
 #page-nurses-detail .pay-operation .currency { color: #fea320; }
+
+#page-service-site { background: #fff; }
+#page-service-site .search-sites { border: 10px solid #f0efed; border-width: 15px 10px 12px 10px; }
+#page-service-site input[type="search"] { display: block; width: 100%; border: 1px solid #e0dfdc; height: 42px; padding: 0 13px; -webkit-border-radius: 2px; border-radius: 2px; }
+.sites li { position: relative; font-size: 14px; line-height: 22px; padding: 10px 30px 10px 10px; color: #464646; border-bottom: 1px solid #f1f0ef; word-break: break-all; word-wrap: break-word; }
+
+#page-reviews .menuitem .nurses-rate { vertical-align: top; margin-left: 7px; }
+#page-reviews .menuitem .value { margin-right: 0; }

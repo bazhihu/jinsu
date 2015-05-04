@@ -2,13 +2,14 @@
 
 namespace backend\controllers;
 
+use backend\models\Recharge;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Order;
-
+use backend\models\WalletUser;
 use backend\models\OrderPatient;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
@@ -116,7 +117,6 @@ class OrderController extends Controller
             ]);
         }
     }
-
 
     /**
      * 续单
@@ -269,7 +269,7 @@ class OrderController extends Controller
      * @return string
      */
     public function actionCalculate(){
-        $this->layout = "guest.php";
+        $this->layout = "none.php";
         $post = Yii::$app->request->post();
         $orderMaster = new OrderMaster();
         $orderMaster->scenario = 'calculate';
@@ -286,5 +286,54 @@ class OrderController extends Controller
                 'model' => $orderMaster
             ]);
         }
+    }
+
+    /**
+     * 充值
+     * @throws NotFoundHttpException
+     */
+    public function actionRecharge(){
+        $this->layout = "none.php";
+        $orderId = Yii::$app->request->get('id');
+        $orderModel = $this->findModel($orderId);
+        $rechargeModel = new Recharge();
+        if(Yii::$app->request->isPost){
+            $post = ['Recharge' => Yii::$app->request->post()];
+            if ($rechargeModel->load($post, 'Recharge') && $rechargeModel->validate()) {
+                //支付渠道-后台
+                $params = $post['Recharge'];
+                $params['pay_from'] = \backend\models\WalletUserDetail::PAY_FROM_BACKEND;
+                $balance = \common\models\Wallet::recharge($params);
+
+                //订单支付
+                $orderModel->pay('后台订单支付');
+
+                //发送短信
+                $sms = new Sms();
+                $send = [
+                    'mobile' => $orderModel->mobile,
+                    'type' => Sms::SMS_SUCCESS_RECHARGE,
+                    'account' => $orderModel->mobile,
+                    'money' => $params['money'],
+                    'balance' => $balance,
+                ];
+                $sms->send($send);
+
+                return $this->redirect(['view', 'id' => $orderId]);
+            }
+        }
+
+        $uid = $orderModel->uid;
+        $rechargeModel->uid = $uid;
+
+        //获得用户余额
+        $wallet = WalletUser::findOne($uid);
+        $balance = empty($wallet) ? 0 : $wallet->money;
+
+        return $this->render('recharge', [
+            'model' => $rechargeModel,
+            'order' => $orderModel,
+            'balance' => $balance
+        ]);
     }
 }

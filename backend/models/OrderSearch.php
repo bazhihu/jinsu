@@ -36,7 +36,7 @@ class OrderSearch extends OrderMaster
             $query->andFilterWhere(['hospital_id' => Yii::$app->user->identity->hospital_id]);
         }
 
-        !isset($params['sort']) && $query->orderBy('reality_end_time ASC');
+        !isset($params['sort']) && $query->orderBy('order_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -72,8 +72,7 @@ class OrderSearch extends OrderMaster
         $query->andFilterWhere(['>=', 'start_time', $this->start_time])
             ->andFilterWhere(['<=', 'end_time', $this->end_time]);
 
-        !isset($params['sort']) && $query->orderBy('reality_end_time ASC');
-        Yii::error($query->sql);
+        //!isset($params['sort']) && $query->orderBy('reality_end_time ASC');
         return $dataProvider;
     }
 }

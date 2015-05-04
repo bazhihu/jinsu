@@ -54,25 +54,39 @@ $.getJSON(url,function(response){
             for(var h =0;h<=patient_states_lenth-1;h++){
                 var id = data[h]['id'];
                 patient_states_array[id] = patient_states_data[h]['name'];
-
             }
             response.data.patient_states_name = patient_states_array[patient_state]
 
             //假期
-            console.log(configs)
-            var patient_states_lenth =configs.patient_states.length;
-            var patient_states_data  = configs.patient_states;
-            var patient_states_array = new Array();
-            for(var h =0;h<=patient_states_lenth-1;h++){
-                var id = data[h]['id'];
-                patient_states_array[id] = patient_states_data[h]['name'];
+            var holidays_lenth =configs.holidays.length;
+            var holidays_data  = configs.holidays;
+            var has_holidays='';
+            var has_holidays_num = 0;
 
+            for(var k=0;k<=holidays_lenth-1;k++){
+                var holidays = holidays_data[k];
+                var start_time = response.data.start_time;
+                var end_time =  response.data.end_time;
+                start_time = start_time.substr(0,10);
+                end_time = end_time.substr(0,10);
+
+                if(holidays>=start_time && holidays<=end_time){
+                    if(has_holidays)
+                        has_holidays= has_holidays+"、"+holidays.substr(5,5);
+                    else{
+                        has_holidays= holidays.substr(5,5);
+                    }
+                    has_holidays_num++
+                }
+                response.data.has_holidays = has_holidays;
+                response.data.has_holidays_num = has_holidays_num;
             }
-            response.data.patient_states_name = patient_states_array[patient_state]
+
         });
 
         response.data.order_des = getStatusDes(response.data);
-        response.data.days = getOrderCycle(response.data.start_time,response.data.end_time);
+        if(response.data.start_time && response.data.end_time)
+            response.data.days = getOrderCycle(response.data.start_time,response.data.end_time);
 
         var bodyHtml = template('bodyTemplate', response);
         $('#body').html(bodyHtml);
@@ -80,7 +94,6 @@ $.getJSON(url,function(response){
 })
 
 function getStatusDes(order) {
-    var days=10;
     var time = new Date();
     var time = time.format("yyyy-MM-dd");
 
@@ -99,7 +112,6 @@ function getStatusDes(order) {
         } else {
             return "服务即将开始";
         }
-
     } else if (order.order_status=='in_service') {
         var days = getOrderCycle(time,order.reality_end_time);
         if (days > 0) {

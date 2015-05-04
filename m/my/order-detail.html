@@ -67,11 +67,11 @@
             <tbody>
             <tr>
                 <td>{{data.worker_levels_name}}服务{{data.days}}天</td>
-                <td>&yen;{{data.base_price}}（元/天）×{{data.days}}(天)</td>
+                <td>&yen;{{data.base_price}}×{{data.days}}</td>
             </tr>
             <tr>
-                <td>12-30、12-31为假期 当天收取双倍价格</td>
-                <td>&yen;360</td>
+                <td>{{data.has_holidays}}为法定节假日 当天加收双倍价格</td>
+                <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
             </tr>
             {{if data.patient_state==2}}
             <tr>

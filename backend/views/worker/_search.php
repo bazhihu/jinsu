@@ -125,6 +125,11 @@ use backend\models\Departments;
                 ],
             ])->label('普通话水平');?>
 
+            <?= $form->field($model,'pic')
+                ->dropDownList([1=>'有', 2=>'无'],['prompt'=>'请选择'])
+                ->label("是否有照片");
+            ?>
+
 <!--            --><?//= $form->field(
 //                $model,
 //                'good_at',

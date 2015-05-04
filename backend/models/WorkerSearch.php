@@ -15,7 +15,7 @@ class WorkerSearch extends Worker
     {
         return [
             [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
-            [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'gender', 'add_date', 'edit_date'], 'safe'],
+            [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'gender', 'add_date', 'edit_date','pic'], 'safe'],
             [['price', 'good_rate'], 'number'],
         ];
     }
@@ -34,12 +34,20 @@ class WorkerSearch extends Worker
         if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
             $query->andFilterWhere(['like', 'hospital_id', ','.Yii::$app->user->identity->hospital_id.',']);
         }
-        $query->orderBy('worker_id DESC');
+        !isset($params['sort']) && $query->orderBy('worker_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
+        // enable sorting for the related columns
+        $addSortAttributes = ["profile.full_name"];
+        foreach ($addSortAttributes as $addSortAttribute) {
+            $dataProvider->sort->attributes[$addSortAttribute] = [
+                'asc'   => [$addSortAttribute => SORT_ASC],
+                'desc'  => [$addSortAttribute => SORT_DESC],
+            ];
+        }
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
@@ -53,16 +61,20 @@ class WorkerSearch extends Worker
             'status' => $this->status,
             'audit_status' => $this->audit_status,
             'chinese_level' => $this->chinese_level,
-            'star' => $this->star,
+            'star' => $this->star
         ]);
+
+        if(isset($params['WorkerSearch']['pic']) && $params['WorkerSearch']['pic'] == 1){
+            $query->andFilterWhere(['>', 'pic', $params['WorkerSearch']['pic']]);
+        }elseif(isset($params['WorkerSearch']['pic']) && $params['WorkerSearch']['pic'] == 2){
+            $query->andWhere("pic is null OR pic=''");
+        }
 
         $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'hospital_id', $this->hospital_id ? ','.$this->hospital_id.',':'']);
             //->andFilterWhere(['like', 'good_at', $this->good_at? ','.$this->good_at.',':''])
             //->andFilterWhere(["($this->hospital_id,", "find_in_set", "hospital_id)"])
-
-       $query->orderBy('worker_id DESC');
 
         return $dataProvider;
     }

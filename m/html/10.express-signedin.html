@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>快速预定</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-express">
+
+	<header id="header">
+		<a class="back" href="javascript:history.back(1)">返回</a>
+		<h2 class="title">快速预定</h2>
+	</header>
+
+	<form class="menu-form">
+
+		<menu class="menu">
+			<span class="menuitem" role="menuitem"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录">13900000000</i></span>
+		</menu>
+
+		<menu class="menu">
+			<label class="menuitem" role="menuitem" for="care-start">
+				<em class="title">服务开始时间：</em>
+				<input type="date" class="value empty" id="care-start" name="start" value="2015-04-28" min="2015-04-28" max="2015-12-31" />
+			</label>
+			<label class="menuitem" role="menuitem" for="care-end">
+				<em class="title">服务结束时间：</em>
+				<input type="date" class="value" id="care-end" name="end" value="----" min="2015-04-28" max="2016-12-31" />
+				<i data-placeholder="请选择" id="care-days" class="value"></i>
+			</label>
+			<a href="3.service-site.html" id="service-site-menuitem" target="popup" class="menuitem" role="menuitem">
+				<em class="title">服务地点：</em>
+				<label class="value" data-placeholder="请选择"></label>
+				<input type="hidden" id="service-site" name="service-site" value="" />
+			</a>
+		</menu>
+
+		<menu class="menu">
+			<a href="#" class="menuitem" role="menuitem"><em class="title">病患状态：</em><label class="value" data-placeholder="请选择" data-additional="护理费用每将天增加30%">不可自理</label></a>
+		</menu>
+		<input type="submit" value="确定" />
+	</form>
+	<script src="../js/zepto-with-touch.min.js"></script>
+	<script src="../js/popup.js"></script>
+	<script src="../js/express.js"></script>
+</body>
+</html>

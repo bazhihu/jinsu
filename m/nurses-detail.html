@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>护工详情</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="./css/style.css" rel="stylesheet" />
+</head>
+<body id="page-nurses-detail">
+
+	<header id="header">
+		<a class="back" href="javascript:history.back(1)">返回</a>
+		<h2 class="title">护工详情</h2>
+	</header>
+
+    <div id="nurses_detail"></div>
+
+    <script id="bodyTemplate" type='text/html'>
+	<div class="menu card" >
+        <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
+        <div class="nurses-intro">
+            <h2 class="nurses-name care-level care-level-hight">{{data.name}}</h2>
+            <p class="code">工号：{{data.worker_id}}</p>
+            <p class="info">
+                <span class="years" id="start_work">{{dateFormat(data.start_work)}}年从业经验</span>
+                <span class="mandarin">普通话{{data.chinese_level}}</span>
+            </p>
+            <p class="info">
+                <span id="birth">{{dateFormat(data.birth)}}岁</span>
+                <span>{{data.native_province}}</span>
+                <span>{{data.nation}}</span>
+                <span>{{data.education}}</span>
+            </p>
+        </div>
+    </div>
+	<section class="menu detail">
+		<h3 class="menu-title">详细信息</h3>
+		<a class="menuitem" href="javascript:expand('self-intro')" id="self-intro">{{data.selfIntros[0].ext1}}</a>
+	</section>
+	<div class="menu detail">
+		<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
+	</div>
+	<div class="menu detail">
+		<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>
+	</div>
+	<div class="menu detail">
+		<a class="menuitem" href="javascript:expand('credentials')" id="credentials">{{data.certificate}}</a>
+	</div>
+    </script>
+<!--
+	<div class="menu reviews">
+		<div class="menu-title"><a href="#" class="more" >17条评论</a><span class="nurses-rate">☆☆☆☆☆</span></div>
+		<ul>
+			<li>
+				<div>
+					<span class="nurses-rate">☆☆☆☆☆</span>
+					<em class="user">139****7234</em>
+					<i class="time">2015-03-09</i>
+				</div>
+				<p>服务很细心，照顾老人很周到，很满意</p>
+			</li>
+			<li>
+				<div>
+					<span class="nurses-rate">☆☆☆☆☆</span>
+					<em class="user">139****7234</em>
+					<i class="time">2015-03-09</i>
+				</div>
+				<p>服务很细心，照顾老人很周到，很满意</p>
+			</li>
+			<li>
+				<div>
+					<span class="nurses-rate">☆☆☆☆☆</span>
+					<em class="user">139****7234</em>
+					<i class="time">2015-03-09</i>
+				</div>
+				<p>服务很细心，照顾老人很周到，很满意</p>
+			</li>
+		</ul>
+	</div>
+-->
+	<div class="menu experience">
+		<div class="menu-title">
+			<a href="#" class="more">更多经历</a>
+			从业经历
+		</div>
+		<ul>
+			<li>
+				<i class="time">2014/02/12至2015/02/28</i>
+				<p>健康证、心理辅导证、驾驶证、特级营养师...</p>
+			</li>
+			<li>
+				<i class="time">2014/02/12至2015/02/28</i>
+				<p>健康证、心理辅导证、驾驶证、特级营养师...</p>
+			</li>
+		</ul>
+	</div>
+
+	<div class="pay-operation">
+		<a href="19.payments.html" role="button" class="pay">确认支付</a>
+		<span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
+	</div>
+    <script type='text/javascript' src='/js/zepto.min.js'></script>
+    <script type='text/javascript' src='/js/template.js'></script>
+    <script type='text/javascript' src='/js/public.js'></script>
+    <script type="text/javascript" src="/js/worker/worker.js"></script>
+    <script type="text/javascript">
+        get_workedetail();
+    </script>
+</body>
+</html>

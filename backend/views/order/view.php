@@ -102,7 +102,10 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 
     <?php
     if($model->order_status == OrderMaster::ORDER_STATUS_WAIT_PAY){
-        $payButton = Html::a('充值', ['wallet/recharge', 'uid'=>$model->uid], ['class'=>'btn btn-primary','target'=>'_blank']);
+        $payButton = Html::button(
+            '充值',
+            ['class'=>'btn btn-info js-recharge']
+        );
     }else{
         $payButton = null;
     }
@@ -247,7 +250,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         ],
         'enableEditMode'=>false,
     ]);
-
  ?>
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -290,8 +292,28 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         </div>
     </div>
 </div>
+<?php
+\yii\bootstrap\Modal::begin([
+    'header' => '<strong>充值</strong>',
+    'id'=>'rechargeModal',
+    'size'=>'modal-lg',
+]);
+echo '<div id="rechargeModalContent"></div>';
+
+\yii\bootstrap\Modal::end()
+?>
 <script type="text/javascript">
-$('body').on('click', '.panel-heading', function () {
-    $(this).siblings().toggle();
-});
+    $('body').on('click', '.panel-heading', function () {
+        $(this).siblings().toggle();
+    });
+    $('.js-recharge').click(function(){
+        <?php $url = Yii::$app->urlManager->createUrl(['order/recharge', 'id'=>$model->order_id]);?>
+
+        $("#rechargeModalContent").load(
+            '<?php echo $url;?>'
+        );
+
+        jQuery('#rechargeModal').modal({"show":true});
+    });
+
 </script>

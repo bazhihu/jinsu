@@ -47,7 +47,7 @@ class WalletController extends Controller
 
     /**
      * 用户充值
-     * @param $uid 用户ID
+     * @param int $uid 用户ID
      * @return string
      * @throws NotFoundHttpException
      */
@@ -118,6 +118,7 @@ class WalletController extends Controller
     }
     /**
      * 充值记录.
+     * @param $uid
      * @return mixed
      */
     public function actionRechargeRecords($uid=null)
@@ -158,7 +159,7 @@ class WalletController extends Controller
 
     /**
      * 提现申请
-     * @param $uid 用户ID
+     * @param int $uid 用户ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
@@ -183,7 +184,7 @@ class WalletController extends Controller
      * 提现支付列表
      * @return string
      */
-    public function actionCashList($mobile=null){
+    public function actionCashList(){
 
         $searchModel = new WalletWithdrawcashSearch();
         $queryParams = Yii::$app->request->queryParams;
@@ -208,10 +209,6 @@ class WalletController extends Controller
 
         if(Yii::$app->request->isAjax && Yii::$app->user->identity->getId())
         {
-            $response = [
-                'code'      =>'200',
-                'msg'   =>'',
-            ];
             $params = Yii::$app->request->post();
             $id     = $params['id'];
             $todo   = $params['todo'];
@@ -234,8 +231,8 @@ class WalletController extends Controller
             }
         }
         $response = [
-            'code  '    =>'400',
-            'msg'   =>'请求失败',
+            'code' => '400',
+            'msg'  => '请求失败',
         ];
         return Json::encode($response);
     }
@@ -266,9 +263,8 @@ class WalletController extends Controller
 
     /**
      * 提现付款确认操作
-     * @param $id 提现表ID
+     * @param int $id 提现表ID
      * @return string
-     * @throws \backend\models\HttpException
      */
     public function actionAjaxConfirm($id){
         if(Yii::$app->request->isAjax)

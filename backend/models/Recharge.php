@@ -10,6 +10,7 @@ use yii\base\Model;
 class Recharge extends Model
 {
     public $uid;
+    public $mobile;
     //充值金额
     public $money;
     public $admin_name;
@@ -21,6 +22,15 @@ class Recharge extends Model
     {
         return [
             [['uid', 'money'], 'required'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'uid' =>'用户ID',
+            'money' => '充值金额',
+            'mobile' => '用户帐号',
         ];
     }
 }

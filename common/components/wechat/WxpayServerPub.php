@@ -9,7 +9,7 @@ namespace common\components\wechat;
 /**
  * 响应型接口基类
  */
-class Wxpay_server_pub extends Common_util_pub
+class WxpayServerPub extends CommonUtilPub
 {
     public $data;//接收到的数据，类型为关联数组
     var $returnParameters;//返回参数，类型为关联数组

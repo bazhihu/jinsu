@@ -3,22 +3,22 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/4/30
- * Time: 15:23
+ * Time: 15:28
  */
 namespace common\components\wechat;
-
-use Yii;
+use yii;
 use yii\base\Exception;
 
 /**
- * 订单查询接口
+ * 对账单接口
  */
-class OrderQuery_pub extends Wxpay_client_pub
+class DownloadBillPub extends WxpayClientPub
 {
+
     function __construct()
     {
         //设置接口链接
-        $this->url = "https://api.mch.weixin.qq.com/pay/orderquery";
+        $this->url = "https://api.mch.weixin.qq.com/pay/downloadbill";
         //设置curl超时时间
         $this->curl_timeout = Yii::$app->params['wechat']['curl_timeout'];
     }
@@ -30,11 +30,9 @@ class OrderQuery_pub extends Wxpay_client_pub
     {
         try
         {
-            //检测必填参数
-            if($this->parameters["out_trade_no"] == null &&
-                $this->parameters["transaction_id"] == null)
+            if($this->parameters["bill_date"] == null )
             {
-                throw new Exception("订单查询接口中，out_trade_no、transaction_id至少填一个！"."<br>");
+                throw new Exception("对账单接口中，缺少必填参数bill_date！"."<br>");
             }
             $this->parameters["appid"] = Yii::$app->params['wechat']['appId'];//公众账号ID
             $this->parameters["mch_id"] = Yii::$app->params['wechat']['mchId'];//商户号
@@ -46,5 +44,17 @@ class OrderQuery_pub extends Wxpay_client_pub
             die($e->getMessage());
         }
     }
+
+    /**
+     * 	作用：获取结果，默认不使用证书
+     */
+    function getResult()
+    {
+        $this->postXml();
+        $this->result = $this->xmlToArray($this->result_xml);
+        return $this->result;
+    }
+
+
 
 }

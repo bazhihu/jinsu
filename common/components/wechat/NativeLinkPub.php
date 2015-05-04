@@ -12,7 +12,7 @@ use yii\base\Exception;
 /**
  * 静态链接二维码
  */
-class NativeLink_pub  extends Common_util_pub
+class NativeLinkPub  extends CommonUtilPub
 {
     var $parameters;//静态链接参数
     var $url;//静态链接

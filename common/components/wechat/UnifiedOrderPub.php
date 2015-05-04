@@ -12,7 +12,7 @@ use yii\base\Exception;
  * Time: 15:21
  * 统一支付接口类
  */
-class UnifiedOrder_pub extends Wxpay_client_pub
+class UnifiedOrderPub extends WxpayClientPub
 {
     function __construct()
     {

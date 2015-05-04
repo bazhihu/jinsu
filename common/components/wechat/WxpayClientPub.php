@@ -9,7 +9,7 @@ use Yii;
  * Time: 14:54
  * 请求型接口的基类
  */
-class Wxpay_client_pub extends \common\components\wechat\Common_util_pub
+class WxpayClientPub extends CommonUtilPub
 {
     var $parameters;//请求参数，类型为关联数组
     public $response;//微信返回的响应

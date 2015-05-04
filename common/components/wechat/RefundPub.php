@@ -12,7 +12,7 @@ use yii\base\Exception;
 /**
  * 退款申请接口
  */
-class Refund_pub extends Wxpay_client_pub
+class RefundPub extends WxpayClientPub
 {
 
     function __construct() {

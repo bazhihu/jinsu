@@ -9,6 +9,7 @@
 namespace api\modules\wechat\controllers;
 
 use api\modules\wechat\models\Notify;
+use common\models\WechatLog;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
@@ -35,25 +36,8 @@ class NotifyController extends ActiveController{
      * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate(){
-        notifyUrl();
-    }
-
-    /**
-     * 获取用户openId
-     */
-    public function actionIndex(){
         $notify = new Notify();
-        $res = $notify->getCode();
-        return $res;
-    }
-
-    /**
-     * 统一下单接口
-     */
-    public function actionView($id){
-        $notify = new Notify();
-        $res = $notify->underSingle($id);
-        return $res;
+        $notify->notifyUrl();
     }
 
     /**
@@ -62,26 +46,26 @@ class NotifyController extends ActiveController{
      * @return string
      */
     private function _checkNotify($post){
-        $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
-        if(empty($aliPayLog)){
+        $wechatLog = WechatLog::findOne(['transaction_no' => $post['out_trade_no']]);
+        if(empty($wechatLog)){
             Yii::info('未找到订单', 'api');
             return 'fail';
         }
-        if($aliPayLog->trade_status == 'TRADE_FINISHED' || $aliPayLog->trade_status == 'TRADE_SUCCESS'){
+        if($wechatLog->trade_state == 'TRADE_FINISHED' || $wechatLog->trade_status == 'TRADE_SUCCESS'){
             return 'success';
         }
 
-        if($aliPayLog->total_fee != $post['total_fee']){
+        if($wechatLog->total_fee != $post['total_fee']){
             Yii::info('交易金额错误', 'api');
             return 'fail';
         }
 
         //保存支付日志
-        $aliPayLog->setAttributes($post);
-        if(!$aliPayLog->save()){
-            Yii::info('支付日志保存失败:'.print_r($aliPayLog->getErrors(), true), 'api');
+        $wechatLog->setAttributes($post);
+        if(!$wechatLog->save()){
+            Yii::info('支付日志保存失败:'.print_r($wechatLog->getErrors(), true), 'api');
         }
-        $this->_logModel = $aliPayLog;
+        $this->_logModel = $wechatLog;
         return 'ok';
     }
 }

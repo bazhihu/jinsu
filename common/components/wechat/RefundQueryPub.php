@@ -3,22 +3,21 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/4/30
- * Time: 15:28
+ * Time: 15:26
  */
 namespace common\components\wechat;
-use yii;
-use yii\base\Exception;
 
+use Yii;
+use yii\base\Exception;
 /**
- * 对账单接口
+ * 退款查询接口
  */
-class DownloadBill_pub extends Wxpay_client_pub
+class RefundQueryPub extends WxpayClientPub
 {
 
-    function __construct()
-    {
+    function __construct() {
         //设置接口链接
-        $this->url = "https://api.mch.weixin.qq.com/pay/downloadbill";
+        $this->url = "https://api.mch.weixin.qq.com/pay/refundquery";
         //设置curl超时时间
         $this->curl_timeout = Yii::$app->params['wechat']['curl_timeout'];
     }
@@ -30,9 +29,12 @@ class DownloadBill_pub extends Wxpay_client_pub
     {
         try
         {
-            if($this->parameters["bill_date"] == null )
+            if($this->parameters["out_refund_no"] == null &&
+                $this->parameters["out_trade_no"] == null &&
+                $this->parameters["transaction_id"] == null &&
+                $this->parameters["refund_id "] == null)
             {
-                throw new Exception("对账单接口中，缺少必填参数bill_date！"."<br>");
+                throw new Exception("退款查询接口中，out_refund_no、out_trade_no、transaction_id、refund_id四个参数必填一个！"."<br>");
             }
             $this->parameters["appid"] = Yii::$app->params['wechat']['appId'];//公众账号ID
             $this->parameters["mch_id"] = Yii::$app->params['wechat']['mchId'];//商户号
@@ -46,15 +48,13 @@ class DownloadBill_pub extends Wxpay_client_pub
     }
 
     /**
-     * 	作用：获取结果，默认不使用证书
+     * 	作用：获取结果，使用证书通信
      */
     function getResult()
     {
-        $this->postXml();
-        $this->result = $this->xmlToArray($this->result_xml);
+        $this->postXmlSSL();
+        $this->result = $this->xmlToArray($this->response);
         return $this->result;
     }
-
-
 
 }

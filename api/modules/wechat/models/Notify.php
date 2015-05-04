@@ -8,17 +8,16 @@
 
 namespace api\modules\wechat\models;
 
+use backend\models\WalletUserDetail;
+use common\models\Wallet;
+use common\models\WechatLog;
 use Yii;
 use common\components\wechat;
-use common\components\wechat\Common_util_pub;
-use common\components\wechat\JsApi_pub;
-use common\components\wechat\UnifiedOrder_pub;
-use common\components\wechat\Wxpay_server_pub;
+use common\components\wechat\WxpayServerPub;
 
 class Notify{
 
     function getCode(){
-        //使用jsapi接口
 
         $jsApi = new JsApi_pub();
 
@@ -39,39 +38,10 @@ class Notify{
             return $openid;
         }
     }
-    function underSingle($openid){
-        $unifiedOrder = new UnifiedOrder_pub();
-
-        //设置统一支付接口参数
-        //设置必填参数
-        //appid已填,商户无需重复填写
-        //mch_id已填,商户无需重复填写
-        //noncestr已填,商户无需重复填写
-        //spbill_create_ip已填,商户无需重复填写
-        //sign已填,商户无需重复填写
-        $unifiedOrder->setParameter("openid","$openid");//商品描述
-        $unifiedOrder->setParameter("body","贡献一分钱");//商品描述
-        //自定义订单号，此处仅作举例
-        $timeStamp = time();
-        $out_trade_no = WxPayConf_pub::APPID."$timeStamp";
-        $unifiedOrder->setParameter("out_trade_no","$out_trade_no");//商户订单号
-        $unifiedOrder->setParameter("total_fee","1");//总金额
-        $unifiedOrder->setParameter("notify_url",WxPayConf_pub::NOTIFY_URL);//通知地址
-        $unifiedOrder->setParameter("trade_type","JSAPI");//交易类型
-
-        $prepay_id = $unifiedOrder->getPrepayId();
-        //=========步骤3：使用jsapi调起支付============
-        $unifiedOrder->setPrepayId($prepay_id);
-
-        $jsApi = new JsApi_pub();
-
-        $jsApiParameters = $jsApi->getParameters();
-        return $jsApiParameters;
-    }
 
     function notifyUrl(){
         //使用通用通知接口
-        $notify = new Wxpay_server_pub();
+        $notify = new WxpayServerPub();
 
         //存储微信的回调
         $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
@@ -90,23 +60,47 @@ class Notify{
         $returnXml = $notify->returnXml();
         echo $returnXml;
 
-        //==商户根据实际情况设置相应的处理流程，此处仅作举例=======
-        $log_name="./notify_url.log";//log文件路径
-        Yii::info($log_name,"【接收到的notify通知】:\n".$xml."\n");
+        Yii::info("【接收到的notify通知】:\n".$xml."\n", 'wechat');
 
         if($notify->checkSign() == TRUE)
         {
+            $wechat = WechatLog::findOne(['transaction_no'=>$notify->data['out_trade_no']]);
+            
             if ($notify->data["return_code"] == "FAIL") {
-                //此处应该更新一下订单状态，商户自行增删操作
-                Yii::info($log_name,"【通信出错】:\n".$xml."\n");
+
+                Yii::info("【通信出错】:\n".$xml."\n", 'wechat');
             }
             elseif($notify->data["result_code"] == "FAIL"){
                 //此处应该更新一下订单状态，商户自行增删操作
-                Yii::info($log_name,"【业务出错】:\n".$xml."\n");
+                Yii::info("【业务出错】:\n".$xml."\n", 'wechat');
             }
             else{
-                //此处应该更新一下订单状态，商户自行增删操作
-                Yii::info($log_name,"【支付成功】:\n".$xml."\n");
+
+                $order_no = $notify->data['out_trade_no'];
+                //给用户钱包加钱
+                $params = [
+                    'uid' => $this->_logModel->uid,
+                    'pay_from' => WalletUserDetail::PAY_FROM_ALIPAY,
+                    'money' => $notify->data['total_Fee']
+                ];
+                Wallet::recharge($params);
+
+                //调用订单支付接口方法
+                $orderNo = $this->_logModel->order_no;
+                if(!empty($orderNo)){
+
+                    $orderModel = Order::findOne(['order_no' => $orderNo]);
+                    $response = $orderModel->pay();
+                    Yii::info('$response:'.print_r($response, true), 'api');
+
+                    if($response != 200){
+                        echo "fail";
+                        Yii::info('返回支付宝：fail', 'wechat');
+                        return false;
+                    }
+                }
+
+                Yii::info("【支付成功】:\n".$xml."\n", 'wechat');
             }
         }
     }

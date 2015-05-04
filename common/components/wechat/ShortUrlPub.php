@@ -3,21 +3,21 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/4/30
- * Time: 15:26
+ * Time: 15:35
  */
 namespace common\components\wechat;
 
 use Yii;
 use yii\base\Exception;
 /**
- * 退款查询接口
+ * 短链接转换接口
  */
-class RefundQuery_pub extends Wxpay_client_pub
+class ShortUrlPub extends WxpayClientPub
 {
-
-    function __construct() {
+    function __construct()
+    {
         //设置接口链接
-        $this->url = "https://api.mch.weixin.qq.com/pay/refundquery";
+        $this->url = "https://api.mch.weixin.qq.com/tools/shorturl";
         //设置curl超时时间
         $this->curl_timeout = Yii::$app->params['wechat']['curl_timeout'];
     }
@@ -29,12 +29,9 @@ class RefundQuery_pub extends Wxpay_client_pub
     {
         try
         {
-            if($this->parameters["out_refund_no"] == null &&
-                $this->parameters["out_trade_no"] == null &&
-                $this->parameters["transaction_id"] == null &&
-                $this->parameters["refund_id "] == null)
+            if($this->parameters["long_url"] == null )
             {
-                throw new Exception("退款查询接口中，out_refund_no、out_trade_no、transaction_id、refund_id四个参数必填一个！"."<br>");
+                throw new Exception("短链接转换接口中，缺少必填参数long_url！"."<br>");
             }
             $this->parameters["appid"] = Yii::$app->params['wechat']['appId'];//公众账号ID
             $this->parameters["mch_id"] = Yii::$app->params['wechat']['mchId'];//商户号
@@ -48,13 +45,13 @@ class RefundQuery_pub extends Wxpay_client_pub
     }
 
     /**
-     * 	作用：获取结果，使用证书通信
+     * 获取prepay_id
      */
-    function getResult()
+    function getShortUrl()
     {
-        $this->postXmlSSL();
-        $this->result = $this->xmlToArray($this->response);
-        return $this->result;
+        $this->postXml();
+        $prepay_id = $this->result["short_url"];
+        return $prepay_id;
     }
 
 }

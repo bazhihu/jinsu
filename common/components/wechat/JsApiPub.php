@@ -10,7 +10,7 @@ use Yii;
 /**
  * JSAPI支付——H5网页端调起支付接口
  */
-class JsApi_pub extends Common_util_pub
+class JsApiPub extends CommonUtilPub
 {
     var $code;//code码，用以获取openid
     var $openid;//用户的openid

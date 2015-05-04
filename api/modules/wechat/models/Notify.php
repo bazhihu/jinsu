@@ -9,6 +9,7 @@
 namespace api\modules\wechat\models;
 
 use backend\models\WalletUserDetail;
+use common\models\Order;
 use common\models\Wallet;
 use common\models\WechatLog;
 use Yii;
@@ -65,43 +66,42 @@ class Notify{
         if($notify->checkSign() == TRUE)
         {
             $wechat = WechatLog::findOne(['transaction_no'=>$notify->data['out_trade_no']]);
-            
-            if ($notify->data["return_code"] == "FAIL") {
 
+            if ($notify->data["return_code"] == "FAIL") {
+                $wechat->trade_state = $notify->data["return_code"];
                 Yii::info("【通信出错】:\n".$xml."\n", 'wechat');
             }
             elseif($notify->data["result_code"] == "FAIL"){
-                //此处应该更新一下订单状态，商户自行增删操作
+                $wechat->trade_state = $notify->data["result_code"];
                 Yii::info("【业务出错】:\n".$xml."\n", 'wechat');
             }
             else{
+                $wechat->trade_state = $notify->data["result_code"];
 
-                $order_no = $notify->data['out_trade_no'];
                 //给用户钱包加钱
                 $params = [
-                    'uid' => $this->_logModel->uid,
+                    'uid' => $wechat->uid,
                     'pay_from' => WalletUserDetail::PAY_FROM_ALIPAY,
                     'money' => $notify->data['total_Fee']
                 ];
-                Wallet::recharge($params);
+                if(!Wallet::recharge($params)){
+                    Yii::info('微信充值失败', 'wechat');
+                }
 
                 //调用订单支付接口方法
-                $orderNo = $this->_logModel->order_no;
+                $orderNo = $wechat->order_no;
                 if(!empty($orderNo)){
-
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
                     $response = $orderModel->pay();
                     Yii::info('$response:'.print_r($response, true), 'api');
 
                     if($response != 200){
-                        echo "fail";
-                        Yii::info('返回支付宝：fail', 'wechat');
-                        return false;
+                        Yii::info('订单支付失败：fail', 'wechat');
                     }
                 }
-
                 Yii::info("【支付成功】:\n".$xml."\n", 'wechat');
             }
+            $wechat->save();
         }
     }
 }

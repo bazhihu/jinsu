@@ -1,7 +1,7 @@
 <?php
 /**
  * 充值接口
- * User: zhangbo
+ * User: HZQ
  * Date: 2015/4/11
  * Time: 17:38
  */
@@ -9,16 +9,15 @@
 namespace api\modules\v1\controllers;
 
 use api\modules\v1\models\Pay;
-use common\models\Order;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 use common\models\Payment;
-use common\components\alipay\Alipay;
+use common\components\wechat\Wechat;
 
-class PayController extends ActiveController{
+class WechatController extends ActiveController{
     public $modelClass = 'api\modules\v1\models\Pay';
     public $responseCode = 200;
     public $responseMsg = null;
@@ -29,7 +28,7 @@ class PayController extends ActiveController{
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                'class' => QueryParamAuth::className()
+                //'class' => QueryParamAuth::className()
             ],
         ]);
     }
@@ -37,15 +36,10 @@ class PayController extends ActiveController{
         return null;
     }
 
-    public function actionCreate(){
-        $post = Yii::$app->getRequest()->getBodyParams();
+    public function actionIndex(){
+
+        /*$post = Yii::$app->getRequest()->getBodyParams();
         $payModel = new Pay();
-        //场景判断
-        if(isset($post['pay_way']) && $post['pay_way'] == Order::PAY_WAY_ALIPAY){
-            $payModel->setScenario('alipay');
-        }else{
-            $payModel->setScenario('wechat');
-        }
         $payModel->setAttributes($post);
         if(!$payModel->validate()){
             $this->responseCode = 400;
@@ -59,14 +53,11 @@ class PayController extends ActiveController{
             'subject' => '用户充值',
             'amount' => $post['amount']
         ];
-
-        if(isset($post['openId'])){
-            $payment['open_id'] = $post['openId'];
-        }
         $paymentModel = new Payment($post['pay_way'], $payment);
+        $payment['transaction_no'] = $paymentModel->getTradeNo();
+        $payment['notify_url'] = Alipay::getNotifyUrl();
 
-        $return = $paymentModel->getReInformation();
-        return $return;
+        return $payment;*/
     }
 
     /**

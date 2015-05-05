@@ -175,7 +175,12 @@ function getOrderCycle(startTime,endTime){
     var date2=new Date(year2,month2,day2);    //结束时间
     var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
     var days=parseInt(date3/(24*3600*1000));
-    return (days>1) ? (days-1):0;
+    if(days>=1)
+        days = days-1;
+    else
+        days = 0;
+
+    return days;
 }
 
 /**

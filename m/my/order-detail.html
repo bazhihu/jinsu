@@ -8,163 +8,165 @@
     <link href="/css/style.css" rel="stylesheet" />
 </head>
 <body id="page-order-detail">
-<div id="head"></div>
-<header id="header">
-    <a class="back" href="javascript:history.back(1)">返回</a>
-    <h2 class="title">订单详情</h2>
-</header>
-<div id="body"></div>
-<div id="foot"></div>
-<script id="bodyTemplate" type='text/html'>
-    {{include 'headTemplate'}}
-<section class="menu">
-    <h3 class="menu-title">订单状态：<span>
-        {{if data.order_status=='wait_pay'}}待支付{{/if}}
-        {{if data.order_status=='wait_confirm'}}待确认{{/if}}
-        {{if data.order_status=='wait_service'}}待服务{{/if}}
-        {{if data.order_status=='in_service'}}服务中{{/if}}
-        {{if data.order_status=='end_service'}}结束服务{{/if}}
-        {{if data.order_status=='cancel'}}取消订单{{/if}}
-        {{if data.order_status=='end_evaluate'}}结束评价{{/if}}
-    </span></h3>
-    <div class="menuitem pay-tips">{{data.order_des}}</div>
-</section>
+    <div id="head"></div>
+    <header id="header">
+        <a class="back" href="javascript:history.back(1)">返回</a>
+        <h2 class="title">订单详情</h2>
+    </header>
+    <div id="body"></div>
+    <div id="foot"></div>
+    <script id="bodyTemplate" type='text/html'>
+        {{include 'headTemplate'}}
+        <section class="menu">
+            <h3 class="menu-title">订单状态：<span>
+                {{if data.order_status=='wait_pay'}}待支付{{/if}}
+                {{if data.order_status=='wait_confirm'}}待确认{{/if}}
+                {{if data.order_status=='wait_service'}}待服务{{/if}}
+                {{if data.order_status=='in_service'}}服务中{{/if}}
+                {{if data.order_status=='end_service'}}结束服务{{/if}}
+                {{if data.order_status=='cancel'}}取消订单{{/if}}
+                {{if data.order_status=='end_evaluate'}}结束评价{{/if}}
+            </span></h3>
+            <div class="menuitem pay-tips">{{data.order_des}}</div>
+        </section>
 
-<section class="menu">
-    <h3 class="menu-title">订单编号：{{data.order_no}}</h3>
-    <div class="menuitem">
-        <em class="title">服务时间：</em>
-        <span class="detail">{{data.start_time | dateFormat:'yyyy/MM/dd'}}至{{data.end_time | dateFormat:'yyyy/MM/dd'}}</span>
-        <i class="data">共{{data.days}}天</i>
-    </div>
-    <div class="menuitem">
-        <em class="title">服务地点</em>
-        <i class="data">{{data.hospitals_name}}</i>
-    </div>
-    <div class="menuitem">
-        <em class="title">病患状态</em>
-        <i class="data">{{data.patient_states_name}}</i>
-    </div>
-    <div class="nurses-selected menuitem" role="menuitem">
-        <em class="title">护理师：</em>
-        <div class="nurses-detail">
-            <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
+        <section class="menu">
+            <h3 class="menu-title">订单编号：{{data.order_no}}</h3>
+            <div class="menuitem">
+                <em class="title">服务时间：</em>
+                <span class="detail">{{data.start_time | dateFormat:'yyyy/MM/dd'}}至{{data.end_time | dateFormat:'yyyy/MM/dd'}}</span>
+                <i class="data">共{{data.days}}天</i>
+            </div>
+            <div class="menuitem">
+                <em class="title">服务地点</em>
+                <i class="data">{{data.hospitals_name}}</i>
+            </div>
+            <div class="menuitem">
+                <em class="title">病患状态</em>
+                <i class="data">{{data.patient_states_name}}</i>
+            </div>
+            <div class="nurses-selected menuitem" role="menuitem">
+                <em class="title">护理师：</em>
+                <div class="nurses-detail">
+                    <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
+                    <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>
+                    <dl>
+                        <dt>姓名：</dt>
+                        <dd>{{data.worker_name}}</dd>
+                        <dt>工号：</dt>
+                        <dd>{{data.worker_no}}</dd>
+                    </dl>
+                </div>
+            </div>
+        </section>
+        <section class="menu" role="menu">
+            <h3 class="menu-title">订单金额</h3>
+            <div class="menuitem" role="menuitem">
+                <table class="menu-detail">
+                    <tbody>
+                    <tr>
+                        <td>{{data.worker_levels_name}}服务{{data.days}}天</td>
+                        <td>&yen;{{data.base_price}}×{{data.days}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: left;padding-left: 0px">{{data.has_holidays}}为法定节假日,法定假日三倍工资</td>
+                    </tr>
+                    <tr>
+                        <td>{{data.has_holidays}}加收双倍价格</td>
+                        <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
+                    </tr>
+                    {{if data.patient_state==2}}
+                    <tr>
+                        <td>病患不可自理</td>
+                        <td>+{{data.patient_state_coefficient*100}}%</td>
+                    </tr>
+                    {{/if}}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>实际支付</td>
+                        <td>&yen;{{data.total_amount}}</td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+        <section class="menu">
+            <h3 class="menu-title">订单记录：</h3>
+            <ul id="history" class="history expanded menuitem">
+                {{if data.evaluate_time}}<li><span class="completed status">评价完成,订单结束</span>{{data.evaluate_time}}</li>{{/if}}
+                {{if data.reality_end_time && (data.order_status=='end_service')}}<li><span class="completed status">服务结束,等待评价</span>{{data.reality_end_time}}</li>{{/if}}
+                {{if data.begin_service_time}}<li><span class="completed status">服务开始</span>{{data.begin_service_time}}</li>{{/if}}
+                {{if data.pay_time}}<li><span class="completed status">支付成功,等待服务</span>{{data.pay_time}}</li>{{/if}}
+                {{if data.cancel_time}}<li><span class="completed status">订单取消</span>{{data.cancel_time}}</li>{{/if}}
+                {{if data.create_time}}<li><span class="completed status">下单成功,等待支付</span>{{data.create_time}}</li>{{/if}}
+            </ul>
+        </section>
 
-            <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>
-            <dl>
-                <dt>姓名：</dt>
-                <dd>{{data.worker_name}}</dd>
-                <dt>工号：</dt>
-                <dd>{{data.worker_no}}</dd>
-            </dl>
+        <div class="operations">
+            <a class="cancel" role="button" href="#cancel">取消订单</a>
+            <a class="pay" role="button" href="#pay">立即支付</a>
         </div>
-    </div>
-</section>
-<section class="menu" role="menu">
-    <h3 class="menu-title">订单金额</h3>
-    <div class="menuitem" role="menuitem">
-        <table class="menu-detail">
-            <tbody>
-            <tr>
-                <td>{{data.worker_levels_name}}服务{{data.days}}天</td>
-                <td>&yen;{{data.base_price}}×{{data.days}}</td>
-            </tr>
-            <tr>
-                <td>{{data.has_holidays}}为法定节假日 当天加收双倍价格</td>
-                <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
-            </tr>
-            {{if data.patient_state==2}}
-            <tr>
-                <td>病患不可自理</td>
-                <td>+{{data.patient_state_coefficient*100}}%</td>
-            </tr>
-            {{/if}}
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>实际支付</td>
-                <td>&yen;{{data.total_amount}}</td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
-</section>
-<section class="menu">
-    <h3 class="menu-title"><span class="toggle toggle-expanded" role="button">收起</span>订单记录：</h3>
-    <ul id="history" class="history expanded menuitem">
-        {{if data.evaluate_time}}<li><span class="completed status">评价完成,订单结束</span>{{data.evaluate_time}}</li>{{/if}}
-        {{if data.reality_end_time && (data.order_status=='end_service')}}<li><span class="completed status">服务结束,等待评价</span>{{data.reality_end_time}}</li>{{/if}}
-        {{if data.begin_service_time}}<li><span class="completed status">服务开始</span>{{data.begin_service_time}}</li>{{/if}}
-        {{if data.pay_time}}<li><span class="completed status">支付成功,等待服务</span>{{data.pay_time}}</li>{{/if}}
-        {{if data.cancel_time}}<li><span class="completed status">订单取消</span>{{data.cancel_time}}</li>{{/if}}
-        {{if data.create_time}}<li><span class="completed status">下单成功,等待支付</span>{{data.create_time}}</li>{{/if}}
-    </ul>
-</section>
-
-<div class="operations">
-    <a class="cancel" role="button" href="#cancel">取消订单</a>
-    <a class="pay" role="button" href="#pay">立即支付</a>
-</div>
-    {{include 'footTemplate'}}
-</script>
-<script type='text/javascript' src='../js/zepto.min.js'></script>
-<script src='../js/template.js'></script>
-<script type='text/javascript' src='../js/public.js'></script>
-<script type="text/javascript" src="../js/my/order-detail.js"></script>
-<script src="../js/zepto-with-touch.min.js"></script>
-<script>
-    $('.toggle')['touchstart' in document ? 'tap' : 'click'](function () {
-        $(this).toggleClass('toggle-expanded');
-        $('#history').toggleClass('expanded');
-    });
-</script>
-<script>
-    /**
-     * 对日期进行格式化，
-     * @param date 要格式化的日期
-     * @param format 进行格式化的模式字符串
-     *     支持的模式字母有：
-     *     y:年,
-     *     M:年中的月份(1-12),
-     *     d:月份中的天(1-31),
-     *     h:小时(0-23),
-     *     m:分(0-59),
-     *     s:秒(0-59),
-     *     S:毫秒(0-999),
-     *     q:季度(1-4)
-     * @return String
-     * @author yanis.wang
-     * @see	http://yaniswang.com/frontend/2013/02/16/dateformat-performance/
-     */
-    template.helper('dateFormat', function (date, format) {
-
-        date = new Date(date);
-
-        var map = {
-            "M": date.getMonth() + 1, //月份
-            "d": date.getDate(), //日
-            "h": date.getHours(), //小时
-            "m": date.getMinutes(), //分
-            "s": date.getSeconds(), //秒
-            "q": Math.floor((date.getMonth() + 3) / 3), //季度
-            "S": date.getMilliseconds() //毫秒
-        };
-        format = format.replace(/([yMdhmsqS])+/g, function(all, t){
-            var v = map[t];
-            if(v !== undefined){
-                if(all.length > 1){
-                    v = '0' + v;
-                    v = v.substr(v.length-2);
-                }
-                return v;
-            }
-            else if(t === 'y'){
-                return (date.getFullYear() + '').substr(4 - all.length);
-            }
-            return all;
+        {{include 'footTemplate'}}
+    </script>
+    <script type='text/javascript' src='../js/zepto.min.js'></script>
+    <script src='../js/template.js'></script>
+    <script type='text/javascript' src='../js/public.js'></script>
+    <script type="text/javascript" src="../js/my/order-detail.js"></script>
+    <script src="../js/zepto-with-touch.min.js"></script>
+    <script>
+        $('.toggle')['touchstart' in document ? 'tap' : 'click'](function () {
+            $(this).toggleClass('toggle-expanded');
+            $('#history').toggleClass('expanded');
         });
-        return format;
-    });
-</script>
+    </script>
+    <script>
+        /**
+         * 对日期进行格式化，
+         * @param date 要格式化的日期
+         * @param format 进行格式化的模式字符串
+         *     支持的模式字母有：
+         *     y:年,
+         *     M:年中的月份(1-12),
+         *     d:月份中的天(1-31),
+         *     h:小时(0-23),
+         *     m:分(0-59),
+         *     s:秒(0-59),
+         *     S:毫秒(0-999),
+         *     q:季度(1-4)
+         * @return String
+         * @author yanis.wang
+         * @see	http://yaniswang.com/frontend/2013/02/16/dateformat-performance/
+         */
+        template.helper('dateFormat', function (date, format) {
+
+            date = new Date(date);
+
+            var map = {
+                "M": date.getMonth() + 1, //月份
+                "d": date.getDate(), //日
+                "h": date.getHours(), //小时
+                "m": date.getMinutes(), //分
+                "s": date.getSeconds(), //秒
+                "q": Math.floor((date.getMonth() + 3) / 3), //季度
+                "S": date.getMilliseconds() //毫秒
+            };
+            format = format.replace(/([yMdhmsqS])+/g, function(all, t){
+                var v = map[t];
+                if(v !== undefined){
+                    if(all.length > 1){
+                        v = '0' + v;
+                        v = v.substr(v.length-2);
+                    }
+                    return v;
+                }
+                else if(t === 'y'){
+                    return (date.getFullYear() + '').substr(4 - all.length);
+                }
+                return all;
+            });
+            return format;
+        });
+    </script>
 </body>
 </html>

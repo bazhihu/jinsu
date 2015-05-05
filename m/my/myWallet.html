@@ -16,37 +16,34 @@
 <div class="menu">
     <div class="menuitem balance">
         <i class="title">当前账户余额</i>
-        <em class="value">&yen;1200</em>
+        <em class="value" id="walletMoney">&yen;</em>
     </div>
 </div>
 
-<ul class="menu wallet-logs">
-    <li class="menuitem">
-        <em class="title">支付护理服务费</em>
-        <i class="value expenditure">-1000</i>
-        <p class="time">2015-04-09 18:16:23</p>
-    </li>
-    <li class="menuitem">
-        <em class="title">支付护理服务费</em>
-        <i class="value expenditure">-3000</i>
-        <p class="time">2015-03-29 18:16:23</p>
-    </li>
-    <li class="menuitem">
-        <em class="title">余额提现</em>
-        <i class="value expenditure">-2000</i>
-        <p class="time">2015-03-19 18:16:23</p>
-    </li>
-    <li class="menuitem">
-        <em class="title">充值</em>
-        <i class="value income">7200</i>
-        <p class="time">2015-03-09 18:16:23</p>
-    </li>
+<ul class="menu wallet-logs" id="content">
 </ul>
-
+<script id="myWallet" type="text/html">
+    {{if isAdmin}}
+        {{each list as value i}}
+            <li class="menuitem">
+                <em class="title">{{value['0']}}</em>
+                <i class="value {{value['1']}}">{{value['2']}}</i>
+                <p class="time">{{value['3']}}</p>
+                <span style="display:none;" class="toDetail" url-data="/my/consumerDetail.html?detailType={{value['6']}}&detailNo={{value['4']}}&detailMoney={{value['2']}}&detailTime={{value['3']}}&wallet={{value['5']}}"></span>
+            </li>
+        {{/each}}
+    {{/if}}
+</script>
 <a href="#" class="app-download" role="banner">
     <span class="download" role="button">下载</span>
     <img class="app-icon" src="../images/app-icon.png" width="29" height="29" />
     <span>更多便捷操作尽在优爱医护客户端</span>
 </a>
+
+<script src="../js/zepto.min.js" type="text/javascript"></script>
+<script src="../js/public.js" type="text/javascript"></script>
+<script src="../js/touch.js" type="text/javascript"></script>
+<script src="../js/template.js" type="text/javascript"></script>
+<script src="../js/my/myWallet.js"></script>
 </body>
 </html>

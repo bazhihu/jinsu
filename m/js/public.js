@@ -10,7 +10,7 @@ $(document).ready(function(){
 var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://api.youaiyihu.com/',
+    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',
@@ -121,6 +121,7 @@ function getConfigs(callback){
         });
     }else{
         callback(configs);
+        return configs;
     }
 }
 function setConfigs(value){

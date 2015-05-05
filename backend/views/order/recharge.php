@@ -53,9 +53,31 @@ echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('�
             async   :false,
             cache   :false,
             timeout :30000,
-            url     : '<?=Yii::$app->urlManager->createUrl(['order/recharge', 'id' => $order->order_id]);?>',
-            data    : {'money':money ,'uid':uid}
-
+            url     :'<?=Yii::$app->urlManager->createUrl(['order/recharge', 'id' => $order->order_id]);?>',
+            data    :{'money':money ,'uid':uid},
+            error   :function(jqXHR, textStatus, errorThrown){
+                switch (jqXHR.status){
+                    case(500):
+                        alert("服务器系统内部错误");
+                        break;
+                    case(401):
+                        alert("未登录");
+                        break;
+                    case(403):
+                        alert("无权限执行此操作");
+                        break;
+                    case(408):
+                        alert("请求超时");
+                        break;
+                    default:
+                        alert("未知错误");
+                }
+            },
+            success: function(json){
+                if(json.code == '200'){
+                    location.reload();
+                }
+            }
         });
     });
 </script>

@@ -318,8 +318,11 @@ class OrderController extends Controller
                     'balance' => $balance,
                 ];
                 $sms->send($send);
-
-                return $this->redirect(['view', 'id' => $orderId]);
+                $response = [
+                    'code' => 200,
+                ];
+                echo json_encode($response);
+                return;
             }
         }
 

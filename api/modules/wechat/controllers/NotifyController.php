@@ -41,31 +41,11 @@ class NotifyController extends ActiveController{
     }
 
     /**
-     * 判断交易是否存在
-     * @param array $post 交易号
-     * @return string
+     * 获取用户openId
      */
-    private function _checkNotify($post){
-        $wechatLog = WechatLog::findOne(['transaction_no' => $post['out_trade_no']]);
-        if(empty($wechatLog)){
-            Yii::info('未找到订单', 'api');
-            return 'fail';
-        }
-        if($wechatLog->trade_state == 'TRADE_FINISHED' || $wechatLog->trade_status == 'TRADE_SUCCESS'){
-            return 'success';
-        }
-
-        if($wechatLog->total_fee != $post['total_fee']){
-            Yii::info('交易金额错误', 'api');
-            return 'fail';
-        }
-
-        //保存支付日志
-        $wechatLog->setAttributes($post);
-        if(!$wechatLog->save()){
-            Yii::info('支付日志保存失败:'.print_r($wechatLog->getErrors(), true), 'api');
-        }
-        $this->_logModel = $wechatLog;
-        return 'ok';
+    public function actionIndex(){
+        $notify = new Notify();
+        $res = $notify->getCode();
+        return $res;
     }
 }

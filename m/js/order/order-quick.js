@@ -1,5 +1,21 @@
-﻿; ~function () {
-	var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
+﻿var userInfo = getStatus(),
+    orderCreate = orderUrl+'?access-token='+userInfo.token;
+var data = {mobile:userInfo.name};
+var bodyHtml = template('bodyTemplate', data);
+$('#body').html(bodyHtml);
+
+$('#orderCreate').on(CLICK, function(e){
+    alert(1);
+    var mobile = $('#mobile').val();
+    var start_time = $('#start_time').val();
+    var end_time = $('#end_time').val();
+    var hospital_id = $('#hospital_id').val();
+    var department_id = $('#department_id').val();
+    var patient_state = $('#patient_state').val();
+    console.log("nihao"+mobile);
+})
+; ~function () {
+  var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
 	touchEnabled && $('a[target="popup"]').click(function (e) {
 		e.preventDefault();
 		return false;
@@ -15,12 +31,12 @@
 			frame.id = 'popup-frame-' + popupFrameId;
 			frame.src = a.href;
 			frame.className = 'popup-frame';
-			document.body.appendChild(frame);
 		}
-		$(frame).popup('right', false);
+		$(frame).popup('right', false, false);
 		$(frame).one('load', function () {
 			frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value);
 		});
+		try { frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value); } catch (error) { }
 		document.body.style.overflow = 'hidden';
 		$(frame).one('dismiss', function (e, tag) {
 			document.body.style.overflow = 'auto';
@@ -58,3 +74,5 @@
 	});
 	window.addEventListener('load', function () { $('#care-start').trigger('change'); });
 }();
+
+

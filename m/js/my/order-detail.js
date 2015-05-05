@@ -2,27 +2,8 @@ var order_no = getUrlQueryString('order_no'),
     access_token = getStatus(),
     url = orderUrl+"/"+order_no+'?access-token='+access_token.token;
 
-//$.getJSON(configUrl,function(response){
-//    if(response.code == 200){
-//        console.log(response.data.hospitals[2]);
-//
-//        var lenth =response.data.hospitals.length;
-//        console.log(lenth)
-//        for(var i =0;i<=lenth-1;i++){
-//            var worker_level = backData['items'][i]['worker_level'];
-//            if(backData['items'][i]['start_time'] && backData['items'][i]['end_time']){
-//                backData['items'][i]['days'] = getOrderCycle(backData['items'][i]['start_time'],backData['items'][i]['end_time']);
-//            }
-//            else
-//                backData['items'][i]['days']  ='';
-//        }
-//    }
-//})
-
-
-
 $.getJSON(url,function(response){
-    if(response.code == 200){ console.log(response)
+    if(response.code == 200){
         var hospital_id =  response.data.hospital_id;
         var worker_level =  response.data.worker_level;
         var patient_state =  response.data.patient_state;
@@ -81,12 +62,14 @@ $.getJSON(url,function(response){
                 response.data.has_holidays = has_holidays;
                 response.data.has_holidays_num = has_holidays_num;
             }
-
         });
 
         response.data.order_des = getStatusDes(response.data);
         if(response.data.start_time && response.data.end_time)
             response.data.days = getOrderCycle(response.data.start_time,response.data.end_time);
+
+        //基础价格
+        response.data.base_price = parseInt(response.data.base_price);
 
         var bodyHtml = template('bodyTemplate', response);
         $('#body').html(bodyHtml);
@@ -96,7 +79,6 @@ $.getJSON(url,function(response){
 function getStatusDes(order) {
     var time = new Date();
     var time = time.format("yyyy-MM-dd");
-
     if (order.order_status=='wait_pay') {
         if(order.pay_way == 1){
             return "已提交现金支付申请，请等待工作人员上门收款或改用其他支付方式";
@@ -132,23 +114,6 @@ function getStatusDes(order) {
     }
 }
 
-
-/**
- * 时间差days
- * @param startTime
- * @param endTime
- * @returns {number}
- */
-function getOrderCycle(startTime,endTime){
-    var year1 =  startTime.substr(0,4);
-    var year2 =  endTime.substr(0,4);
-    var month1 = startTime.substr(5,2);
-    var month2 = endTime.substr(5,2);
-    var day1 = startTime.substr(8,2);
-    var day2 = endTime.substr(8,2);
-    var date1=new Date(year1,month1,day1);    //开始时间
-    var date2=new Date(year2,month2,day2);    //结束时间
-    var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
-    var days=Math.floor(date3/(24*3600*1000));
-    return days;
-}
+$('#close').on(CLICK,function(err){
+    alert(1);
+});

@@ -8,7 +8,15 @@ $('.menuitemradio input[type="radio"]').on('click', function () {
 //    $(document.body).append(response)
 //})
 
-
+//获取余额
+balanceUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
+$.get(balanceUrl,function(response){
+    if(response.code == 200){
+        console.log(response.data.wallet.money);
+        console.log($('#money').html());
+        $('#money').html(response.data.wallet.money);
+    }
+})
 $('#confirm').on(CLICK, function(e){
     var param = {
         uid:userInfo.id,

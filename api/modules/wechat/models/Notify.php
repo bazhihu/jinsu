@@ -52,7 +52,7 @@ class Notify{
         //对后台通知交互时，如果微信收到商户的应答不是成功或超时，微信认为通知失败，
         //微信会通过一定的策略（如30分钟共8次）定期重新发起通知，
         //尽可能提高通知的成功率，但微信不保证通知最终能成功。
-        if($notify->checkSign() == FALSE){
+        if($notify->checkSign() != FALSE){
             $notify->setReturnParameter("return_code","FAIL");//返回状态码
             $notify->setReturnParameter("return_msg","签名失败");//返回信息
         }else{
@@ -63,7 +63,7 @@ class Notify{
 
         Yii::info("【接收到的notify通知】:\n".$xml."\n", 'wechat');
 
-        if($notify->checkSign() == TRUE)
+        if($notify->checkSign() != TRUE)
         {
             $wechat = WechatLog::findOne(['transaction_no'=>$notify->data['out_trade_no']]);
 
@@ -77,12 +77,14 @@ class Notify{
             }
             else{
                 $wechat->trade_state = $notify->data["result_code"];
+                $wechat->transaction_id = $notify->data['transaction_id'];
+                $wechat->time_end = time();
 
                 //给用户钱包加钱
                 $params = [
                     'uid' => $wechat->uid,
                     'pay_from' => WalletUserDetail::PAY_FROM_ALIPAY,
-                    'money' => $notify->data['total_Fee']
+                    'money' => $notify->data['total_fee']
                 ];
                 if(!Wallet::recharge($params)){
                     Yii::info('微信充值失败', 'wechat');
@@ -92,9 +94,12 @@ class Notify{
                 $orderNo = $wechat->order_no;
                 if(!empty($orderNo)){
                     $orderModel = Order::findOne(['order_no' => $orderNo]);
-                    $response = $orderModel->pay();
-                    Yii::info('$response:'.print_r($response, true), 'api');
 
+                    $response = '';
+                    if($orderModel){
+                        $response = $orderModel->pay();
+                        Yii::info('$response:'.print_r($response, true), 'api');
+                    }
                     if($response != 200){
                         Yii::info('订单支付失败：fail', 'wechat');
                     }

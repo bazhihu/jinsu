@@ -121,6 +121,7 @@ function getConfigs(callback){
         });
     }else{
         callback(configs);
+        return configs;
     }
 }
 function setConfigs(value){
@@ -146,7 +147,28 @@ function getUsers(id, token, callback){
         })
     })(Zepto);
 }
-
+function getWallets(id, token, callback){
+    ;(function($){
+        var url = walletUrl+'/'+id+'?access-token='+token;
+        $.getJSON(url, function(back){
+            if(back.code==200)
+                callback(back.data);
+            else
+                callback(false);
+        })
+    })(Zepto);
+}
+function getUser(id, token, callback){
+    ;(function($){
+        var url = userUrl+'/'+id+'?access-token='+token;
+        $.getJSON(url, function(back){
+            if(back.code==200)
+                callback(back.data);
+            else
+                callback(false);
+        })
+    })(Zepto);
+}
 /**
  * 获取url 参数
  * @param name
@@ -156,6 +178,14 @@ function getUrlQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;
+}
+
+function getLocal(){
+    var configs = localStorage.getItem(CONFIGS);
+    return configs;
+}
+function setLocal(value){
+    localStorage.setItem(CONFIGS,value);
 }
 
 /**
@@ -182,7 +212,6 @@ function getOrderCycle(startTime,endTime){
 
     return days;
 }
-
 /**
  * 时间对象的格式化
  */

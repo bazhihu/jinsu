@@ -46,7 +46,7 @@ $('#orderCreate').on(CLICK, function(e){
 		});
 		return false;
 	});
-	$('#patient-status-menuitem,#service-site-menuitem').on('change', function (e, tag) {
+	$('#patient-status-menuitem,#hospitals-menuitem').on('change', function (e, tag) {
 		if (tag) {
 			var value = this.querySelector('.value');
 			value.innerHTML = tag.text || '';
@@ -74,5 +74,3 @@ $('#orderCreate').on(CLICK, function(e){
 	});
 	window.addEventListener('load', function () { $('#care-start').trigger('change'); });
 }();
-
-

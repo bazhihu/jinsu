@@ -8,86 +8,30 @@
     <link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-service-site">
-
-<header id="header">
-    <a class="back" href="javascript:history.back(1)">返回</a>
-    <h2 class="title">服务地点</h2>
-</header>
-
-<div class="search-sites">
-    <input type="search" name="name" value="" placeholder="输入查询的医院" />
-</div>
-<ul class="sites">
-    <li class="recommends" data-value="1">协和医院</li>
-    <li class="recommends" data-value="2">北医三院</li>
-    <li class="recommends" data-value="3">北京老人医院</li>
-    <li class="recommends" data-value="4">航空总医院</li>
-    <li class="recommends" data-value="5">积水潭医院</li>
-    <li class="recommends" data-value="6">海淀医院</li>
-</ul>
-<script src="../js/zepto-with-touch.min.js"></script>
-<script>
-    function setValueByHash(value) {
-        value && [].forEach.call(document.querySelector('.sites li'), function (li) {
-            $(li)[sites.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
-        });
-    }
-    var recommends = [{ name: '协和医院', value: '1' }, { name: '北医三院', value: '2' }, { name: '北京老人医院', value: '3' }, { name: '航空总医院', value: '4' }, { name: '积水潭医院', value: '5' }, { name: '海淀医院', value: '6' }];
-    function fillList(data, append) {
-        var s = '', sites = document.querySelector('.sites'), className = '';
-        if (!data) {
-            data = recommends;
-            className = ' class="recommends"';
-        }
-        data.forEach(function (e) {
-            s += '<li' + className + ' data-value="' + e.value + '">' + e.name + '</li>';
-        });
-        if (append) {
-            sites.insertAdjacentHTML ? sites.insertAdjacentHTML('beforeEnd', s) : (sites.innerHTML += s);
-        } else {
-            sites.innerHTML = s;
-        }
-    }
-    function onSearchChange() {
-        var value = this.value;
-        if (value && (value = value.trim())) {
-            $.ajax({
-                url: 'ajax.test.php',
-                data: { key: value },
-                dataType: 'json',
-                success: function (result) {
-                    // 这里是模拟数据。
-                    result = [{ name: value + '医院A', value: 'a' }, { name: value + '医院B', value: 'b' }, { name: value + '医院C', value: 'c' }, { name: value + '医院D', value: 'd' }];
-                    fillList(Array.isArray(result) && result.length ? result : null);
-                }
-            });
-        } else {
-            fillList();
-        }
-    }
-    $('.search-sites input').on('input', onSearchChange);
-    $('.search-sites input').on('change', onSearchChange);
-    window.addEventListener('load', onSearchChange);
-    $('.sites').delegate('li', 'click', function () {
-        [].forEach.call(this.parentNode.children, function (li) {
-            $(li)[li === this ? 'addClass' : 'removeClass']('selected');
-        }, this);
-        console.log(this);
-        try {
-            window.parent.$.dismissPopup({ value: this.getAttribute('data-value'), text: this.innerText || this.textContent });
-        } catch (error) {
-            window.history.back(1);
-        }
-    });
-    $('#header .back').click(function (e) {
-        var selected = document.querySelector('.sites .selected');
-
-        try {
-            window.parent.$.dismissPopup(selected ? { value: selected.getAttribute('data-value'), text: selected.innerText || selected.textContent } : null);
-        } catch (error) {
-            window.history.back(1);
-        }
-    });
-</script>
+    <header id="header">
+        <a class="back" href="javascript:history.back(1)">返回</a>
+        <h2 class="title">服务地点</h2>
+    </header>
+    <div id="body"></div>
+    <div id="foot"></div>
+    <script id="bodyTemplate" type='text/html'>
+        <div class="search-sites">
+            <input type="search" name="name" value="" placeholder="输入查询的医院" />
+        </div>
+        <ul class="sites">
+            {{if hospitals}}
+                {{each hospitals as value index}}
+                <li class="recommends" data-value="{{value.id}}">{{value.name}}</li>
+                {{/each}}
+            {{else}}
+                <li class="recommends" data-value="1">暂无医院！</li>
+            {{/if}}
+        </ul>
+    </script>
+    <script src='../js/template.js'></script>
+    <script type='text/javascript' src='../js/zepto.min.js'></script>
+    <script src="../js/public.js"></script>
+    <script src="../js/zepto-with-touch.min.js"></script>
+    <script src="../js/hospitals.js"></script>
 </body>
 </html>

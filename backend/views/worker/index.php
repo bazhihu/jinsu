@@ -40,10 +40,8 @@ $this->title = '护工管理';
                 'class'=>'kartik\grid\CheckboxColumn',
                 'headerOptions'=>['class'=>'kartik-sheet-style'],
             ],
-
             ['class' => 'yii\grid\SerialColumn'],
             'worker_id',
-
             [
                 'attribute'=>'name',
                 'format'=>'raw',
@@ -51,9 +49,7 @@ $this->title = '护工管理';
                     return Html::a($model->name, Yii::$app->urlManager->createUrl(['worker/view','id'=>$model->worker_id]));
                 },
             ],
-
             'gender',
-
             [
                 'attribute'=>'birth',
                 'label' => '年龄',
@@ -61,16 +57,13 @@ $this->title = '护工管理';
                     return $model->workerAge($model->birth);
                 }
             ],
-
             //'native_province',
-
             [
                 'attribute'=>'hospital_id',
                 'value'=> function ($model){
                     return Hospitals::getHospitalsName($model->hospital_id);
                 }
             ],
-
             [
                 'attribute'=>'level',
                 'value'=>function ($model){
@@ -87,9 +80,7 @@ $this->title = '护工管理';
                         return '离职';
                 }
             ],*/
-
             'total_score',
-
             [
                 'attribute'=>'star',
                 'value'=>function ($model){
@@ -97,13 +88,15 @@ $this->title = '护工管理';
                     return $model->workerStar($model->star);
                 }
             ],
-
             'total_order',
-
             'good_rate',
-
             'total_comment',
-
+            [
+                'attribute'=>'audit_status',
+                'value'=>function ($model){
+                    return $model->audit_status == 1 ? '上线':'下线';
+                }
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',

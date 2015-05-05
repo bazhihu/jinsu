@@ -149,7 +149,7 @@ class Worker extends \yii\db\ActiveRecord
         self::CERTIFICATE_3 => '暂住证',
     ];
 
-    static public  $nation = array (
+    static public $nation = [
         1=>'汉族',
         2=>'壮族',
         3=>'满族',
@@ -206,7 +206,7 @@ class Worker extends \yii\db\ActiveRecord
         54=>'塔塔尔族',
         55=>'赫哲族',
         56=>'珞巴族'
-    );
+    ];
 
     public $birth_place_city;
     public $birth_place_area;
@@ -567,6 +567,8 @@ class Worker extends \yii\db\ActiveRecord
             $img->thumbnailImage(360, 0);
             $img->writeImage('uploads/' .$picNameSize);
 
+            $this->pic = $workerId;
+            $this->save(false);
             return true;
         }
         return false;
@@ -587,7 +589,7 @@ class Worker extends \yii\db\ActiveRecord
 
     /**
      * 更新护工订单总数
-     * @param $workerId 护工编号
+     * @param int $workerId 护工编号
      */
     static public function plusTotalOrder($workerId){
         $update_sql = "update yayh_worker set total_order=total_order+1 where worker_id=".$workerId;

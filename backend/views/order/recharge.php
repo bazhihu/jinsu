@@ -46,6 +46,7 @@ echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('�
         if(!confirm('确认给帐号：<?=$order->mobile?>充值'+money+'元？')){
             return false;
         }
+
         $.ajax({
             type    : "POST",
             dataType: "json",
@@ -53,13 +54,8 @@ echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('�
             cache   :false,
             timeout :30000,
             url     : '<?=Yii::$app->urlManager->createUrl(['order/recharge', 'id' => $order->order_id]);?>',
-            data    : {'money':money ,'uid':uid},
-            success: function(json){
-                if(json.code == '200'){
-                    alert(json.msg);
-                    return true;
-                }
-            }
+            data    : {'money':money ,'uid':uid}
+
         });
     });
 </script>

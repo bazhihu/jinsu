@@ -1,7 +1,7 @@
 <?php
 namespace backend\controllers;
 
-use backend\models\AdminUser;
+use backend\models\OrderMaster;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -62,9 +62,30 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $auth = Yii::$app->authManager;
+        //$auth = Yii::$app->authManager;
+        $data = [];
 
-        return $this->render('index');
+        //待支付订单数
+        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_PAY];
+        $waitPayCount = OrderMaster::find()->where($where)->count();
+        $data['waitPayCount'] = $waitPayCount;
+
+        //待确认订单数
+        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_CONFIRM];
+        $waitConfirmCount = OrderMaster::find()->where($where)->count();
+        $data['waitConfirmCount'] = $waitConfirmCount;
+
+        //待服务订单数
+        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_SERVICE];
+        $waitServiceCount = OrderMaster::find()->where($where)->count();
+        $data['waitServiceCount'] = $waitServiceCount;
+
+        //待评价订单数
+        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_EVALUATE];
+        $waitEvaluateCount = OrderMaster::find()->where($where)->count();
+        $data['waitEvaluateCount'] = $waitEvaluateCount;
+
+        return $this->render('index', ['data' => $data]);
     }
 
     public function actionLogin()

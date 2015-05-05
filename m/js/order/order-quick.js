@@ -1,37 +1,78 @@
-var userInfo = getStatus(),
+﻿var userInfo = getStatus(),
     orderCreate = orderUrl+'?access-token='+userInfo.token;
-console.log(userInfo);
-
 var data = {mobile:userInfo.name};
 var bodyHtml = template('bodyTemplate', data);
 $('#body').html(bodyHtml);
 
-$('.care-level input[type="radio"]').on('click', function () {
-    [].forEach.call(this.form.elements[this.name], function (radio) {
-        $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
-    }, this);
-});
-
-$('#act').on(CLICK, function(e){
-    console.log('1');
-//            var mobile = $('#mobile').val();
-//            var start_time = $('#start_time').val();
-//            var end_time = $('#end_time').val();
-//            var hospital_id = $('#hospital_id').val();
-//            var department_id = $('#department_id').val();
-//            var patient_state = $('#patient_state').val();
-    $('#order-quick').hide();
-    $("#order-confirm").show();
-
-    //获取余额
-    balanceUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
-    $.get(balanceUrl,function(response){
-        if(response.code == 200){
-            console.log(response.data.wallet.money);
-            console.log($('#money').html());
-            $('#money').html(response.data.wallet.money);
-        }
-    })
+$('#orderCreate').on(CLICK, function(e){
+    alert(1);
+    var mobile = $('#mobile').val();
+    var start_time = $('#start_time').val();
+    var end_time = $('#end_time').val();
+    var hospital_id = $('#hospital_id').val();
+    var department_id = $('#department_id').val();
+    var patient_state = $('#patient_state').val();
+    console.log("nihao"+mobile);
 })
+; ~function () {
+  var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
+	touchEnabled && $('a[target="popup"]').click(function (e) {
+		e.preventDefault();
+		return false;
+	});
+	$('a[target="popup"]')[touchEnabled ? 'tap' : 'click'](function (e) {
+		e.preventDefault();
+		var a = this, frame;
+		if (a.popupFrameId) {
+			frame = document.getElementById('popup-frame-' + a.popupFrameId);
+		} else {
+			a.popupFrameId = ++popupFrameId;
+			frame = document.createElement('iframe');
+			frame.id = 'popup-frame-' + popupFrameId;
+			frame.src = a.href;
+			frame.className = 'popup-frame';
+		}
+		$(frame).popup('right', false, false);
+		$(frame).one('load', function () {
+			frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value);
+		});
+		try { frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value); } catch (error) { }
+		document.body.style.overflow = 'hidden';
+		$(frame).one('dismiss', function (e, tag) {
+			document.body.style.overflow = 'auto';
+			document.body.style.removeProperty('overflow');
+			tag && (a.querySelector('input[type="hidden"]').value = tag.value || '');
+			$(a).trigger('change', tag);
+		});
+		return false;
+	});
+	$('#patient-status-menuitem,#service-site-menuitem').on('change', function (e, tag) {
+		if (tag) {
+			var value = this.querySelector('.value');
+			value.innerHTML = tag.text || '';
+			if (this.id === 'patient-status-menuitem') {
+				var add = tag.value == 2 ? 'addClass' : 'removeClass';
+				$(this)[add]('additional');
+				$('.care-levels')[add]('care-additional');
+			}
+		}
+	});
+	$('.menuitem input,.menuitem select').on('change', function () {
+		$(this)[this.value ? 'removeClass' : 'addClass']('empty');
+	});
+	var days = document.getElementById('care-days');
+	days && $('#care-start,#care-end').on('change', function () {
+		var start = document.getElementById('care-start').value;
+		var end = document.getElementById('care-end').value;
+		var d = '';
+		if (start && end && !isNaN(start = Date.parse(start)) && !isNaN(end = Date.parse(end)) && end>=start) {
+			d = Math.round((end - start) / 86400000) + 1 + '天';
+		}
+		//end.parentNode.querySelector('.title').innerHTML = ends ? '\u670d\u52a1\u7ed3\u675f\u65f6\u95f4\uff1a' : '';
+		days['value' in days ? 'value' : 'innerHTML'] = d;
+		//$(end)[ends ? 'removeClass' : 'addClass']('empty');
+	});
+	window.addEventListener('load', function () { $('#care-start').trigger('change'); });
+}();
 
-$('#hospitals_load').load("hospitals.html");
+

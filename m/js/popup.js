@@ -1,7 +1,7 @@
 ﻿; ~function ($) {
 	var container, popuped = [], source = [], globalDismissOnTap, popupTimeout;
 	var fromDir = 'top,bottom,left,right'.split(',');
-	$.fn.popup = function (from, dismissOnTap) {
+	$.fn.popup = function (from, dismissOnTap, restoreOnDismiss) {
 		popupTimeout && clearTimeout(popupTimeout);
 		if (!container) {
 			container = document.createElement('div');
@@ -35,9 +35,10 @@
 			popuped[i] = element;
 			source[i] = {
 				parent: element.parentNode,
-				before: element.nextSibling
+				before: element.nextSibling,
+				restoreOnDismiss: restoreOnDismiss === false ? false : true
 			};
-			container.appendChild(element);
+			element.parentNode !== container && container.appendChild(element);
 			$(element).trigger('popup');
 		});
 		container.style.display = 'block';
@@ -65,7 +66,7 @@
 			document.body.style.pointerEvents = '';
 			document.body.style.removeProperty('pointer-events');
 			popuped.forEach(function (k, i) {
-				if (source[i].parent && source[i].parent.insertBefore) {
+				if (source[i].restoreOnDismiss && source[i].parent && source[i].parent.insertBefore) {
 					source[i].before && source[i].before.parentNode && source[i].before.parentNode === source[i].parent ?
 					source[i].parent.insertBefore(k, source[i].before) :
 					source[i].parent.appendChild(k);

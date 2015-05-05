@@ -249,6 +249,8 @@ class Order extends \yii\db\ActiveRecord{
             //主订单表数据
             $orderData = $params['OrderMaster'];
             $orderData['order_no'] = $orderNo;
+            $orderData['start_time'] = $orderData['start_time'].' 09:00:00';
+            $orderData['end_time'] = $orderData['end_time'].' 09:00:00';
             $orderData['reality_end_time'] = $orderData['end_time'];
             $orderData['create_time'] = date('Y-m-d H:i:s');
             $orderData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];

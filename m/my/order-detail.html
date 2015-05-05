@@ -48,7 +48,7 @@
             <div class="nurses-selected menuitem" role="menuitem">
                 <em class="title">护理师：</em>
                 <div class="nurses-detail">
-                    <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
+                    <div class="nurses-photo" style="background-image: url({{if data.pic}}{{data.pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
                     <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>
                     <dl>
                         <dt>姓名：</dt>
@@ -71,15 +71,17 @@
                     <tr>
                         <td colspan="3" style="text-align: left;padding-left: 0px">{{data.has_holidays}}为法定节假日,法定假日三倍工资</td>
                     </tr>
-                    <tr>
-                        <td>{{data.has_holidays}}加收双倍价格</td>
-                        <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
-                    </tr>
+                    {{if data.has_holidays}}
+                        <tr>
+                            <td>{{data.has_holidays}}加收双倍价格</td>
+                            <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
+                        </tr>
+                    {{/if}}
                     {{if data.patient_state==2}}
-                    <tr>
-                        <td>病患不可自理</td>
-                        <td>+{{data.patient_state_coefficient*100}}%</td>
-                    </tr>
+                        <tr>
+                            <td>病患不可自理</td>
+                            <td>+{{data.patient_state_coefficient*100}}%</td>
+                        </tr>
                     {{/if}}
                     </tbody>
                     <tfoot>
@@ -92,7 +94,7 @@
             </div>
         </section>
         <section class="menu">
-            <h3 class="menu-title">订单记录：</h3>
+            <h3 class="menu-title">订单记录：<span role="button" class="toggle toggle-expanded">收起</span></h3>
             <ul id="history" class="history expanded menuitem">
                 {{if data.evaluate_time}}<li><span class="completed status">评价完成,订单结束</span>{{data.evaluate_time}}</li>{{/if}}
                 {{if data.reality_end_time && (data.order_status=='end_service')}}<li><span class="completed status">服务结束,等待评价</span>{{data.reality_end_time}}</li>{{/if}}

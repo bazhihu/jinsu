@@ -1,6 +1,5 @@
 var sub = $('.submit'),
-    code = $('.retrieve-button'),
-    validCode=true;
+    code = $('.retrieve-button');
 var user = getStatus();
 if(user){
     window.location.href = history.go(-1);
@@ -12,22 +11,23 @@ sub.on(CLICK,function(err){
         if(!a)
             error = false;
     });
-    if(!error)
-        return false;
-    $.post(loginUrl,data,function(back){
-        if(back.code == 200)
-        {
-            setCookie(ID, back.data.uid);
-            setCookie(NAME, back.data.mobile);
-            setCookie(TOKEN, back.data.token);
-            window.location.href = host;
-        }else{
+    if(error){
+        $.post(loginUrl,data,function(back){
+            if(back.code == 200)
+            {
+                setCookie(ID, back.data.uid);
+                setCookie(NAME, back.data.mobile);
+                setCookie(TOKEN, back.data.token);
+                window.location.href = host;
+            }else{
 
-        }
-    });
+            }
+        });
+    }
 });
 code.on(CLICK,function(err){
-    var time=60;
+    var time=60,
+        validCode=true;
     var button = $(this);
     if (validCode) {
         validCode=false;
@@ -37,21 +37,21 @@ code.on(CLICK,function(err){
             if(!a)
                 error = false;
         });
-        if(!error)
-            return false;
-        $('.hide').attr('style', null);
-        var t=setInterval(function  () {
-            time--;
-            button.html('('+time+")重新获取");
-            if (time==0) {
-                clearInterval(t);
-                button.html("重新获取");
-                validCode=true;
-            }
-        },1000);
-        $.post(smsUrl,data,function(response){
-            console.log(response);
-        });
+        if(error){
+            $('.hide').attr('style', null);
+            var t=setInterval(function  () {
+                time--;
+                button.html('('+time+")重新获取");
+                if (time==0) {
+                    clearInterval(t);
+                    button.html("重新获取");
+                    validCode=true;
+                }
+            },1000);
+            $.post(smsUrl,data,function(response){
+                console.log(response);
+            });
+        }
     }
 });
 function validateLogin(date, callback){

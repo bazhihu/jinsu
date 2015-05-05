@@ -29,9 +29,10 @@ class Config extends ActiveRecord
      * @var array
      */
     public static $workerDes = [
-        Worker::WORKER_LEVEL_MEDIUM =>'3年工作经验',
-        Worker::WORKER_LEVEL_HIGH   =>'5年工作经验',
-        Worker::WORKER_LEVEL_SUPER  =>'7年工作经验',
+        Worker::WORKER_LEVEL_PRIMARY =>'3年工作经验',
+        Worker::WORKER_LEVEL_MEDIUM =>'5年工作经验',
+        Worker::WORKER_LEVEL_HIGH   =>'7年工作经验',
+        Worker::WORKER_LEVEL_SUPER  =>'8年工作经验',
     ];
 
     /**
@@ -66,7 +67,7 @@ class Config extends ActiveRecord
         {
             $return[$key] = [
                 "id"    => $value,
-                "name"  => Worker::$workerLevelLabel[$value].'护理师',
+                "name"  => Worker::$workerLevelLabel[$value].'护理员',
                 "des"   => self::$workerDes[$value],
                 "price" => Worker::$workerPrice[$value],
             ];

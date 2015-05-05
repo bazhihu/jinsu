@@ -8,10 +8,11 @@
 
 namespace api\modules\wechat\controllers;
 
+use api\modules\wechat\models\Notify;
+use common\models\WechatLog;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
-use common\models\Order;
 
 class NotifyController extends ActiveController{
     public $modelClass = false;
@@ -35,39 +36,16 @@ class NotifyController extends ActiveController{
      * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate(){
-        $post = Yii::$app->getRequest()->getBodyParams();
-        Yii::info('======================回调开始：'.print_r($post, true), 'api');
-
-        echo 444;
-        exit();
+        $notify = new Notify();
+        $notify->notifyUrl();
     }
 
     /**
-     * 判断交易是否存在
-     * @param array $post 交易号
-     * @return string
+     * 获取用户openId
      */
-    private function _checkNotify($post){
-        $aliPayLog = AlipayLog::findOne(['transaction_no' => $post['out_trade_no']]);
-        if(empty($aliPayLog)){
-            Yii::info('未找到订单', 'api');
-            return 'fail';
-        }
-        if($aliPayLog->trade_status == 'TRADE_FINISHED' || $aliPayLog->trade_status == 'TRADE_SUCCESS'){
-            return 'success';
-        }
-
-        if($aliPayLog->total_fee != $post['total_fee']){
-            Yii::info('交易金额错误', 'api');
-            return 'fail';
-        }
-
-        //保存支付日志
-        $aliPayLog->setAttributes($post);
-        if(!$aliPayLog->save()){
-            Yii::info('支付日志保存失败:'.print_r($aliPayLog->getErrors(), true), 'api');
-        }
-        $this->_logModel = $aliPayLog;
-        return 'ok';
+    public function actionIndex(){
+        $notify = new Notify();
+        $res = $notify->getCode();
+        return $res;
     }
 }

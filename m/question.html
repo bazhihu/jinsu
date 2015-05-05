@@ -1,53 +1,45 @@
-<!DOCTYPE HTML>
-<html>
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />
-<script>
-if(/Android (\d+\.\d+)/.test(navigator.userAgent)){
-	if(parseFloat(RegExp.$1)>2.3){
-		var phoneScale = parseInt(window.screen.width)/640;
-		document.write('<meta name="viewport" content="width=640, minimum-scale='+ phoneScale +', maximum-scale='+ phoneScale +', target-densitydpi=device-dpi" />');
-	}else{
-		document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi" />');
-	}
-}else{
-	document.write('<meta name="viewport" content="width=640,user-scalable=no, target-densitydpi=device-dpi" />');
-}
-</script>
-<link href="/css/main1.0.css" rel="stylesheet" /> 
-<title>常见问题</title>
+    <meta charset="utf-8" />
+    <title>常见问题</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <link href="../css/style.css" rel="stylesheet" />
 </head>
-
-<body>
-<header>
-	<a href="" class="back">返回</a>常见问题
+<body id="page-faq">
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">常见问题</h2>
 </header>
-<dl class="question">
-	<dt>Q：你们平台上的护理师具备专业的护理质吗？</dt>
-<dd>我们平台上所有陪护人员均经过严格筛选和身份备案，均通过考试取得国家认可的护理证，同时会在三甲医院进行心理测试，保证服务质量。</dd>
-	<dt>Q：对陪护人员不满意怎么办？</dt>
-<dd>您可以随时拨打我们的客服热线 400-630-9860 进行投诉，客服会及时了解情况并为您更换更合适的护理人员。</dd>
-	<dt>Q：可以预约护工到家里陪护病人吗？</dt>
-<dd>目前我们的服务仅限于医院的病房陪护，暂时不提供到家的陪护服务。</dd>
-	<dt>Q：陪护服务的计费方式？</dt>
-<dd>我们的服务时间是早上8点到次日早上8点为一天，不足一天按一天收取费用。
-依国家规定，法定节假日：除夕、大年初一、大年初二、大年初三、元旦、清明、五一、端午、中秋、国庆（10月1日、10月2日、10月3）需支付当天三倍的服务费。</dd>
-	<dt>Q：订单提交了可以修改吗？</dt>
-<dd>可以修改的，请在当日中午12点前与客服人员联系，修改次日的订单。</dd>
-	<dt>Q：订单修改会扣费吗？</dt>
-<dd>若当日中午12点后要修改次日的订单，将扣除单日费用的20%作为补偿。
-若在当日晚上22点后或护工到达后临时修改订单，则要扣除单日费用的50%作为补偿。</dd>
-	<dt>Q：病人病情变化，服务时间可以延长吗？</dt>
-<dd>续单需要在订单结束前20小时与客服联系，如：第二天早上8点结束的订单需在当日中午12点前进行续单申请。</dd>
-	<dt>Q：订单可以提前终止吗？</dt>
-<dd>提前终止订单需要提前20小时与客服联系，如：要第二天早上8点提前结束订单，则需在当日中午12点前与客服联系。</dd>
-</dl>
 
+<dl class="faq-list">
+    <dt><i>Q:</i>你们平台上的护理员具备专业的护理资质吗？</dt>
+    <dd><i>A:</i>我们平台上所有陪护人员均经过岗前培训并通过严格的考试获得护理员资格方可上岗。</dd>
 
-</dt>
+    <dt><i>Q:</i>对陪护人员不满意怎么办？</dt>
+    <dd><i>A:</i>您可以随时拨打我们的客服热线 400-630-9860 进行投诉，客服会及时了解情况并为您更换更合适的护理人员。</dd>
+
+    <dt><i>Q:</i>可以预约护理员到家里陪护病人吗？</dt>
+    <dd><i>A:</i>目前我们的服务仅针对医院的病房陪护，暂时不提供到家的陪护服务。</dd>
+
+    <dt><i>Q:</i>陪护服务的计费方式？</dt>
+    <dd><i>A:</i>我们的服务时间是早上9点到次日早上9点为一天，不足一天按一天收取费用。
+        <br>注：依国家法律规定，法定节日需收取三倍服务费（除夕、大年初一、初二、初三、元旦、清明、五一、端午、中秋、10月1日、10月2日、10月3日）。</dd>
+
+    <dt><i>Q:</i>订单提交了可以修改吗？</dt>
+    <dd><i>A:</i>可以修改的，请在当日中午12点前与客服人员联系，修改次日的订单。</dd>
+
+    <dt><i>Q:</i>订单修改会扣费吗？</dt>
+    <dd><i>A:</i>若当日中午12点后要修改次日的订单，将扣除单日费用的20%作为补偿。
+        <br>若在当日晚上22点后或护工到达后临时修改订单，则要扣除单日费用的50%作为补偿。
+    </dd>
+
+    <dt><i>Q:</i>若病人病情变化服务时间可以延长吗？</dt>
+    <dd><i>A:</i>续单需要在订单结束前24小时与客服联系，如：第二天早上9点结束的订单需在当日中午12点前进行续单申请。</dd>
+
+    <dt><i>Q:</i>订单可以提前终止吗？</dt>
+    <dd><i>A:</i>提前终止订单需要提前24小时与客服联系，如：要第二天早上9点提前结束订单，则需在当日中午12点前与客服联系。
+    </dd>
 </dl>
-<script src="/js/z.min.js"></script>
-<script src="/js/z.flipview.js"></script>
 </body>
 </html>

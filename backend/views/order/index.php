@@ -53,11 +53,18 @@ td .btn{margin: 2px}
             'options' => [
                 'style' => 'width:100px',
             ],
-            'format'=>['datetime','yyyy-MM-dd']
+            //'format'=>['datetime','yyyy-MM-dd']
+        ],
+        [
+            'attribute'=>'end_time',
+            //'format'=>['datetime','yyyy-MM-dd'],
+            'options' => [
+                'style' => 'width:100px',
+            ]
         ],
         [
             'attribute'=>'reality_end_time',
-            'format'=>['datetime','yyyy-MM-dd'],
+            //'format'=>['datetime','yyyy-MM-dd'],
             'options' => [
                 'style' => 'width:100px',
             ]
@@ -238,10 +245,16 @@ td .btn{margin: 2px}
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 新增订单', ['create'], ['class' => 'btn btn-success']),                                                                                                                                                          'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset List', ['index'], ['class' => 'btn btn-info']),
+            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 新增订单', ['create'], ['class' => 'btn btn-success']),
+            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> 重置列表', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>true
         ],
     ]);
     //Pjax::end(); ?>
 
 </div>
+<script type="text/javascript">
+    setInterval(function(){
+        window.location.reload();
+    },60000)
+</script>

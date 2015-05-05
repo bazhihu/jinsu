@@ -16,7 +16,7 @@ class OrderSearch extends OrderMaster
     {
         return [
             [['order_no', 'uid', 'hospital_id', 'patient_state', 'worker_level', 'worker_no'], 'integer'],
-            [['order_no', 'mobile', 'start_time', 'end_time', 'order_status', 'create_order_ip'], 'safe'],
+            [['order_no', 'mobile', 'start_time', 'end_time', 'reality_end_time', 'order_status', 'worker_name'], 'safe'],
             [['total_amount'], 'number'],
         ];
     }
@@ -29,7 +29,14 @@ class OrderSearch extends OrderMaster
 
     public function search($params)
     {
-        $query = OrderMaster::find()->orderBy('order_id DESC');
+        $query = OrderMaster::find();
+
+        //内勤人员限制，只能看到本医院的订单
+        if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
+            $query->andFilterWhere(['hospital_id' => Yii::$app->user->identity->hospital_id]);
+        }
+
+        !isset($params['sort']) && $query->orderBy('order_id DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -38,6 +45,15 @@ class OrderSearch extends OrderMaster
             ],
         ]);
 
+        // enable sorting for the related columns
+        $addSortAttributes = ["profile.full_name"];
+        foreach ($addSortAttributes as $addSortAttribute) {
+            $dataProvider->sort->attributes[$addSortAttribute] = [
+                'asc'   => [$addSortAttribute => SORT_ASC],
+                'desc'  => [$addSortAttribute => SORT_DESC],
+            ];
+        }
+        //Yii::error();
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
@@ -46,9 +62,9 @@ class OrderSearch extends OrderMaster
             'order_no' => $this->order_no,
             'uid' => $this->uid,
             'total_amount' => $this->total_amount,
-            'hospital_id' => $this->hospital_id,
             'patient_state' => $this->patient_state,
             'worker_no' => $this->worker_no,
+            'worker_name' => $this->worker_name,
             'mobile' => $this->mobile,
             'order_status' => $this->order_status
         ]);
@@ -56,7 +72,7 @@ class OrderSearch extends OrderMaster
         $query->andFilterWhere(['>=', 'start_time', $this->start_time])
             ->andFilterWhere(['<=', 'end_time', $this->end_time]);
 
-        $query->orderBy('order_id DESC');
+        //!isset($params['sort']) && $query->orderBy('reality_end_time ASC');
         return $dataProvider;
     }
 }

@@ -19,6 +19,8 @@ class OrderController extends Controller {
      * 订单结束服务提醒
      */
     public function actionEnd(){
+        Yii::info('Game begin', 'console');
+
         //获取还有一天将要结束的订单
         $dateTime = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
         $orderModel = Order::findAll(['reality_end_time' => $dateTime]);

@@ -2,10 +2,6 @@
 
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
-use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
-use kartik\widgets\Select2;
-use kartik\widgets\Growl;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\WalletUserDetail */

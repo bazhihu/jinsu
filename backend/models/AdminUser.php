@@ -296,14 +296,14 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
     /**
      * 权限验证
-     * @param $per 菜单路由地址
+     * @param string $per 菜单路由地址
      * @return bool
      */
     public static function checkPermissions($per)
     {
         #权限验证
         $admin_uid = Yii::$app->user->identity->getId();
-
+        Yii::$app->authManager->cache = Yii::$app->cache;
         $past = Yii::$app->authManager->checkAccess($admin_uid,$per);
         if(!$past)
         {

@@ -193,7 +193,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
         'deleteOptions'=>[
         'url'=>['delete', 'id' => $model->worker_id],
         'data'=>[
-        'confirm'=>Yii::t('app', '确定要删除吗?'),
+        'confirm'=>'确定要删除吗?',
         'method'=>'post',
         ],
         ],

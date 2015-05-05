@@ -2,13 +2,14 @@
 
 namespace backend\controllers;
 
+use backend\models\Recharge;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Order;
-
+use backend\models\WalletUser;
 use backend\models\OrderPatient;
 use backend\models\OrderMaster;
 use backend\models\OrderSearch;
@@ -38,7 +39,6 @@ class OrderController extends Controller
      * @return mixed
      */
     public function actionIndex(){
-
         //客服直接登录end
         $searchModel = new OrderSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
@@ -83,12 +83,13 @@ class OrderController extends Controller
             $model->mobile = $user->mobile;
             $model->contact_name = $user->name;
         }
+
         $orderPatientModel = new OrderPatient();
         if ($model->load(Yii::$app->request->post()) && $model->validate(['end_time'])) {
             $params = Yii::$app->request->post();
 
             //检查手机号是否注册
-            $user = $this->_checkMobile($params['OrderMaster']['mobile'], $params['OrderMaster']['contact_name']);
+            $user = $model->checkMobile($params['OrderMaster']['mobile'], $params['OrderMaster']['contact_name']);
 
             $params['OrderMaster']['uid'] = $user->id;
             $params['OrderMaster']['patient_state'] = $params['OrderPatient']['patient_state'];
@@ -107,7 +108,7 @@ class OrderController extends Controller
                 $params['level'] = Worker::$workerLevelLabel[$order->worker_level];
                 Sms::send($params);
             }
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $order->order_id]);
         } else {
             //$model->addError('end_time', '结束时间不能小于或等于开始时间。');
             return $this->render('create', [
@@ -115,24 +116,6 @@ class OrderController extends Controller
                 'orderPatientModel' => $orderPatientModel
             ]);
         }
-    }
-
-    /**
-     * @param $mobile
-     * @param null $name
-     * @return $this|User|null|static
-     * @throws \backend\models\ErrorException
-     */
-    private function _checkMobile($mobile, $name = null){
-        $user = User::findByMobile($mobile);
-        if(empty($user)){
-            //注册手机号
-            $user = new User();
-            $user->mobile = $mobile;
-            $user->name = $name;
-            $user = $user->SystemSignUp();
-        }
-        return $user;
     }
 
     /**
@@ -238,15 +221,7 @@ class OrderController extends Controller
      */
     public function actionFinish($id){
         $order = $this->findModel($id);
-
-        //判断完成时间
-        $startTime = strtotime($order->start_time);
-        $endTime = strtotime(date('Y-m-d'));
-        if($startTime >= $endTime){
-            $response = ['code' => '400', 'msg' => '订单时间至少满一天才能完成'];
-        }else{
-            $response = $order->finish($endTime);
-        }
+        $response = $order->finish();
 
         echo Json::encode($response);
     }
@@ -287,5 +262,78 @@ class OrderController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * 订单价格计算
+     * @return string
+     */
+    public function actionCalculate(){
+        $this->layout = "none.php";
+        $post = Yii::$app->request->post();
+        $orderMaster = new OrderMaster();
+        $orderMaster->scenario = 'calculate';
+        if ($post) {
+            $orderMaster->setAttributes($post);
+            $orderMaster->reality_end_time = $orderMaster->end_time;
+            $orderMaster->base_price = Worker::getWorkerPrice($orderMaster->worker_level);
+
+            //能否自理价格系数
+            $patientState = $orderMaster->patient_state;
+            $orderMaster->patient_state_coefficient = OrderPatient::$patientStatePrice[$patientState];
+
+            return $this->render('calculate', [
+                'model' => $orderMaster
+            ]);
+        }
+    }
+
+    /**
+     * 充值
+     * @throws NotFoundHttpException
+     */
+    public function actionRecharge(){
+        $this->layout = "none.php";
+        $orderId = Yii::$app->request->get('id');
+        $orderModel = $this->findModel($orderId);
+        $rechargeModel = new Recharge();
+        if(Yii::$app->request->isPost){
+            $post = ['Recharge' => Yii::$app->request->post()];
+            if ($rechargeModel->load($post, 'Recharge') && $rechargeModel->validate()) {
+                //支付渠道-后台
+                $params = $post['Recharge'];
+                $params['pay_from'] = \backend\models\WalletUserDetail::PAY_FROM_BACKEND;
+                $balance = \common\models\Wallet::recharge($params);
+
+                //订单支付
+                $orderModel->pay('后台订单支付');
+
+                //发送短信
+                $sms = new Sms();
+                $send = [
+                    'mobile' => $orderModel->mobile,
+                    'type' => Sms::SMS_SUCCESS_RECHARGE,
+                    'account' => $orderModel->mobile,
+                    'money' => $params['money'],
+                    'balance' => $balance,
+                ];
+                $sms->send($send);
+
+                return $this->redirect(['view', 'id' => $orderId]);
+            }
+        }
+
+        $uid = $orderModel->uid;
+        $rechargeModel->uid = $uid;
+
+        //获得用户余额
+        $wallet = WalletUser::findOne($uid);
+        $balance = empty($wallet) ? 0 : $wallet->money;
+
+        return $this->render('recharge', [
+            'model' => $rechargeModel,
+            'order' => $orderModel,
+            'balance' => $balance
+        ]);
     }
 }

@@ -54,7 +54,7 @@ class WorkerController extends ActiveController {
         if(!empty($worker)){
 
             foreach($worker as $key => $item){
-                $item['pic'] = Worker::workerPic($item['worker_id']);
+                $item['pic'] = Worker::workerPic($item['worker_id'], 120);
                 $worker[$key] = $item;
             }
         }
@@ -93,6 +93,7 @@ class WorkerController extends ActiveController {
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
         #护工订单信息
         $worker['orders'] = Order::find()
+            ->andFilterWhere(['worker_no'=>$worker_id])
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)

@@ -62,13 +62,15 @@ class ConfigController extends ActiveController {
             unset($hospitals['phone']);
         }
         #科室
-        $return['departments'] = Departments::find(['parent_id'])->all();
+        $return['departments'] = Departments::find()
+            ->andFilterWhere(['parent_id'=>0])
+            ->all();
         foreach($return['departments'] as $departments)
         {
             unset($departments['parent_id']);
         }
         #护工等级
-        $return['worker_levels'] = Config::generateWorker([Worker::WORKER_LEVEL_MEDIUM,Worker::WORKER_LEVEL_HIGH,Worker::WORKER_LEVEL_SUPER]);
+        $return['worker_levels'] = Config::generateWorker([Worker::WORKER_LEVEL_PRIMARY,Worker::WORKER_LEVEL_MEDIUM,Worker::WORKER_LEVEL_HIGH,Worker::WORKER_LEVEL_SUPER]);
 
         #患者等级
         $return['patient_states'] = Config::generatePatient([OrderPatient::PATIENT_STATE_OK,OrderPatient::PATIENT_STATE_DISABLED]);

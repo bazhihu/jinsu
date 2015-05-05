@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>个人中心</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-account">
+<header id="header">
+    <a class="back" href="/index.html">返回</a>
+    <h2 class="title">个人中心</h2>
+
+    <div class="unsignedin" style="display: none">
+        您还没有登录
+        <a class="signin-button" role="button" href="../login.html">登录</a>
+    </div>
+    <div class="account-intro" style="display: none">
+        <div class="photo" style="background-image:url(../images/nurses-simple.jpg)"></div>
+        <em class="name" id="name"></em>
+    </div>
+</header>
+
+<menu class="menu" role="menu">
+    <a href="/book.html" class="menuitem" role="menuitem"><em class="express title">我要预约</em></a>
+    <a href="my-orders.html" class="menuitem" role="menuitem"><em class="orders title">我的订单</em><i class="badge" style="display: none">1</i></a>
+    <a href="myWallet.html" class="menuitem" role="menuitem"><em class="wallet title">我的钱包</em></a>
+    <a href="abouts.html" class="menuitem" role="menuitem"><em class="aboutus title">关于我们</em></a>
+    <a href="26.download.html" class="menuitem" role="menuitem"><em class="download title">下载App</em></a>
+</menu>
+
+<a class="call" href="tel:400-123-4567">400-123-4567</a>
+    <script src="../js/zepto.min.js"></script>
+    <script src="../js/public.js"></script>
+    <script src="../js/center.js"></script>
+</body>
+</html>

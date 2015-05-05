@@ -13,7 +13,6 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-
         'gridview' => [
             'class' => 'kartik\grid\Module'
             // enter optional module parameters below - only if you need to
@@ -103,7 +102,7 @@ return [
             ]
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'mdm\admin\components\DbManager',
             'itemTable' => 'yayh_auth_item',
             'assignmentTable' => 'yayh_auth_assignment',
             'itemChildTable' => 'yayh_auth_item_child',
@@ -133,10 +132,11 @@ return [
         'allowActions' => [
             'site/login',
             'site/error',
+            'site/captcha',
             'site/logout',
             'tq/index',
-            'admin-user/reset',
-            'admin-user/default',
+            'tq/select',
+            'order/calculate'
         ]
     ],
     'params' => $params,

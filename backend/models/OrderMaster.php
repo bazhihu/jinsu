@@ -47,8 +47,10 @@ class OrderMaster extends Order
         $rules = parent::rules();
         return array_merge($rules, [
             [['worker_level'], 'required'],
-            [['reality_end_time'], 'required', 'on'=>'update'],
-            [['reality_end_time'], 'validateRealityEndTime', 'on'=>'update']
+            [['reality_end_time'], 'required', 'on'=>['calculate', 'update']],
+            [['reality_end_time'], 'validateRealityEndTime', 'on'=>['calculate', 'update']],
+            [['patient_state'], 'required', 'on'=>'calculate'],
+
         ]);
     }
 
@@ -64,10 +66,29 @@ class OrderMaster extends Order
             if(strtotime($this->reality_end_time) <= strtotime($this->start_time)){
                 $this->addError($attribute, '实际结束时间不能小于或等于订单开始时间。');
             }
-            if(strtotime($this->reality_end_time) <= strtotime(date('Y-m-d'))){
-                $this->addError($attribute, '实际结束时间不能小于或等于当前时间。');
-            }
+//            if(strtotime($this->reality_end_time) <= strtotime(date('Y-m-d'))){
+//                $this->addError($attribute, '实际结束时间不能小于或等于当前时间。');
+//            }
         }
     }
+
+    /**
+     * @param $mobile
+     * @param null $name
+     * @return $this|User|null|static
+     * @throws \backend\models\ErrorException
+     */
+    public function checkMobile($mobile, $name = null){
+        $user = User::findOne(['mobile' => $mobile]);
+        if(empty($user)){
+            //注册手机号
+            $user = new User();
+            $user->mobile = $mobile;
+            $user->name = $name;
+            $user = $user->SystemSignUp();
+        }
+        return $user;
+    }
+
 
 }

@@ -20,20 +20,26 @@
             <h3 class="menu-title">订单内容</h3>
             <div class="menuitem" role="menuitem">
                 <em class="title">服务时间：</em>
-                <span class="detail">{{start}}至{{end}}</span>
+                <span class="detail">{{start_time}}至{{end_time}}</span>
+                <input type="hidden" id="start_time" value="{{start_time}}">
+                <input type="hidden" id="end_time" value="{{end_time}}">
                 <i class="value">共{{days}}天</i>
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">服务地点：</em>
                 <i class="value">协和医院</i>
+                <input type="hidden" id="hospital_id" value="{{hospital_id}}">
+                <input type="hidden" id="department_id" value="{{department_id}}">
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">病患状态：</em>
-                <i class="value">不可自理</i>
+                <i class="value">{{if patient-status==1}}可自理{{else}}不可自理{{/if}}</i>
+                <input type="hidden" id="patient_state" value="{{patient-status}}">
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">护理师：</em>
                 <i class="value care-level-hight">高级护理师</i>
+                <input type="hidden" id="worker_level" value="{{worker_level}}">
             </div>
         </section>
 
@@ -65,7 +71,7 @@
             </div>
             <a href="#" class="menuitem" role="menuitem">
                 <em class="title">钱包余额：</em>
-                <i class="value">&yen;800</i>
+                <i class="value" id="money">&yen;{{money}}</i>
             </a>
         </section>
 
@@ -101,5 +107,12 @@
 <script type='text/javascript' src='../js/zepto.min.js'></script>
 <script src="../js/public.js"></script>
 <script src="../js/order/order-confirm.js"></script>
+<script>
+    $('.menuitemradio input[type="radio"]').on('click', function () {
+        [].forEach.call(this.form.elements[this.name], function (radio) {
+            $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
+        }, this);
+    });
+</script>
 </body>
 </html>

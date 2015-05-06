@@ -11,7 +11,7 @@ function setValueByHash(value) {
 }
 
 function fillList(data, append) {
-    console.log(data);
+    console.log(append);
     var s = '', sites = document.querySelector('.sites'), className = '';
     if (!data) {
         var configs = getConfigs(function(configs){});
@@ -40,17 +40,10 @@ function onSearchChange() {
             var pinyin = item.pinyin;
             var search = name+pinyin;
             if (search.indexOf(value) >= 0) {
-                //console.log(item);
-                //console.log(search);
-                //console.log(value);
-                //console.log(search.indexOf(value));
                 search_array ={"id":"'+id+'","name":"'+name+'"};
             }
         });
-        console.log(search_array);
         fillList(Array.isArray(search_array) && search_array.length ? search_array : null);
-        //var result = JSON.parse(search_array);
-        //console.log(result)
     }else {
         fillList();
     }

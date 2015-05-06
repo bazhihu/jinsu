@@ -1,19 +1,14 @@
 ﻿var userInfo = getStatus(),
     orderCreate = orderUrl+'?access-token='+userInfo.token;
-var data = {mobile:userInfo.name};
+var configs = getConfigs(function(configs){});
+
+var data = {
+    mobile:userInfo.name,
+    worker_levels:configs.worker_levels
+};
 var bodyHtml = template('bodyTemplate', data);
 $('#body').html(bodyHtml);
 
-$('#orderCreate').on(CLICK, function(e){
-    alert(1);
-    var mobile = $('#mobile').val();
-    var start_time = $('#start_time').val();
-    var end_time = $('#end_time').val();
-    var hospital_id = $('#hospital_id').val();
-    var department_id = $('#department_id').val();
-    var patient_state = $('#patient_state').val();
-    console.log("nihao"+mobile);
-})
 ; ~function () {
   var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
 	touchEnabled && $('a[target="popup"]').click(function (e) {
@@ -65,8 +60,10 @@ $('#orderCreate').on(CLICK, function(e){
 		var start = document.getElementById('care-start').value;
 		var end = document.getElementById('care-end').value;
 		var d = '';
+console.log(start)
 		if (start && end && !isNaN(start = Date.parse(start)) && !isNaN(end = Date.parse(end)) && end>=start) {
-			d = Math.round((end - start) / 86400000) + 1 + '天';
+			//d = Math.round((end - start) / 86400000) + 1 + '天';
+            d = getOrderCycle(start,end);
 		}
 		//end.parentNode.querySelector('.title').innerHTML = ends ? '\u670d\u52a1\u7ed3\u675f\u65f6\u95f4\uff1a' : '';
 		days['value' in days ? 'value' : 'innerHTML'] = d;

@@ -27,18 +27,26 @@
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">服务地点：</em>
-                <i class="value">协和医院</i>
+                <i class="value">{{hospitals_name}}</i>
                 <input type="hidden" id="hospital_id" value="{{hospital_id}}">
                 <input type="hidden" id="department_id" value="{{department_id}}">
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">病患状态：</em>
-                <i class="value">{{if patient-status==1}}可自理{{else}}不可自理{{/if}}</i>
-                <input type="hidden" id="patient_state" value="{{patient-status}}">
+                <i class="value">{{patient_states_name}}</i>
+                <input type="hidden" id="patient_state" value="{{patient_state}}">
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">护理师：</em>
-                <i class="value care-level-hight">高级护理师</i>
+                {{if worker_level==1}}
+                    <i class="value care-level-middle">{{worker_level_name}}</i>
+                {{/if}}
+                {{if worker_level==2}}
+                    <i class="value care-level-hight">{{worker_level_name}}</i>
+                {{/if}}
+                {{if worker_level==3}}
+                    <i class="value care-level-special">{{worker_level_name}}</i>
+                {{/if}}
                 <input type="hidden" id="worker_level" value="{{worker_level}}">
             </div>
         </section>
@@ -49,17 +57,21 @@
                 <table class="menu-detail">
                     <tbody>
                     <tr>
-                        <td>高级赔付服务</td>
-                        <td>&yen;1800</td>
+                        <td>{{worker_level_name}}服务{{days}}天</td>
+                        <td>&yen;{{price}}×{{days}}</td>
                     </tr>
-                    <tr>
-                        <td>12-30、12-31为假期 当天收取双倍价格</td>
-                        <td>&yen;360</td>
-                    </tr>
-                    <tr>
-                        <td>病患不可自理</td>
-                        <td>+30%</td>
-                    </tr>
+                    {{if has_holidays}}
+                        <tr>
+                            <td>{{has_holidays}}为法定节假日,三倍工资</td>
+                            <td>&yen;{{price}}×{{has_holidays_num}}×2</td>
+                        </tr>
+                    {{/if}}
+                    {{if patient_state==2}}
+                        <tr>
+                            <td>病患不可自理</td>
+                            <td>+{{patient_state_coefficient}}%</td>
+                        </tr>
+                    {{/if}}
                     </tbody>
                     <tfoot>
                     <tr>
@@ -71,7 +83,7 @@
             </div>
             <a href="#" class="menuitem" role="menuitem">
                 <em class="title">钱包余额：</em>
-                <i class="value" id="money">&yen;{{money}}</i>
+                <i class="value" id="money"></i>
             </a>
         </section>
 

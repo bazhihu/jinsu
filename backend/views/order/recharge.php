@@ -75,6 +75,7 @@ echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('�
             },
             success: function(json){
                 if(json.code == '200'){
+                    alert('充值成功');
                     location.reload();
                 }
             }

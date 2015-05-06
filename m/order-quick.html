@@ -15,7 +15,7 @@
     <div id="body"></div>
     <div id="foot"></div>
     <script id="bodyTemplate" type='text/html'>
-        <form class="menu-form" action="order-confirm.html" method="post">
+        <form class="menu-form" action="order-confirm.html" method="get">
             {{if mobile}}
             <!-- 已登录状态 -->
             <menu class="menu">
@@ -37,10 +37,10 @@
                     <input type="date" class="value" id="care-end" name="end" value="" min="2015-04-28" max="2016-12-31" />
                     <i data-placeholder="请选择" id="care-days" class="value"></i>
                 </label>
-                <a href="hospitals.html" id="service-site-menuitem" target="popup" class="menuitem" role="menuitem">
+                <a href="hospitals.html" id="hospitals-menuitem" target="popup" class="menuitem" role="menuitem">
                     <em class="title">服务地点：</em>
                     <label class="value" data-placeholder="请选择"></label>
-                    <input type="hidden" id="service-site" name="service-site" value="" />
+                    <input type="hidden" id="hospitals" name="hospitals" value="" />
                 </a>
             </menu>
 
@@ -74,7 +74,7 @@
                     </label>
                 </div>
             </menu>
-            <input type="button" value="立即下单" id="orderCreate"/>
+            <input type="submit" value="立即下单"/>
         </form>
     </script>
     <script src='../js/template.js'></script>

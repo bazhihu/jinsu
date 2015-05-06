@@ -570,7 +570,8 @@ class Order extends \yii\db\ActiveRecord{
         }
 
         //判断时间
-        if(strtotime($this->start_time) > strtotime(date('Y-m-d'))){
+        $startTime = date('Y-m-d', strtotime($this->start_time));
+        if(strtotime($startTime) > strtotime(date('Y-m-d'))){
             $response['code'] = 212;
             $response['msg'] = '开始时间未到';
             return $response;

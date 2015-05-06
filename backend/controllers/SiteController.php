@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\AdminUser;
 use backend\models\OrderMaster;
 use Yii;
 use yii\filters\AccessControl;
@@ -64,24 +65,27 @@ class SiteController extends Controller
     {
         //$auth = Yii::$app->authManager;
         $data = [];
+        if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
+            $where = ['hospital_id' => Yii::$app->user->identity->hospital_id];
+        }
 
         //待支付订单数
-        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_PAY];
+        $where['order_status'] = OrderMaster::ORDER_STATUS_WAIT_PAY;
         $waitPayCount = OrderMaster::find()->where($where)->count();
         $data['waitPayCount'] = $waitPayCount;
 
         //待确认订单数
-        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_CONFIRM];
+        $where['order_status'] = OrderMaster::ORDER_STATUS_WAIT_CONFIRM;
         $waitConfirmCount = OrderMaster::find()->where($where)->count();
         $data['waitConfirmCount'] = $waitConfirmCount;
 
         //待服务订单数
-        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_SERVICE];
+        $where['order_status'] = OrderMaster::ORDER_STATUS_WAIT_SERVICE;
         $waitServiceCount = OrderMaster::find()->where($where)->count();
         $data['waitServiceCount'] = $waitServiceCount;
 
         //待评价订单数
-        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_EVALUATE];
+        $where['order_status'] = OrderMaster::ORDER_STATUS_WAIT_EVALUATE;
         $waitEvaluateCount = OrderMaster::find()->where($where)->count();
         $data['waitEvaluateCount'] = $waitEvaluateCount;
 

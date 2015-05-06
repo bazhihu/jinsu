@@ -1,15 +1,17 @@
-$('.menuitemradio input[type="radio"]').on('click', function () {
-    [].forEach.call(this.form.elements[this.name], function (radio) {
-        $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
-    }, this);
-});
-
-//$.get('/whatevs.html', function(response){
-//    $(document.body).append(response)
-//})
+var data = {
+    'start_time': '2015-04-28',
+    'end_time': '2015-05-28',
+    'days':'30',
+    'hospital_id':'1',
+    'patient-status':'2'
+};
+var bodyHtml = template('bodyTemplate', data);
+$('#body').html(bodyHtml);
 
 //获取余额
-balanceUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
+var userInfo = getStatus(),
+    orderCreate = orderUrl+'?access-token='+userInfo.token;
+    balanceUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
 $.get(balanceUrl,function(response){
     if(response.code == 200){
         console.log(response.data.wallet.money);
@@ -17,6 +19,7 @@ $.get(balanceUrl,function(response){
         $('#money').html(response.data.wallet.money);
     }
 })
+
 $('#confirm').on(CLICK, function(e){
     var param = {
         uid:userInfo.id,

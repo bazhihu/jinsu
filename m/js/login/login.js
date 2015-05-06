@@ -27,8 +27,8 @@ sub.on(CLICK,function(err){
 });
 code.on(CLICK,function(err){
     var time=60,
-        validCode=true;
-    var button = $(this);
+        validCode=true,
+        button = $(this);
     if (validCode) {
         validCode=false;
         var data = $('form').serializeArray(),

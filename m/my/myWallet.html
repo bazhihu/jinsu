@@ -20,12 +20,12 @@
     </div>
 </div>
 
-<ul class="menu wallet-logs" id="content">
+<ul class="menu wallet-logs" id="content" role="menu">
 </ul>
 <script id="myWallet" type="text/html">
     {{if isAdmin}}
         {{each list as value i}}
-            <li class="menuitem">
+            <li class="menuitem detail" role="menuitem">
                 <em class="title">{{value['0']}}</em>
                 <i class="value {{value['1']}}">{{value['2']}}</i>
                 <p class="time">{{value['3']}}</p>

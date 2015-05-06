@@ -2,7 +2,7 @@
  * Created by HZQ on 2015/5/5.
  */
 var user = getStatus(),
-    menu = $('.menuitem');
+    menu = $('.detail');
 if(user.id && user.token){
     getWallets(user.id, user.token, function(d){
         var i = 0,

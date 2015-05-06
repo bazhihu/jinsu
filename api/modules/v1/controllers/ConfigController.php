@@ -63,7 +63,7 @@ class ConfigController extends ActiveController {
         }
         #科室
         $return['departments'] = Departments::find()
-            ->andFilterWhere(['parent_id'=>0])
+            //->andFilterWhere(['parent_id'=>0])
             ->all();
         foreach($return['departments'] as $departments)
         {

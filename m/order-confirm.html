@@ -15,26 +15,28 @@
 <div id="body"></div>
 <div id="foot"></div>
 <script id="bodyTemplate" type='text/html'>
-    <form class="menu-form">
+    <form class="menu-form" method="post" name="form_order" id="form_order">
+        <input type="hidden" value="{{uid}}" name="uid">
+        <input type="hidden" value="{{mobile}}" name="mobile">
         <section class="menu">
             <h3 class="menu-title">订单内容</h3>
             <div class="menuitem" role="menuitem">
                 <em class="title">服务时间：</em>
                 <span class="detail">{{start_time}}至{{end_time}}</span>
-                <input type="hidden" id="start_time" value="{{start_time}}">
-                <input type="hidden" id="end_time" value="{{end_time}}">
+                <input type="hidden"  name="start_time" value="{{start_time}}">
+                <input type="hidden" name="end_time" value="{{end_time}}">
                 <i class="value">共{{days}}天</i>
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">服务地点：</em>
                 <i class="value">{{hospitals_name}}</i>
-                <input type="hidden" id="hospital_id" value="{{hospital_id}}">
-                <input type="hidden" id="department_id" value="{{department_id}}">
+                <input type="hidden" name="hospital_id" value="{{hospital_id}}">
+                <input type="hidden" name="department_id" value="1{{department_id}}">
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">病患状态：</em>
                 <i class="value">{{patient_states_name}}</i>
-                <input type="hidden" id="patient_state" value="{{patient_state}}">
+                <input type="hidden" name="patient_state" value="{{patient_state}}">
             </div>
             <div class="menuitem" role="menuitem">
                 <em class="title">护理师：</em>
@@ -47,7 +49,7 @@
                 {{if worker_level==3}}
                     <i class="value care-level-special">{{worker_level_name}}</i>
                 {{/if}}
-                <input type="hidden" id="worker_level" value="{{worker_level}}">
+                <input type="hidden" name="worker_level" value="{{worker_level}}">
             </div>
         </section>
 
@@ -62,31 +64,32 @@
                     </tr>
                     {{if has_holidays}}
                         <tr>
-                            <td>{{has_holidays}}为法定节假日,三倍工资</td>
+                            <td>法定假日需另增加2倍服务费<br style="font-size: 10px">{{has_holidays}}</td>
                             <td>&yen;{{price}}×{{has_holidays_num}}×2</td>
                         </tr>
                     {{/if}}
-                    {{if patient_state==2}}
-                        <tr>
-                            <td>病患不可自理</td>
-                            <td>+{{patient_state_coefficient}}%</td>
-                        </tr>
-                    {{/if}}
+                    <!--{{if patient_state==2}}-->
+                        <!--<tr>-->
+                            <!--<td>病患不可自理</td>-->
+                            <!--<td>+{{patient_state_coefficient}}%</td>-->
+                        <!--</tr>-->
+                    <!--{{/if}}-->
                     </tbody>
                     <tfoot>
                     <tr>
                         <td>实际支付</td>
-                        <td>&yen;3000</td>
+                        <td>&yen;{{true_pay}}
+                        </td>
                     </tr>
                     </tfoot>
                 </table>
             </div>
             <a href="#" class="menuitem" role="menuitem">
                 <em class="title">钱包余额：</em>
-                <i class="value" id="money"></i>
+                <i class="value">&yen;<span id="blance"></span></i>
             </a>
         </section>
-
+        {{if blance<ture_pay}}
         <section class="payments menu" role="menu">
             <header class="menu-header">
                 <span class="more">还需支付：<em>2200</em>元</span>
@@ -96,21 +99,24 @@
                 <span class="pay-offline"></span>
                 <em>当面支付</em>
                 <i>此处为文字介绍当面支付</i>
-                <input type="radio" name="payment" checked id="pay-offline" value="offline" />
+                <input type="radio" name="pay_way" checked id="pay-offline" value="1" />
             </label>
             <label class="menuitem menuitemradio" for="pay-alipay" role="menuitemradio">
                 <span class="pay-alipay"></span>
                 <em>支付宝支付</em>
                 <i>推荐有支付宝账号的用户使用</i>
-                <input type="radio" name="payment" checked id="pay-alipay" value="alipay" />
+                <input type="radio" name="pay_way" checked id="pay-alipay" value="2" />
             </label>
             <label class="menuitem menuitemradio" for="pay-wechat" role="menuitemradio">
                 <span class="pay-wechat"></span>
                 <em>微信支付</em>
                 <i>推荐安装微信5.0及以上版本的使用</i>
-                <input type="radio" name="payment" checked id="pay-wechat" value="wechat" />
+                <input type="radio" name="pay_way" checked id="pay-wechat" value="3" />
             </label>
         </section>
+        {{else}}
+        <input type="hidden" value="1" name="pay_way">
+        {{/if}}
         <input type="submit" value="确认支付" />
     </form>
 </script>

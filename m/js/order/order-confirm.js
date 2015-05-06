@@ -1,14 +1,17 @@
+var userInfo = getStatus(),
+    orderCreate = orderUrl+'?access-token='+userInfo.token;
+    balanceUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
 getConfigs(function(configs) {
     var mobile = getUrlQueryString('mobile');
     var start_time = getUrlQueryString('start');
     var end_time = getUrlQueryString('end');
-    var days = getUrlQueryString('days');
+    if(start_time && end_time)
+        var days = getOrderCycle(start_time,end_time);
     var hospital_id = getUrlQueryString('hospital_id');
     var patient_state= getUrlQueryString('patient-status');
     var worker_level = getUrlQueryString('care-level');
 
     //常驻医院
-    console.log(configs)
     var lenth =configs.hospitals.length;
     var data  = configs.hospitals;
     var hospitals_array = new Array();
@@ -72,16 +75,26 @@ getConfigs(function(configs) {
     }
 
     //获取余额
-    var userInfo = getStatus(),
-        orderCreate = orderUrl+'?access-token='+userInfo.token;
-    balanceUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
     $.get(balanceUrl,function(response){
         if(response.code == 200){
-            $('#money').html('&yen;'+response.data.wallet.money);
+            $('#blance').html(response.data.wallet.money);
         }
     })
 
+    //实际支付
+    var true_pay = 0;
+    true_pay = price*days;
+    console.log(true_pay)
+    if(has_holidays)
+        true_pay = true_pay+price*has_holidays_num*2;
+    //if(patient_state==2)
+    //    true_pay = true_pay+(true_pay*patient_state_coefficient/100);
+
+    //还需支付
+
+
     var data = {
+        'uid':userInfo.id,
         'mobile':mobile,
         'start_time': start_time,
         'end_time': end_time,
@@ -95,31 +108,34 @@ getConfigs(function(configs) {
         'has_holidays':has_holidays,
         'has_holidays_num':has_holidays_num,
         'price':price,
-        'patient_state_coefficient':patient_state_coefficient
+        'patient_state_coefficient':patient_state_coefficient,
+        'true_pay':true_pay,
+        'blance':parseInt($('#blance').html())
     };
 
     var bodyHtml = template('bodyTemplate', data);
     $('#body').html(bodyHtml);
 });
-
-$('#confirm').on(CLICK, function(e){
-    var param = {
-        uid:userInfo.id,
-        mobile:userInfo.name,
-        start_time:$('#start_time').val(),
-        end_time:$('#end_time').val(),
-        hospital_id:$('#hospital_id').val(),
-        department_id:$('#department_id').val(),
-        patient_state:$('#patient_state').val(),
-        worker_level:$('#worker_level').val(),
-        //pay_way:$('#pay_way').val()
-        pay_way:1
-    };
-    console.log(userInfo);
-    $.post(orderCreate,param,function(response){
-        //console.log($('#pay_way').val());
+    var data = convertArray($("#form_order").serializeArray());
+    $.post(orderCreate,data,function(response){
+        console.log(response);
         if(response.code == 200){
             console.log('ok');
         }
-    });
-})
+    },"json");
+
+/**
+ * 将jquery系列化后的值转为name:value的形式。
+ * @param o
+ * @returns {{}}
+ */
+function convertArray(o) {
+    var v = {};
+    for (var i in o) {
+        if (typeof (v[o[i].name]) == 'undefined')
+            v[o[i].name] = o[i].value;
+        else
+            v[o[i].name] += "," + o[i].value;
+    }
+    return v;
+}

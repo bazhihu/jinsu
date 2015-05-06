@@ -305,8 +305,9 @@ class OrderController extends Controller
                 $params['pay_from'] = \backend\models\WalletUserDetail::PAY_FROM_BACKEND;
                 $balance = \common\models\Wallet::recharge($params);
 
+
                 //订单支付
-                $orderModel->pay('后台订单支付');
+                $response = $orderModel->pay('后台订单支付');
 
                 //发送短信
                 $sms = new Sms();
@@ -318,9 +319,12 @@ class OrderController extends Controller
                     'balance' => $balance,
                 ];
                 $sms->send($send);
+
                 $response = [
                     'code' => 200,
+                    'msg' => '充值成功'.','.$response['msg']
                 ];
+
                 echo json_encode($response);
                 return;
             }

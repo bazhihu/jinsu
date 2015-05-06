@@ -107,6 +107,9 @@ class WorkerSearch extends Worker
             $query->andFilterWhere(['like', 'hospital_id', ','.$params['hospital_id'].',']);
         }
 
+        //只显示上线护工
+        $query->andFilterWhere(['audit_status' => 1]);
+
         if (!$this->load($params)) {
             return $dataProvider;
         }

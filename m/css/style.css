@@ -545,3 +545,33 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 
 #page-reviews .menuitem .nurses-rate { vertical-align: top; margin-left: 7px; }
 #page-reviews .menuitem .value { margin-right: 0; }
+
+#page-levels { background: #fff; }
+#page-levels .tabs { display: -webkit-box; display: -ms-flexbox; display: flex; background: #efefed; height: 36px; }
+#page-levels .tabs > * { display: block; -webkit-box-flex: 1; -moz-box-flex: 1; -ms-flex: 1; flex: 1; font-size: 14px; color: #999; height: 34px; line-height: 34px; margin: 0 12px; text-align: center; border-bottom: 2px solid transparent; }
+#page-levels .tabs > .selected { border-bottom-color: #34caa9; color: #333; }
+#page-levels .swiper-container { position: relative; width: 100%; overflow: hidden; }
+#page-levels .swiper-wrapper { position: relative; width: 800%; }
+#page-levels .swiper-slide { float: left; width: 12.5%; padding: 20px 15px; -webkit-box-sizing: border-box; box-sizing: border-box; }
+#page-levels .level, #page-levels .service, #page-levels .content li:after { background: url(../images/levels-description.png) no-repeat -1000px 0; -webkit-background-size: 74px 124px; background-size: 74px 124px; }
+#page-levels .level { font-size: 17px; color: #333; font-weight: 700; padding-left: 32px; height: 24px; line-height: 24px; background-position: -50px 0; }
+#page-levels .level-1 .level { background-position: -50px 0; }
+#page-levels .level-2 .level { background-position: -50px -25px; }
+#page-levels .level-3 .level { background-position: -50px -50px; }
+#page-levels .level-4 .level { background-position: -50px -75px; }
+#page-levels .description { margin-top: 2px; font-size: 14px; color: #777; line-height: 25px; word-break: break-all; word-wrap: break-word; }
+#page-levels .service { font-size: 17px; color: #333; font-weight: 700; padding-left: 32px; margin-top: 15px; height: 24px; line-height: 24px; background-position: -50px -100px; }
+#page-levels .content { position: relative; margin-top: 9px; font-size: 14px; color: #777; line-height: 25px; word-break: break-all; word-wrap: break-word; }
+#page-levels .content:before { content: ""; display: block; position: absolute; width: 1px; height: 100%; background: #ddd; left: 8px; top: 0; border-top: 10px solid #fff; border-bottom: 10px solid #fff; -webkit-box-sizing: border-box; box-sizing: border-box; }
+#page-levels .content li { padding-left: 21px; position: relative; overflow: hidden; }
+#page-levels .content li:last-child:before { content: ""; display: block; position: absolute; width: 1px; height: 100%; background: #fff; left: 8px; top: 16px; }
+#page-levels .content li:after { content: ""; display: block; position: absolute; left: 0; top: 5px; width: 16px; height: 16px; }
+#page-levels .content li:nth-child(1):after { background-position: 0 0; }
+#page-levels .content li:nth-child(2):after { background-position: 0 -20px; }
+#page-levels .content li:nth-child(3):after { background-position: 0 -40px; }
+#page-levels .content li:nth-child(4):after { background-position: 0 -60px; }
+#page-levels .content li:nth-child(5):after { background-position: 0 -80px; }
+#page-levels .content li:nth-child(6):after { background-position: 0 -100px; }
+#page-levels .content li:nth-child(7):after { background-position: -20px 0; }
+#page-levels .content li:nth-child(8):after { background-position: -20px -20px; }
+#page-levels .content li:nth-child(9):after { background-position: -20px -40px; }

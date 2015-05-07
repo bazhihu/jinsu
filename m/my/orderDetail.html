@@ -35,15 +35,15 @@
             <div class="menuitem">
                 <em class="title">服务时间：</em>
                 <span class="detail">{{data.start_time | dateFormat:'yyyy/MM/dd'}}至{{data.end_time | dateFormat:'yyyy/MM/dd'}}</span>
-                <i class="data">共{{data.days}}天</i>
+                <i class="value">共{{data.days}}天</i>
             </div>
             <div class="menuitem">
                 <em class="title">服务地点</em>
-                <i class="data">{{data.hospitals_name}}</i>
+                <i class="value" style="max-width: 200px;">{{data.hospitals_name}}</i>
             </div>
             <div class="menuitem">
                 <em class="title">病患状态</em>
-                <i class="data">{{data.patient_states_name}}</i>
+                <i class="value">{{data.patient_states_name}}</i>
             </div>
             <div class="nurses-selected menuitem" role="menuitem">
                 <em class="title">护理师：</em>
@@ -68,10 +68,10 @@
                         <td>{{data.worker_levels_name}}服务{{data.days}}天</td>
                         <td>&yen;{{data.base_price}}×{{data.days}}</td>
                     </tr>
-                    <tr>
-                        <td colspan="3" style="text-align: left;padding-left: 0px">{{data.has_holidays}}为法定节假日,法定假日三倍工资</td>
-                    </tr>
                     {{if data.has_holidays}}
+                        <tr>
+                            <td colspan="3" style="text-align: left;padding-left: 0px">{{data.has_holidays}}为法定节假日,法定假日三倍工资</td>
+                        </tr>
                         <tr>
                             <td>{{data.has_holidays}}加收双倍价格</td>
                             <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
@@ -94,14 +94,14 @@
             </div>
         </section>
         <section class="menu">
-            <h3 class="menu-title">订单记录：<span role="button" class="toggle toggle-expanded">收起</span></h3>
-            <ul id="history" class="history expanded menuitem">
+            <h3 class="menu-title">订单记录：<span class="toggle toggle-expanded" role="button">收起</span></h3>
+            <ul id="history" class="history menuitem expanded">
                 {{if data.evaluate_time}}<li><span class="completed status">评价完成,订单结束</span>{{data.evaluate_time}}</li>{{/if}}
-                {{if data.reality_end_time && (data.order_status=='end_service')}}<li><span class="completed status">服务结束,等待评价</span>{{data.reality_end_time}}</li>{{/if}}
-                {{if data.begin_service_time}}<li><span class="completed status">服务开始</span>{{data.begin_service_time}}</li>{{/if}}
-                {{if data.pay_time}}<li><span class="completed status">支付成功,等待服务</span>{{data.pay_time}}</li>{{/if}}
-                {{if data.cancel_time}}<li><span class="completed status">订单取消</span>{{data.cancel_time}}</li>{{/if}}
-                {{if data.create_time}}<li><span class="completed status">下单成功,等待支付</span>{{data.create_time}}</li>{{/if}}
+                {{if data.reality_end_time && (data.order_status=='end_service')}}<li><span class="status">服务结束,等待评价</span>{{data.reality_end_time}}</li>{{/if}}
+                {{if data.begin_service_time}}<li><span class="status">服务开始</span>{{data.begin_service_time}}</li>{{/if}}
+                {{if data.pay_time}}<li><span class="status">支付成功,等待服务</span>{{data.pay_time}}</li>{{/if}}
+                {{if data.cancel_time}}<li><span class="status">订单取消</span>{{data.cancel_time}}</li>{{/if}}
+                {{if data.create_time}}<li><span class="status">下单成功,等待支付</span>{{data.create_time}}</li>{{/if}}
             </ul>
         </section>
 
@@ -111,17 +111,10 @@
         </div>
         {{include 'footTemplate'}}
     </script>
-    <script type='text/javascript' src='../js/zepto.min.js'></script>
+    <script src='../js/zepto-with-touch.min.js'></script>
     <script src='../js/template.js'></script>
-    <script type='text/javascript' src='../js/public.js'></script>
-    <script type="text/javascript" src="../js/my/order-detail.js"></script>
-    <script src="../js/zepto-with-touch.min.js"></script>
-    <script>
-        $('.toggle')['touchstart' in document ? 'tap' : 'click'](function () {
-            $(this).toggleClass('toggle-expanded');
-            $('#history').toggleClass('expanded');
-        });
-    </script>
+    <script src='../js/public.js'></script>
+    <script src="../js/my/orderDetail.js"></script>
     <script>
         /**
          * 对日期进行格式化，

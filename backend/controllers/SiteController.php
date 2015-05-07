@@ -116,4 +116,14 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+    
+    public function actionDownload(){
+        $filename = Yii::$app->basePath.'/web/payment.zip';
+//文件的类型
+        header('Content-type: application/zip');
+//下载显示的名字
+        header('Content-Disposition: attachment; filename="filename.zip"');
+        readfile("$filename");
+        exit();
+    }
 }

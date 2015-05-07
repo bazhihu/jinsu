@@ -20,19 +20,13 @@
     <ul class="order-list">
         {{if items}}
             {{each items as value index}}
-                <li class="menu">
+                <li class="menu" data-url="/my/orderDetail.html?order_no={{value.order_no}}">
                     <div class="menuitem">
                         <div class="nurses-photo" style="background-image:url({{value.pic}})"></div>
                         <div class="order-info">
                             <div class="status">订单状态：
-                                <em class="status-unpaid">
-                                    {{if value.order_status=='wait_pay'}}待支付{{/if}}
-                                    {{if value.order_status=='wait_confirm'}}待确认{{/if}}
-                                    {{if value.order_status=='wait_service'}}待服务{{/if}}
-                                    {{if value.order_status=='in_service'}}服务中{{/if}}
-                                    {{if value.order_status=='end_service'}}结束服务{{/if}}
-                                    {{if value.order_status=='cancel'}}取消订单{{/if}}
-                                    {{if value.order_status=='end_evaluate'}}结束评价{{/if}}
+                                <em class="{{value.div_status}}">
+                                    {{value.order_status}}
                                 </em>
                             </div>
                             <h4 class="nurses-name">
@@ -58,8 +52,9 @@
 </script>
 <script type='text/javascript' src='../js/zepto.min.js'></script>
 <script src='../js/template.js'></script>
+<script src="../js/touch.js" type="text/javascript"></script>
 <script type='text/javascript' src='../js/public.js'></script>
-<script type="text/javascript" src="../js/my/my-orders.js"></script>
+<script type="text/javascript" src="../js/my/myOrders.js"></script>
 <script>
     /**
      * 对日期进行格式化，

@@ -1,43 +1,35 @@
 var order_no = getUrlQueryString('order_no'),
     access_token = getStatus(),
-    url = orderUrl+"/"+order_no+'?access-token='+access_token.token;
+    url = orderUrl+"/"+order_no+'?access-token='+access_token.token,
+    toggle = $('.toggle');
 
+toggle.live(CLICK, function(){
+    $(this).toggleClass('toggle-expanded');
+    $('#history').toggleClass('expanded');
+});
+
+function map(data ,key, val){
+    var len = data.length,
+        map = new Array();
+    for(var i=0;i<len;i++){
+        map[data[i][key]] = data[i][val];
+    }
+    return map;
+}
 $.getJSON(url,function(response){
     if(response.code == 200){
-        var hospital_id =  response.data.hospital_id;
-        var worker_level =  response.data.worker_level;
-        var patient_state =  response.data.patient_state;
+        var digital =  response.data;
         getConfigs(function(configs) {
-            //常驻医院
-            var lenth =configs.hospitals.length;
-            var data  = configs.hospitals;
-            var hospitals_array = new Array();
-            for(var i =0;i<=lenth-1;i++){
-                var id = data[i]['id'];
-                hospitals_array[id] = data[i]['name'];
-            }
-            response.data.hospitals_name = hospitals_array[hospital_id]
+            var hospitals = map(configs.hospitals, 'id', 'name'),
+                sections = map(configs.departments, 'id', 'name'),
+                worker_levels = map(configs.worker_levels, 'id', 'name'),
+                patient_state = map(configs.patient_states, 'id', 'name'),
+                hospitals_name = hospitals[digital.hospital_id],
+                sections_name = sections[digital.department_id];
 
-            //护工级别
-            var worker_levels_lenth =configs.worker_levels.length;
-            var worker_levels_data  = configs.worker_levels;
-            var worker_levels_array = new Array();
-            for(var j =0;j<=worker_levels_lenth-1;j++){
-                var id = data[j]['id'];
-                worker_levels_array[id] = worker_levels_data[j]['name'];
-            }
-            response.data.worker_levels_name = worker_levels_array[worker_level]
-
-            //病患状态
-            var patient_states_lenth =configs.patient_states.length;
-            var patient_states_data  = configs.patient_states;
-            var patient_states_array = new Array();
-            for(var h =0;h<=patient_states_lenth-1;h++){
-                var id = data[h]['id'];
-                patient_states_array[id] = patient_states_data[h]['name'];
-            }
-            response.data.patient_states_name = patient_states_array[patient_state]
-
+            digital.hospitals_name = hospitals_name+'/'+sections_name;
+            digital.worker_levels_name = worker_levels[digital.worker_level];
+            digital.patient_states_name = patient_state[digital.patient_state];
             //假期
             var holidays_lenth =configs.holidays.length;
             var holidays_data  = configs.holidays;
@@ -46,8 +38,8 @@ $.getJSON(url,function(response){
 
             for(var k=0;k<=holidays_lenth-1;k++){
                 var holidays = holidays_data[k];
-                var start_time = response.data.start_time;
-                var end_time =  response.data.end_time;
+                var start_time = digital.start_time;
+                var end_time =  digital.end_time;
                 start_time = start_time.substr(0,10);
                 end_time = end_time.substr(0,10);
 
@@ -59,22 +51,21 @@ $.getJSON(url,function(response){
                     }
                     has_holidays_num++
                 }
-                response.data.has_holidays = has_holidays;
-                response.data.has_holidays_num = has_holidays_num;
+                digital.has_holidays = has_holidays;
+                digital.has_holidays_num = has_holidays_num;
             }
         });
 
-        response.data.order_des = getStatusDes(response.data);
-        if(response.data.start_time && response.data.end_time)
-            response.data.days = getOrderCycle(response.data.start_time,response.data.end_time);
+        digital.order_des = getStatusDes(digital);
+        if(digital.start_time && digital.end_time)
+            digital.days = getOrderCycle(digital.start_time,digital.end_time);
 
         //基础价格
-        response.data.base_price = parseInt(response.data.base_price);
-
+        digital.base_price = parseInt(digital.base_price);
         var bodyHtml = template('bodyTemplate', response);
         $('#body').html(bodyHtml);
     }
-})
+});
 
 function getStatusDes(order) {
     var time = new Date();
@@ -113,7 +104,3 @@ function getStatusDes(order) {
         return "订单正在处理中";
     }
 }
-
-$('#close').on(CLICK,function(err){
-    alert(1);
-});

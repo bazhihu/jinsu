@@ -90,5 +90,12 @@ class OrderMaster extends Order
         return $user;
     }
 
+    public function formatMobile($mobile){
+        if(Yii::$app->user->identity->staff_role == AdminUser::BACKOFFICESTAFF){
+            return $mobile;
+        }
+        return substr_replace($mobile, '****', 3, 4);
+    }
+
 
 }

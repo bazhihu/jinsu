@@ -8,6 +8,7 @@ if(user.id && user.token){
         var i = 0,
             len = d.length,
             msg = new Array();
+        console.log(d);
         document.getElementById('walletMoney').innerHTML = '&yen;'+ d[0].wallet_money;
         for(i;i<len;i++){
             var val = d[i],

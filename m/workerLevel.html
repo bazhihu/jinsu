@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>级别说明</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-levels">
+
+<!--<header id="header">-->
+    <!--<a href="javascript:history.back(1)" class="back">返回</a>-->
+    <!--<h2 class="title">级别说明</h2>-->
+<!--</header>-->
+
+<div class="tabs">
+    <span>初级护理</span>
+    <span>中级护理</span>
+    <span>高级护理</span>
+    <span>特级护理</span>
+</div>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div class="level-1 swiper-slide">
+            <h3 class="level">初级护理</h3>
+            <p class="description">由具有0~6个月陪护工作经验，通过专业考核并取得初级护理员证书的初级护理员提供的陪护服务。</p>
+            <h4 class="service">服务内容</h4>
+            <ol class="content">
+                <li>负责患者基本的日常的生活的护理：协助患者进食、进水、进药、入厕、入睡；</li>
+                <li>保持患者床单位干燥整洁无杂物；</li>
+                <li>定时开窗通风；</li>
+                <li>保持患者身体清洁卫生（剪指甲、剃胡须、洗头）；</li>
+                <li>帮助患者打饭及陪患者散步；</li>
+                <li>协助患者购物；</li>
+                <li>看护患者输液；</li>
+                <li>陪同患者做检查；</li>
+                <li>熟练使用轮椅、平车。</li>
+            </ol>
+        </div>
+        <div class="level-2 swiper-slide">
+            <h3 class="level">中级护理</h3>
+            <p class="description">由具有6个月以上陪护工作经验，通过专业考核并取得中级护理员证书且好评率在95%以上的中级护理员提供的陪护服务。</p>
+            <h4 class="service">服务内容</h4>
+            <ol class="content">
+                <li>包括初级护理的所有服务内容；</li>
+                <li>帮助患者翻身、扣背，防止患者身体长褥疮；</li>
+                <li>观察患者病情变化（观察监护仪变化）；</li>
+                <li>记录患者的出入量（入食和排便）；</li>
+                <li>保持各种医疗管路畅通；</li>
+                <li>在医护人员的指导下熟练掌握各种医疗辅具；</li>
+            </ol>
+        </div>
+        <div class="level-3 swiper-slide">
+            <h3 class="level">高级护理</h3>
+            <p class="description">由具有4年以上陪护工作经验，年龄在30~50岁之间，中学以上文化程度，通过专业考核并取得高级护理员证书，沟通能力良好且好评率在98%以上的高级护理员提供的陪护服务。</p>
+            <h4 class="service">服务内容</h4>
+            <ol class="content">
+                <li>包括中级护理的所有服务内容；</li>
+                <li>懂得ICU及危重、特殊病人的看护；</li>
+                <li>协助患者进行简单康复锻炼；</li>
+                <li>陪同患者读书、聊天或进行一些娱乐活动；</li>
+            </ol>
+        </div>
+        <div class="level-4 swiper-slide">
+            <h3 class="level">特级护理</h3>
+            <p class="description">由具有6年以上陪护工作经验，年龄在30~50岁之间，中学以上文化程度，通过专业考核并取得特级护理员证书，沟通能力强且好评率100%的特级护理员提供的陪护服务。</p>
+            <h4 class="service">服务内容</h4>
+            <ol class="content">
+                <li>包括高级护理的所有服务内容；</li>
+                <li>安抚病人情绪、为病人做心理辅导；</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<script src="../js/zepto-with-touch.min.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        initialSlide: location.hash && location.hash.match(/^#([1234])/) ? parseInt(RegExp.$1) - 1 : 0,
+        direction: 'horizontal',
+        paginationClickable: true,
+        loop: true,
+        onSlideChangeStart: function (swiper) {
+            var current = (swiper.activeIndex + 3) % 4;
+
+            [].forEach.call(document.querySelectorAll('.tabs > *'), function (tab, i) {
+                $(tab)[i === current ? 'addClass' : 'removeClass']('selected');
+            });
+
+            if (location.hash || current !== 0) {
+                history.replaceState(null, null, '#' + (current + 1));
+            }
+        }
+    });
+    [].forEach.call(document.querySelectorAll('.tabs > *'), function (tab, i) {
+        tab.addEventListener((navigator.msPointerEnabled || 'ontouchstart' in document) ? 'tap' : 'click', function () {
+            swiper.slideTo(i + 1);
+        });
+    });
+</script>
+</body>
+</html>

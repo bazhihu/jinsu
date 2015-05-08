@@ -137,7 +137,6 @@ return [
             'tq/index',
             'tq/select',
             'order/calculate',
-            'order/download'
         ]
     ],
     'params' => $params,

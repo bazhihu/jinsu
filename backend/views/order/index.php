@@ -73,7 +73,7 @@ td .btn{margin: 2px}
             'attribute'=>'mobile',
             'format'=>'raw',
             'value'=>function ($model) {
-                $mobile = substr_replace($model->mobile,'****',3,4);
+                $mobile = $model->formatMobile();
                 return Html::a($mobile, Yii::$app->urlManager->createUrl(['user/view','id'=>$model->uid]));
             },
             'options' => [

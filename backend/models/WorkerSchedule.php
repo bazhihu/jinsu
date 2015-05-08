@@ -73,13 +73,18 @@ class WorkerSchedule extends \yii\db\ActiveRecord
 
     /**
      * 获取给予日期在工作中的护工
-     * @param string $date
+     * @param string $startDate
+     * @param string $endDate
      * @return array
      * @author zhangbo
      */
-    static public function getWorkingByDate($date){
+    static public function getWorkingByDate($startDate, $endDate = null){
         $sql = 'SELECT id,worker_id FROM '.self::tableName();
-        $sql .= "WHERE UNIX_TIMESTAMP(start_date)<=UNIX_TIMESTAMP('$date') AND UNIX_TIMESTAMP('$date')<UNIX_TIMESTAMP(end_date)";
+        $sql .= "WHERE UNIX_TIMESTAMP(start_date)<=UNIX_TIMESTAMP('$startDate') AND UNIX_TIMESTAMP('$startDate')<UNIX_TIMESTAMP(end_date)";
+
+        if($endDate){
+            $sql .= " AND UNIX_TIMESTAMP(start_date)>UNIX_TIMESTAMP('$endDate') AND UNIX_TIMESTAMP('$endDate')<=UNIX_TIMESTAMP(end_date)";
+        }
         $workers = self::findBySql($sql)->all();
 
         return ArrayHelper::map($workers, 'id', 'worker_id');

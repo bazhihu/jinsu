@@ -1,0 +1,72 @@
+﻿html, body, div, ul, ol, li, form, p, h1, h2, h3, h4, h5, h6 { margin: 0; padding: 0; }
+body { font: 400 12px/1.5 "\5fae\8f6f\96c5\9ed1","Microsoft Yahei",Arial; }
+em, var, i { font-style: normal; }
+a, a:visited { text-decoration: none; }
+a img { border: 0 none; }
+ul li { list-style-type: none; }
+.clear { clear: both; }
+.clearfix { *zoom: 1; }
+.clearfix:after { content: "."; display: block; clear: both; height: 0; font: 0/0; overflow: hidden; visibility: hidden; }
+
+body { min-width: 980px; background: #fff; color: #688297; }
+
+.logo, .express .app, .express .wechat, .express .tel, .express .wap { background: url(../images/index/pc.png) no-repeat 0 0; }
+.banner { background: url(../images/index/banner.jpg) no-repeat 50% 100%; }
+.banner .section { background: url(../images/index/banner.png) no-repeat 2px 100%; }
+.banner .icon { background: url(../images/index/slogan.png) no-repeat 50% 100%; }
+.banner .download .appstore, .banner .download .android { background: url(../images/index/appstore.png) no-repeat 0 0; }
+
+
+
+.section { width: 960px; margin: 0 auto; *zoom: 1; }
+.section:after { content: "."; display: block; clear: both; height: 0; font: 0/0; overflow: hidden; visibility: hidden; }
+
+#header { height: 90px; }
+#header .logo { display: block; width: 250px; height: 90px; overflow: hidden; text-indent: -999px; background-position: 16px 14px; }
+#header .invite { display: block; float: right; padding-right: 7px; text-align: right; font-size: 18px; line-height: 90px; color: #688297; }
+
+.banner { height: 559px; border-top: 4px solid #2dcb9c; overflow: hidden; -webkit-background-size: cover; background-size: cover; }
+.banner .section { height: 559px; padding-left: 525px; width: 435px; overflow: hidden; }
+.banner .icon { width: 354px; height: 280px; margin-top: 51px; text-indent: -999px; overflow: hidden; }
+.banner .icon img { display: block; margin: 0 auto; }
+.banner .icon .name, .banner .icon .desc { display: block; }
+
+.banner .download { width: 357px; margin-top: 41px; overflow: hidden; vertical-align: top; }
+.banner .download .qr { display: block; float: right; }
+.banner .download .appstore, .banner .download .android { display: block; width: 182px; height: 56px; margin: 2px 0 26px 0; text-indent: -999px; overflow: hidden; }
+.banner .download .android { background-position: -200px 0; }
+.banner .download .appstore:hover { background-position: 0 -60px; }
+.banner .download .android:hover { background-position: -200px -60px; }
+
+.express { margin-top: 35px; margin-bottom: 35px; overflow: hidden; }
+.express .title { margin-bottom: 30px; font-size: 20px; font-weight: 700; }
+.express a { display: block; float: left; width: 164px; height: 236px; margin-right: 88px; font-size: 20px; line-height: 24px; text-align: center; }
+.express a, .express a:visited { color: #334559; text-decoration: none; }
+.express img { display: block; margin: 0 auto 13px auto; opacity: 0; filter: alpha(opacity=0); -webkit-transition: opacity .5s; transition: opacity .5s; }
+.express a:hover img { opacity: 1; filter: none; }
+.express .app { background-position: 0 -100px; }
+.express .wechat { background-position: -260px -100px; }
+.express .tel { background-position: 0 -360px; }
+.express .wap { margin-right: 0; background-position: -260px -360px; }
+.express .wap i { color: #00a3d8; }
+
+
+.intro { border-collapse: collapse; border-spacing: 0; border: 0 none; }
+.intro tr { border-top: 1px solid #ddd; }
+.intro td { height: 460px; margin: 0; border: 0 none; }
+.intro td h4, .intro td h5, .intro td p { margin-left: 64px; }
+.intro td img { display: block; margin-left: 45px; }
+.intro td h4 { font-size: 44px; font-weight: 400; line-height: 54px; color: #334559; }
+.intro td h5 { font-size: 24px; font-weight: 400; line-height: 52px; color: #334559; }
+.intro td p { font-size: 20px; font-weight: 400; line-height: 32px; color: #334559; }
+
+#footer { padding: 44px 0; background: #334559; color: #adb5bd; font-size: 16px; line-height: 40px; }
+
+#footer a, #footer a:visited { color: #adb5bd; text-decoration: none; }
+#footer .wechat { float: left; width: 136px; margin: 0 68px 0 2px; }
+#footer .wechat img { display: block; }
+#footer .wechat .follow { width: 7em; font-size: 16px; line-height: 23px; word-break: break-all; word-wrap: break-word; text-align: center; margin: 10px auto 4px auto; }
+#footer .about { float: left; margin-right: 57px; width: 96px; }
+#footer .contact { float: left; }
+#footer .title { font-size: 18px; font-weight: 400; line-height: 18px; margin-bottom: 23px; color: #fff; }
+#footer .about a { display: block; }

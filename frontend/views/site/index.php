@@ -10,7 +10,7 @@ $this->title = '优爱医护-您的贴身的护理专家';
             <h2 class="slogan">专注 便捷 省心</h2>
         </div>
         <div class="download">
-            <img class="qr" src="/images/index/qr-app.png" alt="二维码" />
+            <img class="qr" src="/images/index/qr-app.png" alt="二维码" width="142" />
             <a class="appstore" href="#">App Store</a>
             <a class="android" href="#">Android</a>
         </div>

@@ -28,16 +28,20 @@
                 <i class="value">共{{days}}天</i>
             </div>
             <div class="menuitem" role="menuitem">
-                <em class="title">服务地点：</em>
+                <em class="title">服务医院：</em>
                 <i class="value">{{hospitals_name}}</i>
                 <input type="hidden" name="hospital_id" value="{{hospital_id}}">
-                <input type="hidden" name="department_id" value="1{{department_id}}">
             </div>
             <div class="menuitem" role="menuitem">
-                <em class="title">病患状态：</em>
-                <i class="value">{{patient_states_name}}</i>
-                <input type="hidden" name="patient_state" value="{{patient_state}}">
+                <em class="title">服务科室：</em>
+                <i class="value">{{departments_name}}</i>
+                <input type="hidden" name="department_id" value="{{department_id}}">
             </div>
+            <!--<div class="menuitem" role="menuitem">-->
+                <!--<em class="title">病患状态：</em>-->
+                <!--<i class="value">{{patient_states_name}}</i>-->
+                <!--<input type="hidden" name="patient_state" value="{{patient_state}}">-->
+            <!--</div>-->
             {{if type=='select'}}
                 <div class="nurses-selected menuitem" role="menuitem">
                     <em class="title">护理师：</em>

@@ -43,19 +43,24 @@
                     <input type="hidden" id="days" name="days" value="" />
                 </label>
                 <a href="hospitals.html" id="hospitals-menuitem" target="popup" class="menuitem" role="menuitem">
-                    <em class="title">服务地点：</em>
+                    <em class="title">服务医院：</em>
                     <label class="value" data-placeholder="请选择"></label>
                     <input type="hidden" id="hospital_id" name="hospital_id" value="" />
                 </a>
-            </menu>
-
-            <menu class="menu">
-                <a href="patient-status.html" id="patient-status-menuitem" target="popup" class="menuitem" role="menuitem">
-                    <em class="title">病患状态：</em><label class="value" data-placeholder="请选择"></label>
-                    <i class="additional">护理费用每天将增加30%</i>
-                    <input type="hidden" id="patient-status" name="patient-status" value="2" />
+                <a href="departments.html" id="departments-menuitem" target="popup" class="menuitem" role="menuitem">
+                    <em class="title">服务科室：</em>
+                    <label class="value" data-placeholder="请选择"></label>
+                    <input type="hidden" id="department_id" name="department_id" value="" />
                 </a>
             </menu>
+
+            <!--<menu class="menu">-->
+                <!--<a href="patient-status.html" id="patient-status-menuitem" target="popup" class="menuitem" role="menuitem">-->
+                    <!--<em class="title">病患状态：</em><label class="value" data-placeholder="请选择"></label>-->
+                    <!--<i class="additional">护理费用每天将增加30%</i>-->
+                    <!--<input type="hidden" id="patient-status" name="patient-status" value="2" />-->
+                <!--</a>-->
+            <!--</menu>-->
             <menu class="menu">
                 <label class="menu-label">选择护理等级:</label>
                 <div class="care-levels menuitem" role="menuitem">
@@ -68,7 +73,7 @@
 
                     <label class="care-level checked" for="care-level-hight">
                         <span class="level care-level-hight">{{worker_levels[1]['name']}}</span>
-                        <input type="radio" name="care-level" id="care-level-hight" value="2" />
+                        <input type="radio" name="care-level" checked id="care-level-hight" value="2" />
                         <span class="price">￥<em>{{worker_levels[1]['price']}}</em>元/天</span>
                         <span class="additional">+30%</span>
                     </label>
@@ -82,6 +87,13 @@
             </menu>
             <input type="button" value="立即下单" id="orderCreate" name="orderCreate"/>
         </form>
+        <script>
+            $('.care-level input[type="radio"]').on('click', function () {
+                [].forEach.call(this.form.elements[this.name], function (radio) {
+                    $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
+                }, this);
+            });
+        </script>
     </script>
     <script src='../js/template.js'></script>
     <script type='text/javascript' src='../js/zepto.min.js'></script>
@@ -89,12 +101,6 @@
     <script src="../js/zepto-with-touch.min.js"></script>
     <script src="../js/popup.js"></script>
     <script src="../js/order/order.js"></script>
-    <script>
-        $('.care-level input[type="radio"]').on('click', function () {
-            [].forEach.call(this.form.elements[this.name], function (radio) {
-                $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
-            }, this);
-        });
-    </script>
+
 </body>
 </html>

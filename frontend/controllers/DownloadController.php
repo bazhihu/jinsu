@@ -13,7 +13,7 @@ use yii\web\Controller;
 
 class DownloadController extends Controller{
     public function actionIndex(){
-        print_r(Yii::$app->getRequest());
+        echo ($_SERVER['HTTP_USER_AGENT']);
         exit;
     }
 

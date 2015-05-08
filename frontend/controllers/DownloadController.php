@@ -15,8 +15,7 @@ class DownloadController extends Controller{
     public function actionIndex(){
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
         if ((preg_match("/(iphone|ipod|android)/i", $userAgent)) AND strstr($userAgent, 'webkit')){
-            echo 33333;
-            //header('Location: http://m.youaiyihu.com/download.html');
+            header('Location: http://m.youaiyihu.com/download.html');
             return;
         }
 

@@ -16,6 +16,7 @@ class DownloadController extends Controller{
         $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
         if ((preg_match("/(iphone|ipod|android)/i", $userAgent)) AND strstr($userAgent, 'webkit')){
             header('Location: http://m.youaiyihu.com/download.html');
+            echo 'http://m.youaiyihu.com/download.html';
             return;
         }
 

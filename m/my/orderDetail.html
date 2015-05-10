@@ -10,7 +10,7 @@
 <body id="page-order-detail">
     <div id="head"></div>
     <header id="header">
-        <a class="back" href="javascript:history.back(1)">返回</a>
+        <a class="back" href="/my/myOrders.html">返回</a>
         <h2 class="title">订单详情</h2>
     </header>
     <div id="body"></div>
@@ -52,9 +52,9 @@
                     <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>
                     <dl>
                         <dt>姓名：</dt>
-                        <dd>{{data.worker_name}}</dd>
+                        <dd>{{if data.worker_name}}{{data.worker_name}}{{else}}&nbsp;{{/if}}</dd>
                         <dt>工号：</dt>
-                        <dd>{{data.worker_no}}</dd>
+                        <dd>{{if data.worker_no}}{{data.worker_no}}{{else}}&nbsp;{{/if}}</dd>
                     </dl>
                 </div>
             </div>
@@ -96,22 +96,23 @@
         <section class="menu">
             <h3 class="menu-title">订单记录：<span class="toggle toggle-expanded" role="button">收起</span></h3>
             <ul id="history" class="history menuitem expanded">
-                {{if data.evaluate_time}}<li><span class="completed status">评价完成,订单结束</span>{{data.evaluate_time}}</li>{{/if}}
-                {{if data.reality_end_time && (data.order_status=='end_service')}}<li><span class="status">服务结束,等待评价</span>{{data.reality_end_time}}</li>{{/if}}
-                {{if data.begin_service_time}}<li><span class="status">服务开始</span>{{data.begin_service_time}}</li>{{/if}}
-                {{if data.pay_time}}<li><span class="status">支付成功,等待服务</span>{{data.pay_time}}</li>{{/if}}
-                {{if data.cancel_time}}<li><span class="status">订单取消</span>{{data.cancel_time}}</li>{{/if}}
-                {{if data.create_time}}<li><span class="status">下单成功,等待支付</span>{{data.create_time}}</li>{{/if}}
+                {{#data.record}}
             </ul>
         </section>
-
-        <div class="operations">
-            <a class="cancel" role="button" href="#cancel">取消订单</a>
-            <a class="pay" role="button" href="#pay">立即支付</a>
-        </div>
+            {{if data.order_status=='wait_pay'}}
+                <div class="operations">
+                    <a class="cancel" role="button" data-no="{{data.order_no}}" href="#cancel">取消订单</a>
+                    <a class="pay" role="button" data-no="{{data.order_no}}" href="#pay">立即支付</a>
+                </div>
+            {{/if}}
+            {{if data.order_status=='wait_evaluate'}}
+                <div class="operations">
+                    <a class="evaluate" role="button" data-no="{{data.order_no}}" data-pic="{{data.pic}}" data-name="{{data.worker_name}}" href="#evaluate">评价</a>
+                </div>
+            {{/if}}
         {{include 'footTemplate'}}
     </script>
-    <script src='../js/zepto-with-touch.min.js'></script>
+    <script src='../js/zepto-with-touch.js'></script>
     <script src='../js/template.js'></script>
     <script src='../js/public.js'></script>
     <script src="../js/my/orderDetail.js"></script>

@@ -136,7 +136,7 @@ return [
             'site/logout',
             'tq/index',
             'tq/select',
-            'order/calculate'
+            'order/calculate',
         ]
     ],
     'params' => $params,

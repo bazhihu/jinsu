@@ -15,7 +15,7 @@
     <div id="body"></div>
     <div id="foot"></div>
     <script id="bodyTemplate" type='text/html'>
-        <form class="menu-form" action="order-confirm.html" method="get" name="form">
+        <form class="menu-form"  action="" method="post">
             {{if mobile}}
             <!-- 已登录状态 -->
             <menu class="menu">
@@ -34,29 +34,33 @@
             <menu class="menu">
                 <label class="menuitem" role="menuitem" for="care-start">
                     <em class="title">服务开始时间：</em>
-                    <input type="date" class="value empty" id="care-start" name="start" value="2015-04-28" min="2015-04-28" max="2015-12-31" />
+                    <input type="date" class="value empty" id="care-start" name="start" value="" min="{{start_min}}" max="{{start_max}}" />
                 </label>
                 <label class="menuitem" role="menuitem" for="care-end">
                     <em class="title">服务结束时间：</em>
-                    <input type="date" class="value" id="care-end" name="end" value="" min="2015-04-28" max="2016-12-31" />
+                    <input type="date" class="value" id="care-end" name="end" value="" min="{{end_min}}" max="{{end_max}}" />
                     <i data-placeholder="请选择" id="care-days" class="value"></i>
                     <input type="hidden" id="days" name="days" value="" />
-
                 </label>
                 <a href="hospitals.html" id="hospitals-menuitem" target="popup" class="menuitem" role="menuitem">
-                    <em class="title">服务地点：</em>
+                    <em class="title">服务医院：</em>
                     <label class="value" data-placeholder="请选择"></label>
                     <input type="hidden" id="hospital_id" name="hospital_id" value="" />
                 </a>
-            </menu>
-
-            <menu class="menu">
-                <a href="patient-status.html" id="patient-status-menuitem" target="popup" class="menuitem" role="menuitem">
-                    <em class="title">病患状态：</em><label class="value" data-placeholder="请选择"></label>
-                    <i class="additional">护理费用每天将增加30%</i>
-                    <input type="hidden" id="patient-status" name="patient-status" value="2" />
+                <a href="departments.html" id="departments-menuitem" target="popup" class="menuitem" role="menuitem">
+                    <em class="title">服务科室：</em>
+                    <label class="value" data-placeholder="请选择"></label>
+                    <input type="hidden" id="department_id" name="department_id" value="" />
                 </a>
             </menu>
+
+            <!--<menu class="menu">-->
+                <!--<a href="patient-status.html" id="patient-status-menuitem" target="popup" class="menuitem" role="menuitem">-->
+                    <!--<em class="title">病患状态：</em><label class="value" data-placeholder="请选择"></label>-->
+                    <!--<i class="additional">护理费用每天将增加30%</i>-->
+                    <!--<input type="hidden" id="patient-status" name="patient-status" value="2" />-->
+                <!--</a>-->
+            <!--</menu>-->
             <menu class="menu">
                 <label class="menu-label">选择护理等级:</label>
                 <div class="care-levels menuitem" role="menuitem">
@@ -69,7 +73,7 @@
 
                     <label class="care-level checked" for="care-level-hight">
                         <span class="level care-level-hight">{{worker_levels[1]['name']}}</span>
-                        <input type="radio" name="care-level" id="care-level-hight" value="2" />
+                        <input type="radio" name="care-level" checked id="care-level-hight" value="2" />
                         <span class="price">￥<em>{{worker_levels[1]['price']}}</em>元/天</span>
                         <span class="additional">+30%</span>
                     </label>
@@ -81,22 +85,22 @@
                     </label>
                 </div>
             </menu>
-            <input type="submit" value="立即下单"/>
+            <input type="button" value="立即下单" id="orderCreate" name="orderCreate"/>
         </form>
+        <script>
+            $('.care-level input[type="radio"]').on('click', function () {
+                [].forEach.call(this.form.elements[this.name], function (radio) {
+                    $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
+                }, this);
+            });
+        </script>
     </script>
     <script src='../js/template.js'></script>
     <script type='text/javascript' src='../js/zepto.min.js'></script>
     <script src="../js/public.js"></script>
     <script src="../js/zepto-with-touch.min.js"></script>
     <script src="../js/popup.js"></script>
-    <script src="../js/order/order-quick.js"></script>
-    <script>
-        $('.care-level input[type="radio"]').on('click', function () {
-            [].forEach.call(this.form.elements[this.name], function (radio) {
-                $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
-            }, this);
+    <script src="../js/order/order.js"></script>
 
-        });
-    </script>
 </body>
 </html>

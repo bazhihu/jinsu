@@ -10,7 +10,6 @@ namespace api\modules\v1\controllers;
 use backend\models\Comment;
 use backend\models\Worker;
 use backend\models\Workerother;
-use backend\models\WorkerSearch;
 use common\models\Order;
 use Yii;
 use yii\web\Response;
@@ -50,14 +49,8 @@ class WorkerController extends ActiveController {
         //随机十个护工
         $params = Yii::$app->getRequest()->getBodyParams();
         $worker = \api\modules\v1\models\Worker::select($params);
-        $worker = \api\modules\v1\models\Worker::spliceWorker($worker);
-        if(!empty($worker)){
+        $worker = \api\modules\v1\models\Worker::formatWorker($worker);
 
-            foreach($worker as $key => $item){
-                $item['pic'] = Worker::workerPic($item['worker_id'], 120);
-                $worker[$key] = $item;
-            }
-        }
         return $worker;
     }
 
@@ -72,12 +65,9 @@ class WorkerController extends ActiveController {
         $worker = Worker::findOne(['worker_id'=>$worker_id]);
         $worker = ArrayHelper::toArray($worker);
         #拼接护工信息
-        $worker = \api\modules\v1\models\Worker::spliceWorker(['0'=>$worker]);
+        $worker = \api\modules\v1\models\Worker::formatWorker(['0'=>$worker]);
         $worker = $worker[0];
-        #护工头像
-        if(!empty($worker)){
-            $worker['pic'] = Worker::workerPic($worker['worker_id']);
-        }
+
         #护工评价
         $worker['comments'] = Comment::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
@@ -98,6 +88,13 @@ class WorkerController extends ActiveController {
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)
             ->all();
+
+        //护工排期
+//        $worker['schedule'] = WorkerSchedule::find()
+//            ->andFilterWhere(['worker_id'=>$worker_id])
+//            ->orderBy('start_date ASC')
+//            ->all();
+
         $worker['orders'] = $worker['orders']?$worker['orders']:[];
         return $worker;
     }

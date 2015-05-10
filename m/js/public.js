@@ -10,7 +10,7 @@ $(document).ready(function(){
 var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://api.youaiyihu.com/',
+    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',
@@ -194,31 +194,24 @@ function setLocal(value){
  * @returns {number}
  */
 function getOrderCycle(startTime,endTime){
-    var year1 =  startTime.substr(0,4),
-        year2 =  endTime.substr(0,4),
-        month1 = startTime.substr(5,2),
-        month2 = endTime.substr(5,2),
-        day1 = startTime.substr(8,2),
-        day2 = endTime.substr(8,2),
-        date1=new Date(year1,month1,day1),    //开始时间
-        date2=new Date(year2,month2,day2),    //结束时间
-        date3=date2.getTime()-date1.getTime(), //时间差的毫秒数
-        days=parseInt(date3/(24*3600*1000));
-    if(days>=1)
-        days = days;
-    else
-        days = 0;
-
+    var year1 =  startTime.substr(0,4);
+    var year2 =  endTime.substr(0,4);
+    var month1 = startTime.substr(5,2);
+    var month2 = endTime.substr(5,2);
+    var day1 = startTime.substr(8,2);
+    var day2 = endTime.substr(8,2);
+    var date1=new Date(year1,month1,day1);    //开始时间
+    var date2=new Date(year2,month2,day2);    //结束时间
+    var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
+    var days=parseInt(date3/(24*3600*1000));
     return days;
 }
 /**
  * 时间对象的格式化
+ * @param format format="yyyy-MM-dd hh:mm:ss";
+ * @returns {*}
  */
-Date.prototype.format = function(format)
-{
-    /*
-     * format="yyyy-MM-dd hh:mm:ss";
-     */
+Date.prototype.format = function(format) {
     var o = {
         "M+" : this.getMonth() + 1,
         "d+" : this.getDate(),
@@ -229,10 +222,8 @@ Date.prototype.format = function(format)
         "S" : this.getMilliseconds()
     }
 
-    if (/(y+)/.test(format))
-    {
-        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
-        - RegExp.$1.length));
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4- RegExp.$1.length));
     }
 
     for (var k in o)

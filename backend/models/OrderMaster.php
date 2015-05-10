@@ -90,5 +90,16 @@ class OrderMaster extends Order
         return $user;
     }
 
+    /**
+     * @return mixed
+     */
+    public function formatMobile(){
+        $roles = [AdminUser::BACKOFFICESTAFF, AdminUser::BACKSYSTEMADMIN];
+        if(in_array(Yii::$app->user->identity->staff_role, $roles)){
+            return $this->mobile;
+        }
+        return substr_replace($this->mobile, '****', 3, 4);
+    }
+
 
 }

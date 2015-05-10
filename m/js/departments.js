@@ -1,6 +1,6 @@
 getConfigs(function(configs) {
     //常驻医院
-    var bodyHtml = template('bodyTemplate', configs.hospitals);
+    var bodyHtml = template('bodyTemplate', configs.departments);
     $('#body').html(bodyHtml);
 });
 
@@ -14,9 +14,9 @@ function fillList(data, append) {
     var s = '', sites = document.querySelector('.sites'), className = '';
     if (!data) {
         getConfigs(function (configs) {
-            hospitals_data = configs.hospitals;
+            departments_data = configs.departments;
             className = ' class="recommends"';
-            hospitals_data.forEach(function (e) {
+            departments_data.forEach(function (e) {
                 s += '<li' + className + ' data-value="' + e.id + '">' + e.name + '</li>';
             });
         });
@@ -35,11 +35,11 @@ function fillList(data, append) {
 
 function onSearchChange() {
     getConfigs(function(configs){
-        var hospitals = configs.hospitals;
+        var departments = configs.departments;
         var value = $('#name').val();
         if(value && (value = value.trim())) {
             var search_array = new Array();
-            $(hospitals).each(function (index, item) {
+            $(departments).each(function (index, item) {
                 var name = item.name;
                 var id = item.id;
                 var pinyin = item.pinyin;
@@ -71,7 +71,6 @@ $('.sites').delegate('li', 'click', function () {
 
 $('#header .back').click(function (e) {
     var selected = document.querySelector('.sites .selected');
-
     try {
         window.parent.$.dismissPopup(selected ? { value: selected.getAttribute('data-value'), text: selected.innerText || selected.textContent } : null);
     } catch (error) {

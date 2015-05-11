@@ -10,7 +10,7 @@ $(document).ready(function(){
 var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://dev.api.youaiyihu.com/',
+    url = 'http://api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',
@@ -45,7 +45,7 @@ function setCookie(name,value) {
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
-    document.cookie = name + "="+ value + ";expires=" + exp.toGMTString();
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString() +';path=/';
 }
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
@@ -66,13 +66,11 @@ function getDataJson(url){
         })
     })(Zepto);
 }
-
 function delCookie(name) {
     var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval=getCookie(name);
-    if(cval!=null)
-        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    exp.setTime(exp.getTime() - 24*60*60*1000);
+    var value=getCookie(name);
+    document.cookie = name + "="+ escape(value) + ";expires=" + exp.toGMTString() +';path=/';
 }
 function postComment(param,callback){
     $.post(commentUrl,param,function(response){
@@ -206,7 +204,6 @@ function getOrderCycle(startTime,endTime){
     var days=parseInt(date3/(24*3600*1000));
     return days;
 }
-
 /**
  * 时间对象的格式化
  * @param format format="yyyy-MM-dd hh:mm:ss";
@@ -227,58 +224,14 @@ Date.prototype.format = function(format) {
         format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4- RegExp.$1.length));
     }
 
-    for (var k in o) {
-        if (new RegExp("(" + k + ")").test(format)) {
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+    for (var k in o)
+    {
+        if (new RegExp("(" + k + ")").test(format))
+        {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length));
         }
     }
     return format;
-}
-
-/**
- * 月份加减
- * @param date
- * @param months
- * @returns {string}
- */
-function addMonth(date,months){
-    var d=new Date(date);
-    var month =d.getMonth()+1+months;
-    var day = d.getDate();
-    if(month<10) month = "0"+month;
-    if(day<10) day = "0"+day;
-
-    return d.getFullYear()+'-'+month+'-'+day;
-}
-
-/**
- * 天数加减
- * @param date
- * @param months
- * @returns {string}
- */
-function addDay(date,days){
-    var d=new Date(date);
-    var month =d.getMonth()+1;
-    var day = d.getDate()+days;
-    if(month<10) month = "0"+month;
-    if(day<10) day = "0"+day;
-
-    return d.getFullYear()+'-'+month+'-'+day;
-}
-
-/**
- * 将jquery系列化后的值转为name:value的形式。
- * @param o
- * @returns {{}}
- */
-function convertArray(o) {
-    var v = {};
-    for (var i in o){
-        if (typeof (v[o[i].name]) == 'undefined')
-            v[o[i].name] = o[i].value;
-        else
-            v[o[i].name] += "," + o[i].value;
-    }
-    return v;
 }

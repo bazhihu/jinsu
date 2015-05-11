@@ -1,7 +1,15 @@
-var host = "http://"+window.location.host,
-    UA = window.navigator.userAgent,
+var host = "http://"+window.location.host;
+if(window.location.host=='dev.m.youaiyihu.com'){
+    var url ='http://dev.api.youaiyihu.com/';
+}else if(window.location.host=='sit.m.youaiyihu.com'){
+    var url ='http://sit.api.youaiyihu.com/';
+}else if(window.location.host=='uat.m.youaiyihu.com'){
+    var url ='http://uat.api.youaiyihu.com/';
+}else{
+    var url ='http://api.youaiyihu.com/';
+}
+var UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',

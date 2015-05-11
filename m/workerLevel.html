@@ -9,10 +9,10 @@
 </head>
 <body id="page-levels">
 
-<!--<header id="header">-->
-    <!--<a href="javascript:history.back(1)" class="back">返回</a>-->
-    <!--<h2 class="title">级别说明</h2>-->
-<!--</header>-->
+<header id="header">
+    <a href="javascript:history.back(1)" class="back">返回</a>
+    <h2 class="title">级别说明</h2>
+</header>
 
 <div class="tabs">
     <span>初级护理</span>
@@ -75,6 +75,9 @@
 </div>
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/swiper.min.js"></script>
+<script src='../js/template.js'></script>
+<script type='text/javascript' src='../js/zepto.min.js'></script>
+<script src="../js/public.js"></script>
 <script>
     var swiper = new Swiper('.swiper-container', {
         initialSlide: location.hash && location.hash.match(/^#([1234])/) ? parseInt(RegExp.$1) - 1 : 0,

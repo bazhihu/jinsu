@@ -31,7 +31,6 @@ var UA = window.navigator.userAgent,
 
 if(/ipad|iPhone|android|micromessenger/.test(UA)){
     CLICK = 'tap';
-    HEADER_HIDDEN = 1;
 }
 
 $(document).ready(function(){
@@ -41,9 +40,12 @@ $(document).ready(function(){
     var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
-    if(HEADER_HIDDEN){
+    var src = getUrlQueryString('src');
+    if(src=='app')
         $("#header").css('display','none');
-    }
+
+    if(/micromessenger/.test(UA))
+        $("#header").css('display','none');
 });
 function getStatus() {
     var id = getCookie(ID);

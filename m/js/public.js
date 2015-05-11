@@ -41,6 +41,12 @@ function getStatus() {
     }
     return JSON.parse('{"id":"'+id+'","name":"'+name+'","token":"'+token+'"}');
 }
+function loggedIn(){
+    var user = getStatus();
+    if(!user){
+        location.href = urlToLogin;
+    }
+}
 function setCookie(name,value) {
     var Days = 30;
     var exp = new Date();

@@ -8,13 +8,14 @@
     <link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-express">
-    <header id="header">
-        <a class="back" href="javascript:history.back(1)">返回</a>
-        <h2 class="title">快速预定</h2>
-    </header>
     <div id="body"></div>
     <div id="foot"></div>
     <script id="bodyTemplate" type='text/html'>
+        <header id="header">
+            <a class="back" href="javascript:history.back(1)">返回</a>
+            <h2 class="title">{{if type=='select'}}挑选陪护员{{else}}快速预定{{/if}}</h2>
+            <a class="home" href="/"><img src="../images/home.png"> </a>
+        </header>
         <form class="menu-form"  method="post">
             <input type="hidden" value="{{mobile}}" name="mobile" id="mobile">
             {{if mobile}}
@@ -85,7 +86,7 @@
                     </label>
                 </div>
             </menu>
-            <input type="button" value="立即下单" id="orderCreate" name="orderCreate"/>
+            <input type="button" {{if type=='select'}}value=" 确 定 "{{else}}value="立即下单"{{/if}} id="orderCreate" name="orderCreate"/>
         </form>
     </script>
 

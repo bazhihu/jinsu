@@ -23,7 +23,7 @@ body { min-width: 980px; background: #fff; color: #688297; }
 
 #header { height: 90px; }
 #header .logo { display: block; width: 250px; height: 90px; overflow: hidden; text-indent: -999px; background-position: 16px 14px; }
-#header .invite { display: block; float: right; padding-right: 7px; text-align: right; font-size: 18px; line-height: 90px; color: #688297; }
+#header .invite { display: block; float: right; padding-left: 30px; text-align: right; font-size: 18px; line-height: 90px; color: #688297; }
 
 .banner { height: 559px; border-top: 4px solid #2dcb9c; overflow: hidden; -webkit-background-size: cover; background-size: cover; }
 .banner .section { height: 559px; padding-left: 525px; width: 435px; overflow: hidden; }

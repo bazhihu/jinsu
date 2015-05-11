@@ -22,21 +22,25 @@ $this->title = '优爱医护-您的贴身的护理专家';
     <a href="javascript:" class="app">
         <img src="/images/index/express-qr-app.png" width="164" height="164" alt="手机应用二维码" />
         <em>手机应用</em>
+        <br>
         <i>iOS、Android</i>
     </a>
     <a href="javascript:" class="wechat">
         <img src="/images/index/express-qr-wechat.png" width="164" height="164" alt="微信公众号二维码" />
         <em>微信公众号</em>
+        <br>
         <i>youaiyihu</i>
     </a>
     <a href="javascript:" class="tel">
         <img src="/images/index/express-qr-400.png" width="164" height="164" alt="客服热线二维码" />
         <em>客服热线</em>
+        <br>
         <i>400-630-9860</i>
     </a>
     <a href="http://m.youaiyihu.com" class="wap">
         <img src="/images/index/express-qr-wap.png" width="164" height="164" alt="手机网站二维码" />
         <em>手机网站</em>
+        <br>
         <i>m.youaiyihu.com</i>
     </a>
 </div>

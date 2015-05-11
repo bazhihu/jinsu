@@ -146,12 +146,20 @@ class Hospitals extends \yii\db\ActiveRecord
         return '';
     }
 
+    /**
+     * 删除缓存
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
     public function afterSave($insert, $changedAttributes){
         parent::afterSave($insert, $changedAttributes);
         $keys = Redis::keys(self::$_keyPrefix.'/*');
         Redis::del($keys);
     }
 
+    /**
+     * 删除缓存
+     */
     public function afterDelete(){
         parent::afterDelete();
         $keys = Redis::keys(self::$_keyPrefix.'/*');

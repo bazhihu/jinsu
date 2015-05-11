@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use Yii\helpers\ArrayHelper;
+use common\models\Redis;
 
 /**
  * This is the model class for table "{{%city}}".
@@ -20,6 +21,8 @@ use Yii\helpers\ArrayHelper;
  */
 class City extends \yii\db\ActiveRecord
 {
+    private static $_keyPrefix = 'city';
+
     /**
      * @inheritdoc
      */
@@ -90,25 +93,55 @@ class City extends \yii\db\ActiveRecord
         }
         return $data;
     }
+
+    /**
+     * 获取城市
+     * @param $id
+     * @return mixed|null|static
+     */
+    static public function getCity($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data;
+    }
     /**
      * 根据ID获取省份、城市、地区的NAME
      * @param int $IdStr 省ID 市ID 区县ID
      * @return static[]
      */
-
-    static public  function  getCityName($IdStr=''){
+    static public function getCityName($IdStr){
         $data = null;
-        if($IdStr){
-            $ids = explode(',',$IdStr);
-            if($ids) {
-                foreach ($ids as $id) {
-                    $findArr = ['id' => $id];
-                    $result = self::findOne($findArr);
+        $ids = explode(',', $IdStr);
+        if(empty($ids)) return $data;
 
-                    $data .= $result['name']." ";
-                }
-            }
+        foreach ($ids as $id) {
+            $result = self::getCity($id);
+            $data .= $result['name']." ";
         }
         return $data;
+    }
+
+    /**
+     * 删除缓存
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes){
+        parent::afterSave($insert, $changedAttributes);
+        $keys = Redis::keys(self::$_keyPrefix.'/*');
+        Redis::del($keys);
+    }
+
+    /**
+     * 删除缓存
+     */
+    public function afterDelete(){
+        parent::afterDelete();
+        $keys = Redis::keys(self::$_keyPrefix.'/*');
+        Redis::del($keys);
     }
 }

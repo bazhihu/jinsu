@@ -253,6 +253,17 @@ td .btn{margin: 2px}
     //Pjax::end(); ?>
 
 </div>
+<?php
+//完成订单
+\yii\bootstrap\Modal::begin([
+    'header' => '<strong>完成订单</strong>',
+    'id'=>'finishOrderModal',
+    'size'=>'modal-lg',
+]);
+echo '<div id="finishOrderModalContent"></div>';
+
+\yii\bootstrap\Modal::end();
+?>
 <script type="text/javascript">
     setInterval(function(){
         window.location.reload();

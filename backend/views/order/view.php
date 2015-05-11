@@ -300,7 +300,17 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 ]);
 echo '<div id="rechargeModalContent"></div>';
 
-\yii\bootstrap\Modal::end()
+\yii\bootstrap\Modal::end();
+
+//完成订单
+\yii\bootstrap\Modal::begin([
+    'header' => '<strong>完成订单</strong>',
+    'id'=>'finishOrderModal',
+    'size'=>'modal-lg',
+]);
+echo '<div id="finishOrderModalContent"></div>';
+
+\yii\bootstrap\Modal::end();
 ?>
 <script type="text/javascript">
     $('body').on('click', '.panel-heading', function () {

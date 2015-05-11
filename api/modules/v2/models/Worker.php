@@ -65,6 +65,13 @@ class Worker extends ActiveRecord
 
         $countQuery = $worker::find();
 
+        //获取在工作中的护工
+        if(isset($params['start_time'])){
+            $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
+            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+            $countQuery->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+        }
+
         //医院
         if(isset($params['hospital_id'])){
             $query->andFilterWhere(['like', 'hospital_id', ','.$params['hospital_id'].',']);
@@ -72,9 +79,9 @@ class Worker extends ActiveRecord
         }
 
         //科室
-        if(isset($params['office_id'])){
-            $query->andFilterWhere(['like', 'office_id', ','.$params['office_id'].',']);
-            $countQuery->andFilterWhere(['like', 'office_id', ','.$params['office_id'].',']);
+        if(isset($params['department_id'])){
+            $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
+            $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
         }
 
         $result = $query->orderBy(['price' => SORT_DESC])

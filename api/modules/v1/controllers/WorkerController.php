@@ -71,6 +71,7 @@ class WorkerController extends ActiveController {
         #护工评价
         $worker['comments'] = Comment::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
+            ->andWhere("content <>''")
             ->orderBy('comment_id DESC')
             ->limit(self::$commentOffset)
             ->all();

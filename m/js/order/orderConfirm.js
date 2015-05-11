@@ -42,6 +42,7 @@ getConfigs(function(configs) {
             //护工级别
             var worker_level_lenth =configs.worker_levels.length;
             var worker_level_data  = configs.worker_levels;
+            console.log(configs.worker_levels);
             var worker_level_array = new Array();
             var worker_level_prirce_array = new Array();
             for(var j =0;j<=worker_level_lenth-1;j++){
@@ -191,7 +192,6 @@ getConfigs(function(configs) {
             //支付
             $("#pay").on('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
-                alert(pay_way);
                 if(pay_way==1) {
                     var url = "payOffline.html";
                 }else if(pay_way==2){
@@ -213,7 +213,6 @@ getConfigs(function(configs) {
                 };
 
                 $.post(orderCreate,post_data,function(response){
-                    console.log("msg:"+pay_way);
                     if(response.code == 200){
                         location.href=url;
                     }else if(response.code == 400){

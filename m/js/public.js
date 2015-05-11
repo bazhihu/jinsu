@@ -1,16 +1,7 @@
-$(document).ready(function(){
-    var headHtml="<script id='headTemplate' type='text/html'></script>";
-    $('#head').html(headHtml);
-
-    var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
-    var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
-    $('#foot').html(footHtml);
-});
-
 var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://api.youaiyihu.com/',
+    url = 'http://dev.api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',
@@ -29,9 +20,23 @@ var host = "http://"+window.location.host,
     workerUrl = url+version+'workers',
     urlToLogin = host+'/login.html',
     INDEX = host;
-if(/ipad|iPhone|android/.test(UA)){
+
+if(/ipad|iPhone|android|micromessenger|Mozilla/.test(UA)){
     CLICK = 'tap';
+    HEADER_HIDDEN = 1;
 }
+
+$(document).ready(function(){
+    var headHtml="<script id='headTemplate' type='text/html'></script>";
+    $('#head').html(headHtml);
+
+    var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
+    var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
+    $('#foot').html(footHtml);
+    if(HEADER_HIDDEN){
+        $("#header").css('display','none');
+    }
+});
 function getStatus() {
     var id = getCookie(ID);
     var name = getCookie(NAME);

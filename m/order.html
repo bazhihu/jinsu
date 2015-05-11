@@ -8,13 +8,13 @@
     <link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-express">
-    <header id="header">
-        <a class="back" href="javascript:history.back(1)">返回</a>
-        <h2 class="title">快速预定</h2>
-    </header>
     <div id="body"></div>
     <div id="foot"></div>
     <script id="bodyTemplate" type='text/html'>
+        <header id="header">
+            <a class="back" href="javascript:history.back(1)">返回</a>
+            <h2 class="title">{{if type=='select'}}挑选护工{{else}}快速预定{{/if}}</h2>
+        </header>
         <form class="menu-form"  method="post">
             <input type="hidden" value="{{mobile}}" name="mobile" id="mobile">
             {{if mobile}}

@@ -10,7 +10,7 @@ $(document).ready(function(){
 var host = "http://"+window.location.host,
     UA = window.navigator.userAgent,
     CLICK = 'click',
-    url = 'http://dev.api.youaiyihu.com/',
+    url = 'http://api.youaiyihu.com/',
     version = 'v1/',
     ID = 'SID',
     NAME = 'name',
@@ -45,7 +45,7 @@ function setCookie(name,value) {
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString() +';path=/';
 }
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
@@ -66,13 +66,11 @@ function getDataJson(url){
         })
     })(Zepto);
 }
-
 function delCookie(name) {
     var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval=getCookie(name);
-    if(cval!=null)
-        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    exp.setTime(exp.getTime() - 24*60*60*1000);
+    var value=getCookie(name);
+    document.cookie = name + "="+ escape(value) + ";expires=" + exp.toGMTString() +';path=/';
 }
 function postComment(param,callback){
     $.post(commentUrl,param,function(response){

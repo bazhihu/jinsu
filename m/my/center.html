@@ -12,13 +12,15 @@
     <a class="back" href="/index.html">返回</a>
     <h2 class="title">个人中心</h2>
 
-    <div class="unsignedin" style="display: none">
+    <div class="unsignedin unsign" style="display: none">
         您还没有登录
         <a class="signin-button" role="button" href="../login.html">登录</a>
     </div>
-    <div class="account-intro" style="display: none">
-        <div class="photo" style="background-image:url(../images/nurses-simple.jpg)"></div>
+    <!--<div class="account-intro" style="display: none">-->
+    <div class="unsignedin intro" style="display: none">
+        <!--<div class="photo" style="background-image:url(../images/nurses-simple.jpg)"></div>-->
         <em class="name" id="name"></em>
+        <span class="signin-button quit">退出登录</span>
     </div>
 </header>
 
@@ -31,7 +33,7 @@
 </menu>
 
 <a class="call" href="tel:400-630-9860">400-630-9860</a>
-    <script src="../js/zepto.min.js"></script>
+    <script src="../js/zepto-with-touch.min.js"></script>
     <script src="../js/public.js"></script>
     <script src="../js/center.js"></script>
 </body>

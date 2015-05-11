@@ -80,7 +80,7 @@ class Order extends \yii\db\ActiveRecord{
             self::ORDER_STATUS_WAIT_PAY,
             //self::ORDER_STATUS_WAIT_CONFIRM,
             //self::ORDER_STATUS_WAIT_SERVICE,
-            self::ORDER_STATUS_IN_SERVICE
+            //self::ORDER_STATUS_IN_SERVICE
         ],
         //确认
         'confirm' => [

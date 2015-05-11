@@ -79,9 +79,9 @@ class Worker extends ActiveRecord
         }
 
         //科室
-        if(isset($params['office_id'])){
-            $query->andFilterWhere(['like', 'office_id', ','.$params['office_id'].',']);
-            $countQuery->andFilterWhere(['like', 'office_id', ','.$params['office_id'].',']);
+        if(isset($params['department_id'])){
+            $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
+            $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
         }
 
         $result = $query->orderBy(['price' => SORT_DESC])

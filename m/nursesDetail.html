@@ -36,7 +36,7 @@
     </div>
 	<section class="menu detail">
 		<h3 class="menu-title">详细信息</h3>
-		<a class="menuitem" href="javascript:expand('self-intro')" id="self-intro">{{data.selfIntros[0].ext1}}</a>
+		<a class="menuitem" id="self-intro">{{data.selfIntros[0].ext1}}</a>
 	</section>
 	<div class="menu detail">
 		<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
@@ -45,7 +45,7 @@
 		<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>
 	</div>
 	<div class="menu detail">
-		<a class="menuitem" href="javascript:expand('credentials')" id="credentials">{{data.certificate}}</a>
+		<a class="menuitem" id="credentials">{{data.certificate}}</a>
 	</div>
     </script>
 <!--
@@ -78,7 +78,7 @@
 			</li>
 		</ul>
 	</div>
--->
+
 	<div class="menu experience">
 		<div class="menu-title">
 			<a href="#" class="more">更多经历</a>
@@ -95,9 +95,9 @@
 			</li>
 		</ul>
 	</div>
-
+-->
 	<div class="pay-operation">
-		<a href="19.payments.html" role="button" class="pay">确认支付</a>
+		<a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
 		<span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
 	</div>
     <script type='text/javascript' src='/js/zepto.min.js'></script>

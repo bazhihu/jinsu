@@ -21,7 +21,7 @@ var host = "http://"+window.location.host,
     urlToLogin = host+'/login.html',
     INDEX = host;
 
-if(/ipad|iPhone|android|micromessenger|Mozilla/.test(UA)){
+if(/ipad|iPhone|android|micromessenger/.test(UA)){
     CLICK = 'tap';
     HEADER_HIDDEN = 1;
 }

@@ -12,7 +12,7 @@ use yii\helpers\Html;
 <body>
     <div id="header" class="section">
         <a class="invite" href="<?=Yii::$app->urlManager->createUrl(['site/about']);?>">关于我们</a>
-        <a class="invite" href="tel:400-630-9860">招聘护理员 400-630-9860</a>
+        <a class="invite" href="#">招聘护理员：400-630-9860</a>
         <a href="/"><h1 class="logo">优爱医护</h1></a>
     </div>
 

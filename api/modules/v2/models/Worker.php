@@ -79,12 +79,12 @@ class Worker extends ActiveRecord
 
         //科室
         if(isset($params['department_id']) && !empty($params['department_id'])){
+
             $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
             $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
         }
 
-        $result = $query->orderBy(['price' => SORT_DESC])
-            ->offset($perPage*$page)
+        $result = $query->offset($perPage*$page)
             ->limit($perPage)
             ->all();
 

@@ -24,14 +24,38 @@ getConfigs(function(configs){
     $("#orderCreate").on('click', function () {
         var formData = $("form").serializeArray();
         var str = '';
+        var des ='';
         $.each(formData, function(i, field){
             str = str+field.value+"#";
         });
-        setCookie('orderData',str);
-        location.href="orderConfirm.html?type="+type;
+
+        if(!$("#mobile").val())
+            des = "请填写联系方式！";
+        else if(!$("#care-start").val())
+            des = "请选择服务开始时间！";
+        else if(!$("#care-end").val())
+            des = "请选择服务结束时间！";
+        else if(!$("#hospital_id").val())
+            des = "请选择服务医院！";
+        else if(!$("#department_id").val())
+            des = "请选择服务科室！";
+
+        if(des){
+            alert(des);
+            return false;
+        }else{
+            setCookie('orderData',str);
+            if(type=='select'){
+                location.href="nursesList.html";
+            }else{
+                location.href="orderConfirm.html?type="+type;
+            }
+        }
     });
 
-  var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
+
+
+    var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
 	touchEnabled && $('a[target="popup"]').click(function (e) {
 		e.preventDefault();
 		return false;

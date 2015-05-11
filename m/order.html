@@ -15,14 +15,14 @@
     <div id="body"></div>
     <div id="foot"></div>
     <script id="bodyTemplate" type='text/html'>
-        <form class="menu-form"  action="" method="post">
+        <form class="menu-form"  method="post">
+            <input type="hidden" value="{{mobile}}" name="mobile" id="mobile">
             {{if mobile}}
             <!-- 已登录状态 -->
             <menu class="menu">
                 <span class="menuitem" role="menuitem">
                     <em class="title">联系方式：</em>
                     <i class="value" data-placeholder="快捷登录">{{mobile}}</i>
-                    <input type="hidden" value="{{mobile}}" name="mobile">
                 </span>
             </menu>
             {{else}}
@@ -87,20 +87,20 @@
             </menu>
             <input type="button" value="立即下单" id="orderCreate" name="orderCreate"/>
         </form>
-        <script>
-            $('.care-level input[type="radio"]').on('click', function () {
-                [].forEach.call(this.form.elements[this.name], function (radio) {
-                    $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
-                }, this);
-            });
-        </script>
     </script>
+
     <script src='../js/template.js'></script>
     <script type='text/javascript' src='../js/zepto.min.js'></script>
     <script src="../js/public.js"></script>
     <script src="../js/zepto-with-touch.min.js"></script>
     <script src="../js/popup.js"></script>
     <script src="../js/order/order.js"></script>
-
+    <script>
+        $('.care-level input[type="radio"]').live('click', function () {
+            [].forEach.call(this.form.elements[this.name], function (radio) {
+                $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
+            }, this);
+        });
+    </script>
 </body>
 </html>

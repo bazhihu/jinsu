@@ -241,3 +241,51 @@ Date.prototype.format = function(format) {
     }
     return format;
 }
+
+/**
+ * 月份加减
+ * @param date
+ * @param months
+ * @returns {string}
+ */
+function addMonth(date,months){
+    var d=new Date(date);
+    var month =d.getMonth()+1+months;
+    var day = d.getDate();
+    if(month<10) month = "0"+month;
+    if(day<10) day = "0"+day;
+
+    return d.getFullYear()+'-'+month+'-'+day;
+}
+
+/**
+ * 天数加减
+ * @param date
+ * @param months
+ * @returns {string}
+ */
+function addDay(date,days){
+    var d=new Date(date);
+    var month =d.getMonth()+1;
+    var day = d.getDate()+days;
+    if(month<10) month = "0"+month;
+    if(day<10) day = "0"+day;
+
+    return d.getFullYear()+'-'+month+'-'+day;
+}
+
+/**
+ * 将jquery系列化后的值转为name:value的形式。
+ * @param o
+ * @returns {{}}
+ */
+function convertArray(o) {
+    var v = {};
+    for (var i in o){
+        if (typeof (v[o[i].name]) == 'undefined')
+            v[o[i].name] = o[i].value;
+        else
+            v[o[i].name] += "," + o[i].value;
+    }
+    return v;
+}

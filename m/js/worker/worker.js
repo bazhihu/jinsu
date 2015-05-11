@@ -19,13 +19,22 @@ function ages(str)
 //护工等级
 var worker_levels = new Array();
 function get_workelist() {
+    /*
     $.getJSON(configUrl, function (response) {
         if (response.code == 200) {
             //alert(response.data.worker_levels[0].name);
             worker_levels=response.data.worker_levels;
         };
     });
-    $.getJSON(workerUrl, function (response) {
+*/
+    getConfigs(function(configs) {
+        worker_levels=configs.worker_levels;
+    });
+    var start_time = getUrlQueryString("start_time");
+    var hospital_id = getUrlQueryString("hospital_id");
+    var department_id = getUrlQueryString("department_id");
+    var workerNewUrl=workerUrl+"?start_time="+start_time+"&hospital_id="+hospital_id+"&department_id="+department_id
+    $.getJSON(workerNewUrl, function (response) {
         if (response.code == 200) {
             template.helper('dateFormat', function (n) {
                 return ages(n);
@@ -51,7 +60,6 @@ function get_workelist() {
 function get_workedetail() {
     var worker_id = getUrlQueryString("worker_id");
     var workeDetailUrl=workerUrl+"/"+worker_id;
-    //alert(workeDetailUrl);
     $.getJSON(workeDetailUrl, function (response) {
         if (response.code == 200) {
             template.helper('dateFormat', function (str) {

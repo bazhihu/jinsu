@@ -51,8 +51,7 @@ class Worker extends ActiveRecord
      * @param $params
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function select($params)
-    {
+    public static function select($params){
         if(empty($params['page'])){
             $page = 0;
         }else{

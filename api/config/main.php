@@ -24,6 +24,10 @@ return [
             'basePath' => '@app/modules/v1',
             'class' => 'api\modules\v1\Module'
         ],
+        'v2' => [
+            'basePath' => '@app/modules/v2',
+            'class' => 'api\modules\v2\Module'
+        ],
     ],
     'components' => [        
         'user' => [
@@ -86,6 +90,16 @@ return [
                         'v1/worker',
                         'v1/wallet',
                         'v1/comment',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\\w+>'
+                    ],
+                    'except' => ['delete']
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'v2/worker',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

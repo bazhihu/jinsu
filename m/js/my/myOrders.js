@@ -1,3 +1,4 @@
+loggedIn();
 var access_token = getStatus(),
     url = orderUrl+'?access-token='+access_token.token,
     item = $('.menu');

@@ -1,3 +1,4 @@
+loggedIn();
 var order_no = getUrlQueryString('order_no'),
     access_token = getStatus(),
     getOrderUrl = orderUrl+"/"+order_no+'?access-token='+access_token.token,

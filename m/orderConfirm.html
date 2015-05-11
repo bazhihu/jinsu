@@ -46,8 +46,16 @@
                 <div class="nurses-selected menuitem" role="menuitem">
                     <em class="title">护理师：</em>
                     <div class="nurses-detail">
-                        <div class="nurses-photo" style="background-image: url({{if pic}}{{pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
-                        <h5 class="care-level-hight nurses-title">高级护理师</h5>
+                        <div class="nurses-photo" id="pic"></div>
+                        {{if worker_level==1}}
+                            <h5 class="care-level-middle nurses-title">{{worker_level_name}}</h5>
+                        {{/if}}
+                        {{if worker_level==2}}
+                            <h5 class="care-level-hight nurses-title">{{worker_level_name}}</h5>
+                        {{/if}}
+                        {{if worker_level==3}}
+                            <h5 class="care-level-special nurses-title">{{worker_level_name}}</h5>
+                        {{/if}}
                         <dl>
                             <dt>姓名：</dt>
                             <dd>{{worker_name}}&nbsp;</dd>
@@ -60,13 +68,13 @@
                 <div class="menuitem" role="menuitem">
                     <em class="title">护理师：</em>
                     {{if worker_level==1}}
-                    <i class="value care-level-middle">{{worker_level_name}}</i>
+                        <i class="value care-level-middle">{{worker_level_name}}</i>
                     {{/if}}
                     {{if worker_level==2}}
-                    <i class="value care-level-hight">{{worker_level_name}}</i>
+                        <i class="value care-level-hight">{{worker_level_name}}</i>
                     {{/if}}
                     {{if worker_level==3}}
-                    <i class="value care-level-special">{{worker_level_name}}</i>
+                        <i class="value care-level-special">{{worker_level_name}}</i>
                     {{/if}}
                     <input type="hidden" name="worker_level" value="{{worker_level}}">
                 </div>
@@ -124,18 +132,18 @@
                     <i>此处为文字介绍当面支付</i>
                     <input type="radio" name="pay_way"  checked id="pay_offline" value="1" />
                 </label>
-                <label class="menuitem menuitemradio" for="pay_alipay" role="menuitemradio">
-                    <span class="pay-alipay"></span>
-                    <em>支付宝支付</em>
-                    <i>推荐有支付宝账号的用户使用</i>
-                    <input type="radio" name="pay_way"  id="pay_alipay" value="2" />
-                </label>
-                <label class="menuitem menuitemradio" for="pay_wechat" role="menuitemradio">
-                    <span class="pay-wechat"></span>
-                    <em>微信支付</em>
-                    <i>推荐安装微信5.0及以上版本的使用</i>
-                    <input type="radio" name="pay_way"  id="pay_wechat" value="3" />
-                </label>
+                <!--<label class="menuitem menuitemradio" for="pay_alipay" role="menuitemradio">-->
+                    <!--<span class="pay-alipay"></span>-->
+                    <!--<em>支付宝支付</em>-->
+                    <!--<i>推荐有支付宝账号的用户使用</i>-->
+                    <!--<input type="radio" name="pay_way"  id="pay_alipay" value="2" />-->
+                <!--</label>-->
+                <!--<label class="menuitem menuitemradio" for="pay_wechat" role="menuitemradio">-->
+                    <!--<span class="pay-wechat"></span>-->
+                    <!--<em>微信支付</em>-->
+                    <!--<i>推荐安装微信5.0及以上版本的使用</i>-->
+                    <!--<input type="radio" name="pay_way"  id="pay_wechat" value="3" />-->
+                <!--</label>-->
             </section>
         </div>
         <input type="button" value="确认支付" name="pay" id="pay"/>

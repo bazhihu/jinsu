@@ -1,30 +1,33 @@
-var sub = $('.submit'),
+var sub = $('.signin-form'),
     code = $('.retrieve-button');
 var user = getStatus();
 if(user){
     window.location.href = history.go(-1);
 }
-sub.on(CLICK,function(err){
-    var data = $('form').serializeArray(),
-        error = true;
-    validateLogin(data, function(a){
-        if(!a)
-            error = false;
-    });
-    if(error){
-        $.post(loginUrl,data,function(back){
-            if(back.code == 200)
-            {
-                setCookie(ID, back.data.uid);
-                setCookie(NAME, back.data.mobile);
-                setCookie(TOKEN, back.data.token);
-                window.location.href = host;
-            }else{
-
-            }
+sub.submit(
+    function(e){
+        var data = $('form').serializeArray(),
+            error = true;
+        validateLogin(data, function(a){
+            if(!a)
+                error = false;
         });
+        if(error){
+            $.post(loginUrl,data,function(back){
+                if(back.code == 200)
+                {
+                    setCookie(ID, back.data.uid);
+                    setCookie(NAME, back.data.mobile);
+                    setCookie(TOKEN, back.data.token);
+                    window.location.href = host;
+                }else{
+
+                }
+            });
+        }
+        return false;
     }
-});
+);
 code.on(CLICK,function(err){
     var time=60,
         validCode=true,

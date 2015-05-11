@@ -448,9 +448,9 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author tiancq
      */
-    static public function getEducationLevel($education = null,$op='')
+    static public function getEducationLevel($education = null, $op='')
     {
-        if($education <=3){
+        if(!empty($education) && $education <= 3){
             return "初中及以下";
         }
 

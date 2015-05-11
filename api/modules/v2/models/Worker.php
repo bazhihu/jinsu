@@ -51,8 +51,7 @@ class Worker extends ActiveRecord
      * @param $params
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function select($params)
-    {
+    public static function select($params){
         if(empty($params['page'])){
             $page = 0;
         }else{
@@ -79,13 +78,13 @@ class Worker extends ActiveRecord
         }
 
         //科室
-        if(isset($params['department_id'])){
+        if(isset($params['department_id']) && !empty($params['department_id'])){
+
             $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
             $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
         }
 
-        $result = $query->orderBy(['price' => SORT_DESC])
-            ->offset($perPage*$page)
+        $result = $query->offset($perPage*$page)
             ->limit($perPage)
             ->all();
 

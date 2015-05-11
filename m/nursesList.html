@@ -18,20 +18,22 @@
 
     <script id="bodyTemplate" type='text/html'>
     {{each data as value index}}
-    <a href="./nursesDetail.html?worker_id={{value.worker_id}}">
+
     <li>
+        <a href="./nursesDetail.html?worker_id={{value.worker_id}}">
         <div class="nurses-photo" style="background-image:url({{value.pic}})"></div>
         <div class="nurses-detail">
+            <span class="nurses-price"><em>{{value.price}}</em>元/小时</span>
             <span class="nurses-rate">{{worker_star(value.star)}}</span>
             <h4 class="nurses-name">{{value.name}}</h4>
             <p class="nurses-intro">{{dateFormat(value.birth)}}岁 | {{value.native_province}} | {{dateFormat(value.start_work)}}年从业经验</p>
             <p class="nurses-reserve">
-                <span class="care-level-special">{{worker_levels(value.level)}}</span>
-                <span class="nurses-price"><em>{{value.price}}</em>元/小时</span>
+                <span class="care-level-special">{{worker_levels(value.level)}} {{value.office_id}}</span>
             </p>
         </div>
+        </a>
     </li>
-    </a>
+
     {{/each}}
     </script>
 

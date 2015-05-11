@@ -4,6 +4,16 @@ var user = getStatus();
 if(user){
     window.location.href = history.go(-1);
 }
+function previous(){
+    var previous = document.referrer,
+        result ;
+    result = previous.indexOf(window.location.host);
+    if(result>0){
+        return true;
+    }else{
+        return false;
+    }
+}
 sub.submit(
     function(e){
         var data = $('form').serializeArray(),
@@ -19,9 +29,11 @@ sub.submit(
                     setCookie(ID, back.data.uid);
                     setCookie(NAME, back.data.mobile);
                     setCookie(TOKEN, back.data.token);
-                    window.location.href = host;
-                }else{
-
+                    if(previous()){
+                        window.location.href = history.go(-1);
+                    }else{
+                        window.location.href = host;
+                    }
                 }
             });
         }

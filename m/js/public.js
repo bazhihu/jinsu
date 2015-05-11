@@ -19,11 +19,12 @@ var host = "http://"+window.location.host,
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
     urlToLogin = host+'/login.html',
-    INDEX = host;
+    INDEX = host,
+    firstEntered = 'firstEntered';
 
 if(/ipad|iPhone|android|micromessenger/.test(UA)){
     CLICK = 'tap';
-    HEADER_HIDDEN = 1;
+    HEADER_HIDDEN = 0;
 }
 
 $(document).ready(function(){

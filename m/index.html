@@ -39,7 +39,8 @@
     <a class="orders" role="menuitem" href="../my/myOrders.html">我的订单</a>
     <a class="service" role="menuitem" href="tel:400-630-9860">呼叫客服</a>
 </div>
-<script src="../js/swiper.min.js"></script>
+<script type="text/javascript" src="../js/swiper.min.js"></script>
+<script type="text/javascript" src="../js/public.js"></script>
 <script>
     var focusSlides;
     window.addEventListener('load', function () {
@@ -51,6 +52,9 @@
             loop: true
         });
     });
+    if(!getCookie(firstEntered)){
+        location.href = host+'/about.html'
+    }
 </script>
 </body>
 </html>

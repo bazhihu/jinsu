@@ -1,12 +1,12 @@
 <?php
-$this->title = '优爱医护-您的贴身的护理专家';
+$this->title = '优爱医护-您的贴心护理员';
 ?>
 <div class="banner">
     <div class="section">
         <div class="icon">
             <img src="/images/index/app-icon.png" width="148" height="148" alt="应用图标" />
             <b class="name">优爱医护</b>
-            <span class="desc">您的贴身生活照料</span>
+            <span class="desc">您的贴心生活照料</span>
             <h2 class="slogan">专注 便捷 省心</h2>
         </div>
         <div class="download">

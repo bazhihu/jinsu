@@ -45,7 +45,6 @@ getConfigs(function(configs) {
             console.log(configs.worker_levels);
             var worker_level_array = new Array();
             var worker_level_prirce_array = new Array();
-            console.log(worker_level_lenth);
             for(var j =0;j<=worker_level_lenth-1;j++){
                 var id = data[j+1]['id'];
                 worker_level_array[id] = worker_level_data[j]['name'];
@@ -95,7 +94,7 @@ getConfigs(function(configs) {
                 $.get(workerUrl+"/"+worker_no,function(worker_back){
                     var price = parseInt(worker_back.data.price);
                     var worker_level = worker_back.data.level;
-                    console.log(worker_back);
+
                     var worker_level_name = worker_level_array[worker_level];
                     var worker_name = worker_back.data.name;
 

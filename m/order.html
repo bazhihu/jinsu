@@ -62,30 +62,30 @@
                     <!--<input type="hidden" id="patient-status" name="patient-status" value="2" />-->
                 <!--</a>-->
             <!--</menu>-->
-            <menu class="menu">
-                <label class="menu-label">选择护理等级:</label>
-                <div class="care-levels menuitem" role="menuitem">
-                    <label class="care-level" for="care-level-middle">
-                        <span class="level care-level-middle">{{worker_levels[0]['name']}}</span>
-                        <input type="radio" name="care-level" id="care-level-middle" value="1" />
-                        <span class="price">￥<em>{{worker_levels[0]['price']}}</em>元/天</span>
-                        <span class="additional">+30%</span>
-                    </label>
+            <!--<menu class="menu">-->
+                <!--<label class="menu-label">选择护理等级:</label>-->
+                <!--<div class="care-levels menuitem" role="menuitem">-->
+                    <!--<label class="care-level" for="care-level-middle">-->
+                        <!--<span class="level care-level-middle">{{worker_levels[0]['name']}}</span>-->
+                        <!--<input type="radio" name="care-level" id="care-level-middle" value="1" />-->
+                        <!--<span class="price">￥<em>{{worker_levels[0]['price']}}</em>元/天</span>-->
+                        <!--<span class="additional">+30%</span>-->
+                    <!--</label>-->
 
-                    <label class="care-level checked" for="care-level-hight">
-                        <span class="level care-level-hight">{{worker_levels[1]['name']}}</span>
-                        <input type="radio" name="care-level" checked id="care-level-hight" value="2" />
-                        <span class="price">￥<em>{{worker_levels[1]['price']}}</em>元/天</span>
-                        <span class="additional">+30%</span>
-                    </label>
-                    <label class="care-level" for="care-level-special">
-                        <span class="level care-level-special">{{worker_levels[2]['name']}}</span>
-                        <input type="radio" name="care-level" id="care-level-special" value="3" />
-                        <span class="price">￥<em>{{worker_levels[2]['price']}}</em>元/天</span>
-                        <span class="additional">+30%</span>
-                    </label>
-                </div>
-            </menu>
+                    <!--<label class="care-level checked" for="care-level-hight">-->
+                        <!--<span class="level care-level-hight">{{worker_levels[1]['name']}}</span>-->
+                        <!--<input type="radio" name="care-level" checked id="care-level-hight" value="2" />-->
+                        <!--<span class="price">￥<em>{{worker_levels[1]['price']}}</em>元/天</span>-->
+                        <!--<span class="additional">+30%</span>-->
+                    <!--</label>-->
+                    <!--<label class="care-level" for="care-level-special">-->
+                        <!--<span class="level care-level-special">{{worker_levels[2]['name']}}</span>-->
+                        <!--<input type="radio" name="care-level" id="care-level-special" value="3" />-->
+                        <!--<span class="price">￥<em>{{worker_levels[2]['price']}}</em>元/天</span>-->
+                        <!--<span class="additional">+30%</span>-->
+                    <!--</label>-->
+                <!--</div>-->
+            <!--</menu>-->
             <input type="button" {{if type=='select'}}value=" 确 定 "{{else}}value="立即下单"{{/if}} id="orderCreate" name="orderCreate"/>
         </form>
     </script>

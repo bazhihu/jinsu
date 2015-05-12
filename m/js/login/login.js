@@ -8,6 +8,7 @@ function previous(){
     var previous = document.referrer,
         result ;
     result = previous.indexOf(window.location.host);
+    alert(result);
     if(result>0){
         return true;
     }else{
@@ -29,10 +30,11 @@ sub.submit(
                     setCookie(ID, back.data.uid);
                     setCookie(NAME, back.data.mobile);
                     setCookie(TOKEN, back.data.token);
-                    if(previous()){
+                    if(previous()){alert(1111);
                         window.location.href = history.go(-1);
-                    }else
+                    }else{alert(2222);
                         window.location.href = host;
+                    }
                 }
             });
         }

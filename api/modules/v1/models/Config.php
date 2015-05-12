@@ -67,7 +67,7 @@ class Config extends ActiveRecord
         {
             $return[$key] = [
                 "id"    => $value,
-                "name"  => Worker::$workerLevelLabel[$value].'陪护员',
+                "name"  => Worker::$workerLevelLabel[$value].'护理员',
                 "des"   => self::$workerDes[$value],
                 "price" => Worker::$workerPrice[$value],
             ];

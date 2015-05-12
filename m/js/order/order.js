@@ -44,6 +44,7 @@ getConfigs(function(configs){
             alert("服务开始时间不能大于服务结束时间！");
             return false;
         }
+
         var today = new Date().format("yyyy-MM-dd");
         if($("#care-start").val() && ($("#care-start").val()<today)){
             alert("服务开始时间不能小于当天！");
@@ -67,8 +68,6 @@ getConfigs(function(configs){
             }
         }
     });
-
-
 
     var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
 	touchEnabled && $('a[target="popup"]').click(function (e) {

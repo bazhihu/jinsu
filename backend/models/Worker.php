@@ -450,7 +450,7 @@ class Worker extends \yii\db\ActiveRecord
      */
     static public function getEducationLevel($education = null, $op='')
     {
-        if(!empty($education) && $education <= 3){
+        if(!empty($education) && $education <= self::EDUCATION_3){
             return "初中及以下";
         }
 

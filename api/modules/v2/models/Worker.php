@@ -78,8 +78,7 @@ class Worker extends ActiveRecord
         }
 
         //科室
-        if(isset($params['department_id']) && !empty($params['department_id'])){
-
+        if(!empty($params['department_id'])){
             $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
             $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
         }
@@ -89,6 +88,10 @@ class Worker extends ActiveRecord
             ->all();
 
         $totalCount = $countQuery->count();
+        if(!empty($params['department_id']) && $totalCount == 0){
+            unset($params['department_id']);
+            return self::select($params);
+        }
         $result = ArrayHelper::toArray($result);
         $meta = [
             'totalCount' => $totalCount,

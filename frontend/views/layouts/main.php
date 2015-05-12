@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <title><?= Html::encode($this->title) ?></title>
-    <link href="/css/index.css" rel="stylesheet" />
+    <link href="/css/index.css?v=20150512" rel="stylesheet" />
 </head>
 <body>
     <div id="header" class="section">

@@ -57,6 +57,7 @@
                         {{if worker_level==3}}
                             <h5 class="care-level-special nurses-title">{{worker_level_name}}</h5>
                         {{/if}}
+                        <input type="hidden" name="worker_level" id="worker_level" value="{{worker_level}}">
                         <dl>
                             <dt>姓名：</dt>
                             <dd>{{worker_name}}&nbsp;</dd>
@@ -77,7 +78,7 @@
                     {{if worker_level==3}}
                         <i class="value care-level-special">{{worker_level_name}}</i>
                     {{/if}}
-                    <input type="hidden" name="worker_level" value="{{worker_level}}">
+                    <input type="hidden" name="worker_level" id="worker_level" value="{{worker_level}}">
                 </div>
             {{/if}}
         </section>

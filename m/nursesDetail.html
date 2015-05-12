@@ -12,7 +12,7 @@
 	<header id="header">
 		<a class="back" href="javascript:history.back(1)">返回</a>
 		<h2 class="title">护工详情</h2>
-        <a class="home" href="index.html">首页</a>
+        <a class="home" href="/">首页</a>
 	</header>
 
     <div id="nurses_detail"></div>
@@ -24,7 +24,7 @@
             <h2 class="nurses-name care-level care-level-hight">{{data.name}}</h2>
             <p class="code">工号：{{data.worker_id}}</p>
             <p class="info">
-                <span class="years" id="start_work">{{dateFormat(data.start_work)}}年从业经验</span>
+                <span class="years" id="start_work">{{dateFormat(data.start_work)}}年陪护经验</span>
                 <span class="mandarin">普通话{{data.chinese_level}}</span>
             </p>
             <p class="info">
@@ -42,12 +42,16 @@
 	<div class="menu detail">
 		<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
 	</div>
-	<div class="menu detail">
-		<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>
-	</div>
+	<!--<div class="menu detail">-->
+		<!--<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>-->
+	<!--</div>-->
 	<div class="menu detail">
 		<a class="menuitem" id="credentials">{{data.certificate}}</a>
 	</div>
+    <div class="pay-operation">
+        <a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
+        <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
+    </div>
     </script>
 <!--
 	<div class="menu reviews">
@@ -97,10 +101,7 @@
 		</ul>
 	</div>
 -->
-	<div class="pay-operation">
-		<a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
-		<span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
-	</div>
+
     <script type='text/javascript' src='/js/zepto.min.js'></script>
     <script type='text/javascript' src='/js/template.js'></script>
     <script type='text/javascript' src='/js/public.js'></script>

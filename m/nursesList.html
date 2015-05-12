@@ -65,10 +65,12 @@
                     if(list.children.length>=10){
                         pageNum =Math.ceil(list.children.length/10)+1;
                     }
-
+                    //var start_time = getUrlQueryString("start_time");
+                    //var hospital_id = getUrlQueryString("hospital_id");
+                    //var department_id = getUrlQueryString("department_id");
                     $.ajax({
-                        url: 'http://dev.api.youaiyihu.com/v2/workers',
-                        data: { page: pageNum, count: 100 },
+                        url: 'http://api.youaiyihu.com/v2/workers',
+                        data: { page: pageNum, count: 100},
                         type: 'get',
                         success: function (response) {
                             if (response.data.items.length<1) {

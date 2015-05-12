@@ -48,6 +48,10 @@
 	<div class="menu detail">
 		<a class="menuitem" id="credentials">{{data.certificate}}</a>
 	</div>
+    <div class="pay-operation">
+        <a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
+        <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
+    </div>
     </script>
 <!--
 	<div class="menu reviews">
@@ -97,10 +101,7 @@
 		</ul>
 	</div>
 -->
-	<div class="pay-operation">
-		<a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
-		<span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
-	</div>
+
     <script type='text/javascript' src='/js/zepto.min.js'></script>
     <script type='text/javascript' src='/js/template.js'></script>
     <script type='text/javascript' src='/js/public.js'></script>

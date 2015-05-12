@@ -39,7 +39,7 @@
                                     {{if value.worker_level==3}}高级{{/if}}
                                 {{/if}}
                             </h4>
-                            <p>{{value.start_time}}至{{value.end_time}}</p>
+                            <p>{{value.start_time | dateFormat:'yyyy/MM/dd'}}至{{value.end_time | dateFormat:'yyyy/MM/dd'}}</p>
                            <p>陪护服务{{value.days}}天</p>
                         </div>
                     </div>

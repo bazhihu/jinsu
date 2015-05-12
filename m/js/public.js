@@ -1,6 +1,6 @@
 var host = "http://"+window.location.host;
 if(window.location.host=='dev.m.youaiyihu.com'){
-    var url ='http://dev.api.youaiyihu.com/';
+    var url ='http://api.youaiyihu.com/';
 }else if(window.location.host=='sit.m.youaiyihu.com'){
     var url ='http://sit.api.youaiyihu.com/';
 }else if(window.location.host=='uat.m.youaiyihu.com'){
@@ -31,10 +31,9 @@ var UA = window.navigator.userAgent.toLowerCase(),
     INDEX = host,
     firstEntered = 'firstEntered';
 
-if(/ipad|iPhone|android/.test(UA)){
+if(navigator.userAgent.toLowerCase().match(/(iphone|ipad|ipod|ios)/i) || navigator.userAgent.toLowerCase().match(/android/i)){
     CLICK = 'tap';
 }
-
 $(document).ready(function(){
     var headHtml="<script id='headTemplate' type='text/html'></script>";
     $('#head').html(headHtml);

@@ -41,7 +41,6 @@ $.getJSON(url,function(response){
                 value['div_status'] = 'status-wait-review';
             }
         }
-        console.log(backData)
         var bodyHtml = template('bodyTemplate', backData);
         $('#body').html(bodyHtml);
     }

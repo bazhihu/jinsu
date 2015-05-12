@@ -8,8 +8,8 @@ if(window.location.host=='dev.m.youaiyihu.com'){
 }else{
     var url ='http://api.youaiyihu.com/';
 }
-console.log(window.navigator.userAgent);
-var UA =  (window.navigator.userAgent),
+
+var UA = window.navigator.userAgent.toLowerCase(),
     CLICK = 'click',
     version = 'v1/',
     ID = 'SID',

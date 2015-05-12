@@ -124,9 +124,14 @@ class OrderController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id){
         $model = $this->findModel($id);
+
+        //检查订单状态
+        if(!$model::checkOrderStatusAction($model->order_status, 'update')){
+            return $this->redirect(['view', 'id' => $model->order_id]);
+        }
+
         $orderPatientModel = OrderPatient::findOne(['order_id'=>$id]);
         $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

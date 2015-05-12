@@ -8,7 +8,8 @@ if(window.location.host=='dev.m.youaiyihu.com'){
 }else{
     var url ='http://api.youaiyihu.com/';
 }
-var UA = window.navigator.userAgent,
+
+var UA = window.navigator.userAgent.toLowerCase(),
     CLICK = 'click',
     version = 'v1/',
     ID = 'SID',
@@ -30,7 +31,7 @@ var UA = window.navigator.userAgent,
     INDEX = host,
     firstEntered = 'firstEntered';
 
-if(/ipad|iPhone|android|micromessenger/.test(UA)){
+if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }
 
@@ -250,13 +251,9 @@ Date.prototype.format = function(format) {
         format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4- RegExp.$1.length));
     }
 
-    for (var k in o)
-    {
-        if (new RegExp("(" + k + ")").test(format))
-        {
-            format = format.replace(RegExp.$1, RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length));
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
         }
     }
     return format;

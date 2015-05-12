@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>快速预定</title>
+    <title>立即下单</title>
     <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
@@ -13,7 +13,7 @@
     <script id="bodyTemplate" type='text/html'>
         <header id="header">
             <a class="back" href="javascript:history.back(1)">返回</a>
-            <h2 class="title">{{if type=='select'}}挑选陪护员{{else}}快速预定{{/if}}</h2>
+            <h2 class="title">{{if type=='select'}}立即下单{{else}}快速预定{{/if}}</h2>
             <a class="home" href="/">首页</a>
         </header>
         <form class="menu-form"  method="post">
@@ -35,11 +35,11 @@
             <menu class="menu">
                 <label class="menuitem" role="menuitem" for="care-start">
                     <em class="title">服务开始时间：</em>
-                    <input type="date" class="value empty" id="care-start" name="start" value="" min="{{start_min}}" max="{{start_max}}" />
+                    <input type="date" class="value empty" id="care-start" name="start" value=""/>
                 </label>
                 <label class="menuitem" role="menuitem" for="care-end">
                     <em class="title">服务结束时间：</em>
-                    <input type="date" class="value" id="care-end" name="end" value="" min="{{end_min}}" max="{{end_max}}" />
+                    <input type="date" class="value" id="care-end" name="end" value=""/>
                     <i data-placeholder="请选择" id="care-days" class="value"></i>
                     <input type="hidden" id="days" name="days" value="" />
                 </label>

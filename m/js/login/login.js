@@ -31,9 +31,8 @@ sub.submit(
                     setCookie(TOKEN, back.data.token);
                     if(previous()){
                         window.location.href = history.go(-1);
-                    }else{
+                    }else
                         window.location.href = host;
-                    }
                 }
             });
         }

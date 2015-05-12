@@ -46,7 +46,7 @@ getConfigs(function(configs) {
             var worker_level_array = new Array();
             var worker_level_prirce_array = new Array();
             console.log(worker_level_lenth);
-            for(var j =0;j<=worker_level_lenth-1;j++){
+            for(var j =1;j<=worker_level_lenth;j++){
                 var id = data[j]['id'];
                 worker_level_array[id] = worker_level_data[j]['name'];
                 worker_level_prirce_array[id] = worker_level_data[j]['price'];

@@ -68,7 +68,7 @@ class JsApiPay
             $openid = $data['openid'];
             return $openid;
         }else{
-            return false;
+            return $data;
         }
 
 	}

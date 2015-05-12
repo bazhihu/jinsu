@@ -13,7 +13,7 @@ if(user.id && user.name && user.token){
         if(back){console.log(back);
             back.mobile = back.mobile.substr(0,3)+'****'+back.mobile.substr(7,4);
             document.getElementById('name').innerHTML=back.mobile;
-            if(back.order.in_service){
+            if(back.order.in_service>0){
                 $('.badge').attr('style',null);
                 $('.badge').innerHTML=back.order.in_service;
             }

@@ -31,7 +31,7 @@ var UA = window.navigator.userAgent.toLowerCase(),
     INDEX = host,
     firstEntered = 'firstEntered';
 
-if(/ipad|iPhone|android|micromessenger/.test(UA)){
+if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }
 

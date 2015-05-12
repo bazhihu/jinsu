@@ -21,7 +21,7 @@
 				<div class="swiper-content">
 					<h3 class="title">专业正规</h3>
 					<p>北京市卫生局直属管理团队</p>
-					<p>超过 <em>4000</em> 名专业护理师提供服</p>
+					<p>超过 <em>4000</em> 名专业陪护员提供服</p>
 					<img src="../images/splash/2.png" width="247" height="247" alt="" />
 				</div>
 				<span class="swiper-tips"></span>
@@ -39,7 +39,7 @@
 				<div class="swiper-content">
 					<h3 class="title">服务保障</h3>
 					<p>不满意，便换人</p>
-					<p>对护理师不满意，可随时找客服投诉换人</p>
+					<p>对陪护员不满意，可随时找客服投诉换人</p>
 					<img src="../images/splash/4.png" width="280" height="272" alt="" />
 				</div>
 				<span class="swiper-tips"></span>
@@ -60,18 +60,21 @@
 					<img src="../images/splash/6.png" width="247" height="247" alt="" />
 
 					<!-- 客户端下载地址，建议使用应用宝地址以兼容微信打开 -->
-					<a href="26.download.html" class="download">立即下载客户端</a>
+					<a href="download.html" class="download">立即下载客户端</a>
 					<a href="./" class="continue">继续浏览</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="../js/swiper.min.js"></script>
+	<script type="text/javascript" src="../js/swiper.min.js"></script>
+    <script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
+    <script type="text/javascript" src="../js/public.js"></script>
 	<script>
 		var swiper = new Swiper('.swiper-container', {
 			direction: 'vertical',
 			paginationClickable: true
 		});
+        setCookie(firstEntered,Math.random());
 	</script>
 </body>
 </html>

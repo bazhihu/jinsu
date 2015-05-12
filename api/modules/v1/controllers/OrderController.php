@@ -170,11 +170,18 @@ class OrderController extends ActiveController {
             'amount' => $amount
         ];
         $paymentModel = new Payment($payWay, $payment);
-        $payment['transaction_no'] = $paymentModel->getTradeNo();
+        /*$payment['transaction_no'] = $paymentModel->getTradeNo();
         $payment['notify_url'] = Alipay::getNotifyUrl();
-        unset($payment['uid'], $payment['order_no']);
+        unset($payment['uid'], $payment['order_no']);*/
+        $return = $paymentModel->getReInformation();
 
         return $payment;
+    }
+
+    public function actionOptions(){
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: X-Requested-With");
+        header("Access-Control-Allow-Methods: PUT,POST,GET,DELETE,OPTIONS");
     }
 
     /**
@@ -217,7 +224,7 @@ class OrderController extends ActiveController {
         return [
             'order' => $order,
             'payment' => $payment
-        ];;
+        ];
     }
 
     /**

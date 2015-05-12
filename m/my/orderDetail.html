@@ -12,6 +12,7 @@
     <header id="header">
         <a class="back" href="/my/myOrders.html">返回</a>
         <h2 class="title">订单详情</h2>
+        <a class="home" href="/">首页</a>
     </header>
     <div id="body"></div>
     <div id="foot"></div>
@@ -46,7 +47,7 @@
                 <i class="value">{{data.patient_states_name}}</i>
             </div>
             <div class="nurses-selected menuitem" role="menuitem">
-                <em class="title">护理师：</em>
+                <em class="title">陪护员：</em>
                 <div class="nurses-detail">
                     <div class="nurses-photo" style="background-image: url({{if data.pic}}{{data.pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
                     <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>

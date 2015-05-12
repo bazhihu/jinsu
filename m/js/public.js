@@ -8,7 +8,8 @@ if(window.location.host=='dev.m.youaiyihu.com'){
 }else{
     var url ='http://api.youaiyihu.com/';
 }
-var UA = window.navigator.userAgent,
+
+var UA = window.navigator.userAgent.toLowerCase(),
     CLICK = 'click',
     version = 'v1/',
     ID = 'SID',
@@ -27,9 +28,10 @@ var UA = window.navigator.userAgent,
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
     urlToLogin = host+'/login.html',
-    INDEX = host;
+    INDEX = host,
+    firstEntered = 'firstEntered';
 
-if(/ipad|iPhone|android|micromessenger/.test(UA)){
+if(/ipad|iPhone|android/.test(UA)){
     CLICK = 'tap';
 }
 
@@ -223,6 +225,10 @@ function getOrderCycle(startTime,endTime){
     var date2=new Date(year2,month2,day2);    //结束时间
     var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
     var days=parseInt(date3/(24*3600*1000));
+
+    if(days<1){
+        days = 1;
+    }
     return days;
 }
 /**

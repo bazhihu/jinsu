@@ -11,6 +11,7 @@
 <header id="header">
     <a class="back" href="javascript:history.back(-1)">返回</a>
     <h2 class="title">确认订单</h2>
+    <a class="home" href="/">首页</a>
 </header>
 <div id="body"></div>
 <div id="foot"></div>
@@ -44,7 +45,7 @@
             <!--</div>-->
             {{if type=='select'}}
                 <div class="nurses-selected menuitem" role="menuitem">
-                    <em class="title">护理师：</em>
+                    <em class="title">陪护员：</em>
                     <div class="nurses-detail">
                         <div class="nurses-photo" id="pic"></div>
                         {{if worker_level==1}}
@@ -66,7 +67,7 @@
                 </div>
             {{else}}
                 <div class="menuitem" role="menuitem">
-                    <em class="title">护理师：</em>
+                    <em class="title">陪护员：</em>
                     {{if worker_level==1}}
                         <i class="value care-level-middle">{{worker_level_name}}</i>
                     {{/if}}

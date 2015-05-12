@@ -40,6 +40,21 @@ getConfigs(function(configs){
         else if(!$("#department_id").val())
             des = "请选择服务科室！";
 
+        if($("#care-start").val() && $("#care-end").val() && ($("#care-start").val()>$("#care-end").val())){
+            alert("服务开始时间不能大于服务结束时间！");
+            return false;
+        }
+        var today = new Date().format("yyyy-MM-dd");
+        if($("#care-start").val() && ($("#care-start").val()<today)){
+            alert("服务开始时间不能小于当天！");
+            return false;
+        }
+
+        if($("#care-end").val() && ($("#care-end").val()<today)){
+            alert("服务结束时间不能小于当天！");
+            return false;
+        }
+
         if(des){
             alert(des);
             return false;

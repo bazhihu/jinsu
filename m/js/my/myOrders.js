@@ -45,6 +45,7 @@ $.getJSON(url,function(response){
         $('#body').html(bodyHtml);
     }
 });
+
 item.live(CLICK, function(e){
     var it = $(this),
         url = it.attr('data-url');

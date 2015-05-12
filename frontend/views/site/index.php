@@ -1,5 +1,5 @@
 <?php
-$this->title = '优爱医护-您的贴心的护理员';
+$this->title = '优爱医护-您的贴心护理员';
 ?>
 <div class="banner">
     <div class="section">

@@ -75,7 +75,7 @@
      * @see	http://yaniswang.com/frontend/2013/02/16/dateformat-performance/
      */
     template.helper('dateFormat', function (date, format) {
-        date = new Date(date);
+        date = new Date(Date.parse(date.replace(/-/g,   "/")));
 
         var map = {
             "M": date.getMonth() + 1, //月份

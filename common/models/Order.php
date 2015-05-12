@@ -77,9 +77,10 @@ class Order extends \yii\db\ActiveRecord{
         ],
         //更新
         'update' => [
+            self::ORDER_STATUS_WAIT_PAY,
             //self::ORDER_STATUS_WAIT_CONFIRM,
             //self::ORDER_STATUS_WAIT_SERVICE,
-            self::ORDER_STATUS_IN_SERVICE
+            //self::ORDER_STATUS_IN_SERVICE
         ],
         //确认
         'confirm' => [
@@ -125,7 +126,7 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'create_time', 'create_order_ip', 'create_order_sources', 'create_order_user_agent', 'order_type'], 'required'],
+            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'order_type'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue', 'order_type'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
@@ -249,12 +250,7 @@ class Order extends \yii\db\ActiveRecord{
             //主订单表数据
             $orderData = $params['OrderMaster'];
             $orderData['order_no'] = $orderNo;
-            $orderData['start_time'] = $orderData['start_time'].' 09:00:00';
-            $orderData['end_time'] = $orderData['end_time'].' 09:00:00';
             $orderData['reality_end_time'] = $orderData['end_time'];
-            $orderData['create_time'] = date('Y-m-d H:i:s');
-            $orderData['create_order_ip'] = $_SERVER["REMOTE_ADDR"];
-            $orderData['create_order_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
             //获取护工价格
             if(empty($orderData['is_continue'])){
@@ -603,9 +599,10 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单完成
+     * @param string $endTime 结束时间
      * @return array
      */
-    public function finish(){
+    public function finish($endTime = null){
         $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'finish')){
             $response['code'] = 212;
@@ -617,6 +614,19 @@ class Order extends \yii\db\ActiveRecord{
         try{
             $this->order_status = self::ORDER_STATUS_WAIT_EVALUATE;
             $this->operator_id = isset(Yii::$app->user) ? Yii::$app->user->id : 0;
+            if(!empty($endTime)){
+                if(strtotime($endTime) > strtotime($this->end_time)){
+                    $response['code'] = 212;
+                    $response['msg'] = '实际结束时间不能大于订单结束时间';
+                    return $response;
+                }
+                if(strtotime($endTime) <= strtotime($this->start_time)){
+                    $response['code'] = 212;
+                    $response['msg'] = '实际结束时间不能小于或等于订单开始时间';
+                    return $response;
+                }
+                $this->reality_end_time = $endTime;
+            }
 
             //计算实际金额
             $realAmount = $this->calculateTotalPrice();
@@ -837,5 +847,17 @@ class Order extends \yii\db\ActiveRecord{
         return $response;
     }
 
+    /**
+     * @param bool $insert
+     * @return bool|void
+     */
+    public function beforeSave($insert){
+        if ($insert && parent::beforeSave($insert)) {
+            $this->create_time = date('Y-m-d H:i:s');
+            $this->create_order_ip = $_SERVER["REMOTE_ADDR"];
+            $this->create_order_user_agent = $_SERVER['HTTP_USER_AGENT'];
+        }
+        return true;
+    }
 
 }

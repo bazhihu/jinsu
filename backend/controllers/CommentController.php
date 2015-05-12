@@ -85,7 +85,7 @@ class CommentController extends Controller
             $params['comment_date'] = date('Y-m-d H:i:s');
             $params['adder'] = yii::$app->user->getId();
             $params['type'] = 'system';
-            $params['status'] =2;
+            $params['status'] =1;
             //查找订单表，找护工编号,护工姓名
             $order_info = OrderMaster::findOne(['order_no' => $order_no]);
             $params['worker_name'] = $order_info['worker_name'];

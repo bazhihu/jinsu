@@ -119,6 +119,30 @@ class OrderController extends Controller
     }
 
     /**
+     * Updates an existing OrderMaster model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $orderPatientModel = OrderPatient::findOne(['order_id'=>$id]);
+        $model->setScenario('update');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if($orderPatientModel->load(Yii::$app->request->post())){
+                $orderPatientModel->save();
+            }
+            return $this->redirect(['view', 'id' => $model->order_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+                'orderPatientModel' => $orderPatientModel
+            ]);
+        }
+    }
+
+    /**
      * 续单
      * @param $id
      * @return string
@@ -162,27 +186,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Updates an existing OrderMaster model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-        $orderPatientModel = OrderPatient::findOne(['order_id'=>$id]);
-        $model->setScenario('update');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->order_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'orderPatientModel' => $orderPatientModel
-            ]);
-        }
-    }
-
-    /**
      * 订单支付
      * @param $id
      * @return array
@@ -217,13 +220,23 @@ class OrderController extends Controller
     /**
      * 订单完成
      * @param $id
+     * @return string
      * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionFinish($id){
+        $this->layout = "guest.php";
+        $params = Yii::$app->getRequest()->getBodyParams();
         $order = $this->findModel($id);
-        $response = $order->finish();
-
-        echo Json::encode($response);
+        if(empty($params['reality_end_time'])){
+            return $this->render('finish', [
+                'model' => $order
+            ]);
+        }else{
+            $endTime = $params['reality_end_time'];
+            $response = $order->finish($endTime);
+            echo Json::encode($response);
+        }
     }
 
     /**

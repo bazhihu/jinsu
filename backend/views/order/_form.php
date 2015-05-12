@@ -28,7 +28,7 @@ use backend\models\OrderPatient;
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
-        'action'=>Yii::$app->urlManager->createUrl('order/create')
+        //'action'=>Yii::$app->urlManager->createUrl('order/create')
     ]);
     ?>
 
@@ -50,6 +50,7 @@ use backend\models\OrderPatient;
                             'placeholder'=>'请输入手机号...',
                             'maxlength'=>11,
                             'style'=>'width:25%',
+                            'readOnly'=>$model->isNewRecord ? false : true,
                             //用户来电将电话号码显示在表单中
                             'value'=>isset($_GET['callid'])? $_GET['callid'] : $model->mobile
                         ],
@@ -144,7 +145,7 @@ use backend\models\OrderPatient;
                                         //'startDate'=>date('Y-m-d'),
                                         'todayHighlight' => true,
                                         'autoclose' => true,
-                                        'format' => 'yyyy-mm-dd'
+                                        'format' => 'yyyy-mm-dd 09:00:00'
                                     ]
                                 ]
                             ],
@@ -158,7 +159,7 @@ use backend\models\OrderPatient;
                                         //'startDate'=>date('Y-m-d', mktime(0,0,0,date('m'),date('d')+1,date('Y'))),
                                         'todayHighlight' => true,
                                         'autoclose' => true,
-                                        'format' => 'yyyy-mm-dd'
+                                        'format' => 'yyyy-mm-dd 09:00:00'
                                     ]
                                 ]
                             ],

@@ -154,51 +154,11 @@ $('body').on('click', 'button.jsBeginServiceOrder', function () {
 
 //完成订单
 $('body').on('click', 'button.jsFinishOrder', function () {
-    if(!confirm('确认执行此操作吗？')){
-        return false;
-    }
-    var button = $(this);
-    button.text('处理中...');
-    button.attr('disabled', true);
     var url = $(this).attr('data-url');
-    var selectWorkerUrl = $(this).attr('select-worker-url');
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        async:false,
-        cache:false,
-        timeout:30000,
-        url: url,
-        error:function(jqXHR, textStatus, errorThrown){
-            switch (jqXHR.status){
-                case(500):
-                    alert("服务器系统内部错误");
-                    break;
-                case(401):
-                    alert("未登录");
-                    break;
-                case(403):
-                    alert("无权限执行此操作");
-                    break;
-                case(408):
-                    alert("请求超时");
-                    break;
-                default:
-                    alert("未知错误");
-            }
-            button.attr('disabled', false);
-            button.text('完成');
-        },
-        success: function(json){
-            alert(json.msg);
-            if(json.code == '200'){
-                location.reload();
-            }else{
-                button.attr('disabled', false);
-                button.text('完成');
-            }
-        }
-    });
+    $("#finishOrderModalContent").load(url);
+    jQuery('#finishOrderModal').modal({"show":true});
+
+
 });
 
 //取消订单

@@ -16,20 +16,18 @@ function ages(str)
     }
     return(false);
 }
+
 //护工等级
 var worker_levels = new Array();
+getConfigs(function(configs) {
+    worker_levels=configs.worker_levels;
+});
 function get_workelist() {
     /*
-    $.getJSON(configUrl, function (response) {
-        if (response.code == 200) {
-            //alert(response.data.worker_levels[0].name);
-            worker_levels=response.data.worker_levels;
-        };
-    });
-*/
     getConfigs(function(configs) {
         worker_levels=configs.worker_levels;
     });
+    */
     var start_time = getUrlQueryString("start_time");
     var hospital_id = getUrlQueryString("hospital_id");
     var department_id = getUrlQueryString("department_id");

@@ -64,13 +64,7 @@ class JsApiPay
 		curl_close($ch);
 		//取出openid
 		$data = json_decode($res,true);
-        if(isset($data['openid'])){
-            $openid = $data['openid'];
-            return $openid;
-        }else{
-            return $data;
-        }
-
+        return $data;
 	}
 	
 	private function ToUrlParams($urlObj)

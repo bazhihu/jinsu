@@ -160,8 +160,15 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             'confirm_time',
             'begin_service_time',
             'cancel_time',
-            'customer_service_id',
-            'operator_id',
+            [
+                'attribute'=>'customer_service_id',
+                'value'=>\backend\models\AdminUser::getInfo($model->customer_service_id, 'staff_name').'('.$model->operator_id.')'
+            ],
+            'remark',
+            [
+                'attribute'=>'operator_id',
+                'value'=>\backend\models\AdminUser::getInfo($model->operator_id, 'staff_name').'('.$model->operator_id.')'
+            ],
             'create_order_ip',
             [
                 'attribute'=>'create_order_sources',

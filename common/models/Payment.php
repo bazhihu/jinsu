@@ -14,6 +14,8 @@ use yii\helpers\Json;
 use yii\web\HttpException;
 use common\components\alipay\Alipay;
 use common\components\wechat\JsApiPay;
+use common\components\wechat\WxPayUnifiedOrder;
+use common\components\wechat\WxPayApi;
 
 class Payment
 {
@@ -106,8 +108,19 @@ class Payment
         $openId = $jsApi->GetOpenid();
 
         //统一下单
-        $return = Wechat::underSingle($this->_payData['open_id'], $this->_tradeNo, $this->_payData['amount']);
-        $this->_weChatReturn = $return;
+        $Wechat = new WxPayUnifiedOrder();
+        $Wechat->SetBody("test");
+        $Wechat->SetAttach("test");
+        $Wechat->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
+        $Wechat->SetTotal_fee("1");
+        $Wechat->SetTime_start(date("YmdHis"));
+        $Wechat->SetTime_expire(date("YmdHis", time() + 600));
+        $Wechat->SetGoods_tag("test");
+        $Wechat->SetNotify_url("http://paysdk.weixin.qq.com/notify.php");
+        $Wechat->SetTrade_type("JSAPI");
+        $Wechat->SetOpenid($openId);
+        $order = WxPayApi::unifiedOrder($Wechat);
+        $jsApiParameters = $jsApi->GetJsApiParameters($order);
 
         //支付日志
         $logData = $this->_payData;

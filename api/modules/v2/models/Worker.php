@@ -88,6 +88,7 @@ class Worker extends ActiveRecord
 
         $result = $query->offset($perPage*$page)
             ->limit($perPage)
+            ->orderBy('rand()')
             ->all();
 
         $totalCount = $countQuery->count();

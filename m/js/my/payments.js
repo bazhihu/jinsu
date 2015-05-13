@@ -57,7 +57,7 @@ pay.on(CLICK, function(){
         timeout: 3000,
         success: function(data){
             if(data.code ==200){
-                location.href = history.back(-1);
+                self.location=document.referrer;
             }
         },
         error: function(xhr, type){

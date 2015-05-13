@@ -56,6 +56,11 @@
                                 for(var i=0;i<response.data.items.length;i++){
                                     //alert(response.data.items[i].name);
                                     //responseHtml='';
+                                    if(response.data.items[i].office_id!=null) {
+                                        var office_str=response.data.items[i].office_id;
+                                    }else{
+                                        var office_str="";
+                                    }
                                     responseHtml+='<li>';
                                     responseHtml+='<a href="./nursesDetail.html?worker_id='+response.data.items[i].worker_id+'">';
                                     responseHtml+='<div class="nurses-photo" style="background-image: url('+response.data.items[i].pic+')"></div>';
@@ -70,7 +75,7 @@
                                     else if (response.data.items[i].level==2) responseHtml+='care-level-middle';
                                     else if (response.data.items[i].level==3) responseHtml+='care-level-hight';
                                     else if (response.data.items[i].level==4) responseHtml+='care-level-special';
-                                    responseHtml+='">'+worker_levels[response.data.items[i].level-1].name+' '+response.data.items[i].office_id+'</span>';
+                                    responseHtml+='">'+worker_levels[response.data.items[i].level-1].name+' '+office_str +'</span>';
                                     responseHtml+='</p>';
                                     responseHtml+='</div>';
                                     responseHtml+='</a>';

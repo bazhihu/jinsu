@@ -65,7 +65,7 @@ class PayController extends ActiveController{
         }
         $paymentModel = new Payment($post['pay_way'], $payment);
 
-        $return = $paymentModel->getReInformation();
+        $return = $paymentModel->getPayData();
         return $return;
     }
 

@@ -64,6 +64,9 @@ class Worker extends ActiveRecord
 
         $countQuery = $worker::find();
 
+        $query->andFilterWhere(['audit_status' => 1])
+            ->andFilterWhere(['status' => 1]);
+
         //获取在工作中的护工
         if(isset($params['start_time'])){
             $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);

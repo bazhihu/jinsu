@@ -2,6 +2,17 @@ loggedIn();
 var access_token = getStatus(),
     url = orderUrl+'?access-token='+access_token.token,
     item = $('.menu');
+function backUrl(){
+    var previous = document.referrer,
+        back = $('.back');
+    result = previous.indexOf('orderDetail');
+    if(result>0){
+        back.attr('href','/my/center.html');
+    }else{
+        back.attr('href','javascript:history.back(-1)');
+    }
+}
+backUrl();
 $.getJSON(url,function(response){
     if(response.code == 200){
         var backData = response.data,

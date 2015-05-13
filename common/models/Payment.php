@@ -26,13 +26,16 @@ class Payment
         Order::PAY_WAY_WE_CHAT
     ];
 
-    public function __construct($payWay, $data)
-    {
+    public function __construct($payWay, $data){
         $this->_payWay = $payWay;
         $this->_payData = $data;
         if (!in_array($payWay, self::$allowPayWay)) {
             throw new InvalidParamException("Pay way not found: $payWay");
         }
+
+        //生成交易号
+        $this->_generateTradeNo();
+
         switch ($payWay) {
             case Order::PAY_WAY_ALIPAY:
                 $this->_aliPay();
@@ -73,9 +76,6 @@ class Payment
      * @throws HttpException
      */
     private function _aliPay(){
-        //生成交易号
-        $this->_generateTradeNo();
-
         //支付日志
         $aliPayLog = new AlipayLog();
         $logData = $this->_payData;
@@ -100,12 +100,10 @@ class Payment
      * @throws HttpException
      */
     private function _WeChat(){
-        $logData = $this->_payData;
-        //生成交易号
-        $this->_generateTradeNo();
         //统一下单
         $return = Wechat::underSingle($this->_payData['open_id'], $this->_tradeNo, $this->_payData['amount']);
         $this->_weChatReturn = $return;
+
         //支付日志
         $logData = $this->_payData;
 

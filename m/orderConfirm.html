@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>确认订单</title>
-    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
 </head>
@@ -125,6 +125,7 @@
                     <h3 class="menu-title">支付方式</h3>
                 </header>
             {{/if}}
+            <input type="hidden" name="need_pay" id="need_pay" value="{{need_pay}}">
         </script>
         <div  id="pay_other">
             <section class="payments menu" role="menu">

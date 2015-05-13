@@ -1,6 +1,6 @@
 var host = "http://"+window.location.host;
 if(window.location.host=='dev.m.youaiyihu.com'){
-    var url ='http://api.youaiyihu.com/';
+    var url ='http://dev.api.youaiyihu.com/';
 }else if(window.location.host=='sit.m.youaiyihu.com'){
     var url ='http://sit.api.youaiyihu.com/';
 }else if(window.location.host=='uat.m.youaiyihu.com'){

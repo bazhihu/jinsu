@@ -44,8 +44,9 @@ getConfigs(function(configs) {
             var worker_level_data  = configs.worker_levels;
             var worker_level_array = new Array();
             var worker_level_prirce_array = new Array();
+
             for(var j =0;j<=worker_level_lenth-1;j++){
-                var id = data[j+1]['id'];
+                var id = worker_level_data[j]['id'];
                 worker_level_array[id] = worker_level_data[j]['name'];
                 worker_level_prirce_array[id] = worker_level_data[j]['price'];
             }
@@ -190,13 +191,17 @@ getConfigs(function(configs) {
             $("#pay").on('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
-                console.log("leve2:"+worker_level)
-                if(pay_way==1) {
-                    var url = "payOffline.html";
-                }else if(pay_way==2){
-                    var url = "payOffline.html";
-                }else if(pay_way==3){
-                    var url = "payOffline.html";
+                var need_pay = $('#need_pay').val();
+                if(need_pay<0){
+                    var url = "payOnline.html";
+                }else{
+                    if(pay_way==1) {
+                        var url = "payOffline.html";
+                    }else if(pay_way==2){
+                        var url = "payOnline.html";
+                    }else if(pay_way==3){
+                        var url = "payOnline.html";
+                    }
                 }
 
                 var post_data = {

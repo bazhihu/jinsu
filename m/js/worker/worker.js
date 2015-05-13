@@ -66,7 +66,7 @@ function get_workedetail() {
             var bodyHtml = template('bodyTemplate', response);
             $('#nurses_detail').html(bodyHtml);
 
-            $('#price').html(response.data.price);
+            $('#price').html(parseInt(response.data.price));
 
         }
     });

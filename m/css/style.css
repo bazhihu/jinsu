@@ -553,8 +553,8 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 .experience li { clear: both; background: #f7f6f6; border-top: 1px solid #e0dfdc; font-size: 13px; color: #6c6b68; padding: 10px 12px 10px 16px; line-height: 24px; }
 .experience .time { color: #b6b6b6; font-size: 11px; }
 
-#page-nurses-detail .pay-operation { height: 32px; line-height: 32px; margin: 15px 0; border-top: 1px solid #d6d6d6; border-bottom: 1px solid #d6d6d6; padding: 11px 12px 11px 15px; }
-#page-nurses-detail .pay-operation .pay { display: block; float: right; width: 132px; height: 30px; border-top: 1px solid #3be1bb; border-bottom: 1px solid #2bab8d; background: #34cba8; text-align: center; font-size: 15px; -webkit-border-radius: 1px; border-radius: 1px; }
+#page-nurses-detail { padding-bottom: 64px; }
+#page-nurses-detail .pay-operation { position: fixed; left: 0; bottom: 0; width: 100%; background: #f0efed; height: 54px; line-height: 32px; margin: 15px 0 0 0; border-top: 1px solid #d6d6d6; border-bottom: 1px solid #d6d6d6; padding: 11px 12px 11px 15px; -webkit-box-sizing: border-box; box-sizing: border-box; }
 #page-nurses-detail .pay-operation .pay, #page-nurses-detail .pay-operation .pay:visited { color: #fafafa; text-decoration: none; }
 #page-nurses-detail .pay-operation .price { font-size: 10px; color: #919598; }
 #page-nurses-detail .pay-operation .price em { font-weight: 700; font-size: 20px; color: #fea320; }

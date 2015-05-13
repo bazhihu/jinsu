@@ -523,7 +523,7 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 	#page-nurses-detail .nurses-intro .info > * { -webkit-background-size: 2px 2px; background-size: 2px 2px; }
 }
 
-#page-nurses-detail .detail .menuitem { display: -webkit-box; position: relative; font-size: 13px; line-height: 24px; color: #6c6b68; padding: 6px 32px 6px 48px; height: auto; min-height: 22px; -webkit-box-orient: vertical; -webkit-line-clamp: 2; max-height: 44px; overflow: hidden; text-overflow: ellipsis; }
+#page-nurses-detail .detail .menuitem { display: -webkit-box; position: relative; font-size: 13px; line-height: 24px; color: #6c6b68; padding: 6px 22px 6px 48px; height: auto; min-height: 22px; -webkit-box-orient: vertical;  text-overflow: ellipsis; }
 #page-nurses-detail .detail .expanded { display: block; max-height: none; -webkit-line-clamp: 1000; }
 #page-nurses-detail .detail .menuitem:before { top: 50%; margin-top: -6px; }
 #page-nurses-detail .detail .expanded:before { content: none; }

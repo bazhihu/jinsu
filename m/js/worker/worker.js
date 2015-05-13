@@ -63,6 +63,7 @@ function get_workedetail() {
             template.helper('dateFormat', function (str) {
                 return ages(str);
             });
+            console.log(response);
             var bodyHtml = template('bodyTemplate', response);
             $('#nurses_detail').html(bodyHtml);
 

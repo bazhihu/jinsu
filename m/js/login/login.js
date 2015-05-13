@@ -30,7 +30,7 @@ sub.submit(
                     setCookie(NAME, back.data.mobile);
                     setCookie(TOKEN, back.data.token);
                     if(previous()){
-                        window.location.href = document.referrer;
+                        window.location.href = history.back(-1);
                     }else{
                         window.location.href = host;
                     }

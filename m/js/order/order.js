@@ -75,7 +75,7 @@ getConfigs(function(configs){
 		return false;
 	});
 
-	$('a[target="popup"]')[touchEnabled ? 'tap' : 'click'](function (e) {
+    $('a[target="popup"]')['click'](function (e){
 		e.preventDefault();
 		var a = this, frame;
 		if (a.popupFrameId) {

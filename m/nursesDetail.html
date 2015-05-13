@@ -52,7 +52,7 @@
 		<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
 	</div>
     <div class="menu detail">
-        <a class="menuitem" id="department">常驻科室：{{data.department_id}}</a>
+        <a class="menuitem" id="department">常驻科室：{{data.office_id}}</a>
     </div>
 	<!--<div class="menu detail">-->
 		<!--<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>-->
@@ -61,7 +61,19 @@
 		<a class="menuitem" id="credentials">持有证件：{{data.certificate}}</a>
 	</div>
     <div class="menu detail">
-        <a class="menuitem" id="content">服务内容：{{data.certificate}}</a>
+        <a class="menuitem" id="content" href="workerLevel.html#{{data.level}}" >服务内容：
+            {{if data.level==1}}
+                负责患者日常生活护理，保持患者身体及床单位卫生清洁，帮助患者打饭及陪患者散步等。
+            {{else if data.level==2}}
+                包括初级护理的所有服务内容,及帮助患者翻身、扣背,防止患者身体长褥疮,观察患者病情变化等。
+            {{else if data.level==3}}
+                包括中级护理的所有服务内容,懂得ICU及危重、特殊病人的看护,协助患者进行简单康复锻炼等。
+            {{else if data.level==4}}
+                包括高级护理的所有服务内容,并协助安抚病人情绪、为病人做心理辅导等。
+            {{else}}
+                负责患者日常生活护理，保持患者身体及床单位卫生清洁，帮助患者打饭及陪患者散步等。
+            {{/if}}
+        </a>
     </div>
     <div class="pay-operation">
         <a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>

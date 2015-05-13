@@ -15,7 +15,7 @@ if(user.id && user.name && user.token){
             document.getElementById('name').innerHTML=back.mobile;
             if(back.order.in_service>0){
                 $('.badge').attr('style',null);
-                $('.badge').innerHTML=back.order.in_service;
+                $('.badge').html(back.order.in_service);
             }
         }
     });

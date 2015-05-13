@@ -69,7 +69,7 @@
                     //var hospital_id = getUrlQueryString("hospital_id");
                     //var department_id = getUrlQueryString("department_id");
                     $.ajax({
-                        url: 'http://api.youaiyihu.com/v2/workers',
+                        url: workerUrl_v2,
                         data: { page: pageNum, count: 100},
                         type: 'get',
                         success: function (response) {

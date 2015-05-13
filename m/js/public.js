@@ -42,11 +42,14 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
     var src = getUrlQueryString('src');
+    /**
+     * 从客户端过来，部分页面隐藏头部
+     */
     if(src=='app')
         $("#header").css('display','none');
 
-    if(/micromessenger/.test(UA))
-        $("#header").css('display','none');
+    //if(/micromessenger/.test(UA))
+    //    $("#header").css('display','none');
 });
 function getStatus() {
     var id = getCookie(ID);

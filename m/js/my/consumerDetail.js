@@ -25,5 +25,5 @@ if(Request.detailMoney&&Request.detailType&&Request.detailTime&&Request.detailNo
     document.getElementById('detailNo').innerHTML = Request.detailNo;
     document.getElementById('wallet').innerHTML = Request.wallet;
 }else{
-    location.href = history.go(-1);
+    location.href = '/my/myWallet.html';
 }

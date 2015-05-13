@@ -15,35 +15,43 @@
 	</header>
 	<form class="menu-form">
 
-		<section class="menu" role="menu">
-			<a href="#" class="menuitem" role="menuitem">
+        <section class="menu" role="menu">
+            <span class="menuitem" role="menuitem">
+                <em class="title">订单总金额：</em>
+                <i class="value" id="total"></i>
+            </span>
+        </section>
+
+        <section class="menu" role="menu">
+			<span class="menuitem" role="menuitem">
 				<em class="title">钱包余额：</em>
-				<i class="value">&yen;800</i>
-			</a>
+				<i class="value" id="balance"></i>
+			</span>
 		</section>
 
-		<section class="payments menu" role="menu">
+		<section class="payments menu" role="menu" style="display: none;">
 			<header class="menu-header">
-				<span class="more">还需支付：<em>2200</em>元</span>
+				<span class="more">还需支付：<em id="needPay">0</em>元</span>
+                <input type="hidden" name="needPay" id="payMoney">
 				<h3 class="menu-title">支付方式</h3>
 			</header>
 			<label class="menuitemradio-checked menuitem menuitemradio" for="pay-offline" role="menuitemradio">
 				<span class="pay-offline"></span>
 				<em>当面支付</em>
-				<i>此处为文字介绍当面支付</i>
-				<input type="radio" name="payment" checked id="pay-offline" value="1" />
+				<i>提交成功后，工作人员会联系您收取现金</i>
+				<input type="radio" name="payment" checked="checked" id="pay-offline" value="1" />
 			</label>
 			<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
 				<span class="pay-alipay"></span>
 				<em>支付宝支付</em>
 				<i>推荐有支付宝账号的用户使用</i>
-				<input type="radio" name="payment" checked id="pay-alipay" value="2" />
+				<input type="radio" name="payment" id="pay-alipay" value="2" />
 			</label>
 			<label class="menuitem menuitemradio" id="wechat" for="pay-wechat" role="menuitemradio">
 				<span class="pay-wechat"></span>
 				<em>微信支付</em>
-				<i>推荐安装微信5.0及以上版本的使用</i>
-				<input type="radio" name="payment" checked id="pay-wechat" value="3" />
+				<i>推荐安装微信3.0以上版本用户使用</i>
+				<input type="radio" name="payment" id="pay-wechat" value="3" />
 			</label>
 		</section>
 
@@ -51,6 +59,7 @@
 	</form>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/public.js"></script>
+	<script src="../js/my/payments.js"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script>
 		$('.menuitemradio input[type="radio"]').on('click', function () {
@@ -58,62 +67,6 @@
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
 			}, this);
 		});
-        var wei = isWeiXn(),
-            pay = $('#pay'),
-            alipay = $('#alipay'),
-            wechat = $('#wechat'),
-            order_no = '20150507504692',
-            user = getStatus();
-
-        pay.on(CLICK, function(){
-            var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
-                payWay = $('input[name=payment]:checked').val();
-            if(payWay == '3'){
-                //openId = getOpenID();
-                openId = '';
-                if(!openId){
-                    var notifyUrl = url+'wechat/notify';
-                    $.ajax({
-                        type: 'GET',
-                        url: notifyUrl,
-                        data: {},
-                        dataType: 'json',
-                        timeout: 3000,
-                        success: function(data){
-                            console.log(data);
-                        },
-                        error: function(xhr, type){
-                            alert('网络超时!')
-                        }
-                    })
-                }
-            }
-            $.ajax({
-                type: 'PUT',
-                url: orderUrls,
-                data: {'action':'payment','pay_way':payWay},
-                dataType: 'json',
-                timeout: 3000,
-                success: function(data){
-                    console.log(data);
-                },
-                error: function(xhr, type){
-                    alert('网络超时!')
-                }
-            })
-        });
-
-        if(wei)
-            alipay.attr('style','display:none');
-        else
-            wechat.attr('style','display:none');
-        function isWeiXn(){
-            var ua = navigator.userAgent.toLowerCase();
-            if(ua.match(/MicroMessenger/i)=="micromessenger")
-                return true;
-            else
-                return false;
-        }
 	</script>
 </body>
 </html>

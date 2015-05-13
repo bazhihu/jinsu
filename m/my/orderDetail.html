@@ -103,7 +103,7 @@
             {{if data.order_status=='wait_pay'}}
                 <div class="operations">
                     <a class="cancel" role="button" data-no="{{data.order_no}}" href="#cancel">取消订单</a>
-                    <a class="pay" role="button" data-no="{{data.order_no}}" href="#pay">立即支付</a>
+                    <a class="pay" role="button" data-no="{{data.order_no}}" href="/my/payments.html?orderNo={{data.order_no}}&&totalAmount={{data.total_amount}}">立即支付</a>
                 </div>
             {{/if}}
             {{if data.order_status=='wait_evaluate'}}

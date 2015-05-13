@@ -175,10 +175,10 @@ cancel.live('click', function(){
         }
     })
 });
-pay.live(CLICK, function(){
-
-    location.href = '/my/payments.html';
-});
+//pay.live(CLICK, function(){
+//
+//    location.href = '/my/payments.html';
+//});
 evaluate.live(CLICK, function(){
     var it = $(this),
         no = it.attr('data-no'),

@@ -39,6 +39,14 @@ $this->title = '优爱医护管理后台';
                         </li>
                     <?php endif;?>
 
+                    <?php if($data['waitFinishCount'] > 0):?>
+                        <li>
+                            <a href="<?=Yii::$app->urlManager->createUrl(['order/index','OrderSearch[order_status]'=>'in_service','OrderSearch[end_time]'=>date('Y-m-d 09:00:00')]);?>">
+                                待完成订单 <span class="badge"><?=$data['waitFinishCount']?></span>
+                            </a>
+                        </li>
+                    <?php endif;?>
+
                     <?php if($data['waitEvaluateCount'] > 0):?>
                         <li>
                             <a href="<?=Yii::$app->urlManager->createUrl(['order/index','OrderSearch[order_status]' => 'wait_evaluate']);?>">

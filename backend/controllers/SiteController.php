@@ -84,8 +84,15 @@ class SiteController extends Controller
         $waitServiceCount = OrderMaster::find()->where($where)->count();
         $data['waitServiceCount'] = $waitServiceCount;
 
+        //待完成
+        $where = "order_status='".OrderMaster::ORDER_STATUS_IN_SERVICE."'";
+        $where .= " AND end_time<='".date('Y-m-d 09:00:00')."'";
+
+        $waitFinishCount = OrderMaster::find()->where($where)->count();
+        $data['waitFinishCount'] = $waitFinishCount;
+
         //待评价订单数
-        $where['order_status'] = OrderMaster::ORDER_STATUS_WAIT_EVALUATE;
+        $where = ['order_status' => OrderMaster::ORDER_STATUS_WAIT_EVALUATE];
         $waitEvaluateCount = OrderMaster::find()->where($where)->count();
         $data['waitEvaluateCount'] = $waitEvaluateCount;
 

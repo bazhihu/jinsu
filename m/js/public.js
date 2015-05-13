@@ -43,10 +43,10 @@ $(document).ready(function(){
     $('#foot').html(footHtml);
     var src = getUrlQueryString('src');
     /**
-     * 从客户端过来，部分页面隐藏头部
+     * 从客户端过来，
      */
     if(src=='app')
-        $("#header").css('display','none');
+        $("#header").css('display','none');部分页面隐藏头部
 
     //if(/micromessenger/.test(UA))
     //    $("#header").css('display','none');

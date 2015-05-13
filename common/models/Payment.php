@@ -8,19 +8,17 @@
 
 namespace common\models;
 
-use common\components\wechat\Wechat;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\HttpException;
-use common\components\Alipay;
-
+use common\components\alipay\Alipay;
+use common\components\wechat\Wechat;
 
 class Payment
 {
     private $_payWay = null;
     private $_payData = null;
     private $_tradeNo = null;
-    private $_weChatReturn = null;
 
     //允许支付方式
     public static $allowPayWay = [
@@ -48,8 +46,7 @@ class Payment
     /**
      * 生成交易号
      */
-    private function _generateTradeNo()
-    {
+    private function _generateTradeNo(){
         $this->_tradeNo = Wallet::generateWalletNo();
     }
 
@@ -61,23 +58,13 @@ class Payment
         return $this->_tradeNo;
     }
 
-    public function getReInformation(){
-        $return = array();
-        switch ($this->_payWay) {
-            case Order::PAY_WAY_ALIPAY:
-                $return = [
-                    'notify_url'        => \common\components\alipay\Alipay::getNotifyUrl(),
-                    'transaction_no'    => $this->_tradeNo,
-                    'uid' => $this->_payData['uid'],
-                    'subject' => '用户充值',
-                    'amount' => $this->_payData['amount']
-                ];
-                break;
-            case Order::PAY_WAY_WE_CHAT:
-                $return = $this->_weChatReturn;
-                break;
-        }
-        return $return;
+    /**
+     * 获取支付数据
+     * @return null
+     */
+    public function getPayData(){
+        Yii::info('支付数据：'.print_r($this->_payData, true), 'api');
+        return $this->_payData;
     }
 
     /**
@@ -99,6 +86,10 @@ class Payment
             Yii::info(print_r($aliPayLog->getErrors(), true), 'api');
             throw new HttpException(400, print_r($aliPayLog->getErrors(), true));
         }
+
+        $this->_payData['transaction_no'] = $this->_tradeNo;
+        $this->_payData['notify_url'] = Alipay::getNotifyUrl();
+        unset($this->_payData['uid'], $this->_payData['order_no']);
 
         return true;
     }

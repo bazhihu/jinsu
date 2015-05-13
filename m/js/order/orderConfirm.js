@@ -210,6 +210,7 @@ getConfigs(function(configs) {
                     'hospital_id':hospital_id,
                     'department_id':1,
                     'worker_level':worker_level,
+                    'worker_no':worker_no,
                     'start_time': start_time,
                     'end_time': end_time,
                     'patient_state':1,

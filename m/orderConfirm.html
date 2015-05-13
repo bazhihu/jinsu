@@ -47,7 +47,7 @@
                 <div class="nurses-selected menuitem" role="menuitem">
                     <em class="title">护理员：</em>
                     <div class="nurses-detail">
-                        <div class="nurses-photo" id="pic"></div>
+                        <div class="nurses-photo" style="background-image: url({{if pic}}{{pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
                         {{if worker_level==1}}
                             <h5 class="care-level-middle nurses-title">{{worker_level_name}}</h5>
                         {{/if}}

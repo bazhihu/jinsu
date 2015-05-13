@@ -12,6 +12,7 @@ if(window.location.host=='dev.m.youaiyihu.com'){
 var UA = window.navigator.userAgent.toLowerCase(),
     CLICK = 'click',
     version = 'v1/',
+    version_v2 = 'v2/'
     ID = 'SID',
     NAME = 'name',
     TOKEN = 'youaiyihu',
@@ -27,6 +28,7 @@ var UA = window.navigator.userAgent.toLowerCase(),
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
+    workerUrl_v2 = url+version_v2+'workers',
     urlToLogin = host+'/login.html',
     INDEX = host,
     firstEntered = 'firstEntered';

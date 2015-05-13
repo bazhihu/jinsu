@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
-
+    <script type='text/javascript' src='../js/zepto-with-touch.min.js'></script>
     <script src='../js/template.js'></script>
-    <script type='text/javascript' src='../js/zepto.min.js'></script>
     <script src="../js/public.js"></script>
-    <script src="../js/zepto-with-touch.min.js"></script>
     <script src="../js/popup.js"></script>
+
 
 
 </head>
@@ -97,9 +96,8 @@
             <input type="button" {{if type=='select'}}value=" 确 定 "{{else}}value="立即下单"{{/if}} id="orderCreate" name="orderCreate"/>
         </form>
     </script>
-
     <script src="../js/order/order.js"></script>
-    <script>
+    <script type="text/javascript">
         $('.care-level input[type="radio"]').live('click', function () {
             [].forEach.call(this.form.elements[this.name], function (radio) {
                 $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');

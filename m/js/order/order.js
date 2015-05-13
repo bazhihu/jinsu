@@ -19,7 +19,7 @@ getConfigs(function(configs){
     $('#body').html(bodyHtml);
 });
 
-; ~function () {
+; $(function () {
     //立即下单
     $("#orderCreate").on('click', function () {
         var formData = $("form").serializeArray();
@@ -130,4 +130,4 @@ getConfigs(function(configs){
 		//$(end)[ends ? 'removeClass' : 'addClass']('empty');
 	});
 	window.addEventListener('load', function () { $('#care-start').trigger('change'); });
-}();
+});

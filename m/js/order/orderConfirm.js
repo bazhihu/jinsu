@@ -97,6 +97,7 @@ getConfigs(function(configs) {
 
                     var worker_level_name = worker_level_array[worker_level];
                     var worker_name = worker_back.data.name;
+                    var pic = worker_back.data.pic;
 
                     //实际支付
                     var true_pay = 0;
@@ -115,6 +116,7 @@ getConfigs(function(configs) {
                     var data = {
                         'type':type,
                         'uid':userInfo.id,
+                        'pic':pic,
                         'mobile':mobile,
                         'start_time': start_time,
                         'end_time': end_time,

@@ -123,9 +123,9 @@ function getStatusDes(order) {
     } else if ((order.order_status=='wait_confirm') || (order.order_status=='wait_service')) {
         var days = getOrderCycle(time,order.start_time);
         if (days > 0) {
-            return "护工将在" + days + "天后提供服务";
+            return "护理员将在" + days + "天后提供服务";
         } else if (days == 0) {
-            return "护工将在今天提供服务";
+            return "护理员将在今天提供服务";
         } else {
             return "服务即将开始";
         }

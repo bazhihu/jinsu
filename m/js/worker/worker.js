@@ -17,7 +17,7 @@ function ages(str)
     return(false);
 }
 
-//护工等级
+//护理员等级
 var worker_levels = new Array();
 getConfigs(function(configs) {
     worker_levels=configs.worker_levels;

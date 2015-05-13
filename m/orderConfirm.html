@@ -94,10 +94,14 @@
                     </tr>
                     {{if has_holidays}}
                         <tr>
-                            <td>法定假日需另增加2倍服务费<br style="font-size: 10px">{{has_holidays}}</td>
-                            <td>&yen;{{price}}×{{has_holidays_num}}×2</td>
+                            <td>法定节日加收2倍服务费<br style="font-size: 10px">{{has_holidays}}</td>
+                            <td>&yen;{{price}}×2×{{has_holidays_num}}</td>
                         </tr>
                     {{/if}}
+                    <tr>
+                        <td>保险（暂无）</td>
+                        <td>+0</td>
+                    </tr>
                     <!--{{if patient_state==2}}-->
                         <!--<tr>-->
                             <!--<td>病患不可自理</td>-->
@@ -107,7 +111,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td>实际支付</td>
+                        <td>订单总金额</td>
                         <td>&yen;{{true_pay}}
                         </td>
                     </tr>
@@ -132,7 +136,7 @@
                 <label class="menuitemradio-checked menuitem menuitemradio" for="pay_offline" role="menuitemradio">
                     <span class="pay-offline"></span>
                     <em>当面支付</em>
-                    <i>此处为文字介绍当面支付</i>
+                    <i>工作人员会联系您收取现金</i>
                     <input type="radio" name="pay_way"  checked id="pay_offline" value="1" />
                 </label>
                 <!--<label class="menuitem menuitemradio" for="pay_alipay" role="menuitemradio">-->

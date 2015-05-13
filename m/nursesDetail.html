@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8" />
-	<title>护工详情</title>
+	<title>护理员详情</title>
     <meta name="viewport" content="width=320,user-scalable=no" />
 	<meta content="telephone=no" name="format-detection" />
 	<link href="./css/style.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
 
 	<header id="header">
 		<a class="back" href="javascript:history.back(1)">返回</a>
-		<h2 class="title">护工详情</h2>
+		<h2 class="title">护理员详情</h2>
         <a class="home" href="/">首页</a>
 	</header>
 
@@ -21,7 +21,16 @@
 	<div class="menu card" >
         <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
         <div class="nurses-intro">
-            <h2 class="nurses-name care-level care-level-hight">{{data.name}}</h2>
+            {{if data.level==1}}
+                <h2 class="nurses-name care-level care-level-junior">
+            {{else if data.level==2}}
+                <h2 class="nurses-name care-level care-level-middle">
+            {{else if data.level==3}}
+                <h2 class="nurses-name care-level care-level-hight">
+            {{else if data.level==4}}
+                <h2 class="nurses-name care-level care-level-special">
+            {{/if}}
+            {{data.name}}</h2>
             <p class="code">工号：{{data.worker_id}}</p>
             <p class="info">
                 <span class="years" id="start_work">{{dateFormat(data.start_work)}}年陪护经验</span>
@@ -37,17 +46,23 @@
     </div>
 	<section class="menu detail">
 		<h3 class="menu-title">详细信息</h3>
-		<a class="menuitem" id="self-intro">{{data.selfIntros[0].ext1}}</a>
+		<a class="menuitem" id="self-intro">自我介绍：{{data.selfIntros[0].ext1}}</a>
 	</section>
 	<div class="menu detail">
 		<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
 	</div>
+    <div class="menu detail">
+        <a class="menuitem" id="department">常驻科室：{{data.department_id}}</a>
+    </div>
 	<!--<div class="menu detail">-->
 		<!--<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>-->
 	<!--</div>-->
 	<div class="menu detail">
-		<a class="menuitem" id="credentials">{{data.certificate}}</a>
+		<a class="menuitem" id="credentials">持有证件：{{data.certificate}}</a>
 	</div>
+    <div class="menu detail">
+        <a class="menuitem" id="content">服务内容：{{data.certificate}}</a>
+    </div>
     <div class="pay-operation">
         <a href="/orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
         <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>

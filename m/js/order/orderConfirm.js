@@ -39,7 +39,7 @@ getConfigs(function(configs) {
             }
             var departments_name = departments_array[department_id];
 
-            //护工级别
+            //护理员级别
             var worker_level_lenth =configs.worker_levels.length;
             var worker_level_data  = configs.worker_levels;
             var worker_level_array = new Array();
@@ -89,7 +89,7 @@ getConfigs(function(configs) {
                     var days = getOrderCycle(start_time,end_time);
             }
 
-            //挑选护工
+            //挑选护理员
             if(type=='select'){
                 $.get(workerUrl+"/"+worker_no,function(worker_back){
                     var price = parseInt(worker_back.data.price);

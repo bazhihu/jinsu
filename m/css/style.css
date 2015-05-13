@@ -267,7 +267,7 @@ select.wheel-selector { display: none; }
 	#page-splash .swiper-slide:last-child .swiper-content img { margin: 5px auto; width: 200px; height: 200px; }
 	#page-splash .download { margin: 10px auto; }
 }
-
+#page-confirm { padding-bottom: 52px; }
 #page-confirm .menuitem .value { color: #34cba8; margin-right: 0; }
 #page-confirm a.menuitem .value { margin-right: 26px; color: #6c6b68; }
 

@@ -18,35 +18,6 @@
 	</ul>
     <div class="loading-more loading"></div>
 
-    <script id="bodyTemplate" type='text/html'>
-    {{each data as value index}}
-    <a href="./nursesDetail.html?worker_id={{value.worker_id}}">
-    <li>
-        <div class="nurses-photo" style="background-image:url({{value.pic}})"></div>
-        <div class="nurses-detail">
-            <span class="nurses-price"><em>{{value.price}}</em>元/天</span>
-            <span class="nurses-rate">{{worker_star(value.star)}}</span>
-            <h4 class="nurses-name">{{value.name}}</h4>
-            <p class="nurses-intro">{{dateFormat(value.birth)}}岁 | {{value.native_province}} | {{dateFormat(value.start_work)}}年陪护经验</p>
-            <p class="nurses-reserve">
-                {{if value.level==1}}
-                    <span class="care-level-junior">
-                {{else if value.level==2}}
-                    <span class="care-level-middle">
-                {{else if value.level==3}}
-                    <span class="care-level-hight">
-               {{else if value.level==4}}
-                    <span class="care-level-special">
-                {{/if}}
-                {{worker_levels(value.level)}} {{value.office_id}}</span>
-
-            </p>
-        </div>
-    </li>
-    </a>
-    {{/each}}
-    </script>
-
     <script type='text/javascript' src='/js/zepto.min.js'></script>
     <script type='text/javascript' src='/js/template.js'></script>
     <script type='text/javascript' src='/js/public.js'></script>

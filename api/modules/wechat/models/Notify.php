@@ -19,25 +19,9 @@ use common\components\wechat\WxpayServerPub;
 class Notify{
 
     function getCode(){
-
-        $jsApi = new JsApi_pub();
-
-        //=========步骤1：网页授权获取用户openid============
-        //通过code获得openid
-        if (!isset($_GET['code']))
-        {
-            //触发微信返回code码
-            $url = $jsApi->createOauthUrlForCode('http://'.$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL']);
-            Header("Location: $url");
-            exit;
-        }else
-        {
-            //获取code码，以获取openid
-            $code = $_GET['code'];
-            $jsApi->setCode($code);
-            $openid = $jsApi->getOpenId();
-            return $openid;
-        }
+        $jsApi = new wechat\JsApiPay();
+        $openId = $jsApi->GetOpenid();
+        return $openId;
     }
 
     function notifyUrl(){

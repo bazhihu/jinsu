@@ -22,8 +22,12 @@ return [
         'key'           =>  '48888888888888888888888888888886',//商户支付密钥Key。审核通过后，在微信发送的邮件中查看
         'transport'     =>  'http',
         'curl_timeout'  =>  30,
-        'sslcert_path'  =>  '',
-        'sslkey_path'   =>  '',
-        'seller_email' => 'pay@youaiyihu.com',
+        'sslCert_path'  =>  './../certificate/apiclient_cert.pem',
+        'sslKey_path'   =>  './../certificate/apiclient_key.pem',
+        'seller_email'  =>  'pay@youaiyihu.com',
+        'report_levenl' =>  1,
+        'curl_proxy_host' =>  '0.0.0.0',
+        'curl_proxy_port' =>  '0',
+        'notify_url'    =>  'http://uat.api.youaiyihu.com/wechat/notify',
     ]
 ];

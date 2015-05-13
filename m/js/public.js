@@ -31,10 +31,9 @@ var UA = window.navigator.userAgent.toLowerCase(),
     INDEX = host,
     firstEntered = 'firstEntered';
 
-if(/ipad|iPhone|android/.test(UA)){
+if(navigator.userAgent.toLowerCase().match(/(iphone|ipad|ipod|ios)/i) || navigator.userAgent.toLowerCase().match(/android/i)){
     CLICK = 'tap';
 }
-
 $(document).ready(function(){
     var headHtml="<script id='headTemplate' type='text/html'></script>";
     $('#head').html(headHtml);

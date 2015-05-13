@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>确认订单</title>
-    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
 </head>
@@ -57,6 +57,7 @@
                         {{if worker_level==3}}
                             <h5 class="care-level-special nurses-title">{{worker_level_name}}</h5>
                         {{/if}}
+                        <input type="hidden" name="worker_level" id="worker_level" value="{{worker_level}}">
                         <dl>
                             <dt>姓名：</dt>
                             <dd>{{worker_name}}&nbsp;</dd>
@@ -77,7 +78,7 @@
                     {{if worker_level==3}}
                         <i class="value care-level-special">{{worker_level_name}}</i>
                     {{/if}}
-                    <input type="hidden" name="worker_level" value="{{worker_level}}">
+                    <input type="hidden" name="worker_level" id="worker_level" value="{{worker_level}}">
                 </div>
             {{/if}}
         </section>
@@ -93,10 +94,14 @@
                     </tr>
                     {{if has_holidays}}
                         <tr>
-                            <td>法定假日需另增加2倍服务费<br style="font-size: 10px">{{has_holidays}}</td>
-                            <td>&yen;{{price}}×{{has_holidays_num}}×2</td>
+                            <td>法定节日加收2倍服务费<br style="font-size: 10px">{{has_holidays}}</td>
+                            <td>&yen;{{price}}×2×{{has_holidays_num}}</td>
                         </tr>
                     {{/if}}
+                    <tr>
+                        <td>保险（暂无）</td>
+                        <td>+0</td>
+                    </tr>
                     <!--{{if patient_state==2}}-->
                         <!--<tr>-->
                             <!--<td>病患不可自理</td>-->
@@ -106,7 +111,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td>实际支付</td>
+                        <td>订单总金额</td>
                         <td>&yen;{{true_pay}}
                         </td>
                     </tr>
@@ -124,13 +129,14 @@
                     <h3 class="menu-title">支付方式</h3>
                 </header>
             {{/if}}
+            <input type="hidden" name="need_pay" id="need_pay" value="{{need_pay}}">
         </script>
         <div  id="pay_other">
             <section class="payments menu" role="menu">
                 <label class="menuitemradio-checked menuitem menuitemradio" for="pay_offline" role="menuitemradio">
                     <span class="pay-offline"></span>
                     <em>当面支付</em>
-                    <i>此处为文字介绍当面支付</i>
+                    <i>工作人员会联系您收取现金</i>
                     <input type="radio" name="pay_way"  checked id="pay_offline" value="1" />
                 </label>
                 <!--<label class="menuitem menuitemradio" for="pay_alipay" role="menuitemradio">-->

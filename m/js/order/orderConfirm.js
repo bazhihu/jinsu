@@ -39,15 +39,14 @@ getConfigs(function(configs) {
             }
             var departments_name = departments_array[department_id];
 
-            //护工级别
+            //护理员级别
             var worker_level_lenth =configs.worker_levels.length;
             var worker_level_data  = configs.worker_levels;
-            console.log(configs.worker_levels);
             var worker_level_array = new Array();
             var worker_level_prirce_array = new Array();
+
             for(var j =0;j<=worker_level_lenth-1;j++){
-                var id = data[j+1]['id'];
-                console.log(id);
+                var id = worker_level_data[j]['id'];
                 worker_level_array[id] = worker_level_data[j]['name'];
                 worker_level_prirce_array[id] = worker_level_data[j]['price'];
             }
@@ -90,12 +89,12 @@ getConfigs(function(configs) {
                     var days = getOrderCycle(start_time,end_time);
             }
 
-            //挑选护工
+            //挑选护理员
             if(type=='select'){
                 $.get(workerUrl+"/"+worker_no,function(worker_back){
                     var price = parseInt(worker_back.data.price);
                     var worker_level = worker_back.data.level;
-                    console.log(worker_level_array)
+
                     var worker_level_name = worker_level_array[worker_level];
                     var worker_name = worker_back.data.name;
 
@@ -113,7 +112,6 @@ getConfigs(function(configs) {
                         console.log(need_pay)
                         $("#pay_other").hide();
                     }
-
                     var data = {
                         'type':type,
                         'uid':userInfo.id,
@@ -158,7 +156,6 @@ getConfigs(function(configs) {
                 //还需支付
                 var need_pay = parseInt(true_pay-blance);
                 if(need_pay<0){
-                    console.log(need_pay)
                     $("#pay_other").hide();
                 }
 
@@ -193,12 +190,18 @@ getConfigs(function(configs) {
             //支付
             $("#pay").on('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
-                if(pay_way==1) {
-                    var url = "payOffline.html";
-                }else if(pay_way==2){
-                    var url = "payOffline.html";
-                }else if(pay_way==3){
-                    var url = "payOffline.html";
+                var worker_level = $('#worker_level').val();
+                var need_pay = $('#need_pay').val();
+                if(need_pay<0){
+                    var url = "payOnline.html";
+                }else{
+                    if(pay_way==1) {
+                        var url = "payOffline.html";
+                    }else if(pay_way==2){
+                        var url = "payOnline.html";
+                    }else if(pay_way==3){
+                        var url = "payOnline.html";
+                    }
                 }
 
                 var post_data = {

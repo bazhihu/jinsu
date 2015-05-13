@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>订单详情</title>
-    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="/css/style.css" rel="stylesheet" />
 </head>
@@ -70,24 +70,19 @@
                         <td>&yen;{{data.base_price}}×{{data.days}}</td>
                     </tr>
                     {{if data.has_holidays}}
-                        <tr>
-                            <td colspan="3" style="text-align: left;padding-left: 0px">{{data.has_holidays}}为法定节假日,法定假日三倍工资</td>
-                        </tr>
-                        <tr>
-                            <td>{{data.has_holidays}}加收双倍价格</td>
-                            <td>&yen;{{data.base_price}}×{{data.has_holidays_num}}×2</td>
-                        </tr>
+                    <tr>
+                        <td>法定节日加收2倍服务费<br style="font-size: 10px">{{data.has_holidays}}</td>
+                        <td>&yen;{{data.base_price}}×2×{{data.has_holidays_num}}</td>
+                    </tr>
                     {{/if}}
-                    {{if data.patient_state==2}}
-                        <tr>
-                            <td>病患不可自理</td>
-                            <td>+{{data.patient_state_coefficient*100}}%</td>
-                        </tr>
-                    {{/if}}
+                    <tr>
+                        <td>保险（暂无）</td>
+                        <td>+0</td>
+                    </tr>
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td>实际支付</td>
+                        <td>订单总金额</td>
                         <td>&yen;{{data.total_amount}}</td>
                     </tr>
                     </tfoot>
@@ -103,7 +98,7 @@
             {{if data.order_status=='wait_pay'}}
                 <div class="operations">
                     <a class="cancel" role="button" data-no="{{data.order_no}}" href="#cancel">取消订单</a>
-                    <a class="pay" role="button" data-no="{{data.order_no}}" href="#pay">立即支付</a>
+                    <a class="pay" role="button" data-no="{{data.order_no}}" href="/my/payments.html?orderNo={{data.order_no}}&&totalAmount={{data.total_amount}}">立即支付</a>
                 </div>
             {{/if}}
             {{if data.order_status=='wait_evaluate'}}
@@ -137,18 +132,13 @@
          */
         template.helper('dateFormat', function (date, format) {
 
-            date = new Date(date);
+            date = new Date(Date.parse(date.replace(/-/g,   "/")));
 
             var map = {
                 "M": date.getMonth() + 1, //月份
-                "d": date.getDate(), //日
-                "h": date.getHours(), //小时
-                "m": date.getMinutes(), //分
-                "s": date.getSeconds(), //秒
-                "q": Math.floor((date.getMonth() + 3) / 3), //季度
-                "S": date.getMilliseconds() //毫秒
+                "d": date.getDate() //日
             };
-            format = format.replace(/([yMdhmsqS])+/g, function(all, t){
+            format = format.replace(/([yMd])+/g, function(all, t){
                 var v = map[t];
                 if(v !== undefined){
                     if(all.length > 1){

@@ -34,9 +34,10 @@
                                 {{if value.worker_name}}
                                     {{value.worker_name}}
                                 {{else}}
-                                    {{if value.worker_level==1}}初级{{/if}}
-                                    {{if value.worker_level==2}}中级{{/if}}
-                                    {{if value.worker_level==3}}高级{{/if}}
+                                    {{if value.worker_level==1}}初级陪护服务{{/if}}
+                                    {{if value.worker_level==2}}中级陪护服务{{/if}}
+                                    {{if value.worker_level==3}}高级陪护服务{{/if}}
+                                    {{if value.worker_level==4}}特级陪护服务{{/if}}
                                 {{/if}}
                             </h4>
                             <p>{{value.start_time | dateFormat:'yyyy/MM/dd'}}至{{value.end_time | dateFormat:'yyyy/MM/dd'}}</p>

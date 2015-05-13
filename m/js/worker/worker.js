@@ -17,7 +17,7 @@ function ages(str)
     return(false);
 }
 
-//护工等级
+//护理员等级
 var worker_levels = new Array();
 getConfigs(function(configs) {
     worker_levels=configs.worker_levels;
@@ -63,6 +63,7 @@ function get_workedetail() {
             template.helper('dateFormat', function (str) {
                 return ages(str);
             });
+            console.log(response);
             var bodyHtml = template('bodyTemplate', response);
             $('#nurses_detail').html(bodyHtml);
 

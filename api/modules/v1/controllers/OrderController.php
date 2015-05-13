@@ -8,7 +8,6 @@
 
 namespace api\modules\v1\controllers;
 
-use common\components\alipay\Alipay;
 use common\models\Payment;
 use Yii;
 use yii\web\Response;
@@ -170,12 +169,7 @@ class OrderController extends ActiveController {
             'amount' => $amount
         ];
         $paymentModel = new Payment($payWay, $payment);
-        /*$payment['transaction_no'] = $paymentModel->getTradeNo();
-        $payment['notify_url'] = Alipay::getNotifyUrl();
-        unset($payment['uid'], $payment['order_no']);*/
-        $return = $paymentModel->getReInformation();
-
-        return $payment;
+        return $paymentModel->getPayData();
     }
 
     public function actionOptions(){

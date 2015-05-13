@@ -24,6 +24,14 @@
     <script type="text/javascript" src="/js/worker/worker.js"></script>
     <script type="text/javascript" src="/js/zepto-with-touch.min.js"></script>
 <script type="text/javascript">
+    var orderData=getCookie("orderData");
+    orderDataArr=orderData.split("#");
+    var start_time_s=orderDataArr[1];
+    var end_time_s=orderDataArr[2];
+    var department_id_s=orderDataArr[4];
+    var hospital_id_s=orderDataArr[5];
+    var department_id_s="";
+
     ~function () {
         var list = document.querySelector('.nurses-list'), loading = document.querySelector('.loading'), isLoading = 0;
         function load() {
@@ -36,12 +44,10 @@
                     if(list.children.length>=10){
                         pageNum =Math.ceil(list.children.length/10)+1;
                     }
-                    //var start_time = getUrlQueryString("start_time");
-                    //var hospital_id = getUrlQueryString("hospital_id");
-                    //var department_id = getUrlQueryString("department_id");
+
                     $.ajax({
                         url: workerUrl_v2,
-                        data: { page: pageNum, count: 100},
+                        data: { page: pageNum, start_time:start_time_s,department_id:department_id_s,hospital_id_s:hospital_id_s,count: 100},
                         type: 'get',
                         success: function (response) {
                             if (response.data.items.length<1) {

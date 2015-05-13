@@ -13,15 +13,14 @@ use yii\web\Controller;
 
 class DownloadController extends Controller{
     public function actionIndex(){
-        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
-        if ((preg_match("/(iphone|ipod|android)/i", $userAgent)) AND strstr($userAgent, 'webkit')){
+        //$userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+        //if ((preg_match("/(iphone|ipod|android)/i", $userAgent)) AND strstr($userAgent, 'webkit')){
             ob_start();
             header('Location: http://m.youaiyihu.com/download.html');
             exit;
-            ob_end_flush();
-        }
+        //}
 
-        $this->_load();
+        //$this->_load();
     }
 
     private function _load(){

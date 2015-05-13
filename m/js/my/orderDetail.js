@@ -168,7 +168,9 @@ cancel.live('click', function(){
         crossDomain:true,
         timeout:30000,
         success: function(data){
-            console.log(data);
+            if(data.code == 200){
+                window.location.reload();
+            }
         },
         error: function(jqXHR, textStatus, errorThrown){
             alert('网络超时!')

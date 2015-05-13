@@ -12,6 +12,7 @@ if(window.location.host=='dev.m.youaiyihu.com'){
 var UA = window.navigator.userAgent.toLowerCase(),
     CLICK = 'click',
     version = 'v1/',
+    version_v2 = 'v2/'
     ID = 'SID',
     NAME = 'name',
     TOKEN = 'youaiyihu',
@@ -27,6 +28,7 @@ var UA = window.navigator.userAgent.toLowerCase(),
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
     workerUrl = url+version+'workers',
+    workerUrl_v2 = url+version_v2+'workers',
     urlToLogin = host+'/login.html',
     INDEX = host,
     firstEntered = 'firstEntered';
@@ -42,11 +44,14 @@ $(document).ready(function(){
     var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
     $('#foot').html(footHtml);
     var src = getUrlQueryString('src');
+    /**
+     * 从客户端过来，部分页面隐藏头部
+     */
     if(src=='app')
         $("#header").css('display','none');
 
-    if(/micromessenger/.test(UA))
-        $("#header").css('display','none');
+    //if(/micromessenger/.test(UA))
+    //    $("#header").css('display','none');
 });
 function getStatus() {
     var id = getCookie(ID);

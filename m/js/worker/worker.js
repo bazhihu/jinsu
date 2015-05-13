@@ -33,6 +33,7 @@ function get_workelist() {
     var department_id = getUrlQueryString("department_id");
     var workerNewUrl=workerUrl+"?start_time="+start_time+"&hospital_id="+hospital_id+"&department_id="+department_id
     $.getJSON(workerNewUrl, function (response) {
+
         if (response.code == 200) {
             template.helper('dateFormat', function (n) {
                 return ages(n);
@@ -63,10 +64,8 @@ function get_workedetail() {
             template.helper('dateFormat', function (str) {
                 return ages(str);
             });
-            console.log(response);
             var bodyHtml = template('bodyTemplate', response);
             $('#nurses_detail').html(bodyHtml);
-
             $('#price').html(parseInt(response.data.price));
 
         }

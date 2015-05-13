@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'detail_time',
                 'format' => 'text',
-                'label' => '扣款时间',
+                'label' => '交易时间',
             ],
             [
                 'attribute'=>'order_no',

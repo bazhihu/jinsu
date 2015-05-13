@@ -10,9 +10,10 @@ namespace common\models;
 
 use Yii;
 use yii\base\InvalidParamException;
+use yii\helpers\Json;
 use yii\web\HttpException;
 use common\components\alipay\Alipay;
-use common\components\wechat\Wechat;
+use common\components\wechat\JsApiPay;
 
 class Payment
 {
@@ -100,6 +101,10 @@ class Payment
      * @throws HttpException
      */
     private function _WeChat(){
+
+        $jsApi = new JsApiPay();
+        $openId = $jsApi->GetOpenid();
+
         //统一下单
         $return = Wechat::underSingle($this->_payData['open_id'], $this->_tradeNo, $this->_payData['amount']);
         $this->_weChatReturn = $return;

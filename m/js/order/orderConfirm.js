@@ -191,13 +191,17 @@ getConfigs(function(configs) {
             $("#pay").on('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
-                console.log("leve2:"+worker_level)
-                if(pay_way==1) {
-                    var url = "payOffline.html";
-                }else if(pay_way==2){
-                    var url = "payOffline.html";
-                }else if(pay_way==3){
-                    var url = "payOffline.html";
+                var need_pay = $('#need_pay').val();
+                if(need_pay<0){
+                    var url = "payOnline.html";
+                }else{
+                    if(pay_way==1) {
+                        var url = "payOffline.html";
+                    }else if(pay_way==2){
+                        var url = "payOnline.html";
+                    }else if(pay_way==3){
+                        var url = "payOnline.html";
+                    }
                 }
 
                 var post_data = {

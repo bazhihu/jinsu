@@ -13,7 +13,7 @@ if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger
     } else {
         //获取code码，以获取openid
         $code = $_GET['code'];
-        $openid = $this->getOpenidFromMp($code);
+        $openid = getOpenidFromMp($code);
         return $openid;
     }
 }

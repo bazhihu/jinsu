@@ -25,7 +25,7 @@ echo $form->field($model, 'money')
     ->hint('当前余额：'.$balance.'元，需要充值：'.$needMoney.'元');
 echo $form->field($model, 'pay_from')
     ->dropDownList(\backend\models\WalletUserDetail::$payFromLabels,['prompt'=>'请选择'])
-    ->label('充值渠道');
+    ->label('充值方式');
 ?>
 
 <div class="form-group">

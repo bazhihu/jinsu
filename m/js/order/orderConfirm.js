@@ -219,14 +219,13 @@ getConfigs(function(configs) {
                     'pay_way':pay_way
                 };
 
-                $.post(orderCreate,post_data,function(response){
-                    console.log(response.msg)
-                    if(response.code == 200){
+                $.post(orderCreate,post_data,function(post_response){
+                    if(post_response.code == 200){
                         location.href=url;
-                    }else if(response.code == 400){
+                    }else if(post_response.code == 400){
                         alert('支付失败！');
                         location.href=url;
-                    }else if(response.code == 500){
+                    }else if(post_response.code == 500){
                         alert('支付失败！');
                         location.href=url;
                     }

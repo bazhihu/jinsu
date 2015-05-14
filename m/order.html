@@ -6,36 +6,27 @@
     <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
-    <script type='text/javascript' src='../js/zepto-with-touch.min.js'></script>
-    <script src='../js/template.js'></script>
-    <script src="../js/public.js"></script>
-    <script src="../js/popup.js"></script>
 </head>
 <body id="page-express">
-    <div id="body"></div>
-    <div id="foot"></div>
-    <script id="bodyTemplate" type='text/html'>
         <header id="header">
             <a class="back" href="javascript:history.back(1)">返回</a>
-            <h2 class="title">{{if type=='select'}}立即下单{{else}}快速预定{{/if}}</h2>
+            <h2 class="title">立即下单</h2>
             <a class="home" href="/">首页</a>
         </header>
         <form class="menu-form"  method="post">
-            <input type="hidden" value="{{mobile}}" name="mobile" id="mobile">
-            {{if mobile}}
+            <input type="hidden" name="mobile" id="mobile">
             <!-- 已登录状态 -->
             <menu class="menu">
-                <span class="menuitem" role="menuitem">
-                    <em class="title">联系方式：</em>
-                    <i class="value" data-placeholder="快捷登录">{{mobile}}</i>
-                </span>
+                <div  id="nologin">
+                    <span class="menuitem" role="menuitem">
+                        <em class="title">联系方式：</em>
+                        <i class="value" data-placeholder="快捷登录"></i>
+                    </span>
+                </div>
+                <div  id="login" style="display: none">
+                    <span class="menuitem" role="menuitem"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录" id="has_mobile"></i></span>
+                </div>
             </menu>
-            {{else}}
-            <menu class="menu">
-                <a class="menuitem" role="menuitem" href="login.html"><em class="title">联系方式：</em><i class="value" data-placeholder="快捷登录"></i></a>
-            </menu>
-            {{/if}}
-
             <menu class="menu">
                 <label class="menuitem" role="menuitem" for="care-start">
                     <em class="title">服务开始时间：</em>
@@ -58,7 +49,6 @@
                     <input type="hidden" id="department_id" name="department_id" value="" />
                 </a>
             </menu>
-
             <!--<menu class="menu">-->
                 <!--<a href="patient-status.html" id="patient-status-menuitem" target="popup" class="menuitem" role="menuitem">-->
                     <!--<em class="title">病患状态：</em><label class="value" data-placeholder="请选择"></label>-->
@@ -90,10 +80,13 @@
                     <!--</label>-->
                 <!--</div>-->
             <!--</menu>-->
-            <input type="button" {{if type=='select'}}value=" 确 定 "{{else}}value="立即下单"{{/if}} id="orderCreate" name="orderCreate"/>
+            <input type="button" value=" 确 定 "  id="orderCreate" name="orderCreate"/>
         </form>
-    </script>
-    <script src="../js/order/order.js"></script>
+        <script type='text/javascript' src='../js/zepto.min.js'></script>
+        <script type='text/javascript' src='../js/zepto-with-touch.min.js'></script>
+        <script src="../js/public.js"></script>
+        <script src="../js/popup.js"></script>
+        <script src="../js/order/order.js"></script>
     <script type="text/javascript">
         $('.care-level input[type="radio"]').live('click', function () {
             [].forEach.call(this.form.elements[this.name], function (radio) {

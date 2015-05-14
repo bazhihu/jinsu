@@ -220,6 +220,7 @@ getConfigs(function(configs) {
                 };
 
                 $.post(orderCreate,post_data,function(response){
+                    console.log(response.msg)
                     if(response.code == 200){
                         location.href=url;
                     }else if(response.code == 400){

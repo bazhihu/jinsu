@@ -30,7 +30,7 @@ class Order extends \yii\db\ActiveRecord{
     static $orderSources = [
         self::ORDER_SOURCES_WEB => '网站',
         self::ORDER_SOURCES_MOBILE => '移动客户端',
-        self::ORDER_SOURCES_SERVICE => '客服电话',
+        self::ORDER_SOURCES_SERVICE => '客服后台',
     ];
 
     //订单支付方式
@@ -857,6 +857,8 @@ class Order extends \yii\db\ActiveRecord{
             $this->create_order_ip = $_SERVER["REMOTE_ADDR"];
             $this->create_order_user_agent = $_SERVER['HTTP_USER_AGENT'];
         }
+        $this->start_time = date('Y-m-d 09:00:00', strtotime($this->start_time));
+        $this->end_time = date('Y-m-d 09:00:00', strtotime($this->end_time));
         return true;
     }
 

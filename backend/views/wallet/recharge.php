@@ -42,7 +42,7 @@ if($userRow['username']){
 
         echo $form->field($model, 'pay_from')
             ->dropDownList(\backend\models\WalletUserDetail::$payFromLabels,['prompt'=>'请选择'])
-            ->label('充值渠道');
+            ->label('充值方式');
 
         echo $form->field($model, 'admin_name')->textInput(
             [

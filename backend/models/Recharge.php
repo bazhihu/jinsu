@@ -33,7 +33,7 @@ class Recharge extends Model
             'uid' =>'用户ID',
             'money' => '充值金额',
             'mobile' => '用户帐号',
-            'pay_from' => '充值渠道'
+            'pay_from' => '充值方式'
         ];
     }
 }

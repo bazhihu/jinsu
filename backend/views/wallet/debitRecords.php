@@ -75,23 +75,23 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ]
             )->label('结束时间');
-            ?>
-            <?= $form->field(
-                $searchModel,
-                'mobile'
 
-            )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:200px'])->label('用户账号')?>
-            <?= $form->field(
-                $searchModel,
-                'order_no'
+            echo $form->field($searchModel, 'mobile')
+                ->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:200px'])
+                ->label('用户账号');
 
-            )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:200px'])->label('订单编号') ?>
+            echo $form->field($searchModel,'order_no')
+                 ->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:180px'])
+                 ->label('订单编号');
 
-            <?= $form->field(
-                $searchModel,
-                'detail_type'
-            )->dropDownList(['1'=>'消费','2'=>'充值','3'=>'提现','4'=>'退款'],['prompt'=>'选择','style'=>'width:200px'])->label('交易类型') ?>
+            echo $form->field($searchModel,'detail_type')
+                ->dropDownList(['1'=>'消费','2'=>'充值','3'=>'提现','4'=>'退款'],['prompt'=>'选择','style'=>'width:100px'])
+                ->label('交易类型');
 
+            echo $form->field($searchModel,'pay_from')
+                ->dropDownList($searchModel::$payFromLabels,['prompt'=>'选择','style'=>'width:100px'])
+                ->label('充值方式');
+                ?>
             <div class="form-group" style="padding-top: 25px">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
                 <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
@@ -144,6 +144,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '退款';
                     }
                 },
+            ],
+            [
+                'attribute'=>'pay_from',
+                'format' => 'text',
+                'label' => '充值方式',
+                'value' => function($model) {
+                    return $model::$payFromLabels[$model->pay_from];
+                }
             ],
             [
                 'attribute'=>'detail_money',

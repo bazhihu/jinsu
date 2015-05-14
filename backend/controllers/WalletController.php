@@ -81,14 +81,9 @@ class WalletController extends Controller
             'code'  =>'200',
             'msg'   =>'',
         ];
-        if(Yii::$app->request->isAjax)
-        {
+        if(Yii::$app->request->isAjax){
             $params = Yii::$app->request->post();
-            if($params['uid'] && $params['money'])
-            {
-                #支付渠道-后台
-                $params['pay_from'] = WalletUserDetail::PAY_FROM_BACKEND;
-
+            if($params['uid'] && $params['money']){
                 $balance = Wallet::recharge($params);
                 if($balance){
 

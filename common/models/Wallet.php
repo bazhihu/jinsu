@@ -57,12 +57,8 @@ class Wallet
             $detail['detail_type']  = WalletUserDetail::WALLET_TYPE_RECHARGE;
             $detail['wallet_money'] = $money;
             $detail['pay_from']     = $params['pay_from'];
-
-            //后台充值
-            if($detail['pay_from'] == WalletUserDetail::PAY_FROM_BACKEND){
-                $detail['admin_uid']    = Yii::$app->user->identity->getId();
-            }
-
+            $detail['admin_uid']    = empty(Yii::$app->user) ? 0 : Yii::$app->user->id;
+            
             $result = self::addUserDetail($detail);
             if ($result['code'] !== '200') {
                 throw new HttpException(400, "", true);

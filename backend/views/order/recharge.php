@@ -13,14 +13,19 @@ use kartik\widgets\ActiveForm;
     ]
 ); ?>
 
-<?= $form->field($model, 'mobile')->textInput([
-    'disabled'=>true,
-    'value' => $order->mobile,
-])->label('充值帐号') ?>
-
 <?php
+echo $form->field($model, 'mobile')
+    ->textInput(['disabled'=>true,'value' => $order->mobile,])
+    ->label('充值帐号');
+
 $needMoney = $order->total_amount-$balance;
-echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('当前余额：'.$balance.'元，需要充值：'.$needMoney.'元');
+echo $form->field($model, 'money')
+    ->textInput()
+    ->label('充值金额')
+    ->hint('当前余额：'.$balance.'元，需要充值：'.$needMoney.'元');
+echo $form->field($model, 'pay_from')
+    ->dropDownList(\backend\models\WalletUserDetail::$payFromLabels,['prompt'=>'请选择'])
+    ->label('充值渠道');
 ?>
 
 <div class="form-group">
@@ -36,6 +41,7 @@ echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('�
     $('.js-recharge-submit').click(function(){
         var money = $('#recharge-money').val();
         var uid = <?=$order->uid?>;
+        var pay_from = $('#recharge-pay_from').val();
 
         if(money<1){
             alert('请输入充值金额。');
@@ -54,7 +60,7 @@ echo $form->field($model, 'money')->textInput()->label('充值金额')->hint('�
             cache   :false,
             timeout :30000,
             url     :'<?=Yii::$app->urlManager->createUrl(['order/recharge', 'id' => $order->order_id]);?>',
-            data    :{'money':money ,'uid':uid},
+            data    :{'money':money ,'uid':uid, 'pay_from':pay_from},
             error   :function(jqXHR, textStatus, errorThrown){
                 switch (jqXHR.status){
                     case(500):

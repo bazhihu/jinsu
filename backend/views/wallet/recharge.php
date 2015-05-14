@@ -17,8 +17,8 @@ if($userRow['username']){
         <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
     </div>
     <div class="panel-body">
-
-        <?php $form = ActiveForm::begin(
+        <?php
+        $form = ActiveForm::begin(
             [
                 'type'=>ActiveForm::TYPE_VERTICAL,
                 'formConfig'=>[
@@ -26,29 +26,31 @@ if($userRow['username']){
                     'showErrors' => true,
                 ]
             ]
-        ); ?>
-        <?= $form->field($model, 'uid')->hiddenInput(
+        );
+        echo $form->field($model, 'uid')->hiddenInput(
                 [
                     'value'=>$userRow['uid'],
                     'name'=>$userRow['username']?$userRow['username']:''
                 ]
             )->label("");
-        ?>
-        <?= $form->field($model, 'uid')
-            ->textInput(
-                [
-                    'disabled'=>true,
-                    'value'=>substr_replace($userRow['mobile'],'****',3,4),
-                ]
-            )->label('充值帐号') ?>
 
-        <?= $form->field($model, 'money')->textInput()->label('充值金额') ?>
-        <?= $form->field($model, 'admin_name')->textInput(
+        echo $form->field($model, 'uid')
+            ->textInput(['disabled'=>true, 'value'=>substr_replace($userRow['mobile'],'****',3,4)])
+            ->label('充值帐号');
+
+        echo $form->field($model, 'money')->textInput()->label('充值金额');
+
+        echo $form->field($model, 'pay_from')
+            ->dropDownList(\backend\models\WalletUserDetail::$payFromLabels,['prompt'=>'请选择'])
+            ->label('充值渠道');
+
+        echo $form->field($model, 'admin_name')->textInput(
             [
                 'disabled'=>true,
                 'value'=>$userRow['admin_name'],
             ]
-        )->label('经办人') ?>
+        )->label('经办人')
+        ?>
 
         <div class="form-group">
             <?= Html::button(
@@ -72,6 +74,7 @@ if($userRow['username']){
     $('body').on('click', 'button.jsRecharge', function () {
 
         var value = $('#recharge-money').val(),
+            pay_from = $('#recharge-pay_from').val(),
             name = $('#recharge-uid').attr('name'),
             uid = $('#recharge-uid').val(),
             url = $(this).attr('data-url'),
@@ -88,7 +91,7 @@ if($userRow['username']){
                 cache   :false,
                 timeout :30000,
                 url     : url,
-                data    : {'money':value ,'uid':uid},
+                data    : {'money':value ,'uid':uid,'pay_from':pay_from},
                 success: function(json){
                     if(json.code == '200'){
                         alert(json.msg);

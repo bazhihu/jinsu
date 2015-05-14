@@ -28,42 +28,58 @@ pay.on(CLICK, function(){
         //openId = getOpenID();
         openId = '';
         if(!openId){
-            var notifyUrl = url+'wechat/notify';
-            /*$.ajax({
+            //var notifyUrl = url+'wechat/notify';
+            var notifyUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx35492d0f3afac96b&redirect_uri=http%3A%2F%2Fuat.api.youaiyihu.com%2Fwechat%2Fnotify&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect';
+            $.ajax({
                 type: 'GET',
                 url: notifyUrl,
                 data: {},
                 dataType: 'json',
                 timeout: 3000,
                 success: function(data){
-                    console.log(data);
+                    if(data){
+                        $.ajax({
+                            type: 'PUT',
+                            url: orderUrls,
+                            data: {'action':'payment', 'pay_way':payWay, 'openId':data},
+                            dataType: 'json',
+                            timeout: 3000,
+                            success: function(data){
+                                if(data.code ==200){
+                                    self.location=document.referrer;
+                                }
+                            },
+                            error: function(xhr, type){
+                                alert('网络超时!')
+                            }
+                        })
+                    }
                 },
                 error: function(xhr, type){
                     alert('网络超时!')
                 }
-            })*/
+            })
         }
     }else if(payWay == '2'){
         alert('暂时没有支付宝支付');
         return;
     }else{
-
-    }
-    $.ajax({
-        type: 'PUT',
-        url: orderUrls,
-        data: {'action':'payment','pay_way':payWay},
-        dataType: 'json',
-        timeout: 3000,
-        success: function(data){
-            if(data.code ==200){
-                self.location=document.referrer;
+        $.ajax({
+            type: 'PUT',
+            url: orderUrls,
+            data: {'action':'payment','pay_way':payWay},
+            dataType: 'json',
+            timeout: 3000,
+            success: function(data){
+                if(data.code ==200){
+                    self.location=document.referrer;
+                }
+            },
+            error: function(xhr, type){
+                alert('网络超时!')
             }
-        },
-        error: function(xhr, type){
-            alert('网络超时!')
-        }
-    })
+        })
+    }
 });
 if(wei)
     alipay.attr('style','display:none');

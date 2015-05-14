@@ -84,9 +84,10 @@ getConfigs(function(configs){
 			a.popupFrameId = ++popupFrameId;
 			frame = document.createElement('iframe');
 			frame.id = 'popup-frame-' + popupFrameId;
-			frame.src = a.href;
+
 			frame.className = 'popup-frame';
 		}
+        frame.src = a.href;
 		$(frame).popup('right', false, false);
 		$(frame).one('load', function () {
 			frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value);
@@ -98,7 +99,7 @@ getConfigs(function(configs){
 			document.body.style.removeProperty('overflow');
 			tag && (a.querySelector('input[type="hidden"]').value = tag.value || '');
 			$(a).trigger('change', tag);
-		});
+		}).click(function (e) { e.preventDefault(); return false; });
 		return false;
 	});
 	$('#patient-status-menuitem,#hospitals-menuitem,#departments-menuitem').on('change', function (e, tag) {

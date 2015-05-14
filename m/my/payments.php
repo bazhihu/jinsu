@@ -14,7 +14,7 @@ if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger
         //获取code码，以获取openid
         $code = $_GET['code'];
         $openid = getOpenidFromMp($code);
-        return $openid;
+        var_dump($openid);
     }
 }
 function CreateOauthUrlForCode($redirectUrl)

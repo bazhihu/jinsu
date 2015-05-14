@@ -86,9 +86,53 @@ class Worker extends ActiveRecord
             $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
         }
 
+        //籍贯
+        if(!empty($params['native_province'])){
+            $query->andFilterWhere(['native_province' => $params['native_province']]);
+            $countQuery->andFilterWhere(['native_province' => $params['native_province']]);
+        }
+
+        //性别
+        if(!empty($params['gender'])){
+            $query->andFilterWhere(['gender' => $params['gender']]);
+            $countQuery->andFilterWhere(['gender' => $params['gender']]);
+        }
+
+        //排序
+        $orderBy = 'rand()';
+
+        if(isset($params['sort'])){
+            //价格排序，高到低
+            if($params['sort'] == 'price_down'){
+                $orderBy = 'price DESC';
+            }
+            //价格排序，低到高
+            if($params['sort'] == 'price_up'){
+                $orderBy = 'price ASC';
+            }
+
+            //星级，高到低
+            if($params['sort'] == 'star_down'){
+                $orderBy = 'star DESC';
+            }
+            //星级，高到低
+            if($params['sort'] == 'star_up'){
+                $orderBy = 'star ASC';
+            }
+
+            //护理经验，高到低
+            if($params['sort'] == 'start_work_down'){
+                $orderBy = 'start_work ASC';
+            }
+            //护理经验，低到高
+            if($params['sort'] == 'start_work_up'){
+                $orderBy = 'start_work DESC';
+            }
+        }
+
         $result = $query->offset($perPage*$page)
             ->limit($perPage)
-            ->orderBy('rand()')
+            ->orderBy($orderBy)
             ->all();
 
         $totalCount = $countQuery->count();

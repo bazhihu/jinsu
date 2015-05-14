@@ -1,5 +1,6 @@
 ﻿<?php
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
+$openId = '';
 if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger')) {
     define('APPID','wx35492d0f3afac96b');
     define('APPSECRET','a7dc36de9adcefd71b616fdd08a8ff37');
@@ -13,8 +14,7 @@ if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger
     } else {
         //获取code码，以获取openid
         $code = $_GET['code'];
-        $openid = getOpenidFromMp($code);
-        var_dump($openid);
+        $openId = getOpenidFromMp($code);
     }
 }
 function CreateOauthUrlForCode($redirectUrl)
@@ -136,7 +136,6 @@ function CreateOauthUrlForOpenid($code)
 	</form>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/public.js"></script>
-	<script src="../js/my/payments.js"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script>
 		$('.menuitemradio input[type="radio"]').on('click', function () {
@@ -144,6 +143,72 @@ function CreateOauthUrlForOpenid($code)
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
 			}, this);
 		});
+        loggedIn();
+        var order_no = getUrlQueryString('orderNo'),
+            total_amount = getUrlQueryString('totalAmount'),
+            user = getStatus(),
+            wei = isWeiXn(),
+            alipay = $('#alipay'),
+            wechat = $('#wechat'),
+            pay = $('#pay');
+        if(user.id && user.name && user.token){
+            getUsers(user.id, user.token, function(back){
+                if(total_amount>back.wallet.money){
+                    var needPay;
+                    $('.payments').attr('style',null);
+                    needPay = total_amount-back.wallet.money;
+                    if(needPay){
+                        document.getElementById('needPay').innerHTML = needPay;
+                        document.getElementById('payMoney').value = needPay;
+                    }
+                }
+                document.getElementById('total').innerHTML  = '&yen;'+total_amount;
+                document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
+            });
+        }
+        pay.on(CLICK, function(){
+            var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
+                payWay = $('input[name=payment]:checked').val(),
+                openId = '';
+            if(payWay == '3'){
+                openId = <?=$openId ?>;
+                if(!openId){
+                    alert('支付发生错误，请刷新页面！');
+                    return;
+                }
+            }else if(payWay == '2'){
+                alert('暂时没有支付宝支付');
+                return;
+            }else{
+
+            }
+            $.ajax({
+                type: 'PUT',
+                url: orderUrls,
+                data: {'action':'payment','pay_way':payWay,'openId':openId},
+                dataType: 'json',
+                timeout: 3000,
+                success: function(data){
+                    if(data.code ==200){
+                        self.location=document.referrer;
+                    }
+                },
+                error: function(xhr, type){
+                    alert('网络超时!')
+                }
+            })
+        });
+        if(wei)
+            alipay.attr('style','display:none');
+        else
+            wechat.attr('style','display:none');
+        function isWeiXn(){
+            var ua = navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i)=="micromessenger")
+                return true;
+            else
+                return false;
+        }
 	</script>
 </body>
 </html>

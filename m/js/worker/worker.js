@@ -12,7 +12,10 @@ function ages(str)
     if (d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4])
     {
         var   y=new Date().getFullYear();
-        return y-r[1];
+        var years =y-r[1];
+        if(years<1)
+            years = 1;
+        return years;
     }
     return(false);
 }

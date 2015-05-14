@@ -52,7 +52,6 @@ getConfigs(function(configs) {
             }
             var worker_level_name = worker_level_array[worker_level];
 
-
             //病患状态
             var patient_states_lenth =configs.patient_states.length;
             var patient_states_data  = configs.patient_states;
@@ -190,11 +189,12 @@ getConfigs(function(configs) {
             }
 
             //支付
-            $("#pay").on('click', function () {
+            $("#pay").live('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
                 var need_pay = $('#need_pay').val();
                 if(need_pay<0){
+                    var pay_way=1;
                     var url = "payOnline.html";
                 }else{
                     if(pay_way==1) {
@@ -219,13 +219,13 @@ getConfigs(function(configs) {
                     'pay_way':pay_way
                 };
 
-                $.post(orderCreate,post_data,function(response){
-                    if(response.code == 200){
+                $.post(orderCreate,post_data,function(post_response){
+                    if(post_response.code == 200){
                         location.href=url;
-                    }else if(response.code == 400){
+                    }else if(post_response.code == 400){
                         alert('支付失败！');
                         location.href=url;
-                    }else if(response.code == 500){
+                    }else if(post_response.code == 500){
                         alert('支付失败！');
                         location.href=url;
                     }
@@ -236,7 +236,7 @@ getConfigs(function(configs) {
 });
 
 //选择支付方式
-$('.menuitemradio input[type="radio"]').on('click', function () {
+$('.menuitemradio input[type="radio"]').live('click', function () {
     [].forEach.call(this.form.elements[this.name], function (radio) {
         $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
     }, this);

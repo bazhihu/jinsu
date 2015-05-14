@@ -50,6 +50,10 @@ class WalletController extends ActiveController {
             throw new UnauthorizedHttpException('You are requesting with an invalid credential.');
         }
         $wallet = Wallet::getDetailsByUid($id);
+        $wallet = ArrayHelper::toArray($wallet);
+        foreach($wallet as $key=>$val){
+            $wallet[$key]['detail_money'] = abs($val['detail_money']);
+        }
         return $wallet;
     }
 

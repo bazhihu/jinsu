@@ -101,7 +101,9 @@ class Wallet
             'detail_time'   => date('Y-m-d H:i:s'),
         ];
         $detail = ArrayHelper::merge($detail,$params);
-
+        if($detail['detail_type'] == WalletUserDetail::WALLET_TYPE_CONSUME || $detail['detail_type'] == WalletUserDetail::WALLET_TYPE_WITHDRAWALS){
+            $detail['detail_money'] = '-'.$detail['detail_money'];
+        }
         $userDetail->setAttributes($detail,false);
         if(!$userDetail->save()){
             throw new HttpException(400, print_r($userDetail->getErrors(), true));

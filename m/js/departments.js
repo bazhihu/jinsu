@@ -5,13 +5,13 @@ getConfigs(function(configs) {
 });
 
 function setValueByHash(value) {
-    value && [].forEach.call(document.querySelector('.sites li'), function (li) {
+    value && [].forEach.call(document.querySelector('.departments li'), function (li) {
         $(li)[sites.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
     });
 }
 
 function fillList(data, append) {
-    var s = '', sites = document.querySelector('.sites'), className = '';
+    var s = '', sites = document.querySelector('.departments'), className = '';
     if (!data) {
         getConfigs(function (configs) {
             departments_data = configs.departments;
@@ -58,7 +58,7 @@ function onSearchChange() {
 $('.search-sites input').on('input', onSearchChange);
 $('.search-sites input').on('change', onSearchChange);
 window.addEventListener('load', onSearchChange);
-$('.sites').delegate('li', 'click', function () {
+$('.departments').delegate('li', 'click', function () {
     [].forEach.call(this.parentNode.children, function (li) {
         $(li)[li === this ? 'addClass' : 'removeClass']('selected');
     }, this);
@@ -70,7 +70,7 @@ $('.sites').delegate('li', 'click', function () {
 });
 
 $('#header .back').click(function (e) {
-    var selected = document.querySelector('.sites .selected');
+    var selected = document.querySelector('.departments .selected');
     try {
         window.parent.$.dismissPopup(selected ? { value: selected.getAttribute('data-value'), text: selected.innerText || selected.textContent } : null);
     } catch (error) {

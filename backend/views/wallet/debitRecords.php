@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'detail_money',
                 'label' => '金额(元)',
                 'value'=>function($model){
-                    if($model->detail_type == 1){
+                    /*if($model->detail_type == 1){
                         $symbol = '-';
                     }elseif($model->detail_type == 2){
                         $symbol = '+';
@@ -157,8 +157,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         $symbol = '-';
                     }elseif($model->detail_type == 4){
                         $symbol = '+';
-                    }
-                    return $symbol.$model->detail_money;
+                    }*/
+                    return /*$symbol.*/$model->detail_money;
                 }
             ],
         ],

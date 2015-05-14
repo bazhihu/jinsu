@@ -21,7 +21,11 @@ class JsApiPay
 			return $openid;
 		}
 	}
-	
+	public function getLocationUrl($baseUrl){
+        $baseUrl = urlencode($baseUrl);
+        $url = $this->__CreateOauthUrlForCode($baseUrl);
+        return $url;
+    }
 	public function GetJsApiParameters($UnifiedOrderResult)
 	{
 		if(!array_key_exists("appid", $UnifiedOrderResult)

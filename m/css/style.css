@@ -34,7 +34,7 @@ body { background: #f0efed; }
 /* 页眉，标题栏 */
 #header { position: relative; height: 44px; line-height: 44px; overflow: hidden; background: #33cba8; }
 /* 标题栏 - 标题 */
-#header .title { font-size: 19px; font-weight: 700; color: #fafafa; text-align: center; }
+#header .title { font-size: 16px; font-weight: 700; color: #fafafa; text-align: center; }
 /* 标题栏 - 返回按钮 */
 #header .back, #header .account { display: block; position: absolute; left: 0; top: 0; width: 44px; height: 100%; color: rgba(0,0,0,0); overflow: hidden; }
 #header .back:after { content: ""; display: block; position: absolute; left: 10px; top: 12px; width: 16px; height: 16px; border: 3px solid #fff; border-width: 0 0 3px 3px; -webkit-transform: rotate(45deg) scale(.67); }
@@ -311,7 +311,7 @@ select.wheel-selector { display: none; }
 
 .page-tips ~ .nurses-list { margin-top: 12px; }
 .nurses-list li { position: relative; height: 69px; overflow: hidden; padding: 11px 10px 11px 12px; margin: 8px 0; overflow: hidden; border-top: 1px solid #e0dfdc; background: #f7f6f6 url(data:image/gif;base64,R0lGODlhAQACAIAAAP///9LS0iH5BAAAAAAALAAAAAABAAIAAAICDAoAOw==) repeat-x 0 100%; }
-.nurses-list li:before { content: ""; display: block; position: absolute; left: 0; top: -1px; width: 5px; height: 100%; overflow: hidden; background: #4bd0af; }
+.nurses-list li:before { content: ""; display: block; position: absolute; left: 0; top: -1px; width: 5px; height: 100%; overflow: hidden; }
 .nurses-list li:after { content: ""; display: table; clear: both; }
 .nurses-list .nurses-photo { float: left; width: 65px; height: 65px; margin-right: 7px; border: 2px solid #fff; -webkit-border-radius: 50px; border-radius: 50px; background: #f2f2f2 none no-repeat 50% 50%; -webkit-background-size: cover; background-size: cover; }
 
@@ -564,6 +564,11 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 #page-service-site .search-sites { border: 10px solid #f0efed; border-width: 15px 10px 12px 10px; }
 #page-service-site input[type="search"] { display: block; width: 100%; border: 1px solid #e0dfdc; height: 42px; padding: 0 13px; -webkit-border-radius: 2px; border-radius: 2px; }
 .sites li { position: relative; font-size: 14px; line-height: 22px; padding: 10px 30px 10px 10px; color: #464646; border-bottom: 1px solid #f1f0ef; word-break: break-all; word-wrap: break-word; }
+
+#page-service-departments { background: #fff; }
+#page-service-departments .search-departments { border: 10px solid #f0efed; border-width: 15px 10px 12px 10px; }
+#page-service-departments input[type="search"] { display: block; width: 100%; border: 1px solid #e0dfdc; height: 42px; padding: 0 13px; -webkit-border-radius: 2px; border-radius: 2px; }
+.departments li { position: relative; font-size: 14px; line-height: 22px; padding: 10px 30px 10px 10px; color: #464646; border-bottom: 1px solid #f1f0ef; word-break: break-all; word-wrap: break-word; }
 
 #page-reviews .menuitem .nurses-rate { vertical-align: top; margin-left: 7px; }
 #page-reviews .menuitem .value { margin-right: 0; }

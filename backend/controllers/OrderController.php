@@ -173,16 +173,18 @@ class OrderController extends Controller
         $model->order_type = $oldOrder->order_type;
 
         $orderPatientModel = new OrderPatient();
-        $orderPatientModel->name = $oldOrderPatient->name;
-        $orderPatientModel->gender = $oldOrderPatient->gender;
-        $orderPatientModel->age = $oldOrderPatient->age;
-        $orderPatientModel->height = $oldOrderPatient->height;
-        $orderPatientModel->weight = $oldOrderPatient->weight;
-        $orderPatientModel->patient_state = $oldOrderPatient->patient_state;
-        $orderPatientModel->in_hospital_reason = $oldOrderPatient->in_hospital_reason;
-        $orderPatientModel->admission_date = empty($oldOrderPatient->admission_date) ? date('Y-m-d') : date('Y-m-d',strtotime($oldOrderPatient->admission_date));
-        $orderPatientModel->room_no = $oldOrderPatient->room_no;
-        $orderPatientModel->bed_no = $oldOrderPatient->bed_no;
+        if($oldOrderPatient){
+            $orderPatientModel->name = $oldOrderPatient->name;
+            $orderPatientModel->gender = $oldOrderPatient->gender;
+            $orderPatientModel->age = $oldOrderPatient->age;
+            $orderPatientModel->height = $oldOrderPatient->height;
+            $orderPatientModel->weight = $oldOrderPatient->weight;
+            $orderPatientModel->patient_state = $oldOrderPatient->patient_state;
+            $orderPatientModel->in_hospital_reason = $oldOrderPatient->in_hospital_reason;
+            $orderPatientModel->admission_date = empty($oldOrderPatient->admission_date) ? date('Y-m-d') : date('Y-m-d',strtotime($oldOrderPatient->admission_date));
+            $orderPatientModel->room_no = $oldOrderPatient->room_no;
+            $orderPatientModel->bed_no = $oldOrderPatient->bed_no;
+        }
 
         return $this->render('create', [
             'model' => $model,
@@ -323,7 +325,6 @@ class OrderController extends Controller
                 $params['pay_from'] = \backend\models\WalletUserDetail::PAY_FROM_BACKEND;
                 $balance = \common\models\Wallet::recharge($params);
 
-
                 //订单支付
                 $response = $orderModel->pay('后台订单支付');
 
@@ -359,6 +360,16 @@ class OrderController extends Controller
             'model' => $rechargeModel,
             'order' => $orderModel,
             'balance' => $balance
+        ]);
+    }
+
+    public function actionChart(){
+        $orderSearch = new OrderSearch();
+        $dataProvider = $orderSearch->chart(Yii::$app->request->getQueryParams());
+
+        return $this->render('chart', [
+            'dataProvider' => $dataProvider,
+            'model' => $orderSearch
         ]);
     }
 }

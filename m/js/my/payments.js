@@ -29,41 +29,56 @@ pay.on(CLICK, function(){
         openId = '';
         if(!openId){
             var notifyUrl = url+'wechat/notify';
-            /*$.ajax({
+            $.ajax({
                 type: 'GET',
                 url: notifyUrl,
                 data: {},
                 dataType: 'json',
                 timeout: 3000,
                 success: function(data){
-                    console.log(data);
+                    if(data){
+                        $.ajax({
+                            type: 'PUT',
+                            url: orderUrls,
+                            data: {'action':'payment', 'pay_way':payWay, 'openId':data},
+                            dataType: 'json',
+                            timeout: 3000,
+                            success: function(data){
+                                if(data.code ==200){
+                                    self.location=document.referrer;
+                                }
+                            },
+                            error: function(xhr, type){
+                                alert('网络超时!')
+                            }
+                        })
+                    }
                 },
                 error: function(xhr, type){
                     alert('网络超时!')
                 }
-            })*/
+            })
         }
     }else if(payWay == '2'){
         alert('暂时没有支付宝支付');
         return;
     }else{
-
-    }
-    $.ajax({
-        type: 'PUT',
-        url: orderUrls,
-        data: {'action':'payment','pay_way':payWay},
-        dataType: 'json',
-        timeout: 3000,
-        success: function(data){
-            if(data.code ==200){
-                self.location=document.referrer;
+        $.ajax({
+            type: 'PUT',
+            url: orderUrls,
+            data: {'action':'payment','pay_way':payWay},
+            dataType: 'json',
+            timeout: 3000,
+            success: function(data){
+                if(data.code ==200){
+                    self.location=document.referrer;
+                }
+            },
+            error: function(xhr, type){
+                alert('网络超时!')
             }
-        },
-        error: function(xhr, type){
-            alert('网络超时!')
-        }
-    })
+        })
+    }
 });
 if(wei)
     alipay.attr('style','display:none');

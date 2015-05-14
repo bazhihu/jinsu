@@ -1,4 +1,5 @@
 ﻿<?php
+error_reporting(0);
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $openId = '';
 if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger')) {
@@ -57,7 +58,7 @@ function GetOpenidFromMp($code)
         curl_setopt($ch,CURLOPT_PROXY, Yii::$app->params['wechat']['curl_proxy_host']);
         curl_setopt($ch,CURLOPT_PROXYPORT, Yii::$app->params['wechat']['curl_proxy_port']);
     }*/
-    //运行curl，结果以jason形式返回
+    //运行curl，结果以json形式返回
     $res = curl_exec($ch);
     curl_close($ch);
     //取出openid

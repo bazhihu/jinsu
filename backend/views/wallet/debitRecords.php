@@ -63,7 +63,6 @@ $this->params['breadcrumbs'][] = $this->title;
             echo $form->field(
                 $searchModel,
                 'toDate'
-
             )->widget(
                 DateTimePicker::classname(),
                 [
@@ -150,7 +149,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'text',
                 'label' => '充值方式',
                 'value' => function($model) {
-                    return $model::$payFromLabels[$model->pay_from];
+                    if(isset($model::$payFromLabels[$model->pay_from])){
+                        return $model::$payFromLabels[$model->pay_from];
+                    }
                 }
             ],
             [

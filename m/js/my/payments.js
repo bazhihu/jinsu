@@ -28,7 +28,8 @@ pay.on(CLICK, function(){
         //openId = getOpenID();
         openId = '';
         if(!openId){
-            var notifyUrl = url+'wechat/notify';
+            //var notifyUrl = url+'wechat/notify';
+            var notifyUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx35492d0f3afac96b&redirect_uri=http%3A%2F%2Fuat.api.youaiyihu.com%2Fwechat%2Fnotify&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect';
             $.ajax({
                 type: 'GET',
                 url: notifyUrl,

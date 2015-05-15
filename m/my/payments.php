@@ -136,10 +136,10 @@ return "https://api.weixin.qq.com/sns/oauth2/access_token?".$bizString;
 
 		<input type="button" id="pay" value="立即支付" />
 	</form>
-	<script src="../js/zepto-with-touch.min.js"></script>
-	<script src="../js/public.js"></script>
-	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<script defer="defer">
+	<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
+	<script type="text/javascript" src="../js/public.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script type="text/javascript" defer="defer">
 		$('.menuitemradio input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');

@@ -63,7 +63,7 @@ class WxPayResults extends WxPayDataBase
     {
         $obj = new self();
         $obj->FromXml($xml);
-        $obj->CheckSign();
+        //$obj->CheckSign();
         return $obj->GetValues();
     }
 }

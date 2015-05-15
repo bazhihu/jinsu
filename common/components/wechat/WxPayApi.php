@@ -398,7 +398,7 @@ class WxPayApi
 			$msg = $e->getMessage();
 			return false;
 		}
-		
+
 		return call_user_func($callback, $result);
 	}
 	

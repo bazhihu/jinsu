@@ -5,7 +5,7 @@ use Yii;
 use yii\base\Exception;
 /**
  * Created by PhpStorm.
- * User: Administrator
+ * User: HZQ
  * Date: 2015/5/12
  * Time: 11:45
  */

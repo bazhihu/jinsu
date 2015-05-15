@@ -73,36 +73,43 @@ if($userRow['username']){
     //充值
     $('body').on('click', 'button.jsRecharge', function () {
 
-        var value = $('#recharge-money').val(),
+        var money = $('#recharge-money').val(),
             pay_from = $('#recharge-pay_from').val(),
             name = $('#recharge-uid').attr('name'),
             uid = $('#recharge-uid').val(),
             url = $(this).attr('data-url'),
             jump = $(this).attr('jump-url');
-
-        if(value){
-            if(!confirm('确认给'+name+'用户：充值'+value+'元人民币？')){
-                return false;
-            }
-            $.ajax({
-                type    : "POST",
-                dataType: "json",
-                async   :false,
-                cache   :false,
-                timeout :30000,
-                url     : url,
-                data    : {'money':value ,'uid':uid,'pay_from':pay_from},
-                success: function(json){
-                    if(json.code == '200'){
-                        alert(json.msg);
-                        location.href = jump;
-                        return true;
-                    }
-                }
-            });
-        }else{
-            $('#recharge-money').prev().addClass('has-error');
-            $('#recharge-money').next().html('money不能为空');
+        if(money.length < 1){
+            $('#recharge-money').parent().addClass('has-error');
+            $('#recharge-money').next().html('充值金额不能为空');
+            return false;
         }
+        if(pay_from.length < 1){
+            $('#recharge-pay_from').parent().addClass('has-error');
+            $('#recharge-pay_from').next().html('请选择充值方式');
+            return false;
+        }
+        if(!confirm('确认给'+name+'用户：充值'+money+'元人民币？')){
+            return false;
+        }
+        $.ajax({
+            type    : "POST",
+            dataType: "json",
+            async   :false,
+            cache   :false,
+            timeout :30000,
+            url     : url,
+            data    : {'money':money ,'uid':uid,'pay_from':pay_from},
+            success: function(json){
+                if(json.code == '200'){
+                    alert(json.msg);
+                    location.href = jump;
+                    return true;
+                }else{
+                    alert(json.msg);
+                }
+            }
+        });
+
     });
 </script>

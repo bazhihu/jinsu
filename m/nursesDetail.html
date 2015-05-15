@@ -44,22 +44,30 @@
             </p>
         </div>
     </div>
-	<section class="menu detail">
-		<h3 class="menu-title">详细信息</h3>
-		<a class="menuitem" id="self-intro">自我介绍：{{data.selfIntros[0].ext1}}</a>
-	</section>
-	<div class="menu detail">
-		<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
-	</div>
-    <div class="menu detail">
-        <a class="menuitem" id="department">常驻科室：{{data.office_id}}</a>
-    </div>
+    <h3 class="menu-title">详细信息</h3>
+    {{if data.selfIntros[0]['ext1']}}
+        <section class="menu detail">
+            <a class="menuitem" id="self-intro">自我介绍：{{data.selfIntros[0]['ext1']}}</a>
+        </section>
+    {{/if}}
+    {{if data.hospital_id}}
+        <div class="menu detail">
+            <a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
+        </div>
+    {{/if}}
+    {{if data.office_id}}
+        <div class="menu detail">
+            <a class="menuitem" id="department">常驻科室：{{data.office_id}}</a>
+        </div>
+    {{/if}}
 	<!--<div class="menu detail">-->
 		<!--<a class="menuitem" id="expert">擅长护理疾病：{{data.good_at}}</a>-->
 	<!--</div>-->
-	<div class="menu detail">
-		<a class="menuitem" id="credentials">持有证件：{{data.certificate}}</a>
-	</div>
+    {{if data.certificate}}
+        <div class="menu detail">
+            <a class="menuitem" id="credentials">持有证件：{{data.certificate}}</a>
+        </div>
+    {{/if}}
     <div class="menu detail">
         <a class="menuitem" id="content" href="workerLevel.html#{{data.level}}" >服务内容：
             {{if data.level==1}}
@@ -80,55 +88,6 @@
         <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
     </div>
     </script>
-<!--
-	<div class="menu reviews">
-		<div class="menu-title"><a href="#" class="more" >17条评论</a><span class="nurses-rate">☆☆☆☆☆</span></div>
-		<ul>
-			<li>
-				<div>
-					<span class="nurses-rate">☆☆☆☆☆</span>
-					<em class="user">139****7234</em>
-					<i class="time">2015-03-09</i>
-				</div>
-				<p>服务很细心，照顾老人很周到，很满意</p>
-			</li>
-			<li>
-				<div>
-					<span class="nurses-rate">☆☆☆☆☆</span>
-					<em class="user">139****7234</em>
-					<i class="time">2015-03-09</i>
-				</div>
-				<p>服务很细心，照顾老人很周到，很满意</p>
-			</li>
-			<li>
-				<div>
-					<span class="nurses-rate">☆☆☆☆☆</span>
-					<em class="user">139****7234</em>
-					<i class="time">2015-03-09</i>
-				</div>
-				<p>服务很细心，照顾老人很周到，很满意</p>
-			</li>
-		</ul>
-	</div>
-
-	<div class="menu experience">
-		<div class="menu-title">
-			<a href="#" class="more">更多经历</a>
-			从业经历
-		</div>
-		<ul>
-			<li>
-				<i class="time">2014/02/12至2015/02/28</i>
-				<p>健康证、心理辅导证、驾驶证、特级营养师...</p>
-			</li>
-			<li>
-				<i class="time">2014/02/12至2015/02/28</i>
-				<p>健康证、心理辅导证、驾驶证、特级营养师...</p>
-			</li>
-		</ul>
-	</div>
--->
-
     <script type='text/javascript' src='/js/zepto.min.js'></script>
     <script type='text/javascript' src='/js/template.js'></script>
     <script type='text/javascript' src='/js/public.js'></script>

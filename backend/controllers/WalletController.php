@@ -78,31 +78,29 @@ class WalletController extends Controller
      */
     public function actionAjaxRecharge(){
         $response = [
-            'code'  =>'200',
-            'msg'   =>'',
+            'code' => '200',
+            'msg' => '',
         ];
         if(Yii::$app->request->isAjax){
             $params = Yii::$app->request->post();
-            if($params['uid'] && $params['money']){
+            if($params['uid'] && $params['money'] && $params['pay_from']){
                 $balance = Wallet::recharge($params);
-                if($balance){
+                $mobile = User::findOne(['id'=>$params['uid']])->mobile;
 
-                    $mobile = User::findOne(['id'=>$params['uid']])->mobile;
-                    #发送短信
-                    $sms = new Sms();
-                    $send = [
-                        'mobile'    =>$mobile,
-                        'type'      =>Sms::SMS_SUCCESS_RECHARGE,
-                        'account'   =>$mobile,
-                        'money'     =>$params['money'],
-                        'balance'   =>$balance,
-                    ];
-                    $sms->send($send);
+                #发送短信
+                $sms = new Sms();
+                $send = [
+                    'mobile'    =>$mobile,
+                    'type'      =>Sms::SMS_SUCCESS_RECHARGE,
+                    'account'   =>$mobile,
+                    'money'     =>$params['money'],
+                    'balance'   =>$balance,
+                ];
+                $sms->send($send);
 
-                    $response['msg'] = '成功充值';
-                    echo Json::encode($response);
-                    exit;
-                }
+                $response['msg'] = '成功充值';
+                echo Json::encode($response);
+                exit;
             }
         }
         $response = [

@@ -63,6 +63,7 @@ function get_workedetail() {
     var worker_id = getUrlQueryString("worker_id");
     var workeDetailUrl=workerUrl+"/"+worker_id;
     $.getJSON(workeDetailUrl, function (response) {
+        console.log(response);
         if (response.code == 200) {
             template.helper('dateFormat', function (str) {
                 return ages(str);

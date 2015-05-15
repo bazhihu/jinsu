@@ -55,7 +55,7 @@ class WalletUserDetailSearch extends WalletUserDetail
             ],
         ]);
 
-        $query->orderBy('detail_id DESC');
+        !isset($params['sort']) && $query->orderBy('detail_id DESC');
 
         $this->load($params);
         if (!$this->validate()) {
@@ -63,6 +63,15 @@ class WalletUserDetailSearch extends WalletUserDetail
             // $query->where('0=1');
             $this->total = $query->sum('detail_money');
             return $dataProvider;
+        }
+
+        // enable sorting for the related columns
+        $addSortAttributes = ["profile.full_name"];
+        foreach ($addSortAttributes as $addSortAttribute) {
+            $dataProvider->sort->attributes[$addSortAttribute] = [
+                'asc'   => [$addSortAttribute => SORT_ASC],
+                'desc'  => [$addSortAttribute => SORT_DESC],
+            ];
         }
 
         $query->andFilterWhere([

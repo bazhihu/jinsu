@@ -90,7 +90,11 @@ $this->params['breadcrumbs'][] = $this->title;
             echo $form->field($searchModel,'pay_from')
                 ->dropDownList($searchModel::$payFromLabels,['prompt'=>'选择','style'=>'width:100px'])
                 ->label('充值方式');
-                ?>
+
+            echo $form->field($searchModel,'admin_uid')
+                ->dropDownList($searchModel::getInternalRoles(),['prompt'=>'选择','style'=>'width:100px'])
+                ->label('操作人');
+            ?>
             <div class="form-group" style="padding-top: 25px">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
                 <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
@@ -152,6 +156,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     if(isset($model::$payFromLabels[$model->pay_from])){
                         return $model::$payFromLabels[$model->pay_from];
                     }
+                }
+            ],
+            [
+                'attribute'=>'admin_uid',
+                'format' => 'text',
+                'label' => '操作人',
+                'value' => function($model) {
+                    return \backend\models\AdminUser::getInfo($model->admin_uid, 'staff_name');
                 }
             ],
             [

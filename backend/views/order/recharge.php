@@ -48,6 +48,11 @@ echo $form->field($model, 'pay_from')
             $('#recharge-money').focus();
             return false;
         }
+        if(pay_from.length < 1){
+            alert('请选择充值试。');
+            $('#recharge-pay_from').focus();
+            return false;
+        }
 
         if(!confirm('确认给帐号：<?=$order->mobile?>充值'+money+'元？')){
             return false;

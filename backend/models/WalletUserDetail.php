@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use common\models\Wallet;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%wallet_user_detail}}".
@@ -138,5 +139,14 @@ class WalletUserDetail extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取所有是内勤人员的角色
+     * @return static[]
+     */
+    public static function getInternalRoles(){
+        $result = AdminUser::findAll(['staff_role' => '内勤人员']);
+        return ArrayHelper::map($result, 'admin_uid', 'staff_name');
     }
 }

@@ -86,6 +86,7 @@ function CreateOauthUrlForOpenid($code)
     <link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-payments">
+<input type="hidden" id="openId" value="<?=$openId?>">
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

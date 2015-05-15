@@ -139,7 +139,7 @@ return "https://api.weixin.qq.com/sns/oauth2/access_token?".$bizString;
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/public.js"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<script>
+	<script defer="defer">
 		$('.menuitemradio input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');

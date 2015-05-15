@@ -103,25 +103,23 @@ class Payment
      * @throws HttpException
      */
     private function _WeChat(){
-
-        $jsApi = new JsApiPay();
-        $openId = $jsApi->GetOpenid();
-
         //统一下单
+        $jsApi = new JsApiPay();
         $Wechat = new WxPayUnifiedOrder();
-        $Wechat->SetBody("test");
-        $Wechat->SetAttach("test");
-        $Wechat->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
-        $Wechat->SetTotal_fee("1");
+        $Wechat->SetBody("优爱医护护工服务！");
+        $Wechat->SetAttach("优爱医护护工服务！");
+        $Wechat->SetOut_trade_no($this->_tradeNo);
+        $Wechat->SetTotal_fee("$this->_payData['amount']");
         $Wechat->SetTime_start(date("YmdHis"));
         $Wechat->SetTime_expire(date("YmdHis", time() + 600));
-        $Wechat->SetGoods_tag("test");
-        $Wechat->SetNotify_url("http://paysdk.weixin.qq.com/notify.php");
+        $Wechat->SetGoods_tag("优爱医护护工服务！");
+        $Wechat->SetNotify_url(Yii::$app->params['wechat']['notify_url']);
         $Wechat->SetTrade_type("JSAPI");
-        $Wechat->SetOpenid($openId);
+        $Wechat->SetOpenid($this->_payData['openId']);
         $order = WxPayApi::unifiedOrder($Wechat);
         $jsApiParameters = $jsApi->GetJsApiParameters($order);
 
+        $this->_payData = $jsApiParameters;
         //支付日志
         $logData = $this->_payData;
 

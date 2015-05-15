@@ -39,13 +39,4 @@ class NotifyController extends ActiveController{
         $notify = new Notify();
         $notify->notifyUrl();
     }
-
-    /**
-     * 获取用户openId
-     */
-    public function actionIndex(){
-        $notify = new Notify();
-        $res = $notify->getCode();
-        return $res;
-    }
 }

@@ -124,8 +124,9 @@ class OrderController extends ActiveController {
         }
         $order = Order::findOne($orderModel->order_id);
 
+        $openId = isset($post['openId'])?$post['openId']:'';
         //支付
-        $payment = $this->_payment($order, $post['pay_way']);
+        $payment = $this->_payment($order, $post['pay_way'], $openId);
 
         return [
             'order' => $order,
@@ -139,7 +140,7 @@ class OrderController extends ActiveController {
      * @param int $payWay 支付方式
      * @return array|null
      */
-    private function _payment($order, $payWay){
+    private function _payment($order, $payWay, $openId=null){
         //保存支付方式
         $order->pay_way = $payWay;
         if(!$order->save()){
@@ -166,7 +167,8 @@ class OrderController extends ActiveController {
             'uid' => $uid,
             'order_no' => $order['order_no'],
             'subject' => '订单号：'.$order['order_no'].'的付款',
-            'amount' => $amount
+            'amount' => $amount,
+            'openId' => $openId
         ];
         $paymentModel = new Payment($payWay, $payment);
         return $paymentModel->getPayData();
@@ -203,7 +205,9 @@ class OrderController extends ActiveController {
         }elseif($action == 'payment'){
             //支付
             $payWay = Yii::$app->getRequest()->getBodyParam('pay_way');
-            $payment = $this->_payment($orderModel, $payWay);
+            #微信支付所需要的openId
+            $openId = Yii::$app->getRequest()->getBodyParam('openId')?Yii::$app->getRequest()->getBodyParam('openId'):'';
+            $payment = $this->_payment($orderModel, $payWay, $openId);
         }else{
             $this->responseCode = 400;
             $this->responseMsg = '参数错误';

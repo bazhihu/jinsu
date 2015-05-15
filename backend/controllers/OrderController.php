@@ -134,10 +134,11 @@ class OrderController extends Controller
 
         $orderPatientModel = OrderPatient::findOne(['order_id'=>$id]);
         $model->setScenario('update');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($orderPatientModel->load(Yii::$app->request->post())){
-                $orderPatientModel->save();
-            }
+        if ($model->load(Yii::$app->request->post()) && $orderPatientModel->load(Yii::$app->request->post())) {
+            $orderPatientModel->save();
+
+            $model->patient_name = $orderPatientModel->name;
+            $model->save();
             return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
             return $this->render('update', [
@@ -362,6 +363,10 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * 订单统计
+     * @return string
+     */
     public function actionChart(){
         $orderSearch = new OrderSearch();
         $dataProvider = $orderSearch->chart(Yii::$app->request->getQueryParams());

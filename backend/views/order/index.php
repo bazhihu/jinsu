@@ -82,6 +82,7 @@ td .btn{margin: 2px}
         ],
         'worker_no',
         'worker_name',
+        'patient_name',
         [
             'attribute'=>'hospital_id',
             'filterType'=>GridView::FILTER_SELECT2,
@@ -92,19 +93,6 @@ td .btn{margin: 2px}
             ],
             'value'=>function($model){
                 return Hospitals::getName($model->hospital_id);
-            }
-        ],
-        [
-            'attribute'=>'patient_state',
-            'filterType'=>GridView::FILTER_SELECT2,
-            'filter'=>OrderPatient::$patientStateLabels,
-            'filterInputOptions'=>['placeholder'=>'请选择'],
-            'filterWidgetOptions'=>[
-                'pluginOptions'=>['allowClear'=>true],
-                'hideSearch'=>true,
-            ],
-            'value'=>function($model){
-                return OrderPatient::$patientStateLabels[$model->patient_state];
             }
         ],
         [

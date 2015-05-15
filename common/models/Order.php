@@ -131,7 +131,7 @@ class Order extends \yii\db\ActiveRecord{
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
-            [['worker_name', 'contact_name', 'contact_telephone', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
+            [['worker_name', 'contact_name', 'patient_name', 'contact_telephone', 'remark', 'order_status', 'create_order_ip', 'create_order_sources'], 'string', 'max' => 255],
 
             [['mobile'],'match','pattern'=>'/^[0-9]{11}$/'],
             [['contact_address','create_order_user_agent'], 'string', 'max' => 500],
@@ -163,6 +163,7 @@ class Order extends \yii\db\ActiveRecord{
             'total_amount' => '订单总金额',
             'real_amount' => '实收金额',
             'patient_state' => '患者健康状况',
+            'patient_name' => '患者姓名',
             'customer_service_id' => '下单客服',
             'operator_id' => '订单操作者',
             'remark' => '订单备注',
@@ -251,6 +252,7 @@ class Order extends \yii\db\ActiveRecord{
             $orderData = $params['OrderMaster'];
             $orderData['order_no'] = $orderNo;
             $orderData['reality_end_time'] = $orderData['end_time'];
+            $orderData['patient_name'] = $params['OrderPatient']['name'];
 
             //获取护工价格
             if(empty($orderData['is_continue'])){
@@ -857,6 +859,7 @@ class Order extends \yii\db\ActiveRecord{
             $this->create_order_ip = $_SERVER["REMOTE_ADDR"];
             $this->create_order_user_agent = $_SERVER['HTTP_USER_AGENT'];
         }
+
         $this->start_time = date('Y-m-d 09:00:00', strtotime($this->start_time));
         $this->end_time = date('Y-m-d 09:00:00', strtotime($this->end_time));
         return true;

@@ -48,7 +48,7 @@ use kartik\datecontrol\DateControl;
 
             <?= $form->field($model, 'worker_name')->input('text',['placeholder'=>'请输入护工姓名...','style'=>'width:135px']) ?>
 
-            <?= $form->field($model, 'patient_state')->dropDownList(OrderPatient::$patientStateLabels,['prompt'=>'请选择']) ?>
+            <?= $form->field($model, 'patient_name')->input('text',['placeholder'=>'请输入患者姓名...','style'=>'width:135px']) ?>
 
             <?= $form->field($model, 'order_status')->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']) ?>
 

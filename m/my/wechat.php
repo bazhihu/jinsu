@@ -98,8 +98,8 @@ function CreateOauthUrlForOpenid($code)
         wei = isWeiXn();
     var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
         openId = $('#openId').val();
-
-        console.log(orderUrls);exit;
+        console.log(openId);
+        console.log(orderUrls);
         if(openId){
             $.ajax({
                 type: 'PUT',

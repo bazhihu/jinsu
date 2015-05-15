@@ -9,12 +9,13 @@ use Yii;
 use yii\base\Exception;
 /**
  * Created by PhpStorm.
- * User: Administrator
+ * User: HZQ
  * Date: 2015/5/14
  * Time: 22:17
  */
 class PayNotifyCallBack extends WxPayNotify
 {
+    public $_logModel = null;
     //查询订单
     public function Queryorder($transaction_id)
     {
@@ -43,7 +44,6 @@ class PayNotifyCallBack extends WxPayNotify
             $msg = "订单查询失败";
             return false;
         }
-
         //判断该笔订单是否在商户网站中已经做过处理
         $result = $this->_checkNotify($data);
         if($result != 'ok'){
@@ -88,13 +88,18 @@ class PayNotifyCallBack extends WxPayNotify
             Yii::info('未找到交易记录:out_trade_no='.$post['out_trade_no'], 'api');
             return 'fail';
         }
-        if($wechatLog->trade_state == 'TRADE_FINISHED' || $wechatLog->trade_state == 'TRADE_SUCCESS'){
+        if($wechatLog->trade_state == 'SUCCESS'){
             return 'success';
         }
-
         if($wechatLog->total_fee != $post['total_fee']){
             Yii::info('交易金额错误', 'api');
             return 'fail';
+        }
+        $post['trade_state'] = 'SUCCESS';
+        if($post['fee_type'] == 'CNY'){
+            $post['fee_type'] = 1;
+        }else{
+            $post['fee_type'] = 2;
         }
 
         //保存支付日志

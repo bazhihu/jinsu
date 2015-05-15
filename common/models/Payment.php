@@ -109,7 +109,7 @@ class Payment
         $Wechat->SetBody("优爱医护护工服务！");
         $Wechat->SetAttach("优爱医护护工服务！");
         $Wechat->SetOut_trade_no($this->_tradeNo);
-        $Wechat->SetTotal_fee("$this->_payData['amount']");
+        $Wechat->SetTotal_fee($this->_payData['amount']);
         $Wechat->SetTime_start(date("YmdHis"));
         $Wechat->SetTime_expire(date("YmdHis", time() + 600));
         $Wechat->SetGoods_tag("优爱医护护工服务！");
@@ -119,7 +119,6 @@ class Payment
         $order = WxPayApi::unifiedOrder($Wechat);
         $jsApiParameters = $jsApi->GetJsApiParameters($order);
 
-        $this->_payData = $jsApiParameters;
         //支付日志
         $logData = $this->_payData;
 

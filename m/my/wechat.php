@@ -96,11 +96,10 @@ function CreateOauthUrlForOpenid($code)
         total_amount = getUrlQueryString('totalAmount'),
         user = getStatus(),
         wei = isWeiXn();
-
     var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
         openId = $('#openId').val();
 
-
+        console.log(orderUrls);exit;
         if(openId){
             $.ajax({
                 type: 'PUT',

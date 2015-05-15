@@ -252,7 +252,8 @@ class Order extends \yii\db\ActiveRecord{
             $orderData = $params['OrderMaster'];
             $orderData['order_no'] = $orderNo;
             $orderData['reality_end_time'] = $orderData['end_time'];
-            $orderData['patient_name'] = $params['OrderPatient']['name'];
+
+            $orderData['patient_name'] = isset($params['OrderPatient']['name']) ? $params['OrderPatient']['name'] : null;
 
             //获取护工价格
             if(empty($orderData['is_continue'])){

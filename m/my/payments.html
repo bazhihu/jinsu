@@ -130,16 +130,15 @@ return "https://api.weixin.qq.com/sns/oauth2/access_token?".$bizString;
 				<em>微信支付</em>
 				<i>推荐安装微信5.0以上版本用户使用</i>
 				<input type="radio" name="payment" id="pay-wechat" value="3" />
-                <input type="hidden" id="openId"/>
 			</label>
 		</section>
 
 		<input type="button" id="pay" value="立即支付" />
 	</form>
-	<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
-	<script type="text/javascript" src="../js/public.js"></script>
-	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<script type="text/javascript" defer="defer">
+	<script src="../js/zepto-with-touch.min.js"></script>
+	<script src="../js/public.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
 		$('.menuitemradio input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
@@ -173,71 +172,28 @@ return "https://api.weixin.qq.com/sns/oauth2/access_token?".$bizString;
                 payWay = $('input[name=payment]:checked').val(),
                 openId = '';
             if(payWay == '3'){
-                openId = $('#openId').val();
-                if(openId){
-                    $.ajax({
-                        type: 'PUT',
-                        url: orderUrls,
-                        data: {'action':'payment','pay_way':payWay, 'openId':openId},
-                        dataType: 'json',
-                        timeout: 3000,
-                        success: function(back){
-                            if(back.code ==200){
-                                callpay(back.data['payment']);
-                            }
-                        },
-                        error: function(xhr, type){
-                            alert('网络超时!')
-                        }
-                    });
+                location.href = '/my/wechat.php?orderNo='+order_no+'&accessToken='+user.token;
+                return;
             }else if(payWay == '2'){
                 alert('暂时没有支付宝支付');
                 return;
-            }else{
-                $.ajax({
-                    type: 'PUT',
-                    url: orderUrls,
-                    data: {'action':'payment','pay_way':payWay},
-                    dataType: 'json',
-                    timeout: 3000,
-                    success: function(data){
-                        if(data.code ==200){
-                            self.location=document.referrer;
-                        }
-                    },
-                    error: function(xhr, type){
-                        alert('网络超时!')
-                    }
-                })
             }
-        })
-        function jsApiCall(jsApiParameters)
-        {
-            WeixinJSBridge.invoke(
-                'getBrandWCPayRequest',
-                jsApiParameters,
-                function(res){
-                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-                        self.location = '/payOnline.html';
-                    }else{
-                        //支付失败
+            $.ajax({
+                type: 'PUT',
+                url: orderUrls,
+                data: {'action':'payment','pay_way':payWay},
+                dataType: 'json',
+                timeout: 3000,
+                success: function(data){
+                    if(data.code ==200){
+                        self.location=document.referrer;
                     }
+                },
+                error: function(xhr, type){
+                    alert('网络超时!')
                 }
-            );
-        }
-        function callpay(jsApiParameters)
-        {
-            if (typeof WeixinJSBridge == "undefined"){
-                if( document.addEventListener ){
-                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
-                }else if (document.attachEvent){
-                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
-                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
-                }
-            }else{
-                jsApiCall(jsApiParameters);
-            }
-        }
+            })
+        });
         if(wei)
             alipay.attr('style','display:none');
         else

@@ -19,7 +19,6 @@ use common\components\wechat\WxpayServerPub;
 class Notify{
     function notifyUrl(){
         $notify = new wechat\PayNotifyCallBack();
-
         $notify->Handle(false);
     }
 }

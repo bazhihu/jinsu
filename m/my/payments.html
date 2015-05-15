@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8" />
@@ -94,24 +94,7 @@
                 payWay = $('input[name=payment]:checked').val(),
                 openId = '';
             if(payWay == '3'){
-                $.ajax({
-                    type: 'PUT',
-                    url: orderUrls,
-                    data: {'action':'payment','pay_way':payWay,'openId':'oL94Rs7rmq5KCz7ljaYoOZhA6evk'},
-                    dataType: 'json',
-                    async:false,
-                    cache:false,
-                    crossDomain:true,
-                    timeout:30000,
-                    success: function(data){
-                        if(data.code ==200){
-                            self.location=document.referrer;
-                        }
-                    },
-                    error: function(xhr, type){
-                        alert('网络超时!')
-                    }
-                });
+                window.open('/my/wechat.php?orderNo='+order_no+'&accessToken='+user.token);
                 return false;
             }else if(payWay == '2'){
                 alert('暂时没有支付宝支付');

@@ -17,7 +17,7 @@
 	});
 
     $('a[target="popup"]')['click'](function (e){
-		//e.preventDefault();
+		e.preventDefault();
 		var a = this, frame;
 		if (a.popupFrameId) {
 			frame = document.getElementById('popup-frame-' + a.popupFrameId);

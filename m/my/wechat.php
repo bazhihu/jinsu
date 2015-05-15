@@ -99,26 +99,29 @@ function CreateOauthUrlForOpenid($code)
 
     var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
         openId = $('#openId').val();
-    if(openId){
-        $.ajax({
-            type: 'PUT',
-            url: orderUrls,
-            data: {'action':'payment','pay_way':'3','openId':openId},
-            dataType: 'json',
-            async:false,
-            cache:false,
-            crossDomain:true,
-            timeout:30000,
-            success: function(back){
-                if(back.code ==200){
-                    callpay(back.data['payment']);
+
+    ready(function($){
+        if(openId){
+            $.ajax({
+                type: 'PUT',
+                url: orderUrls,
+                data: {'action':'payment','pay_way':'3','openId':openId},
+                dataType: 'json',
+                async:false,
+                cache:false,
+                crossDomain:true,
+                timeout:30000,
+                success: function(back){
+                    if(back.code ==200){
+                        callpay(back.data['payment']);
+                    }
+                },
+                error: function(xhr, type){
+                    alert('网络超时!')
                 }
-            },
-            error: function(xhr, type){
-                alert('网络超时!')
-            }
-        });
-    }
+            });
+        }
+    });
     function jsApiCall(jsApiParameters)
     {
         WeixinJSBridge.invoke(

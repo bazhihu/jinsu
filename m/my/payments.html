@@ -98,26 +98,27 @@
                 return false;
             }else if(payWay == '2'){
                 alert('暂时没有支付宝支付');
-                return;
-            }
-            $.ajax({
-                type: 'PUT',
-                url: orderUrls,
-                data: {'action':'payment','pay_way':payWay},
-                dataType: 'json',
-                async:false,
-                cache:false,
-                crossDomain:true,
-                timeout:30000,
-                success: function(data){
-                    if(data.code ==200){
-                        self.location=document.referrer;
+                return false;
+            }else{
+                $.ajax({
+                    type: 'PUT',
+                    url: orderUrls,
+                    data: {'action':'payment','pay_way':payWay},
+                    dataType: 'json',
+                    async:false,
+                    cache:false,
+                    crossDomain:true,
+                    timeout:30000,
+                    success: function(data){
+                        if(data.code ==200){
+                            self.location=document.referrer;
+                        }
+                    },
+                    error: function(xhr, type){
+                        alert('网络超时!')
                     }
-                },
-                error: function(xhr, type){
-                    alert('网络超时!')
-                }
-            })
+                })
+            }
         });
         if(wei)
             alipay.attr('style','display:none');

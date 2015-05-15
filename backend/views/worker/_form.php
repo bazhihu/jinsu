@@ -138,6 +138,11 @@ use backend\models\Hospitals;
                 'type'=> Form::INPUT_RADIO_LIST,
                 'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
             ],
+
+            'parent_worker_id'=>[
+                'type'=> Form::INPUT_TEXT,
+                'options'=>['placeholder'=>'请输入介绍人工号...', 'maxlength'=>11,'style'=>'width:30%']
+            ],
         ]
         ]);
 

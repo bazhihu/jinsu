@@ -9,30 +9,16 @@
 </head>
 <body id="page-service-site">
     <header id="header">
-        <a class="back" href="javascript:history.back(1)">返回</a>
+        <a class="back">返回</a>
         <h2 class="title">服务科室</h2>
         <a class="home" href="/">首页</a>
     </header>
-    <div id="body"></div>
-    <div id="foot"></div>
-    <script id="bodyTemplate" type='text/html'>
         <div class="search-sites">
             <input type="search" name="name" id="name" value="" placeholder="输入查询的科室"  />
         </div>
-        <ul class="departments">
-            {{if departments}}
-                {{each departments as value index}}
-                <li class="recommends" data-value="{{value.id}}">{{value.name}}</li>
-                {{/each}}
-            {{else}}
-                <li class="recommends" data-value="1">暂无科室！</li>
-            {{/if}}
-        </ul>
-    </script>
-    <script src='../js/template.js'></script>
-    <script type='text/javascript' src='../js/zepto.min.js'></script>
-    <script src="../js/public.js"></script>
+        <ul class="departments"></ul>
     <script src="../js/zepto-with-touch.min.js"></script>
+    <script src="../js/public.js"></script>
     <script src="../js/departments.js"></script>
 </body>
 </html>

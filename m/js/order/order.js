@@ -17,7 +17,7 @@
 	});
 
     $('a[target="popup"]')['click'](function (e){
-		e.preventDefault();
+		//e.preventDefault();
 		var a = this, frame;
 		if (a.popupFrameId) {
 			frame = document.getElementById('popup-frame-' + a.popupFrameId);
@@ -28,15 +28,21 @@
 			frame.className = 'popup-frame';
 		}
         frame.src = a.href;
+        console.log(a.href)
 		$(frame).popup('right', false, false);
 		$(frame).one('load', function () {
 			frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value);
 		});
-		try { frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value); } catch (error) { }
+
+		try {
+            frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value);
+        }catch (error) {}
+
 		document.body.style.overflow = 'hidden';
 		$(frame).one('dismiss', function (e, tag) {
 			document.body.style.overflow = 'auto';
 			document.body.style.removeProperty('overflow');
+            console.log(tag)
 			tag && (a.querySelector('input[type="hidden"]').value = tag.value || '');
 			$(a).trigger('change', tag);
 		}).click(function (e) { e.preventDefault(); return false; });
@@ -65,13 +71,10 @@
 		var end = document.getElementById('care-end').value;
 		var d = '';
 		if (start && end) {
-			//d = Math.round((end - start) / 86400000) + 1 + '天';
             d = getOrderCycle(start,end);
 		}
-		//end.parentNode.querySelector('.title').innerHTML = ends ? '\u670d\u52a1\u7ed3\u675f\u65f6\u95f4\uff1a' : '';
 		days['value' in days ? 'value' : 'innerHTML'] = d;
         $('#days').val(days);
-		//$(end)[ends ? 'removeClass' : 'addClass']('empty');
 	});
 	window.addEventListener('load', function () { $('#care-start').trigger('change'); });
 

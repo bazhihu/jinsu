@@ -1,9 +1,3 @@
-getConfigs(function(configs) {
-    //常驻医院
-    var bodyHtml = template('bodyTemplate', configs.departments);
-    $('#body').html(bodyHtml);
-});
-
 function setValueByHash(value) {
     value && [].forEach.call(document.querySelector('.departments li'), function (li) {
         $(li)[sites.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
@@ -11,26 +5,11 @@ function setValueByHash(value) {
 }
 
 function fillList(data, append) {
-    var s = '', sites = document.querySelector('.departments'), className = '';
-    if (!data) {
-        getConfigs(function (configs) {
-            departments_data = configs.departments;
-            className = ' class="recommends"';
-            departments_data.forEach(function (e) {
-                s += '<li' + className + ' data-value="' + e.id + '">' + e.name + '</li>';
-            });
-        });
-    }else{
-        className = ' class="recommends"';
-        data.forEach(function (e) {
-            s += '<li' + className + ' data-value="' + e.id + '">' + e.name + '</li>';
-        });
-    }
-    if (append) {
-        sites.insertAdjacentHTML ? sites.insertAdjacentHTML('beforeEnd', s) : (sites.innerHTML += s);
-    } else {
-        sites.innerHTML = s;
-    }
+    var s = '', sites = sites = document.querySelector('.departments'), className = ' class="recommends"';
+    data.forEach(function (e) {
+        s += '<li' + className + ' data-value="' + e.id + '">' + e.name + '</li>';
+    });
+    sites.innerHTML = s;
 }
 
 function onSearchChange() {
@@ -50,7 +29,7 @@ function onSearchChange() {
             });
             fillList(search_array?search_array : null);
         }else {
-            fillList();
+            fillList(departments?departments:null);
         }
     });
 }

@@ -227,7 +227,7 @@ class Worker extends \yii\db\ActiveRecord
         return [
             [['name','idcard'], 'required'],
             [['gender'],'string', 'max' => 1],
-            [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
+            [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status','parent_worker_id'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
             [['price', 'good_rate'], 'number'],
             [['name','native_province', 'nation','certificate'], 'string', 'max' => 20],
@@ -282,7 +282,8 @@ class Worker extends \yii\db\ActiveRecord
             'total_comment' => '评价总数',
             'level' => '护工等级',
             'status' => '工作状态',
-            'audit_status'=>'上线状态'
+            'audit_status'=>'上线状态',
+            'parent_worker_id'=>'介绍人工号'
         ];
     }
 

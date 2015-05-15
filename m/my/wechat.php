@@ -99,7 +99,7 @@ function CreateOauthUrlForOpenid($code)
 
     var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
         payWay = $('input[name=payment]:checked').val(),
-        openId = <?=$openId?>;
+        openId = $('#openId').val();
     if(openId){
         $.ajax({
             type: 'PUT',

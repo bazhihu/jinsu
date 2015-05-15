@@ -110,15 +110,15 @@ function CreateOauthUrlForOpenid($code)
                     async:false,
                     cache:false,
                     crossDomain:true,
-                    timeout:30000,
+                    //timeout:30000,
                     success: function(back){
                         if(back.code ==200){
                             callpay(back.data['payment']);
                         }
-                    },
-                    error: function(xhr, type){
-                        alert('网络超时!')
-                    }
+                    }//,
+//                    error: function(xhr, type){
+//                        alert('网络超时!')
+//                    }
                 });
             }
         });

@@ -94,6 +94,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
                 'value'=>Worker::getWorkerLevel($model->level,'view')
             ],
 
+            'parent_worker_id',
             [
                 'attribute'=>'price',
                 'value'=>$model->price."元/天"

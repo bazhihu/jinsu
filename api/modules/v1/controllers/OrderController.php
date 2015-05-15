@@ -187,7 +187,6 @@ class OrderController extends ActiveController {
     public function actionUpdate(){
         $order_no = Yii::$app->request->get('id');
         $uid = Yii::$app->user->id;
-
         $orderModel = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
         if(empty($orderModel)){
             $this->responseCode = 404;

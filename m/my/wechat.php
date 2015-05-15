@@ -2,7 +2,6 @@
 error_reporting(0);
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 $openId = '';
-var_dump($_GET);
 if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger')) {
     define('APPID','wx35492d0f3afac96b');
     define('APPSECRET','a7dc36de9adcefd71b616fdd08a8ff37');

@@ -11,6 +11,8 @@ class Recharge extends Model
 {
     public $uid;
     public $mobile;
+    public $pay_from;
+
     //充值金额
     public $money;
     public $admin_name;
@@ -21,7 +23,7 @@ class Recharge extends Model
     public function rules()
     {
         return [
-            [['uid', 'money'], 'required'],
+            [['uid', 'money', 'pay_from'], 'required'],
         ];
     }
 
@@ -31,6 +33,7 @@ class Recharge extends Model
             'uid' =>'用户ID',
             'money' => '充值金额',
             'mobile' => '用户帐号',
+            'pay_from' => '充值方式'
         ];
     }
 }

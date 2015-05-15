@@ -14,6 +14,8 @@ class WalletUserDetailSearch extends WalletUserDetail
 {
     public $fromDate;//起始时间
     public $toDate;//结束时间
+    public $total; //合计
+
     /**
      * @inheritdoc
      */
@@ -59,6 +61,7 @@ class WalletUserDetailSearch extends WalletUserDetail
         if (!$this->validate()) {
             // uncomment the following line if you do not want to any records when validation fails
             // $query->where('0=1');
+            $this->total = $query->sum('detail_money');
             return $dataProvider;
         }
 
@@ -78,11 +81,11 @@ class WalletUserDetailSearch extends WalletUserDetail
             ->andFilterWhere(['like', 'order_no', $this->order_no])
             ->andFilterWhere(['like', 'remark', $this->remark])
             ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['>', 'detail_time', $this->fromDate])
-            ->andFilterWhere(['<', 'detail_time', $this->toDate])
+            ->andFilterWhere(['>=', 'detail_time', $this->fromDate])
+            ->andFilterWhere(['<=', 'detail_time', $this->toDate])
             ->andFilterWhere(['like', 'pay_from', $this->pay_from])
             ->andFilterWhere(['like', 'extract_to', $this->extract_to]);
-
+        $this->total = $query->sum('detail_money');
         return $dataProvider;
     }
 }

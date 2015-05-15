@@ -3,8 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
-use kartik\widgets\DatePicker;
-use backend\models\User;
+use kartik\widgets\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\WalletUserDetailSearch */
@@ -26,81 +25,82 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 <div class="wallet-user-detail-index">
-
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
     <!-- start -->
     <div class="wallet-user-detail-search">
-
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">检索</h3>
             </div>
             <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'action' => ['debit-records'],
-                    'method' => 'get',
+            <?php $form = ActiveForm::begin([
+                'action' => ['debit-records'],
+                'method' => 'get',
 
-                    'type' => ActiveForm::TYPE_VERTICAL,
-                    'formConfig' => [
-                        'showLabels' => true,
-                    ],
-                ]); ?>
-                <?php
-                echo $form->field(
-                    $searchModel,
-                    'fromDate'
+                'type' => ActiveForm::TYPE_VERTICAL,
+                'formConfig' => [
+                    'showLabels' => true,
+                ],
+            ]); ?>
+            <?php
+            echo $form->field(
+                $searchModel,
+                'fromDate'
 
-                )->widget(
-                    DatePicker::classname(),
-                    [
-                        'options' => ['placeholder' => '请输入开始时间 ...'],
-                        'pluginOptions' => [
-                            'autoclose' => true,
-                            'todayHighlight' => true,
-                            'format' => 'yyyy-mm-dd'
-                        ]
+            )->widget(
+                DateTimePicker::classname(),
+                [
+                    'options' => ['placeholder' => '请输入开始时间 ...'],
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'todayHighlight' => true,
+                        'format' => 'yyyy-mm-dd hh:ii:ss'
                     ]
-                )->label('起始时间');
-                echo $form->field(
-                    $searchModel,
-                    'toDate'
-
-                )->widget(
-                    DatePicker::classname(),
-                    [
-                        'options' => ['placeholder' => '请输入结束时间 ...'],
-                        'pluginOptions' => [
-                            'autoclose' => true,
-                            'todayHighlight' => true,
-                            'format' => 'yyyy-mm-dd'
-                        ]
+                ]
+            )->label('起始时间');
+            echo $form->field(
+                $searchModel,
+                'toDate'
+            )->widget(
+                DateTimePicker::classname(),
+                [
+                    'options' => ['placeholder' => '请输入结束时间 ...'],
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'todayHighlight' => true,
+                        'format' => 'yyyy-mm-dd hh:ii:ss'
                     ]
-                )->label('结束时间');
-                ?>
-                <?= $form->field(
-                    $searchModel,
-                    'mobile'
+                ]
+            )->label('结束时间');
 
-                )->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:200px'])->label('用户账号')?>
-                <?= $form->field(
-                    $searchModel,
-                    'order_no'
+            echo $form->field($searchModel, 'mobile')
+                ->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:200px'])
+                ->label('用户账号');
 
-                )->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:200px'])->label('订单编号') ?>
+            echo $form->field($searchModel,'order_no')
+                 ->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:180px'])
+                 ->label('订单编号');
 
-                <?= $form->field(
-                    $searchModel,
-                    'detail_type'
-                )->dropDownList(['1'=>'消费','2'=>'充值','3'=>'提现','4'=>'退款'],['prompt'=>'选择','style'=>'width:200px'])->label('交易类型') ?>
+            echo $form->field($searchModel,'detail_type')
+                ->dropDownList(['1'=>'消费','2'=>'充值','3'=>'提现','4'=>'退款'],['prompt'=>'选择','style'=>'width:100px'])
+                ->label('交易类型');
 
-                <div class="form-group" style="padding-top: 25px">
-                    <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
-                    <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
-                </div>
+            echo $form->field($searchModel,'pay_from')
+                ->dropDownList($searchModel::$payFromLabels,['prompt'=>'选择','style'=>'width:100px'])
+                ->label('充值方式');
 
-                <?php ActiveForm::end(); ?>
+            echo $form->field($searchModel,'admin_uid')
+                ->dropDownList($searchModel::getInternalRoles(),['prompt'=>'选择','style'=>'width:100px'])
+                ->label('操作人');
+            ?>
+            <div class="form-group" style="padding-top: 25px">
+                <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
+                <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>
@@ -109,7 +109,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
     </p>
 
-    <?= GridView::widget([
+    <?php
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
@@ -148,6 +149,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
+                'attribute'=>'pay_from',
+                'format' => 'text',
+                'label' => '充值方式',
+                'value' => function($model) {
+                    if(isset($model::$payFromLabels[$model->pay_from])){
+                        return $model::$payFromLabels[$model->pay_from];
+                    }
+                }
+            ],
+            [
+                'attribute'=>'admin_uid',
+                'format' => 'text',
+                'label' => '操作人',
+                'value' => function($model) {
+                    return \backend\models\AdminUser::getInfo($model->admin_uid, 'staff_name');
+                }
+            ],
+            [
                 'attribute'=>'detail_money',
                 'label' => '金额(元)',
                 'value'=>function($model){
@@ -167,8 +186,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'showFooter'=>true
+            'showFooter'=>false
         ],
-    ]); ?>
+        'panelBeforeTemplate' => '<div class="pull-right"><div class="btn-toolbar kv-grid-toolbar" role="toolbar">{toolbar}</div></div><strong>合计：'.$searchModel->total.'元</strong><div class="clearfix"></div>'
+    ]);
+    ?>
 
 </div>

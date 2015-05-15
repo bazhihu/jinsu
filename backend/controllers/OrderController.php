@@ -322,7 +322,6 @@ class OrderController extends Controller
             if ($rechargeModel->load($post, 'Recharge') && $rechargeModel->validate()) {
                 //支付渠道-后台
                 $params = $post['Recharge'];
-                $params['pay_from'] = \backend\models\WalletUserDetail::PAY_FROM_BACKEND;
                 $balance = \common\models\Wallet::recharge($params);
 
                 //订单支付

@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use common\models\Wallet;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%wallet_user_detail}}".
@@ -35,7 +36,11 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const WALLET_TYPE_REFUND = 4; //退款
 
     #支付渠道
-    const PAY_FROM_BACKEND = 'backend'; //后台现金
+    //const PAY_FROM_BACKEND = 'backend'; //后台现金
+    const PAY_FROM_CASH = 'cash'; //现金
+    const PAY_FROM_CARD = 'card'; //刷卡
+    const PAY_FROM_CHEQUE = 'cheque'; //支票
+    const PAY_FROM_REMIT = 'remit'; //汇款
     const PAY_FROM_ALIPAY = 'alipay'; //Alipay(支付宝)
     const PAY_FROM_WECHAT = 'wechat'; //Wechat(微信)
 
@@ -43,6 +48,15 @@ class WalletUserDetail extends \yii\db\ActiveRecord
     const WITHDRAW_CHANNELS_BACKEND = 'backend'; //后台现金
     const WITHDRAW_CHANNELS_ALIPAY = 'alipay'; //Alipay(支付宝)
     const WITHDRAW_CHANNELS_WECHAT = 'wechat'; //Wechat(微信)
+
+    public static $payFromLabels = [
+        self::PAY_FROM_CASH => '现金',
+        self::PAY_FROM_CARD => '刷卡',
+        self::PAY_FROM_CHEQUE => '支票',
+        self::PAY_FROM_REMIT => '汇款',
+        self::PAY_FROM_ALIPAY => '支付宝',
+        self::PAY_FROM_WECHAT => '微信'
+    ];
     /**
      * @inheritdoc
      */
@@ -125,5 +139,14 @@ class WalletUserDetail extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取所有是内勤人员的角色
+     * @return static[]
+     */
+    public static function getInternalRoles(){
+        $result = AdminUser::findAll(['staff_role' => '内勤人员']);
+        return ArrayHelper::map($result, 'admin_uid', 'staff_name');
     }
 }

@@ -98,7 +98,6 @@ function CreateOauthUrlForOpenid($code)
         wei = isWeiXn();
 
     var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
-        payWay = $('input[name=payment]:checked').val(),
         openId = $('#openId').val();
     if(openId){
         $.ajax({

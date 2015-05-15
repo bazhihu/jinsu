@@ -106,7 +106,10 @@ function CreateOauthUrlForOpenid($code)
             url: orderUrls,
             data: {'action':'payment','pay_way':'3','openId':openId},
             dataType: 'json',
-            timeout: 3000,
+            async:false,
+            cache:false,
+            crossDomain:true,
+            timeout:30000,
             success: function(back){
                 if(back.code ==200){
                     callpay(back.data['payment']);

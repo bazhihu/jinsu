@@ -13,19 +13,18 @@ class WxPayResults extends WxPayDataBase
 {
     /**
      *
-     * 检测签名
+     * 使用数组初始化对象
+     * @param array $array
+     * @param 是否检测签名 $noCheckSign
      */
-    public function CheckSign()
+    public static function InitFromArray($array, $noCheckSign = false)
     {
-        if(!$this->IsSignSet()){
-            return true;
+        $obj = new self();
+        $obj->FromArray($array);
+        if($noCheckSign == false){
+            $obj->CheckSign();
         }
-
-        $sign = $this->MakeSign();
-        if($this->GetSign() == $sign){
-            return true;
-        }
-        throw new Exception("签名错误！");
+        return $obj;
     }
 
     /**
@@ -40,18 +39,18 @@ class WxPayResults extends WxPayDataBase
 
     /**
      *
-     * 使用数组初始化对象
-     * @param array $array
-     * @param 是否检测签名 $noCheckSign
+     * 检测签名
      */
-    public static function InitFromArray($array, $noCheckSign = false)
+    public function CheckSign()
     {
-        $obj = new self();
-        $obj->FromArray($array);
-        if($noCheckSign == false){
-            $obj->CheckSign();
+        if(!$this->IsSignSet()){
+            return true;
         }
-        return $obj;
+        $sign = $this->MakeSign();
+        if($this->GetSign() == $sign){
+            return true;
+        }
+        throw new Exception("签名错误！");
     }
 
     /**

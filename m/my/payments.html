@@ -94,8 +94,8 @@
                 payWay = $('input[name=payment]:checked').val(),
                 openId = '';
             if(payWay == '3'){
-                location.href = '/my/wechat.php?orderNo='+order_no+'&accessToken='+user.token;
-                return;
+                window.location.href = '/my/wechat.php?orderNo='+order_no+'&accessToken='+user.token;
+                return false;
             }else if(payWay == '2'){
                 alert('暂时没有支付宝支付');
                 return;

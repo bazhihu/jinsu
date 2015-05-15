@@ -115,7 +115,7 @@ class Worker extends ActiveRecord
             if($params['sort'] == 'star_down'){
                 $orderBy = 'star DESC';
             }
-            //星级，高到低
+            //星级，低到高
             if($params['sort'] == 'star_up'){
                 $orderBy = 'star ASC';
             }

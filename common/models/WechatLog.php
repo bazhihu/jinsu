@@ -28,6 +28,11 @@ use Yii;
  * @property string $refund_time
  * @property string $spbill_create_ip
  * @property string $gmt_create
+ * @property string $gmt_expire
+ * @property string $attach
+ * @property string $trade_type
+ * @property string $goods_tag
+ * @property string $nonce_str
  */
 class WechatLog extends \yii\db\ActiveRecord
 {
@@ -47,13 +52,15 @@ class WechatLog extends \yii\db\ActiveRecord
         return [
             [['uid', 'body', 'transaction_no', 'partner', 'spbill_create_ip', 'gmt_create'], 'required'],
             [['uid', 'total_fee', 'fee_type', 'trade_mode', 'refund_fee', 'refund_channel', 'refund_status'], 'integer'],
-            [['time_end', 'refund_time', 'gmt_create'], 'safe'],
+            [['time_end', 'refund_time', 'gmt_create', 'gmt_expire'], 'safe'],
             [['body'], 'string', 'max' => 200],
             [['transaction_id', 'refund_id'], 'string', 'max' => 28],
-            [['transaction_no', 'trade_state', 'refund_no'], 'string', 'max' => 32],
+            [['transaction_no', 'trade_state', 'refund_no', 'goods_tag', 'nonce_str'], 'string', 'max' => 32],
             [['order_no', 'open_id'], 'string', 'max' => 64],
             [['partner'], 'string', 'max' => 10],
-            [['spbill_create_ip'], 'string', 'max' => 20]
+            [['spbill_create_ip'], 'string', 'max' => 20],
+            [['attach'], 'string', 'max' => 188],
+            [['trade_type'], 'string', 'max' => 16]
         ];
     }
 
@@ -84,6 +91,11 @@ class WechatLog extends \yii\db\ActiveRecord
             'refund_time' => 'Refund Time',
             'spbill_create_ip' => 'Spbill Create Ip',
             'gmt_create' => 'Gmt Create',
+            'gmt_expire' => 'Gmt Expire',
+            'attach' => 'Attach',
+            'trade_type' => 'Trade Type',
+            'goods_tag' => 'Goods Tag',
+            'nonce_str' => 'Nonce Str',
         ];
     }
 }

@@ -19,15 +19,15 @@ use common\components\wechat\WxPayApi;
 
 class Payment
 {
-    private $_payWay = null;
-    private $_payData = null;
-    private $_tradeNo = null;
-
-    //允许支付方式
     public static $allowPayWay = [
         Order::PAY_WAY_ALIPAY,
         Order::PAY_WAY_WE_CHAT
     ];
+    private $_payWay = null;
+    private $_payData = null;
+
+    //允许支付方式
+    private $_tradeNo = null;
 
     public function __construct($payWay, $data){
         $this->_payWay = $payWay;
@@ -54,23 +54,6 @@ class Payment
      */
     private function _generateTradeNo(){
         $this->_tradeNo = Wallet::generateWalletNo();
-    }
-
-    /**
-     * 获取交易号
-     * @return null
-     */
-    public function getTradeNo(){
-        return $this->_tradeNo;
-    }
-
-    /**
-     * 获取支付数据
-     * @return null
-     */
-    public function getPayData(){
-        Yii::info('支付数据：'.print_r($this->_payData, true), 'api');
-        return $this->_payData;
     }
 
     /**
@@ -103,25 +86,15 @@ class Payment
      * @throws HttpException
      */
     private function _WeChat(){
-        //统一下单
-        $jsApi = new JsApiPay();
-        $Wechat = new WxPayUnifiedOrder();
-        $Wechat->SetBody("优爱医护护工服务！");
-        $Wechat->SetAttach("优爱医护护工服务！");
-        $Wechat->SetOut_trade_no($this->_tradeNo);
-        $Wechat->SetTotal_fee($this->_payData['amount']);
-        $Wechat->SetTime_start(date("YmdHis"));
-        $Wechat->SetTime_expire(date("YmdHis", time() + 600));
-        $Wechat->SetGoods_tag("优爱医护护工服务！");
-        $Wechat->SetNotify_url(Yii::$app->params['wechat']['notify_url']);
-        $Wechat->SetTrade_type("JSAPI");
-        $Wechat->SetOpenid($this->_payData['openId']);
-        $order = WxPayApi::unifiedOrder($Wechat);
-        $jsApiParameters = $jsApi->GetJsApiParameters($order);
-
         //支付日志
-        $logData = $this->_payData;
+        $logData = $this->_payData;//20150515646394
 
+        if(isset($logData['order_no'])){
+            $this->_tradeNo = $logData['order_no'];
+        }
+
+        $logData['nonce_str'] = WxPayApi::getNonceStr();
+        $logData['trade_type'] = $this->_payData['trade_type'];
         $logData['transaction_no'] = $this->_tradeNo;
         $logData['total_fee'] = $this->_payData['amount'];
         $logData['body'] = $this->_payData['subject'];
@@ -136,7 +109,25 @@ class Payment
             Yii::info(print_r($wechatLog->getErrors(), true), 'api');
             throw new HttpException(400, print_r($wechatLog->getErrors(), true));
         }
-
+        $this->_payData = '';
+        $this->_payData['nonce_str'] = $logData['nonce_str'];
         return true;
+    }
+
+    /**
+     * 获取交易号
+     * @return null
+     */
+    public function getTradeNo(){
+        return $this->_tradeNo;
+    }
+
+    /**
+     * 获取支付数据
+     * @return null
+     */
+    public function getPayData(){
+        Yii::info('支付数据：'.print_r($this->_payData, true), 'api');
+        return $this->_payData;
     }
 }

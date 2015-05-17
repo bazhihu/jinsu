@@ -48,6 +48,12 @@ return [
                     'categories' => ['api'],
                     'logFile' => '@app/runtime/logs/api.log'
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['wechat'],
+                    'logFile' => '@app/runtime/logs/wechat.log'
+                ],
             ],
         ],
         'urlManager' => [

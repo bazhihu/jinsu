@@ -193,16 +193,20 @@ getConfigs(function(configs) {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
                 var need_pay = $('#need_pay').val();
+                 //alert(need_pay+"#"+pay_way);
                 if(need_pay<0){
                     var pay_way=1;
                     var url = "payOnline.html";
                 }else{
+                	//alert(pay_way)
                     if(pay_way==1) {
                         var url = "payOffline.html";
                     }else if(pay_way==2){
                         var url = "payOnline.html";
                     }else if(pay_way==3){
-                        var url = "payOnline.html";
+                    	//alert("#"+pay_way);
+                    	callwxpay();
+                        var url = "../payOnline.html";
                     }
                 }
 
@@ -234,6 +238,7 @@ getConfigs(function(configs) {
         }
     });
 });
+
 
 //选择支付方式
 $('.menuitemradio input[type="radio"]').live('click', function () {

@@ -19,7 +19,7 @@ class WxPayNotify extends WxPayNotifyReply
     final public function Handle($needSign = true)
     {
         $msg = "OK";
-        $result = WxpayApi::notify(array($this, 'NotifyCallBack'), $msg);
+        $result = WxPayApi::notify(array($this, 'NotifyCallBack'), $msg);
         if($result == false){
             $this->SetReturn_code("FAIL");
             $this->SetReturn_msg($msg);
@@ -34,14 +34,18 @@ class WxPayNotify extends WxPayNotifyReply
 
     /**
      *
-     * 回调方法入口，子类可重写该方法
-     * @param array $data 回调解释出的参数
-     * @param string $msg 如果回调处理失败，可以将错误信息输出到该方法
-     * @return true回调出来完成不需要继续回调，false回调处理未完成需要继续回调
+     * 回复通知
+     * @param bool $needSign 是否需要签名输出
      */
-    public function NotifyProcess($data, &$msg)
+    final private function ReplyNotify($needSign = true)
     {
-        return true;
+        //如果需要签名
+        if($needSign == true &&
+            $this->GetReturn_code() == "SUCCESS")
+        {
+            $this->SetSign();
+        }
+        WxpayApi::replyNotify($this->ToXml());
     }
 
     /**
@@ -67,17 +71,13 @@ class WxPayNotify extends WxPayNotifyReply
 
     /**
      *
-     * 回复通知
-     * @param bool $needSign 是否需要签名输出
+     * 回调方法入口，子类可重写该方法
+     * @param array $data 回调解释出的参数
+     * @param string $msg 如果回调处理失败，可以将错误信息输出到该方法
+     * @return true回调出来完成不需要继续回调，false回调处理未完成需要继续回调
      */
-    final private function ReplyNotify($needSign = true)
+    public function NotifyProcess($data, &$msg)
     {
-        //如果需要签名
-        if($needSign == true &&
-            $this->GetReturn_code() == "SUCCESS")
-        {
-            $this->SetSign();
-        }
-        WxpayApi::replyNotify($this->ToXml());
+        return true;
     }
 }

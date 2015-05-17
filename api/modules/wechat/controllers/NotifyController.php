@@ -37,7 +37,9 @@ class NotifyController extends ActiveController{
      */
     public function actionCreate(){
         $notify = new Notify();
-        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];var_dump($xml);Yii::info('wechat:'.$xml, 'api');
+        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+        var_dump($xml);
+        Yii::info('返回微信:'.$xml, 'api');
         $notify->notifyUrl();
     }
     public function actionIndex(){

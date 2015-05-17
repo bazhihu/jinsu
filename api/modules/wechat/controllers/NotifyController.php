@@ -39,4 +39,7 @@ class NotifyController extends ActiveController{
         $notify = new Notify();
         $notify->notifyUrl();
     }
+    public function actionIndex(){
+        return 'OK';
+    }
 }

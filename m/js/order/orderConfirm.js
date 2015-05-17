@@ -227,7 +227,7 @@ getConfigs(function(configs) {
                     if(post_response.code == 200){
                         location.href=url;
                     }else if(post_response.code == 400){
-                        alert('支付失败！');
+                        //alert('支付失败！');
                         location.href=url;
                     }else if(post_response.code == 500){
                         alert('支付失败！');

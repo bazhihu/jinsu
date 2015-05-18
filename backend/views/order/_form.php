@@ -218,16 +218,14 @@ use backend\models\OrderPatient;
                     echo $form->field($orderPatientModel, 'weight', [
                         'addon' => ['append' => ['content'=>'kg'],'groupOptions'=>['class'=>'col-md-3']]
                     ]);
+                    $orderPatientModel->patient_state = OrderPatient::PATIENT_STATE_OK;
                     echo $form->field($orderPatientModel, 'patient_state')
-                        ->radioList(
-                            [
+                        ->radioList([
                                 OrderPatient::PATIENT_STATE_DISABLED=>'不能自理',
                                 OrderPatient::PATIENT_STATE_OK=>'能自理'
                             ],
                             ['inline'=>true]
                         )->label('患者健康状况');
-                    echo $form->field($orderPatientModel, 'in_hospital_reason')
-                        ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:26%']);
 
                     echo Form::widget([
                         'model' => $orderPatientModel,
@@ -274,6 +272,9 @@ use backend\models\OrderPatient;
 
 </div>
 <script type="text/javascript">
+    //隐藏患者健康状况
+    $('#orderpatient-patient_state').parents('.form-group').hide();
+
     $('.js-calculate-price').click(function(){
         var workerLevel = $('#ordermaster-worker_level').val();
         var startTime = $('#ordermaster-start_time').val();

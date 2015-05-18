@@ -66,6 +66,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
                 }else{
+                    alert("./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount);
                     window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });

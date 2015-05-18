@@ -48,7 +48,6 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 <input type="hidden" id="openId" value="<?=$openId?>">
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
     loggedIn();
     callwxpay();
@@ -91,5 +90,35 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
             return false;
     }
 </script>
+
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">支付方式</h2>
+    <a class="home" href="/">首页</a>
+</header>
+
+    <section class="menu" role="menu">
+            <span class="menuitem" role="menuitem">
+                <em class="title">订单总金额：</em>
+                <i class="value" id="total"></i>
+            </span>
+    </section>
+
+    <section class="menu" role="menu">
+			<span class="menuitem" role="menuitem">
+				<em class="title">钱包余额：</em>
+				<i class="value" id="balance"></i>
+			</span>
+    </section>
+
+    <section class="payments menu" role="menu" style="display: none;">
+        <header class="menu-header">
+            <span class="more">还需支付：<em id="needPay">0</em>元</span>
+            <input type="hidden" name="needPay" id="payMoney">
+            <h3 class="menu-title"></h3>
+        </header>
+    </section>
+
+
 </body>
 </html>

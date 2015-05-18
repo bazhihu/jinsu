@@ -66,6 +66,7 @@
 			}, this);
 		});
         loggedIn();
+        var blance;
         var order_no = getUrlQueryString('orderNo'),
             total_amount = getUrlQueryString('totalAmount'),
             user = getStatus(),
@@ -86,6 +87,7 @@
                 }
                 document.getElementById('total').innerHTML  = '&yen;'+total_amount;
                 document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
+                blance=back.wallet.money;
             });
         }
         pay.on(CLICK, function(){
@@ -104,7 +106,7 @@
                     timeout:30000,
                     success: function(data){
                         if(data.code ==200){
-                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&nonce_str='+data.data.payment.nonce_str;
+                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&blance='+blance+'&nonce_str='+data.data.payment.nonce_str;
                         }
                     },
                     error: function(xhr, type){

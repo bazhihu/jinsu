@@ -51,8 +51,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
 <script>
+    var orderNo='<?=$_REQUEST["orderNo"]?>';
+    var totalAmount='<?=$_REQUEST["walletMoney"]?>';
     loggedIn();
-    callwxpay();
     //调用微信JS api 支付
     function jsApiCall()
     {
@@ -64,6 +65,8 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 //alert(res.err_code+'#'+res.err_desc+'#'+res.err_msg);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
+                }else{
+                    window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });
     }
@@ -91,6 +94,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         else
             return false;
     }
+    callwxpay();
 </script>
 
 <header id="header">
@@ -113,7 +117,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 			</span>
     </section>
 
-    <section class="payments menu" role="menu" style="display: none;">
+    <section class="payments menu" role="menu" >
         <header class="menu-header">
             <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
             <input type="hidden" name="needPay" id="payMoney">

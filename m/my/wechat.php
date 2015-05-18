@@ -54,6 +54,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     var orderNo='<?=$_REQUEST["orderNo"]?>';
     var totalAmount='<?=$_REQUEST["walletMoney"]?>';
     loggedIn();
+    callwxpay();
     //调用微信JS api 支付
     function jsApiCall()
     {
@@ -66,8 +67,8 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
                 }else{
-                    alert("./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount);
-                    window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
+                    //alert("./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount);
+                    //window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });
     }
@@ -95,7 +96,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         else
             return false;
     }
-    callwxpay();
+
 </script>
 
 <header id="header">
@@ -122,7 +123,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         <header class="menu-header">
             <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
             <input type="hidden" name="needPay" id="payMoney">
-            <h3 class="menu-title"></h3>
+            <h3 class="menu-title">微信支付</h3>
         </header>
     </section>
 

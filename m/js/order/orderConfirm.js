@@ -247,9 +247,8 @@ getConfigs(function(configs) {
                         crossDomain:true,
                         timeout:30000,
                         success: function(data){
-                            console.log(data);
                             if(data.code ==200){
-                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&nonce_str='+data.data.payment.nonce_str;
+                                $('wechat').load('/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&nonce_str='+data.data.payment.nonce_str);
                             }
                         },
                         error: function(xhr, type){

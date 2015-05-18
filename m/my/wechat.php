@@ -54,7 +54,6 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     var orderNo='<?=$_REQUEST["orderNo"]?>';
     var totalAmount='<?=$_REQUEST["total_amount"]?>';
     loggedIn();
-
     //调用微信JS api 支付
     function jsApiCall()
     {

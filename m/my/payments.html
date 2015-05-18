@@ -65,6 +65,7 @@
 			}, this);
 		});
         loggedIn();
+        var walletMoney=0;
         var order_no = getUrlQueryString('orderNo'),
             total_amount = getUrlQueryString('totalAmount'),
             user = getStatus(),
@@ -85,6 +86,7 @@
                 }
                 document.getElementById('total').innerHTML  = '&yen;'+total_amount;
                 document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
+                walletMoney=back.wallet.money;
             });
         }
         pay.on(CLICK, function(){
@@ -92,7 +94,7 @@
                 payWay = $('input[name=payment]:checked').val(),
                 openId = '';
             if(payWay == '3'){
-                var walletMoney=document.getElementById('balance').innerHTML;
+
                 $.ajax({
                     type: 'PUT',
                     url: orderUrls,

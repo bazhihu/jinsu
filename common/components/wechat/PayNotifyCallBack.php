@@ -31,9 +31,15 @@ class PayNotifyCallBack extends WxPayNotify
         }
         //判断该笔订单是否在商户网站中已经做过处理
         $result = $this->_checkNotify($data);
+
+        if($result == 'repeat'){
+            Yii::info('微信重复回调:'.$result, 'wechat');
+            return true;
+        }
+
         if($result != 'ok'){
             echo $result;
-            Yii::info('返回微信:'.$result, 'api');
+            Yii::info('返回微信:'.$result, 'wechat');
             return false;
         }
 
@@ -51,11 +57,11 @@ class PayNotifyCallBack extends WxPayNotify
         if(!empty($orderNo)){
             $orderModel = Order::findOne(['order_no' => $orderNo]);
             $response = $orderModel->pay();
-            Yii::info('$response:'.print_r($response, true), 'api');
+            Yii::info('$response:'.print_r($response, true), 'wechat');
 
             if($response != 200){
                 echo "fail";
-                Yii::info('返回微信：fail', 'api');
+                Yii::info('返回微信：fail', 'wechat');
                 return false;
             }
         }
@@ -87,15 +93,17 @@ class PayNotifyCallBack extends WxPayNotify
     private function _checkNotify($post){
 
         $wechatLog = WechatLog::findOne(['transaction_no' => $post['out_trade_no'], 'total_fee'=> $post['total_fee']]);
+
         if(empty($wechatLog)){
-            Yii::info('未找到交易记录:out_trade_no='.$post['out_trade_no'], 'api');
+            Yii::info('未找到交易记录:out_trade_no='.$post['out_trade_no'], 'wechat');
             return 'fail';
         }
+
         if($wechatLog->trade_state == 'SUCCESS'){
-            return 'ok';
+            return 'repeat';
         }
         if($wechatLog->total_fee != $post['total_fee']){
-            Yii::info('交易金额错误', 'api');
+            Yii::info('交易金额错误', 'wechat');
             return 'fail';
         }
         $post['trade_state'] = 'SUCCESS';
@@ -108,7 +116,7 @@ class PayNotifyCallBack extends WxPayNotify
         //保存支付日志
         $wechatLog->setAttributes($post);
         if(!$wechatLog->save()){
-            Yii::info('支付日志保存失败:'.print_r($wechatLog->getErrors(), true), 'api');
+            Yii::info('支付日志保存失败:'.print_r($wechatLog->getErrors(), true), 'wechat');
         }
         $this->_logModel = $wechatLog;
         return 'ok';

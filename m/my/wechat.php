@@ -17,7 +17,7 @@ $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 
 $totalAmount=$_REQUEST["totalAmount"]*100;
-$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+//$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
 
 //统一下单
 $input = new WxPayUnifiedOrder();
@@ -51,8 +51,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
 <script>
-    var orderNo='<?=$_REQUEST["orderNo"]?>';
-    var totalAmount='<?=$_REQUEST["total_amount"]?>';
+
     loggedIn();
     //调用微信JS api 支付
     function jsApiCall()
@@ -66,7 +65,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
                 }else{
-                    window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
+                    //window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });
     }
@@ -107,20 +106,20 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     <section class="menu" role="menu">
             <span class="menuitem" role="menuitem">
                 <em class="title">订单总金额：</em>
-                <i class="value" id="total"><?=$_REQUEST["totalAmount"]?></i>
+                <i class="value" id="total"></i>
             </span>
     </section>
 
     <section class="menu" role="menu">
 			<span class="menuitem" role="menuitem">
 				<em class="title">钱包余额：</em>
-				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
+				<i class="value" id="balance"></i>
 			</span>
     </section>
 
     <section class="payments menu" role="menu" >
         <header class="menu-header">
-            <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
+            <span class="more">还需支付：<em id="needPay"></em>元</span>
             <input type="hidden" name="needPay" id="payMoney">
             <h3 class="menu-title">微信支付</h3>
         </header>

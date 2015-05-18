@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8" />
@@ -58,6 +58,7 @@
 	</form>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/public.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script>
 		$('.menuitemradio input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
@@ -65,7 +66,6 @@
 			}, this);
 		});
         loggedIn();
-        var walletMoney=0;
         var order_no = getUrlQueryString('orderNo'),
             total_amount = getUrlQueryString('totalAmount'),
             user = getStatus(),
@@ -86,7 +86,6 @@
                 }
                 document.getElementById('total').innerHTML  = '&yen;'+total_amount;
                 document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
-                walletMoney=back.wallet.money;
             });
         }
         pay.on(CLICK, function(){
@@ -94,7 +93,6 @@
                 payWay = $('input[name=payment]:checked').val(),
                 openId = '';
             if(payWay == '3'){
-
                 $.ajax({
                     type: 'PUT',
                     url: orderUrls,
@@ -106,8 +104,7 @@
                     timeout:30000,
                     success: function(data){
                         if(data.code ==200){
-                            alert(walletMoney);
-                            //self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
+                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&nonce_str='+data.data.payment.nonce_str;
                         }
                     },
                     error: function(xhr, type){

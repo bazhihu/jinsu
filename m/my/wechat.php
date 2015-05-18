@@ -17,6 +17,8 @@ $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 
 $totalAmount=$_REQUEST["totalAmount"]*100;
+$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+
 //统一下单
 $input = new WxPayUnifiedOrder();
 $input->SetBody("优爱医护订单");
@@ -48,8 +50,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 <input type="hidden" id="openId" value="<?=$openId?>">
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
+    var orderNo='<?=$_REQUEST["orderNo"]?>';
+    var totalAmount='<?=$_REQUEST["walletMoney"]?>';
     loggedIn();
     callwxpay();
     //调用微信JS api 支付
@@ -63,6 +66,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 //alert(res.err_code+'#'+res.err_desc+'#'+res.err_msg);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
+                }else{
+                    //alert("./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount);
+                    //window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });
     }
@@ -90,6 +96,37 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         else
             return false;
     }
+
 </script>
+
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">支付方式</h2>
+    <a class="home" href="/">首页</a>
+</header>
+
+    <section class="menu" role="menu">
+            <span class="menuitem" role="menuitem">
+                <em class="title">订单总金额：</em>
+                <i class="value" id="total"><?=$_REQUEST["totalAmount"]?></i>
+            </span>
+    </section>
+
+    <section class="menu" role="menu">
+			<span class="menuitem" role="menuitem">
+				<em class="title">钱包余额：</em>
+				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
+			</span>
+    </section>
+
+    <section class="payments menu" role="menu" >
+        <header class="menu-header">
+            <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
+            <input type="hidden" name="needPay" id="payMoney">
+            <h3 class="menu-title">微信支付</h3>
+        </header>
+    </section>
+
+
 </body>
 </html>

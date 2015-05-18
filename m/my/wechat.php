@@ -17,7 +17,7 @@ $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 
 $totalAmount=$_REQUEST["totalAmount"]*100;
-$needPay=$_REQUEST["totalAmount"]-$_REQUEST["blance"];
+$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
 
 //统一下单
 $input = new WxPayUnifiedOrder();
@@ -113,7 +113,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     <section class="menu" role="menu">
 			<span class="menuitem" role="menuitem">
 				<em class="title">钱包余额：</em>
-				<i class="value" id="balance"><?=$_REQUEST["blance"]?></i>
+				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
 			</span>
     </section>
 

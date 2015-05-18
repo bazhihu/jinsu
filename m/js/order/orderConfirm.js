@@ -3,6 +3,7 @@ var type = getUrlQueryString('type'),
     userInfo = getStatus(),
     orderCreate = orderUrl+'?access-token='+userInfo.token,
     userUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
+var walletMoney=0;
 getConfigs(function(configs) {
     //获取余额
     $.get(userUrl,function(response){
@@ -18,7 +19,7 @@ getConfigs(function(configs) {
             var department_id = dataArray[5];
             var worker_level = dataArray[6];
             var patient_state= 1;
-
+            walletMoney=blance;
             //常驻医院
             var lenth =configs.hospitals.length;
             var data  = configs.hospitals;
@@ -248,7 +249,7 @@ getConfigs(function(configs) {
                         timeout:30000,
                         success: function(data){
                             if(data.code ==200){
-                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&blance='+blance+"&nonce_str='+data.data.payment.nonce_str;
+                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
                             }
                         },
                         error: function(xhr, type){

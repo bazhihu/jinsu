@@ -17,7 +17,7 @@ $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 
 $totalAmount=$_REQUEST["totalAmount"]*100;
-if($_REQUEST["totalAmount"]>$_REQUEST["walletMoney"]) $needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
 
 //统一下单
 $input = new WxPayUnifiedOrder();

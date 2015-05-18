@@ -19,14 +19,10 @@
     $('a[target="popup"]')['click'](function (e){
 		e.preventDefault();
 		var a = this, frame;
-		//if (a.popupFrameId) {
-		//	frame = document.getElementById('popup-frame-' + a.popupFrameId);
-		//} else {
-			a.popupFrameId = ++popupFrameId;
-			frame = document.createElement('iframe');
-			frame.id = 'popup-frame-' + popupFrameId;
-			frame.className = 'popup-frame';
-		//}
+        a.popupFrameId = ++popupFrameId;
+        frame = document.createElement('iframe');
+        frame.id = 'popup-frame-' + popupFrameId;
+        frame.className = 'popup-frame';
         frame.src = a.href;
 		$(frame).popup('right', false, false);
 		$(frame).one('load', function () {

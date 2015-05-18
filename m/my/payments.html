@@ -96,23 +96,21 @@
                 $.ajax({
                     type: 'PUT',
                     url: orderUrls,
-                    data: {'action':'payment','pay_way':payWay,'openId':''},
+                    data: {'action':'payment', 'pay_way':payWay, 'trade_type':'JSAPI'},
                     dataType: 'json',
                     async:false,
                     cache:false,
                     crossDomain:true,
                     timeout:30000,
-                    success: function(data){alert(data);console.log(data);
+                    success: function(data){
                         if(data.code ==200){
-                            //self.location=document.referrer;
+                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&nonce_str='+data.data.payment.nonce_str;
                         }
                     },
                     error: function(xhr, type){
                         alert('网络超时!')
                     }
-                })
-//                window.open('/my/wechat.php?orderNo='+order_no+'&accessToken='+user.token);
-//                return false;
+                });
             }else if(payWay == '2'){
                 alert('暂时没有支付宝支付');
                 return false;

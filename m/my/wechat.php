@@ -1,80 +1,40 @@
 <?php
-error_reporting(0);
-$user_agent = $_SERVER['HTTP_USER_AGENT'];
-$openId = '';
-if (strpos($user_agent, 'MicroMessenger') || strpos($user_agent, 'micromessenger')) {
-    define('APPID','wx35492d0f3afac96b');
-    define('APPSECRET','a7dc36de9adcefd71b616fdd08a8ff37');
-    //通过code获得openid
-    if (!isset($_GET['code'])){
-        //触发微信返回code码
-        $baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']);
-        $url = CreateOauthUrlForCode($baseUrl);
-        Header("Location: $url");
-        exit();
-    } else {
-        //获取code码，以获取openid
-        $code = $_GET['code'];
-        $openId = getOpenidFromMp($code);
-    }
-}
-function CreateOauthUrlForCode($redirectUrl)
-{
-    $urlObj["appid"] = APPID;
-    $urlObj["redirect_uri"] = "$redirectUrl";
-    $urlObj["response_type"] = "code";
-    $urlObj["scope"] = "snsapi_base";
-    $urlObj["state"] = "STATE"."#wechat_redirect";
-    $bizString = ToUrlParams($urlObj);
-    return "https://open.weixin.qq.com/connect/oauth2/authorize?".$bizString;
-}
-function ToUrlParams($urlObj)
-{
-    $buff = "";
-    foreach ($urlObj as $k => $v)
-    {
-        if($k != "sign"){
-            $buff .= $k . "=" . $v . "&";
-        }
-    }
+ini_set('date.timezone','Asia/Shanghai');
+//error_reporting(E_ERROR);
+@define("WEB_ROOT", "/www/youaiyihu.com");
+//@define("WEB_ROOT", "/../..");
+require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
+require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
+require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
 
-    $buff = trim($buff, "&");
-    return $buff;
-}
-function GetOpenidFromMp($code)
+function printf_info($data)
 {
-    $url = CreateOauthUrlForOpenid($code);
-    //初始化curl
-    $ch = curl_init();
-    //设置超时
-    curl_setopt($ch, CURLOPT_TIMEOUT,30);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
-    curl_setopt($ch, CURLOPT_HEADER, FALSE);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    /*if(Yii::$app->params['wechat']['curl_proxy_host'] != "0.0.0.0"
-        && Yii::$app->params['wechat']['curl_proxy_port'] != 0){
-        curl_setopt($ch,CURLOPT_PROXY, Yii::$app->params['wechat']['curl_proxy_host']);
-        curl_setopt($ch,CURLOPT_PROXYPORT, Yii::$app->params['wechat']['curl_proxy_port']);
-    }*/
-    //运行curl，结果以json形式返回
-    $res = curl_exec($ch);
-    curl_close($ch);
-    //取出openid
-    $data = json_decode($res,true);
-    $openid = $data['openid'];
-    return $openid;
+    foreach($data as $key=>$value){
+        echo "<font color='#00ff55;'>$key</font> : $value <br/>";
+    }
 }
-function CreateOauthUrlForOpenid($code)
-{
-    $urlObj["appid"] = APPID;
-    $urlObj["secret"] = APPSECRET;
-    $urlObj["code"] = $code;
-    $urlObj["grant_type"] = "authorization_code";
-    $bizString = ToUrlParams($urlObj);
-    return "https://api.weixin.qq.com/sns/oauth2/access_token?".$bizString;
-}
+//获取用户openid
+$tools = new JsApiPay();
+$openId = $tools->GetOpenid();
+
+$totalAmount=$_REQUEST["totalAmount"]*100;
+//统一下单
+$input = new WxPayUnifiedOrder();
+$input->SetBody("优爱医护订单");
+$input->SetAttach($_REQUEST["orderNo"]);
+$input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
+//$input->SetOut_trade_no($_REQUEST["orderNo"]);
+//$input->SetTotal_fee($totalAmount);
+$input->SetTotal_fee(1);
+$input->SetTime_start(date("YmdHis"));
+$input->SetTime_expire(date("YmdHis", time() + 600));
+$input->SetGoods_tag("test");
+$input->SetNotify_url("http://uat.m.youaiyihu.com/my/notify.php");
+$input->SetTrade_type("JSAPI");
+$input->SetOpenid($openId);
+$order = WxPayApi::unifiedOrder($input);
+
+$jsApiParameters = $tools->GetJsApiParameters($order);
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -92,50 +52,22 @@ function CreateOauthUrlForOpenid($code)
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
     loggedIn();
-    var order_no = getUrlQueryString('orderNo'),
-        total_amount = getUrlQueryString('totalAmount'),
-        user = getStatus(),
-        wei = isWeiXn();
-    var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
-        openId = $('#openId').val();
-        console.log(openId);alert(openId);
-        console.log(orderUrls);
-        if(openId){
-            $.ajax({
-                type: 'PUT',
-                url: orderUrls,
-                data: {'action':'payment','pay_way':'3','openId':openId},
-                dataType: 'json',
-                async:false,
-                cache:false,
-                crossDomain:true,
-                timeout:30000,
-                success: function(back){location.href = back;
-                    if(back.code ==200){
-                        callpay(back.data['payment']);
-                    }
-                },
-                error: function(xhr, type){
-                    alert('网络超时!')
-                }
-            });
-        }
-
-    function jsApiCall(jsApiParameters)
+    callwxpay();
+    //调用微信JS api 支付
+    function jsApiCall()
     {
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest',
-            jsApiParameters,
+            <?php echo $jsApiParameters; ?>,
             function(res){
-                if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-                    self.location = '/payOnline.html';
-                }else{
-                    //支付失败
+                //WeixinJSBridge.log(res.err_msg);
+                //alert(res.err_code+'#'+res.err_desc+'#'+res.err_msg);
+                if(res.err_msg=="get_brand_wcpay_request:ok"){
+                    window.location.href="../payOnline.html";
                 }
-            }
-        );
+            });
     }
-    function callpay(jsApiParameters)
+    function callwxpay()
     {
         if (typeof WeixinJSBridge == "undefined"){
             if( document.addEventListener ){
@@ -145,7 +77,7 @@ function CreateOauthUrlForOpenid($code)
                 document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
             }
         }else{
-            jsApiCall(jsApiParameters);
+            jsApiCall();
         }
     }
     if(wei)
@@ -159,7 +91,6 @@ function CreateOauthUrlForOpenid($code)
         else
             return false;
     }
-
 </script>
 </body>
 </html>

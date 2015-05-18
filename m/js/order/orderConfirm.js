@@ -204,8 +204,25 @@ getConfigs(function(configs) {
                     }else if(pay_way==2){
                         var url = "payOnline.html";
                     }else if(pay_way==3){
-                    	//alert("#"+pay_way);
-                    	callwxpay();
+                        $.ajax({
+                            type: 'POST',
+                            url: orderCreate,
+                            data: {'action':'payment', 'pay_way':pay_way, 'trade_type':'JSAPI'},
+                            dataType: 'json',
+                            async:false,
+                            cache:false,
+                            crossDomain:true,
+                            timeout:30000,
+                            success: function(data){
+                                if(data.code ==200){
+                                    self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&nonce_str='+data.data.payment.nonce_str;
+                                }
+                            },
+                            error: function(xhr, type){
+                                alert('网络超时!')
+                            }
+                        });
+                    	//callwxpay();
                         var url = "../payOnline.html";
                     }
                 }

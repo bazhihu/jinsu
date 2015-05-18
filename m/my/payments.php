@@ -1,14 +1,11 @@
-﻿<?php 
+﻿﻿<?php
 ini_set('date.timezone','Asia/Shanghai');
 //error_reporting(E_ERROR);
-@define("WEB_ROOT", "/www/youaiyihu.com/");
+//@define("WEB_ROOT", "/www/youaiyihu.com");
+@define("WEB_ROOT", "/../..");
 require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
-
-//初始化日志
-//$logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.log');
-//$log = Log::Init($logHandler, 15);
 
 function printf_info($data)
 {
@@ -20,8 +17,7 @@ function printf_info($data)
 //获取用户openid
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
-//echo $_REQUEST["orderNo"];
-//echo "<br>";
+
 $totalAmount=$_REQUEST["totalAmount"]*100;
 //统一下单
 $input = new WxPayUnifiedOrder();
@@ -38,10 +34,8 @@ $input->SetNotify_url("http://uat.m.youaiyihu.com/my/notify.php");
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openId);
 $order = WxPayApi::unifiedOrder($input);
-//printf_info($order);
+
 $jsApiParameters = $tools->GetJsApiParameters($order);
-//echo $jsApiParameters;
-//exit();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -105,6 +99,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 	<script src="../js/public.js"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script type="text/javascript">
+    loggedIn();
 	//调用微信JS api 支付
 	function jsApiCall()
 	{
@@ -133,103 +128,93 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 		}else{
 		    jsApiCall();
 		}
-	}	
-		$('.menuitemradio input[type="radio"]').on('click', function () {
-			[].forEach.call(this.form.elements[this.name], function (radio) {
-				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
-			}, this);
-		});
-        loggedIn();
-        var order_no = getUrlQueryString('orderNo'),
-            total_amount = getUrlQueryString('totalAmount'),
-            user = getStatus(),
-            wei = isWeiXn(),
-            alipay = $('#alipay'),
-            wechat = $('#wechat'),
-            pay = $('#pay');
-        if(user.id && user.name && user.token){
-            getUsers(user.id, user.token, function(back){
-                if(total_amount>back.wallet.money){
-                    var needPay;
-                    $('.payments').attr('style',null);
-                    needPay = total_amount-back.wallet.money;
-                    if(needPay){
-                        document.getElementById('needPay').innerHTML = needPay;
-                        document.getElementById('payMoney').value = needPay;
-                    }
+	}
+    $('.menuitemradio input[type="radio"]').on('click', function () {
+        [].forEach.call(this.form.elements[this.name], function (radio) {
+            $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
+        }, this);
+    });
+    var order_no = getUrlQueryString('orderNo'),
+        total_amount = getUrlQueryString('totalAmount'),
+        user = getStatus(),
+        wei = isWeiXn(),
+        alipay = $('#alipay'),
+        wechat = $('#wechat'),
+        pay = $('#pay');
+    if(user.id && user.name && user.token){
+        getUsers(user.id, user.token, function(back){
+            if(total_amount>back.wallet.money){
+                var needPay;
+                $('.payments').attr('style',null);
+                needPay = total_amount-back.wallet.money;
+                if(needPay){
+                    document.getElementById('needPay').innerHTML = needPay;
+                    document.getElementById('payMoney').value = needPay;
                 }
-                document.getElementById('total').innerHTML  = '&yen;'+total_amount;
-                document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
-            });
-        }
-        pay.on(CLICK, function(){
-            var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
-                payWay = $('input[name=payment]:checked').val(),
-                openId = '';
-            //alert(payWay);
-            if(payWay == '3'){
-                //alert("wxpay");
-            	callwxpay();
-                /*
-              $.ajax({
-                    type: 'PUT',
-                    url: orderUrls,
-                    data: {'action':'payment','pay_way':payWay,'openId':'oL94Rs7rmq5KCz7ljaYoOZhA6evk'},
-                    dataType: 'json',
-                    async:false,
-                    cache:false,
-                    crossDomain:true,
-                    timeout:30000,
-                    success: function(data){alert(data);console.log(data);
-                        if(data.code ==200){
-                            //self.location=document.referrer;
-                        }
-                    },
-                    error: function(xhr, type){
-                        alert('网络超时!')
-                    }
-                })
-                */
-               // window.open('/my/wechat.php?orderNo='+order_no+'&accessToken='+user.token);
-               // return false;
-            }else if(payWay == '2'){
-                alert('暂时没有支付宝支付');
-                return false;
-            }else{
-            	window.location.href="../payOffline.html";
-                /*
-                $.ajax({
-                    type: 'PUT',
-                    url: orderUrls,
-                    data: {'action':'payment','pay_way':payWay},
-                    dataType: 'json',
-                    async:false,
-                    cache:false,
-                    crossDomain:true,
-                    timeout:30000,
-                    success: function(data){
-                        if(data.code ==200){
-                            self.location=document.referrer;
-                        }
-                    },
-                    error: function(xhr, type){
-                        alert('网络超时!')
-                    }
-                })
-                */
             }
+            document.getElementById('total').innerHTML  = '&yen;'+total_amount;
+            document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
         });
-        if(wei)
-            alipay.attr('style','display:none');
-        else
-            wechat.attr('style','display:none');
-        function isWeiXn(){
-            var ua = navigator.userAgent.toLowerCase();
-            if(ua.match(/MicroMessenger/i)=="micromessenger")
-                return true;
-            else
-                return false;
+    }
+    pay.on(CLICK, function(){
+        var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
+            payWay = $('input[name=payment]:checked').val();
+        if(payWay == '3'){
+            //callwxpay();
+            $.ajax({
+                type: 'PUT',
+                url: orderUrls,
+                data: {'action':'payment', 'pay_way':payWay, 'trade_type':'JSAPI'},
+                dataType: 'json',
+                async:false,
+                cache:false,
+                crossDomain:true,
+                timeout:30000,
+                success: function(data){
+                    if(data.code ==200){
+                        self.location=document.referrer;
+                    }
+                },
+                error: function(xhr, type){
+                    alert('网络超时!')
+                }
+            })
+        }else if(payWay == '2'){
+            alert('暂时没有支付宝支付');
+            return false;
+        }else{
+            //window.location.href="../payOffline.html";
+            $.ajax({
+                type: 'PUT',
+                url: orderUrls,
+                data: {'action':'payment','pay_way':payWay},
+                dataType: 'json',
+                async:false,
+                cache:false,
+                crossDomain:true,
+                timeout:30000,
+                success: function(data){
+                    if(data.code ==200){
+                        self.location=document.referrer;
+                    }
+                },
+                error: function(xhr, type){
+                    alert('网络超时!')
+                }
+            })
         }
-	</script>
+    });
+    if(wei)
+        alipay.attr('style','display:none');
+    else
+        wechat.attr('style','display:none');
+    function isWeiXn(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger")
+            return true;
+        else
+            return false;
+    }
+    </script>
 </body>
 </html>

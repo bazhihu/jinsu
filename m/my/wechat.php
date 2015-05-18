@@ -2,7 +2,6 @@
 ini_set('date.timezone','Asia/Shanghai');
 //error_reporting(E_ERROR);
 @define("WEB_ROOT", "/www/youaiyihu.com");
-//@define("WEB_ROOT", "/../..");
 require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
@@ -21,8 +20,8 @@ $totalAmount=$_REQUEST["totalAmount"]*100;
 //统一下单
 $input = new WxPayUnifiedOrder();
 $input->SetBody("优爱医护订单");
-$input->SetAttach($_REQUEST["orderNo"]);
-$input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
+//$input->SetAttach('');//WxPayConfig::MCHID.date("YmdHis")
+$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
 $input->SetTotal_fee(1);

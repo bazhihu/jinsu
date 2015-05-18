@@ -249,7 +249,7 @@ getConfigs(function(configs) {
                         timeout:30000,
                         success: function(data){
                             if(data.code ==200){
-                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+"&nonce_str='+data.data.payment.nonce_str;
+                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
                             }
                         },
                         error: function(xhr, type){

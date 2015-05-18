@@ -1,6 +1,7 @@
 function setValueByHash(value) {
+    console.log(value+":"+departments.getAttribute('data-value'))
     value && [].forEach.call(document.querySelector('.departments li'), function (li) {
-        $(li)[sites.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
+        $(li)[departments.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
     });
 }
 

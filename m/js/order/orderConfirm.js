@@ -206,7 +206,7 @@ getConfigs(function(configs) {
                     }else if(pay_way==3){
                         $.ajax({
                             type: 'POST',
-                            url: orderUrls,
+                            url: orderCreate,
                             data: {'action':'payment', 'pay_way':pay_way, 'trade_type':'JSAPI'},
                             dataType: 'json',
                             async:false,

@@ -417,4 +417,22 @@ return array (
       '@yii/imagine' => $vendorDir . '/yiisoft/yii2-imagine',
     ),
   ),
+  'scotthuangzl/yii2-google-chart' => 
+  array (
+    'name' => 'scotthuangzl/yii2-google-chart',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@scotthuangzl/googlechart' => $vendorDir . '/scotthuangzl/yii2-google-chart',
+    ),
+  ),
+  'miloschuman/yii2-highcharts-widget' => 
+  array (
+    'name' => 'miloschuman/yii2-highcharts-widget',
+    'version' => '4.1.5.0',
+    'alias' => 
+    array (
+      '@miloschuman/highcharts' => $vendorDir . '/miloschuman/yii2-highcharts-widget/src',
+    ),
+  ),
 );

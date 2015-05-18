@@ -17,6 +17,8 @@ $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 
 $totalAmount=$_REQUEST["totalAmount"]*100;
+if($_REQUEST["totalAmount"]>$_REQUEST["walletMoney"]) $needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+
 //统一下单
 $input = new WxPayUnifiedOrder();
 $input->SetBody("优爱医护订单");
@@ -100,20 +102,20 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     <section class="menu" role="menu">
             <span class="menuitem" role="menuitem">
                 <em class="title">订单总金额：</em>
-                <i class="value" id="total"></i>
+                <i class="value" id="total"><?=$_REQUEST["totalAmount"]?></i>
             </span>
     </section>
 
     <section class="menu" role="menu">
 			<span class="menuitem" role="menuitem">
 				<em class="title">钱包余额：</em>
-				<i class="value" id="balance"></i>
+				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
 			</span>
     </section>
 
     <section class="payments menu" role="menu" style="display: none;">
         <header class="menu-header">
-            <span class="more">还需支付：<em id="needPay">0</em>元</span>
+            <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
             <input type="hidden" name="needPay" id="payMoney">
             <h3 class="menu-title"></h3>
         </header>

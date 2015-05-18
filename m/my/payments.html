@@ -106,7 +106,8 @@
                     timeout:30000,
                     success: function(data){
                         if(data.code ==200){
-                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
+                            alert('/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str);
+                            //self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
                         }
                     },
                     error: function(xhr, type){

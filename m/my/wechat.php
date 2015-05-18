@@ -68,7 +68,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                     window.location.href="../payOnline.html";
                 }else{
                     //alert("./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount);
-                    //window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
+                    window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });
     }

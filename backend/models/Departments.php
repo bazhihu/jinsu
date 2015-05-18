@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use common\models\Redis;
 
 /**
  * This is the model class for table "{{%departments}}".
@@ -13,6 +14,8 @@ use Yii;
  */
 class Departments extends \yii\db\ActiveRecord
 {
+    private static $_keyPrefix = 'departments';
+
     /**
      * @inheritdoc
      */
@@ -51,8 +54,14 @@ class Departments extends \yii\db\ActiveRecord
      * @return string
      * @author zhangbo
      */
-    static public function getName($id){
-        return self::findOne($id)->name;
+    static function getName($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data['name'];
     }
 
     /**
@@ -86,25 +95,22 @@ class Departments extends \yii\db\ActiveRecord
         }
         return $list;
     }
+
     /**
      * 根据ID获取科室的NAME
      * @param string $IdStr
      * @return null|string
      */
-    static public function getDepartmentName($IdStr){
+    static public function getDepartmentNames($IdStr){
         $data = null;
         $ids = explode(',', $IdStr);
         if(empty($ids)) return null;
 
         $result = [];
         foreach ($ids as $id) {
-            if($id){
-                $findArr = ['id' => $id];
-                $result[] = self::findOne($findArr)['name'];
-            }
+            $result[] = self::getName($id);
         }
-        $data .= implode('、',$result);
-
+        $data .= implode('、', $result);
 
         return $data;
     }
@@ -139,5 +145,25 @@ class Departments extends \yii\db\ActiveRecord
                 }
             }
         }
+    }
+
+    /**
+     * 删除缓存
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes){
+        parent::afterSave($insert, $changedAttributes);
+        $keys = Redis::keys(self::$_keyPrefix.'/*');
+        Redis::del($keys);
+    }
+
+    /**
+     * 删除缓存
+     */
+    public function afterDelete(){
+        parent::afterDelete();
+        $keys = Redis::keys(self::$_keyPrefix.'/*');
+        Redis::del($keys);
     }
 }

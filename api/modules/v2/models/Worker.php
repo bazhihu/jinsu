@@ -38,7 +38,7 @@ class Worker extends ActiveRecord
             $params[$key]['education']       = \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = \backend\models\Worker::getCertificateName($value['certificate']);
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
-            $params[$key]['office_id']       = Departments::getDepartmentName($value['office_id']);
+            $params[$key]['office_id']       = Departments::getDepartmentNames($value['office_id']);
             $params[$key]['pic'] = \backend\models\Worker::workerPic($value['worker_id'], 120);
             unset($params[$key]['idcard'], $params[$key]['phone1'], $params[$key]['phone2']);
         }

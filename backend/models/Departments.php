@@ -87,25 +87,25 @@ class Departments extends \yii\db\ActiveRecord
         return $list;
     }
     /**
-     * 根据ID获取医院的NAME
-     * @param int $IdStr
-     * @return static[]
+     * 根据ID获取科室的NAME
+     * @param string $IdStr
+     * @return null|string
      */
-
-    static public  function  getDepartmentName($IdStr=''){
+    static public function getDepartmentName($IdStr){
         $data = null;
-        if($IdStr){
-            $ids = explode(',',$IdStr);
-            if($ids) {
-                foreach ($ids as $id) {
-                    if($id){
-                        $findArr = ['id' => $id];
-                        $result[] = self::findOne($findArr)['name'];
-                    }
-                }
-                $data .= implode('、',$result);
+        $ids = explode(',', $IdStr);
+        if(empty($ids)) return null;
+
+        $result = [];
+        foreach ($ids as $id) {
+            if($id){
+                $findArr = ['id' => $id];
+                $result[] = self::findOne($findArr)['name'];
             }
         }
+        $data .= implode('、',$result);
+
+
         return $data;
     }
 

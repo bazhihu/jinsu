@@ -34,7 +34,9 @@
         "yiisoft/yii2-redis": "~2.0",
         "arturoliveira/yii2-excelview": "*",
         "linslin/yii2-curl": "*",
-        "yiisoft/yii2-imagine": "*"
+        "yiisoft/yii2-imagine": "*",
+        "scotthuangzl/yii2-google-chart": "dev-master",
+        "miloschuman/yii2-highcharts-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

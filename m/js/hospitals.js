@@ -51,7 +51,6 @@ $('.sites').delegate('li', 'click', function () {
 
 $('#header .back').click(function (e) {
     var selected = document.querySelector('.sites .selected');
-
     try {
         window.parent.$.dismissPopup(selected ? { value: selected.getAttribute('data-value'), text: selected.innerText || selected.textContent } : null);
     } catch (error) {

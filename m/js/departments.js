@@ -1,15 +1,17 @@
 function setValueByHash(value) {
+    departments = document.querySelector('.departments');
+    console.log(value+":"+departments.getAttribute('data-value'))
     value && [].forEach.call(document.querySelector('.departments li'), function (li) {
-        $(li)[sites.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
+        $(li)[departments.getAttribute('data-value') == value ? 'addClass' : 'removeClass']('selected');
     });
 }
 
 function fillList(data, append) {
-    var s = '', sites = sites = document.querySelector('.departments'), className = ' class="recommends"';
+    var s = '', departments = document.querySelector('.departments'), className = ' class="recommends"';
     data.forEach(function (e) {
         s += '<li' + className + ' data-value="' + e.id + '">' + e.name + '</li>';
     });
-    sites.innerHTML = s;
+    departments.innerHTML = s;
 }
 
 function onSearchChange() {

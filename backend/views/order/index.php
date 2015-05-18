@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 //use yii\widgets\Pjax;
 use backend\models\OrderMaster;
-use backend\models\OrderPatient;
+//use backend\models\OrderPatient;
 use backend\models\Hospitals;
 /**
  * @var yii\web\View $this
@@ -80,19 +80,18 @@ td .btn{margin: 2px}
                 'style' => 'width:110px',
             ]
         ],
-        'worker_no',
         'worker_name',
         'patient_name',
         [
             'attribute'=>'hospital_id',
-            'filterType'=>GridView::FILTER_SELECT2,
-            'filter'=>Hospitals::getList(),
-            'filterInputOptions'=>['placeholder'=>'请选择'],
-            'filterWidgetOptions'=>[
-                'pluginOptions'=>['allowClear'=>true]
-            ],
             'value'=>function($model){
                 return Hospitals::getName($model->hospital_id);
+            }
+        ],
+        [
+            'attribute'=>'department_id',
+            'value'=>function($model){
+                return \backend\models\Departments::getName($model->department_id);
             }
         ],
         [
@@ -229,6 +228,7 @@ td .btn{margin: 2px}
         'condensed'=>true,
         'bordered'=>false,
         'floatHeader'=>true,
+        //'showPageSummary' => true,
 
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',

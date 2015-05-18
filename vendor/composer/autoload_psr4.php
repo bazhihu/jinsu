@@ -19,6 +19,8 @@ return array(
     'yii\\authclient\\' => array($vendorDir . '/yiisoft/yii2-authclient'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
     'warrence\\kartikgii\\' => array($vendorDir . '/warrence/yii2-kartikgii'),
+    'scotthuangzl\\googlechart\\' => array($vendorDir . '/scotthuangzl/yii2-google-chart'),
+    'miloschuman\\highcharts\\' => array($vendorDir . '/miloschuman/yii2-highcharts-widget/src'),
     'mdm\\admin\\' => array($vendorDir . '/mdmsoft/yii2-admin'),
     'linslin\\yii2\\curl\\' => array($vendorDir . '/linslin/yii2-curl'),
     'kartik\\widgets\\' => array($vendorDir . '/kartik-v/yii2-widgets'),

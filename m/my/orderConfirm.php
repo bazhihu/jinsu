@@ -1,7 +1,16 @@
 ﻿<?php 
 ini_set('date.timezone','Asia/Shanghai');
 //error_reporting(E_ERROR);
-@define("WEB_ROOT", "/www/youaiyihu.com/");
+
+if($_SERVER['HTTP_HOST']=='dev.m.youaiyihu.com'){
+    define("WEB_ROOT", "D:/work/youaiyihu/");
+}elseif($_SERVER['HTTP_HOST']=='sit.m.youaiyihu.com'){
+    define("WEB_ROOT", "/www/youaiyihu.com/");
+}if($_SERVER['HTTP_HOST']=='uat.m.youaiyihu.com'){
+    define("WEB_ROOT", "/www/youaiyihu.com/");
+}if($_SERVER['HTTP_HOST']=='m.youaiyihu.com'){
+    define("WEB_ROOT", "/www/youaiyihu.com/");
+}
 require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/log.php";

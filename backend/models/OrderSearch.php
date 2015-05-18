@@ -15,7 +15,7 @@ class OrderSearch extends OrderMaster
     public function rules()
     {
         return [
-            [['order_no', 'uid', 'hospital_id', 'worker_level', 'worker_no'], 'integer'],
+            [['order_no', 'uid', 'hospital_id', 'department_id', 'worker_level', 'worker_no'], 'integer'],
             [['order_no', 'mobile', 'patient_name', 'start_time', 'end_time', 'reality_end_time', 'order_status', 'worker_name'], 'safe'],
             [['total_amount'], 'number'],
             [['start_time', 'end_time'], 'required', 'on'=>'chart'],
@@ -66,6 +66,7 @@ class OrderSearch extends OrderMaster
             'patient_state' => $this->patient_state,
             'worker_no' => $this->worker_no,
             'mobile' => $this->mobile,
+            'department_id' => $this->department_id,
             'order_status' => $this->order_status
         ]);
 

@@ -92,7 +92,7 @@ class PayNotifyCallBack extends WxPayNotify
             return 'fail';
         }
         if($wechatLog->trade_state == 'SUCCESS'){
-            return 'success';
+            return 'ok';
         }
         if($wechatLog->total_fee != $post['total_fee']){
             Yii::info('交易金额错误', 'api');
@@ -111,6 +111,6 @@ class PayNotifyCallBack extends WxPayNotify
             Yii::info('支付日志保存失败:'.print_r($wechatLog->getErrors(), true), 'api');
         }
         $this->_logModel = $wechatLog;
-        return 'success';
+        return 'ok';
     }
 }

@@ -1,8 +1,8 @@
 <?php
 ini_set('date.timezone','Asia/Shanghai');
 //error_reporting(E_ERROR);
-//@define("WEB_ROOT", "/www/youaiyihu.com");
-@define("WEB_ROOT", "/../..");
+@define("WEB_ROOT", "/www/youaiyihu.com");
+//@define("WEB_ROOT", "/../..");
 require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/log.php";

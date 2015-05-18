@@ -17,22 +17,7 @@ class PayNotifyCallBack extends WxPayNotify
 {
     public $_logModel = null;
     //查询订单
-    public function Queryorder($transaction_id)
-    {
-        $input = new WxPayOrderQuery();
-        $input->SetTransaction_id($transaction_id);
-        $result = WxPayApi::orderQuery($input);
-        if(array_key_exists("return_code", $result)
-            && array_key_exists("result_code", $result)
-            && $result["return_code"] == "SUCCESS"
-            && $result["result_code"] == "SUCCESS")
-        {
-            return true;
-        }
-        return false;
-    }
 
-    //重写回调处理函数
     public function NotifyProcess($data, &$msg)
     {
         if(!array_key_exists("transaction_id", $data)){
@@ -76,6 +61,24 @@ class PayNotifyCallBack extends WxPayNotify
         }
         return true;
     }
+
+    //重写回调处理函数
+
+    public function Queryorder($transaction_id)
+    {
+        $input = new WxPayOrderQuery();
+        $input->SetTransaction_id($transaction_id);
+        $result = WxPayApi::orderQuery($input);
+        if(array_key_exists("return_code", $result)
+            && array_key_exists("result_code", $result)
+            && $result["return_code"] == "SUCCESS"
+            && $result["result_code"] == "SUCCESS")
+        {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 判断交易是否存在
      * @param array $post 交易号
@@ -108,6 +111,6 @@ class PayNotifyCallBack extends WxPayNotify
             Yii::info('支付日志保存失败:'.print_r($wechatLog->getErrors(), true), 'api');
         }
         $this->_logModel = $wechatLog;
-        return 'ok';
+        return 'success';
     }
 }

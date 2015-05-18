@@ -52,9 +52,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 <script src="../js/public.js"></script>
 <script>
     var orderNo='<?=$_REQUEST["orderNo"]?>';
-    var totalAmount='<?=$_REQUEST["walletMoney"]?>';
+    var totalAmount='<?=$_REQUEST["total_amount"]?>';
     loggedIn();
-    callwxpay();
+
     //调用微信JS api 支付
     function jsApiCall()
     {
@@ -67,8 +67,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
                 }else{
-                    //alert("./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount);
-                    //window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
+                    window.location.href="./payments.html?orderNo="+orderNo+"&totalAmount="+totalAmount;
                 }
             });
     }
@@ -85,6 +84,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
             jsApiCall();
         }
     }
+    callwxpay();
     if(wei)
         alipay.attr('style','display:none');
     else

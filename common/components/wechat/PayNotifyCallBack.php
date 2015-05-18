@@ -88,7 +88,7 @@ class PayNotifyCallBack extends WxPayNotify
 
         $wechatLog = WechatLog::findOne(['transaction_no' => $post['out_trade_no'], 'total_fee'=> $post['total_fee']]);
         if(empty($wechatLog)){
-            Yii::info('未找到交易记录:out_trade_no='.$post['attach'], 'api');
+            Yii::info('未找到交易记录:out_trade_no='.$post['out_trade_no'], 'api');
             return 'fail';
         }
         if($wechatLog->trade_state == 'SUCCESS'){

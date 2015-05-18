@@ -51,7 +51,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入手机号...',
                                     'maxlength'=>11,
-                                    'style'=>'width:25%',
+                                    'style'=>'width:26%',
                                     'readOnly'=>$model->isNewRecord ? false : true,
                                     //用户来电将电话号码显示在表单中
                                     'value'=>isset($_GET['callid'])? $_GET['callid'] : $model->mobile
@@ -62,21 +62,21 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入联系人姓名...',
                                     'maxlength'=>4,
-                                    'style'=>'width:25%'
+                                    'style'=>'width:26%'
                                 ],
                             ],
                             'contact_telephone'=>[
                                 'type'=> Form::INPUT_TEXT,
                                 'options'=>[
                                     'placeholder'=>'请输入备用电话...',
-                                    'style'=>'width:25%'
+                                    'style'=>'width:26%'
                                 ],
                             ],
 //                            'contact_address'=>[
 //                                'type'=> Form::INPUT_TEXT,
 //                                'options'=>[
 //                                    'placeholder'=>'请输入住址...',
-//                                    'style'=>'width:25%'
+//                                    'style'=>'width:26%'
 //                                ],
 //                            ],
                         ]
@@ -92,14 +92,14 @@ use backend\models\OrderPatient;
                     <?php
                     echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                         'data' => Hospitals::getList(),
-                        'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:25%'],
+                        'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:26%'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
                     ])->label('医院');
                     echo $form->field($model, 'department_id')->widget(Select2::classname(), [
                         'data' => Departments::getList(),
-                        'options' => ['placeholder' => '请选择科室...','style'=>'width:25%'],
+                        'options' => ['placeholder' => '请选择科室...','style'=>'width:26%'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
@@ -117,7 +117,7 @@ use backend\models\OrderPatient;
                     echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
                         'hideSearch' => true,
                         'data' => Worker::getWorkerLevel(),
-                        'options' => ['placeholder' => '请选择护工等级...','style'=>'width:25%'],
+                        'options' => ['placeholder' => '请选择护工等级...','style'=>'width:26%'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
@@ -191,7 +191,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入姓名...',
                                     'maxlength'=>6,
-                                    'style'=>'width:25%'
+                                    'style'=>'width:26%'
                                 ],
                             ],
                             'gender'=>[
@@ -206,7 +206,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入年龄...',
                                     'maxlength'=>3,
-                                    'style'=>'width:25%'
+                                    'style'=>'width:26%'
                                 ],
                             ],
                         ]
@@ -227,7 +227,7 @@ use backend\models\OrderPatient;
                             ['inline'=>true]
                         )->label('患者健康状况');
                     echo $form->field($orderPatientModel, 'in_hospital_reason')
-                        ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:25%']);
+                        ->input('text', ['placeholder'=>'请输入住院原因...', 'style'=>'width:26%']);
 
                     echo Form::widget([
                         'model' => $orderPatientModel,
@@ -240,7 +240,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'options'=>[
                                         'placeholder'=>'请选择住院日期...',
-                                        'style'=>'width:19%',
+                                        'style'=>'width:26%',
                                     ],
                                     'pickerButton'=>['title'=>'请选择住院日期'],
                                     'pluginOptions'=>[
@@ -254,9 +254,9 @@ use backend\models\OrderPatient;
                     ]);
 
                     echo $form->field($orderPatientModel, 'room_no')
-                        ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:25%']);
+                        ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:26%']);
                     echo $form->field($orderPatientModel, 'bed_no')
-                        ->input('text', ['placeholder'=>'请输入床号...', 'style'=>'width:25%']);
+                        ->input('text', ['placeholder'=>'请输入床号...', 'style'=>'width:26%']);
                     ?>
                 </div>
             </div>

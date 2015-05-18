@@ -192,65 +192,71 @@ getConfigs(function(configs) {
             $("#pay").live('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
-                var need_pay = $('#need_pay').val();
-                 //alert(need_pay+"#"+pay_way);
-                if(need_pay<0){
-                    var pay_way=1;
-                    var url = "payOnline.html";
-                }else{
-                	//alert(pay_way)
-                    if(pay_way==1) {
-                        var url = "payOffline.html";
-                    }else if(pay_way==2){
-                        var url = "payOnline.html";
-                    }else if(pay_way==3){
-                        $.ajax({
-                            type: 'POST',
-                            url: orderCreate,
-                            data: {'action':'payment', 'pay_way':pay_way, 'trade_type':'JSAPI'},
-                            dataType: 'json',
-                            async:false,
-                            cache:false,
-                            crossDomain:true,
-                            timeout:30000,
-                            success: function(data){
-                                if(data.code ==200){
-                                    self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&nonce_str='+data.data.payment.nonce_str;
-                                }
-                            },
-                            error: function(xhr, type){
-                                alert('网络超时!')
-                            }
-                        });
-                    	//callwxpay();
-                        var url = "../payOnline.html";
-                    }
+                if(need_pay<0) {
+                    var pay_way = 1;
                 }
 
-                var post_data = {
-                    'uid':userInfo.id,
-                    'mobile':mobile,
-                    'hospital_id':hospital_id,
-                    'department_id':1,
-                    'worker_level':worker_level,
-                    'worker_no':worker_no,
-                    'start_time': start_time,
-                    'end_time': end_time,
-                    'patient_state':1,
-                    'pay_way':pay_way
-                };
+                //当面支付或者余额支付
+                if(pay_way==1) {
+                    var post_data = {
+                        'uid':userInfo.id,
+                        'mobile':mobile,
+                        'hospital_id':hospital_id,
+                        'department_id':1,
+                        'worker_level':worker_level,
+                        'worker_no':worker_no,
+                        'start_time': start_time,
+                        'end_time': end_time,
+                        'patient_state':1,
+                        'pay_way':pay_way
+                    };
 
-                $.post(orderCreate,post_data,function(post_response){
-                    if(post_response.code == 200){
-                        location.href=url;
-                    }else if(post_response.code == 400){
-                        //alert('支付失败！');
-                        location.href=url;
-                    }else if(post_response.code == 500){
-                        alert('支付失败！');
-                        location.href=url;
-                    }
-                },"json");
+                    $.post(orderCreate,post_data,function(post_response){
+                        if(post_response.code == 200){
+                            location.href= "../payOffline.html";
+                        }else{
+                            alert('支付失败！');
+                            location.href= "../payOffline.html";
+                        }
+                    },"json");
+                }else if(pay_way==2){
+                    //支付宝支付
+                    var url = "../payOnline.html";
+                }else if(pay_way==3){
+                    //微信支付
+                    $.ajax({
+                        type: 'POST',
+                        url: orderCreate,
+                        data:{
+                            'uid':userInfo.id,
+                            'mobile':mobile,
+                            'hospital_id':hospital_id,
+                            'department_id':1,
+                            'worker_level':worker_level,
+                            'worker_no':worker_no,
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'patient_state':1,
+                            'pay_way':pay_way,
+                            'action':'payment',
+                            'trade_type':'JSAPI'
+                        },
+                        dataType: 'json',
+                        async:false,
+                        cache:false,
+                        crossDomain:true,
+                        timeout:30000,
+                        success: function(data){
+                            console.log(data);
+                            if(data.code ==200){
+                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&nonce_str='+data.data.payment.nonce_str;
+                            }
+                        },
+                        error: function(xhr, type){
+                            alert('网络超时!')
+                        }
+                    });
+                }
             });
         }
     });

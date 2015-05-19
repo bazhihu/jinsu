@@ -94,7 +94,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                     'class'=>'btn btn-primary jsEvaluateOrder'
                 ]);
             }
-
             ?>
         </div>
     </div>
@@ -109,7 +108,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     }else{
         $payButton = null;
     }
-
     echo DetailView::widget([
         'model' => $model,
         'condensed'=>false,
@@ -162,7 +160,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             'cancel_time',
             [
                 'attribute'=>'customer_service_id',
-                'value'=>\backend\models\AdminUser::getInfo($model->customer_service_id, 'staff_name').'('.$model->operator_id.')'
+                'value'=>\backend\models\AdminUser::getInfo($model->customer_service_id, 'staff_name').'('.$model->customer_service_id.')'
             ],
             'remark',
             [

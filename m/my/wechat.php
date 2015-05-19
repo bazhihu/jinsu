@@ -125,6 +125,5 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         </header>
     </section>
 <div id="foot"></div>
-<script type="text/javascript" src="../js/public.js"></script>
 </body>
 </html>

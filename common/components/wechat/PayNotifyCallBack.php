@@ -43,11 +43,16 @@ class PayNotifyCallBack extends WxPayNotify
             return false;
         }
 
+        #区分测试和正式环境
+        if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
+            $data['total_fee'] = 1000;
+        }
+
         //给用户钱包加钱
         $params = [
             'uid' => $this->_logModel->uid,
             'pay_from' => WalletUserDetail::PAY_FROM_WECHAT,
-            'money' => 1000 //$data['total_fee']
+            'money' => $data['total_fee'] //todo zq
         ];
 
         Wallet::recharge($params);
@@ -112,6 +117,7 @@ class PayNotifyCallBack extends WxPayNotify
         }else{
             $post['fee_type'] = 2;
         }
+        $post['open_id'] = $post['openid'];
 
         //保存支付日志
         $wechatLog->setAttributes($post);

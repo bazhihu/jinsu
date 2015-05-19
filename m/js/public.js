@@ -23,7 +23,7 @@ if(window.location.host=='dev.m.youaiyihu.com'){
 var UA = window.navigator.userAgent.toLowerCase(),
     CLICK = 'click',
     version = 'v1/',
-    version_v2 = 'v2/'
+    version_v2 = 'v2/',
     ID = 'SID',
     NAME = 'name',
     TOKEN = 'youaiyihu',
@@ -188,19 +188,6 @@ function getWallets(id, token, callback){
         })
     })(Zepto);
 }
-
-function getUser(id, token, callback){
-    ;(function($){
-        var url = userUrl+'/'+id+'?access-token='+token;
-        $.getJSON(url, function(back){
-            if(back.code==200)
-                callback(back.data);
-            else
-                callback(false);
-        })
-    })(Zepto);
-}
-
 /**
  * 获取url 参数
  * @param name

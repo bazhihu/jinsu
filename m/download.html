@@ -8,18 +8,71 @@
 	<link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-download">
-	<img src="../images/download.png" width="284" height="268" alt="您的贴身护理员 手机选择 即刻下单 信息透明 真实可靠" />
-    <a class="download"  role="button">立即下载</a>
+    <header id="header">
+        <a class="back" href="javascript:history.back(-1)">返回</a>
+        <h2 class="title">立即下载</h2>
+        <a class="home" href="/">首页</a>
+    </header>
+    <div id="down">
+        <img src="../images/download.png" width="284" height="268" alt="您的贴身护理员 手机选择 即刻下单 信息透明 真实可靠" />
+        <a class="download"  role="button">立即下载</a>
+    </div>
+    <div id="weixin" style="display: none"><img src="../images/4.png"></div>
     <div id="foot"></div>
     <script type='text/javascript' src='../js/zepto-with-touch.min.js'></script>
     <script type="text/javascript" src="../js/public.js"></script>
     <script>
         $('.download').on(CLICK,function(){
+            var ifrSrc="yayhapp://cn.md.dt/";//APP协议头，由APP开发人员定义提供
             if(navigator.userAgent.toLowerCase().match(/(iphone|ipad|ipod|ios)/i)){
-                window.location = "mqq:open";
-                setTimeout(function(){window.location="http://itunes.apple.com/cn/app/qq-2011/id444934666?mt=8";}, 30);
-            }else  if(navigator.userAgent.toLowerCase().match(/android/i)){
-                window.location = "http://www.youaiyihu.com/download/youaiyihu-android-release.apk";
+                document.location ="downloadIos.html";
+//                //IOS
+//                var hasApp = true;//是否安装了app
+//                var t1 = Date.now();
+//                var ifr = document.createElement('iframe');
+//                ifr.src = ifrSrc ;
+//                ifr.style.display = 'none';
+//                document.body.appendChild(ifr);
+//                setTimeout(function(){
+//                    document.body.removeChild(ifr);
+//                },1000);
+//                var t2 = Date.now();
+//                if(t2-t1<100){
+//                    hasApp = false;
+//                }
+//                if(!hasApp){//如果没安装，再打开下载地址
+//                    document.location = "跳转到appstore地址";
+//                }
+            }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
+                //微信
+                $('#weixin').show();
+                $('#down').hide();
+            }else if(navigator.userAgent.toLowerCase().match(/linux/i)){
+                //安卓
+                if(navigator.userAgent.toLowerCase().match(/android/i)){
+                    var openAppHref=document.createElement('a');
+                    openAppHref.id="openApp";
+                    openAppHref.href='javascript:void(0)';
+                    openAppHref.style.display = 'none';
+                    document.body.appendChild(openAppHref);
+
+                    document.getElementById('openApp').onclick = function(e){
+                        var ifr = document.createElement('iframe');
+                        ifr.src = ifrSrc ;
+                        ifr.style.display = 'none';
+                        document.body.appendChild(ifr);
+                        setTimeout(function(){
+                            document.body.removeChild(ifr);
+                        },1000);
+                    };
+
+                    var e = document.createEvent("MouseEvents");
+                    e.initEvent("click", true, true);
+                    document.getElementById("openApp").dispatchEvent(e);
+                    location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk";
+                }
+            }else{
+                location.location ="http://download.youaiyihu.com/youaiyihu-android-release.apk";
             }
         });
     </script>

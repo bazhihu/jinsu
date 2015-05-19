@@ -1,7 +1,6 @@
 //统计代码
 var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
-$('#foot').html(tongJi);
-console.log($('#foot').html);
+document.getElementById('foot').innerHTML=tongJi;
 
 /**
  * 从客户端过来，部分页面隐藏头部
@@ -58,18 +57,21 @@ function getStatus() {
     }
     return JSON.parse('{"id":"'+id+'","name":"'+name+'","token":"'+token+'"}');
 }
+
 function loggedIn(){
     var user = getStatus();
     if(!user){
         location.href = urlToLogin;
     }
 }
+
 function setCookie(name,value) {
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
     document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString() +';path=/';
 }
+
 function getCookie(name) {
     var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
     if(arr=document.cookie.match(reg))
@@ -77,6 +79,7 @@ function getCookie(name) {
     else
         return null;
 }
+
 /**
  * 通过json方式获取借口数据
  * @param url：接口url
@@ -89,6 +92,7 @@ function getDataJson(url){
         })
     })(Zepto);
 }
+
 function delCookie(name) {
     var exp = new Date();
     exp.setTime(exp.getTime() - 24*60*60*1000);
@@ -103,6 +107,7 @@ function postComment(param,callback){
             callback(false);
     });
 }
+
 function getComment(workerId, callback){
     var user = getStatus();
     if(!user){
@@ -115,8 +120,8 @@ function getComment(workerId, callback){
     }else{
         callback('error');
     }
-
 }
+
 function cycles(){
     var cycle = getCookie(CYCLE),
         time = new Date().getTime(),
@@ -130,6 +135,7 @@ function cycles(){
     }
     return false;
 }
+
 function getConfigs(callback){
     var configs = JSON.parse(localStorage.getItem(CONFIGS)),
         cycle = cycles();
@@ -144,9 +150,11 @@ function getConfigs(callback){
         callback(configs);
     }
 }
+
 function setConfigs(value){
     localStorage.setItem(CONFIGS,value);
 }
+
 function deploy(callback){
     $.getJSON(configUrl, function(e){
         if(e.code==200){
@@ -156,6 +164,7 @@ function deploy(callback){
         }
     })
 }
+
 function getUsers(id, token, callback){
     ;(function($){
         var url = userUrl+'/'+id+'?access-token='+token;
@@ -167,6 +176,7 @@ function getUsers(id, token, callback){
         })
     })(Zepto);
 }
+
 function getWallets(id, token, callback){
     ;(function($){
         var url = walletUrl+'/'+id+'?access-token='+token;
@@ -178,6 +188,7 @@ function getWallets(id, token, callback){
         })
     })(Zepto);
 }
+
 function getUser(id, token, callback){
     ;(function($){
         var url = userUrl+'/'+id+'?access-token='+token;
@@ -189,6 +200,7 @@ function getUser(id, token, callback){
         })
     })(Zepto);
 }
+
 /**
  * 获取url 参数
  * @param name
@@ -204,6 +216,7 @@ function getLocal(){
     var configs = localStorage.getItem(CONFIGS);
     return configs;
 }
+
 function setLocal(value){
     localStorage.setItem(CONFIGS,value);
 }
@@ -231,6 +244,7 @@ function getOrderCycle(startTime,endTime){
     }
     return days;
 }
+
 /**
  * 时间对象的格式化
  * @param format format="yyyy-MM-dd hh:mm:ss";

@@ -101,4 +101,3 @@ Log::DEBUG("begin notify");
 //Log::DEBUG("page info:" . json_encode($_REQUEST));
 $notify = new PayNotifyCallBack();
 $notify->Handle(false);
-

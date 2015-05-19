@@ -9,7 +9,7 @@ require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
 #区分测试和线上回调路径
 $notifyUrl = '';
 $totalAmount=$_REQUEST["totalAmount"];
-$needPay=($_REQUEST["totalAmount"]-$_REQUEST["walletMoney"])*100;
+$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
 if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
     $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
     $needPay = 1;
@@ -28,7 +28,7 @@ $input->SetBody("优爱医护订单");
 $input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
-$input->SetTotal_fee($needPay);
+$input->SetTotal_fee($needPay*100);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");

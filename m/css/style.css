@@ -567,7 +567,7 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 /* 2015-5-18 添加，为 iframe 中的页面添加滚动功能 */
 #page-service-site .scroller-container { position: absolute; width: 100%; height: 100%; left: 0; top: 0; border-top: 113px solid transparent; -webkit-box-sizing: border-box; box-sizing: border-box; }
 #page-service-site .scroller-container #site-scroller { position: relative; width: 100%; height: 100%; overflow: scroll; -webkit-overflow-scrolling: touch; }
-
+#page-service-site #header,#page-service-site .search-sites { position: relative; z-index: 2; }
 
 #page-service-departments { background: #fff; }
 #page-service-departments .search-departments { border: 10px solid #f0efed; border-width: 15px 10px 12px 10px; }
@@ -576,7 +576,7 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 /* 2015-5-18 添加，为 iframe 中的页面添加滚动功能 */
 #page-service-departments .scroller-container { position: absolute; width: 100%; height: 100%; left: 0; top: 0; border-top: 113px solid transparent; -webkit-box-sizing: border-box; box-sizing: border-box; }
 #page-service-departments .scroller-container #departments-scroller { position: relative; width: 100%; height: 100%; overflow: scroll; -webkit-overflow-scrolling: touch; }
-
+#page-service-departments #header, #page-service-departments .search-departments { position: relative; z-index: 2; }
 
 #page-reviews .menuitem .nurses-rate { vertical-align: top; margin-left: 7px; }
 #page-reviews .menuitem .value { margin-right: 0; }

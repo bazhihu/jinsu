@@ -38,25 +38,26 @@
             }else if(navigator.userAgent.toLowerCase().match(/linux/i)){
                 //安卓
                 if(navigator.userAgent.toLowerCase().match(/android/i)){
-                    var hasApp = true;//是否安装了app
-                    var t1 = Date.now();
-                    var ifr = document.createElement('iframe');
-                    ifr.id="ifrid"
-                    ifr.src = ifrSrc ;
-                    ifr.style.display = 'none';
-                    document.body.appendChild(ifr);
-                    setTimeout(function(){
-                        document.body.removeChild(ifr);
-                    },1000);
-                    var t2 = Date.now();
-                    if(t2-t1<45){
-                        hasApp = false;
-                    }
-                    if(!hasApp){
-                        location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk"
-                    }else{
-                        window.location = "youaiyihu:open";
-                    }
+                    var openAppHref=document.createElement('a');
+                    openAppHref.id="openApp";
+                    openAppHref.href='javascript:void(0)';
+                    openAppHref.style.display = 'none';
+                    document.body.appendChild(openAppHref);
+
+                    document.getElementById('openApp').onclick = function(e){
+                        var ifr = document.createElement('iframe');
+                        ifr.src = ifrSrc ;
+                        ifr.style.display = 'none';
+                        document.body.appendChild(ifr);
+                        setTimeout(function(){
+                            document.body.removeChild(ifr);
+                        },1000);
+                    };
+
+                    var e = document.createEvent("MouseEvents");
+                    e.initEvent("click", true, true);
+                    document.getElementById("openApp").dispatchEvent(e);
+                    location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk";
                 }
             }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
                 //微信

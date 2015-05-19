@@ -9,7 +9,7 @@ require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
 #区分测试和线上回调路径
 $notifyUrl = '';
 $totalAmount=$_REQUEST["totalAmount"];
-$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+$needPay=($_REQUEST["totalAmount"]-$_REQUEST["walletMoney"])*100;
 if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
     $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
     $needPay = 1;

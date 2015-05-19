@@ -124,6 +124,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
             <h3 class="menu-title">微信支付</h3>
         </header>
     </section>
+
 <!--<div id="foot"></div>-->
 </body>
 </html>

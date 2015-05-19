@@ -29,7 +29,7 @@ $input->SetOut_trade_no($_REQUEST["orderNo"]);
 $input->SetTotal_fee(1);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
-//$input->SetGoods_tag("test");
+$input->SetGoods_tag("test");
 $input->SetNotify_url("http://uat.m.youaiyihu.com/my/notify.php");
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openId);
@@ -47,7 +47,34 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     <link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-payments">
-<input type="hidden" id="openId" value="<?=$openId?>">
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">支付方式</h2>
+    <a class="home" href="/">首页</a>
+</header>
+
+    <section class="menu" role="menu">
+            <span class="menuitem" role="menuitem">
+                <em class="title">订单总金额：</em>
+                <i class="value" id="total"><?=$_REQUEST["totalAmount"]?></i>
+            </span>
+    </section>
+
+    <section class="menu" role="menu">
+			<span class="menuitem" role="menuitem">
+				<em class="title">钱包余额：</em>
+				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
+			</span>
+    </section>
+
+    <section class="payments menu" role="menu" >
+        <header class="menu-header">
+            <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
+            <input type="hidden" name="needPay" id="payMoney">
+            <h3 class="menu-title">微信支付</h3>
+        </header>
+    </section>
+<div id="foot"></div>
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
 <script>
@@ -81,7 +108,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         }else{
             jsApiCall();
         }
-    }alert(1111);
+    }
     callwxpay();
     if(wei)
         alipay.attr('style','display:none');
@@ -96,34 +123,5 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     }
 
 </script>
-
-<header id="header">
-    <a class="back" href="javascript:history.back(1)">返回</a>
-    <h2 class="title">支付方式</h2>
-    <a class="home" href="/">首页</a>
-</header>
-
-    <section class="menu" role="menu">
-            <span class="menuitem" role="menuitem">
-                <em class="title">订单总金额：</em>
-                <i class="value" id="total"><?=$_REQUEST["totalAmount"]?></i>
-            </span>
-    </section>
-
-    <section class="menu" role="menu">
-			<span class="menuitem" role="menuitem">
-				<em class="title">钱包余额：</em>
-				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
-			</span>
-    </section>
-
-    <section class="payments menu" role="menu" >
-        <header class="menu-header">
-            <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
-            <input type="hidden" name="needPay" id="payMoney">
-            <h3 class="menu-title">微信支付</h3>
-        </header>
-    </section>
-<!--<div id="foot"></div>-->
 </body>
 </html>

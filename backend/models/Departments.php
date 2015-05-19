@@ -25,46 +25,6 @@ class Departments extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['name', 'parent_id'], 'required'],
-            [['parent_id'], 'integer'],
-            [['name'], 'string', 'max' => 255]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => '科室名称',
-            'parent_id' => '父亲科室',
-        ];
-    }
-
-    /**
-     * 获取科室名称
-     * @param int $id
-     * @return string
-     * @author zhangbo
-     */
-    static function getName($id){
-        $cacheKey = self::$_keyPrefix."/id:".$id;
-        if(!$data = Redis::get($cacheKey)){
-            $data = self::findOne($id);
-            $data && Redis::set($cacheKey, $data);
-        }
-
-        return $data['name'];
-    }
-
-    /**
      * 获取科室列表
      * @param int $hospitalId 医院ID
      * @return static[]
@@ -86,35 +46,6 @@ class Departments extends \yii\db\ActiveRecord
 
         return $list;
     }
-    static public function getParent(){
-        $list = array('0'=>'选择');
-        $result = self::findAll(['parent_id'=>'0']);
-
-        foreach($result as $key=>$val){
-            $list[$val['id']]=$val['name'];
-        }
-        return $list;
-    }
-
-    /**
-     * 根据ID获取科室的NAME
-     * @param string $IdStr
-     * @return null|string
-     */
-    static public function getDepartmentNames($IdStr){
-        $data = null;
-        $ids = explode(',', $IdStr);
-        if(empty($ids)) return null;
-
-        $result = [];
-        foreach ($ids as $id) {
-            $result[] = self::getName($id);
-        }
-        $data .= implode('、', $result);
-
-        return $data;
-    }
-
 
     /**
      * 格式化成树形格式数据
@@ -145,6 +76,77 @@ class Departments extends \yii\db\ActiveRecord
                 }
             }
         }
+    }
+
+    static public function getParent(){
+        $list = array('0'=>'选择');
+        $result = self::findAll(['parent_id'=>'0']);
+
+        foreach($result as $key=>$val){
+            $list[$val['id']]=$val['name'];
+        }
+        return $list;
+    }
+
+    /**
+     * 根据ID获取科室的NAME
+     * @param string $IdStr
+     * @return null|string
+     */
+    static public function getDepartmentNames($IdStr){
+        $data = null;
+        $ids = explode(',', $IdStr);
+        if(empty($ids)) return null;
+
+        $result = [];
+        foreach ($ids as $id) {
+            if($id){
+                $result[] = self::getName($id);
+            }
+        }
+        $data .= implode('、', $result);
+
+        return $data;
+    }
+
+    /**
+     * 获取科室名称
+     * @param int $id
+     * @return string
+     * @author zhangbo
+     */
+    static function getName($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data['name'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'parent_id'], 'required'],
+            [['parent_id'], 'integer'],
+            [['name'], 'string', 'max' => 255]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => '科室名称',
+            'parent_id' => '父亲科室',
+        ];
     }
 
     /**

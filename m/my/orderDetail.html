@@ -16,7 +16,6 @@
     </header>
     <div id="body"></div>
     <script id="bodyTemplate" type='text/html'>
-        {{include 'headTemplate'}}
         <section class="menu">
             <h3 class="menu-title">订单状态：<span>
                 {{if data.order_status=='wait_pay'}}待支付{{/if}}
@@ -105,7 +104,6 @@
                     <a class="evaluate" role="button" data-no="{{data.order_no}}" data-pic="{{data.pic}}" data-name="{{data.worker_name}}" href="#evaluate">评价</a>
                 </div>
             {{/if}}
-        {{include 'footTemplate'}}
     </script>
     <div id="foot"></div>
     <script src='../js/zepto-with-touch.js'></script>

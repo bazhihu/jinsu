@@ -109,6 +109,11 @@
             return false;
         }
 
+        if($("#care-start").val()==$("#care-end").val()){
+            alert("服务开始时间和服务结束时间不能为同一天！");
+            return false;
+        }
+
         if(des){
             alert(des);
             return false;

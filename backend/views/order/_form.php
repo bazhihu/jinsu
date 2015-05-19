@@ -92,14 +92,14 @@ use backend\models\OrderPatient;
                     <?php
                     echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
                         'data' => Hospitals::getList(),
-                        'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:26%'],
+                        'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:40%'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
                     ])->label('医院');
                     echo $form->field($model, 'department_id')->widget(Select2::classname(), [
                         'data' => Departments::getList(),
-                        'options' => ['placeholder' => '请选择科室...','style'=>'width:26%'],
+                        'options' => ['placeholder' => '请选择科室...','style'=>'width:40%'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
@@ -117,7 +117,7 @@ use backend\models\OrderPatient;
                     echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
                         'hideSearch' => true,
                         'data' => Worker::getWorkerLevel(),
-                        'options' => ['placeholder' => '请选择护工等级...','style'=>'width:26%'],
+                        'options' => ['placeholder' => '请选择护工等级...','style'=>'width:40%'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
@@ -134,7 +134,7 @@ use backend\models\OrderPatient;
                         ],
                         'attributes'=>[
                             'date_range' => [
-                                'label' => '<red>*</red>订单时间段',
+                                'label' => '<red>*</red>订单时间',
                                 'attributes'=>[
                                     'start_time' => [
                                         'type'=>Form::INPUT_WIDGET,
@@ -168,7 +168,7 @@ use backend\models\OrderPatient;
                             ],
                         ]
                     ]);
-                    echo $form->field($model, 'remark')->textarea(['rows'=>2]);
+                    echo $form->field($model, 'remark')->textarea(['rows'=>2, 'style'=>'width:90%']);
                     ?>
                 </div>
             </div>
@@ -191,7 +191,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入姓名...',
                                     'maxlength'=>6,
-                                    'style'=>'width:26%'
+                                    'style'=>'width:198px'
                                 ],
                             ],
                             'gender'=>[
@@ -206,17 +206,17 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入年龄...',
                                     'maxlength'=>3,
-                                    'style'=>'width:26%'
+                                    'style'=>'width:198px'
                                 ],
                             ],
                         ]
                     ]);
 
                     echo $form->field($orderPatientModel, 'height', [
-                        'addon' => ['append' => ['content'=>'cm'],'groupOptions'=>['class'=>'col-md-3']]
+                        'addon' => ['append' => ['content'=>'cm'],'groupOptions'=>['style'=>'width:198px']]
                     ]);
                     echo $form->field($orderPatientModel, 'weight', [
-                        'addon' => ['append' => ['content'=>'kg'],'groupOptions'=>['class'=>'col-md-3']]
+                        'addon' => ['append' => ['content'=>'kg'],'groupOptions'=>['style'=>'width:198px']]
                     ]);
                     $orderPatientModel->patient_state = OrderPatient::PATIENT_STATE_OK;
                     echo $form->field($orderPatientModel, 'patient_state')
@@ -237,8 +237,7 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>'\kartik\widgets\DatePicker',
                                 'options'=>[
                                     'options'=>[
-                                        'placeholder'=>'请选择住院日期...',
-                                        'style'=>'width:26%',
+                                        'style'=>'width:120px',
                                     ],
                                     'pickerButton'=>['title'=>'请选择住院日期'],
                                     'pluginOptions'=>[
@@ -252,17 +251,14 @@ use backend\models\OrderPatient;
                     ]);
 
                     echo $form->field($orderPatientModel, 'room_no')
-                        ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:26%']);
+                        ->input('text', ['placeholder'=>'请输入病房号...', 'style'=>'width:198px']);
                     echo $form->field($orderPatientModel, 'bed_no')
-                        ->input('text', ['placeholder'=>'请输入床号...', 'style'=>'width:26%']);
+                        ->input('text', ['placeholder'=>'请输入床号...', 'style'=>'width:198px']);
                     ?>
                 </div>
             </div>
-
-
         </div>
     </div>
-
 
     <?php
     $class = $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary';

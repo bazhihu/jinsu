@@ -37,6 +37,16 @@ function onSearchChange() {
 
 $('.search-sites input').on('input', onSearchChange);
 $('.search-sites input').on('change', onSearchChange);
+
+var siteScroller;
+window.addEventListener('load', function () {
+    onSearchChange();
+
+    /* 如果要流畅的支持 Android 4.0 以前的浏览器，需要使用 iScroll 作为局部滚动方案。 */
+    /* 否则，将使用浏览器的功能来实现滚动：浏览器支持 -webkit-overflow-scrolling 属性时将特别自然流畅；否则将滚动不自然 */
+    //siteScroller = new iScroll(document.getElementById('site-scroller'));
+});
+
 window.addEventListener('load', onSearchChange);
 $('.sites').delegate('li', 'click', function () {
     [].forEach.call(this.parentNode.children, function (li) {

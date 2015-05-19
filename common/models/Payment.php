@@ -96,7 +96,7 @@ class Payment
         $logData['nonce_str'] = WxPayApi::getNonceStr();
         $logData['trade_type'] = $this->_payData['trade_type'];
         $logData['transaction_no'] = $this->_tradeNo;
-        $logData['total_fee'] = 1;//$this->_payData['amount'];
+        $logData['total_fee'] = 1;//$this->_payData['amount']; todo zq
         $logData['body'] = $this->_payData['subject'];
         $logData['partner'] = Yii::$app->params['wechat']['mchId'];
         $logData['gmt_create'] = date('Y-m-d H:i:s');
@@ -111,6 +111,7 @@ class Payment
         }
         $this->_payData = '';
         $this->_payData['nonce_str'] = $logData['nonce_str'];
+        $this->_payData['gmtCreate'] = $logData['gmt_create'];
         return true;
     }
 

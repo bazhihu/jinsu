@@ -53,7 +53,6 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         <a class="home" href="/">首页</a>
 	</header>
 	<form class="menu-form">
-
         <section class="menu" role="menu">
             <span class="menuitem" role="menuitem">
                 <em class="title">订单总金额：</em>
@@ -95,6 +94,8 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 		</section>
 		<input type="button" id="pay" value="立即支付" />
 	</form>
+    <div id="foot"></div>
+    <script type="text/javascript" src="../js/public.js"></script>
 	<script src="../js/zepto-with-touch.min.js"></script>
 	<script src="../js/public.js"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

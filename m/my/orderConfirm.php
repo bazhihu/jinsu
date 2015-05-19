@@ -68,7 +68,6 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     <a class="home" href="/">首页</a>
 </header>
 <div id="body"></div>
-<div id="foot"></div>
 <script id="bodyTemplate" type='text/html'>
     <form class="menu-form"  action="" method="post">
         <input type="hidden" value="{{uid}}" name="uid">
@@ -209,6 +208,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
             <input type="button" value="确认支付" name="pay" id="pay"/>
         </form>
         </script>
+    <div id="foot"></div>
     <script type="text/javascript">    
 	//调用微信JS api 支付
 	function jsApiCall()

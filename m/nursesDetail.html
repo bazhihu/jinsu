@@ -8,15 +8,12 @@
 	<link href="./css/style.css" rel="stylesheet" />
 </head>
 <body id="page-nurses-detail">
-
 	<header id="header">
 		<a class="back" href="javascript:history.back(1)">返回</a>
 		<h2 class="title">护理员详情</h2>
         <a class="home" href="/">首页</a>
 	</header>
-
     <div id="nurses_detail"></div>
-
     <script id="bodyTemplate" type='text/html'>
 	<div class="menu card" >
         <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
@@ -87,6 +84,7 @@
         <a href="orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
         <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
     </div>
+    <div id="foot"></div>
     </script>
     <script type='text/javascript' src='/js/zepto.min.js'></script>
     <script type='text/javascript' src='/js/template.js'></script>

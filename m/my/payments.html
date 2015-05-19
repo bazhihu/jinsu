@@ -39,7 +39,7 @@
 				<span class="pay-offline"></span>
 				<em>当面支付</em>
 				<i>提交成功后，工作人员会联系您收取现金</i>
-				<input type="radio" name="payment" checked="checked" id="pay-offline" value="1" />
+				<input type="radio" name="payment" id="pay-offline" value="1" />
 			</label>
 			<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
 				<span class="pay-alipay"></span>
@@ -66,6 +66,7 @@
 			}, this);
 		});
         loggedIn();
+        var walletMoney=0;
         var order_no = getUrlQueryString('orderNo'),
             total_amount = getUrlQueryString('totalAmount'),
             user = getStatus(),
@@ -86,6 +87,7 @@
                 }
                 document.getElementById('total').innerHTML  = '&yen;'+total_amount;
                 document.getElementById('balance').innerHTML    = '&yen;'+back.wallet.money;
+                walletMoney=back.wallet.money;
             });
         }
         pay.on(CLICK, function(){
@@ -104,7 +106,7 @@
                     timeout:30000,
                     success: function(data){
                         if(data.code ==200){
-                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&nonce_str='+data.data.payment.nonce_str;
+                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
                         }
                     },
                     error: function(xhr, type){

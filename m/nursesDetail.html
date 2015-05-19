@@ -45,7 +45,7 @@
         </div>
     </div>
     <h3 class="menu-title">详细信息</h3>
-    {{if data.selfIntros[0]['ext1']}}
+    {{if data.selfIntros[0]}}
         <section class="menu detail">
             <a class="menuitem" id="self-intro">自我介绍：{{data.selfIntros[0]['ext1']}}</a>
         </section>
@@ -84,7 +84,7 @@
         </a>
     </div>
     <div class="pay-operation">
-        <a href="./my/orderConfirm.php??type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
+        <a href="orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
         <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
     </div>
     </script>

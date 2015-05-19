@@ -1,3 +1,15 @@
+//统计代码
+var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
+$('#foot').html(tongJi);
+console.log($('#foot').html);
+
+/**
+ * 从客户端过来，部分页面隐藏头部
+ */
+var src = getUrlQueryString('src');
+if(src=='app')
+    $("#header").css('display','none');
+
 var host = "http://"+window.location.host;
 if(window.location.host=='dev.m.youaiyihu.com'){
     var url ='http://dev.api.youaiyihu.com/';
@@ -36,23 +48,7 @@ var UA = window.navigator.userAgent.toLowerCase(),
 if(navigator.userAgent.toLowerCase().match(/(iphone|ipad|ipod|ios)/i) || navigator.userAgent.toLowerCase().match(/android/i)){
     CLICK = 'tap';
 }
-$(document).ready(function(){
-    var headHtml="<script id='headTemplate' type='text/html'></script>";
-    $('#head').html(headHtml);
 
-    var tongJi = '<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?d4b3728eb406c2be15b33b492cc55362";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})(); </script>';
-    var footHtml="<script id='footTemplate' type='text/html'>"+tongJi+"</script>";
-    $('#foot').html(footHtml);
-    var src = getUrlQueryString('src');
-    /**
-     * 从客户端过来，部分页面隐藏头部
-     */
-    if(src=='app')
-        $("#header").css('display','none');
-
-    //if(/micromessenger/.test(UA))
-    //    $("#header").css('display','none');
-});
 function getStatus() {
     var id = getCookie(ID);
     var name = getCookie(NAME);

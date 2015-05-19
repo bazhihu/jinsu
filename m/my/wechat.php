@@ -2,7 +2,6 @@
 ini_set('date.timezone','Asia/Shanghai');
 //error_reporting(E_ERROR);
 @define("WEB_ROOT", "/www/youaiyihu.com");
-//@define("WEB_ROOT", "/../..");
 require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
@@ -18,11 +17,13 @@ $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 
 $totalAmount=$_REQUEST["totalAmount"]*100;
+$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+
 //统一下单
 $input = new WxPayUnifiedOrder();
 $input->SetBody("优爱医护订单");
-$input->SetAttach($_REQUEST["orderNo"]);
-$input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
+//$input->SetAttach('');//WxPayConfig::MCHID.date("YmdHis")
+$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
 $input->SetTotal_fee(1);
@@ -49,10 +50,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 <input type="hidden" id="openId" value="<?=$openId?>">
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
+
     loggedIn();
-    callwxpay();
     //调用微信JS api 支付
     function jsApiCall()
     {
@@ -64,6 +64,8 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 //alert(res.err_code+'#'+res.err_desc+'#'+res.err_msg);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
+                }else{
+                    history.back(-1);
                 }
             });
     }
@@ -80,6 +82,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
             jsApiCall();
         }
     }
+    callwxpay();
     if(wei)
         alipay.attr('style','display:none');
     else
@@ -91,6 +94,37 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         else
             return false;
     }
+
 </script>
+
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">支付方式</h2>
+    <a class="home" href="/">首页</a>
+</header>
+
+    <section class="menu" role="menu">
+            <span class="menuitem" role="menuitem">
+                <em class="title">订单总金额：</em>
+                <i class="value" id="total"><?=$_REQUEST["totalAmount"]?></i>
+            </span>
+    </section>
+
+    <section class="menu" role="menu">
+			<span class="menuitem" role="menuitem">
+				<em class="title">钱包余额：</em>
+				<i class="value" id="balance"><?=$_REQUEST["walletMoney"]?></i>
+			</span>
+    </section>
+
+    <section class="payments menu" role="menu" >
+        <header class="menu-header">
+            <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
+            <input type="hidden" name="needPay" id="payMoney">
+            <h3 class="menu-title">微信支付</h3>
+        </header>
+    </section>
+
+
 </body>
 </html>

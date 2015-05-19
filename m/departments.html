@@ -13,12 +13,17 @@
         <h2 class="title">服务科室</h2>
         <a class="home" href="/">首页</a>
     </header>
-        <div class="search-sites">
+        <div class="search-departments">
             <input type="search" name="name" id="name" value="" placeholder="输入查询的科室"  />
         </div>
-        <ul class="departments"></ul>
+        <div class="scroller-container">
+            <div id="departments-scroller">
+                <ul class="departments"></ul>
+            </div>
+        </div>
     <script src="../js/zepto-with-touch.min.js"></script>
     <script src="../js/public.js"></script>
     <script src="../js/departments.js?v=v1"></script>
+    <script src="../js/iscroll-lite.min.js"></script>
 </body>
 </html>

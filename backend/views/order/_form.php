@@ -23,6 +23,7 @@ use backend\models\OrderPatient;
     red{color: #ff0000;}
     .btn{margin:5px}
     form{margin-bottom: 15px}
+    .form-group{margin-bottom: 0px}
 </style>
 <div class="order-master-form">
     <?php
@@ -278,7 +279,7 @@ use backend\models\OrderPatient;
         var endTime = $('#ordermaster-end_time').val();
         var patientState = $('input[name="OrderPatient[patient_state]"]:checked').val();
         if(workerLevel.length <= 0 || startTime.length <= 0 || endTime.length <= 0 || !patientState){
-            alert('护工等级、订单时间段、患者健康状况填后才能计算订单价格。');
+            alert('护工等级、订单时间填后才能计算订单价格。');
             return false;
         }
         var arr = startTime.split("-");

@@ -98,6 +98,16 @@ class Worker extends ActiveRecord
             $countQuery->andFilterWhere(['gender' => $params['gender']]);
         }
 
+        $totalCount = $countQuery->count();
+        if(!empty($params['hospital_id']) && $totalCount == 0){
+            unset($params['hospital_id']);
+            return self::select($params);
+        }
+        if(!empty($params['department_id']) && $totalCount == 0){
+            unset($params['department_id']);
+            return self::select($params);
+        }
+
         //排序
         $orderBy = 'rand()';
 
@@ -135,11 +145,7 @@ class Worker extends ActiveRecord
             ->orderBy($orderBy)
             ->all();
 
-        $totalCount = $countQuery->count();
-        if(!empty($params['department_id']) && $totalCount == 0){
-            unset($params['department_id']);
-            return self::select($params);
-        }
+
         $result = ArrayHelper::toArray($result);
         $meta = [
             'totalCount' => $totalCount,

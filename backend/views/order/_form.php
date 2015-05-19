@@ -227,6 +227,7 @@ use backend\models\OrderPatient;
                             ['inline'=>true]
                         )->label('患者健康状况');
 
+                    $orderPatientModel->admission_date = date('Y-m-d', strtotime($orderPatientModel->admission_date));
                     echo Form::widget([
                         'model' => $orderPatientModel,
                         'form' => $form,

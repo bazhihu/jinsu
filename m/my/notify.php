@@ -13,9 +13,36 @@ $log = Log::Init($logHandler, 15);
 class PayNotifyCallBack extends WxPayNotify
 {
 	//查询订单
+	public function NotifyProcess($data, &$msg)
+	{
+		//Log::DEBUG("call back:" . json_encode($data));
+		$notfiyOutput = array();
+
+		if(!array_key_exists("transaction_id", $data)){
+			$msg = "输入参数不正确";
+			return false;
+		}
+		//查询订单，判断订单真实性
+		if(!$this->Queryorder($data["transaction_id"])){
+			$msg = "订单查询失败";
+			return false;
+		}
+
+
+		//Log::DEBUG("PostYayhApi Start");
+		$input_xml=file_get_contents("php://input");
+		Log::DEBUG("PostYayhXML : " . $input_xml);
+		self::PostYayhApi($input_xml);
+
+
+		return true;
+	}
+
+	//重写回调处理函数
+
 	public function Queryorder($transaction_id)
 	{
-		$input = new WxPayOrderQuery();	
+		$input = new WxPayOrderQuery();
 		$input->SetTransaction_id($transaction_id);
 		$result = WxPayApi::orderQuery($input);
 		//Log::DEBUG("query:" . json_encode($result));
@@ -28,36 +55,14 @@ class PayNotifyCallBack extends WxPayNotify
 		}
 		return false;
 	}
-	
-	//重写回调处理函数
-	public function NotifyProcess($data, &$msg)
-	{
-		//Log::DEBUG("call back:" . json_encode($data));
-		$notfiyOutput = array();
-		
-		if(!array_key_exists("transaction_id", $data)){
-			$msg = "输入参数不正确";
-			return false;
-		}
-		//查询订单，判断订单真实性
-		if(!$this->Queryorder($data["transaction_id"])){
-			$msg = "订单查询失败";
-			return false;
-		}
-		
-		
-		//Log::DEBUG("PostYayhApi Start");
-		$input_xml=file_get_contents("php://input"); 
-		Log::DEBUG("PostYayhXML : " . $input_xml);
-		self::PostYayhApi($input_xml);
-		
-		
-		return true;
-	}
 	//发送请求
+
 	public function PostYayhApi($data){
 	    //Log::DEBUG("PostYayhApi Starting...");
-	    $url="http://uat.api.youaiyihu.com/wechat/notify";
+	    $url="http://api.youaiyihu.com/wechat/notify";
+        if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
+            $url="http://uat.api.youaiyihu.com/wechat/notify";
+        }
 	    $info=self::postXmlCurl($data, $url);
 	    Log::DEBUG("PostYayhApi:" . json_encode($info));
 	    //Log::DEBUG("PostYayhApi End");
@@ -68,7 +73,7 @@ class PayNotifyCallBack extends WxPayNotify
 	    $ch = curl_init();
 	    //设置超时
 	    curl_setopt($ch, CURLOPT_TIMEOUT, $second);
-		
+
 	    curl_setopt($ch,CURLOPT_URL, $url);
 	    curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
 	    curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
@@ -76,13 +81,13 @@ class PayNotifyCallBack extends WxPayNotify
 	    curl_setopt($ch, CURLOPT_HEADER, FALSE);
 	    //要求结果为字符串且输出到屏幕上
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	
+
 	    //post提交方式
 	    curl_setopt($ch, CURLOPT_POST, TRUE);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 	    //运行curl
 	    $data = curl_exec($ch);
-	
+
 	    //返回结果
 	    if($data){
 	        curl_close($ch);
@@ -93,8 +98,8 @@ class PayNotifyCallBack extends WxPayNotify
 	        //throw new WxPayException("curl出错，错误码:$error");
 	        Log::DEBUG("curl出错，错误码:$error");
 	    }
-	}	
-	
+	}
+
 }
 
 Log::DEBUG("begin notify");

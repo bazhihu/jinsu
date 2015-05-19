@@ -6,7 +6,7 @@ var user = getStatus(),
     menu = $('.detail');
 if(user.id && user.token){
     getUsers(user.id, user.token, function(back){
-        document.getElementById('walletMoney').innerHTML = '&yen;'+ (back.wallet.money);
+        document.getElementById('walletMoney').innerHTML = '&yen;'+ parseFloat(back.wallet.money).toFixed(2);
     });
     getWallets(user.id, user.token, function(d){
         if(d.length != 0){

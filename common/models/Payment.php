@@ -93,7 +93,7 @@ class Payment
             $this->_tradeNo = $logData['order_no'];
         }
         #区分测试域名
-        if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
+        if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
             $this->_payData['amount'] = 1;
         }
 

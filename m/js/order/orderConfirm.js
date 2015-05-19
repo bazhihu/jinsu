@@ -20,6 +20,7 @@ getConfigs(function(configs) {
             var worker_level = dataArray[6];
             var patient_state= 1;
             walletMoney=blance;
+
             //常驻医院
             var lenth =configs.hospitals.length;
             var data  = configs.hospitals;
@@ -89,63 +90,13 @@ getConfigs(function(configs) {
                     var days = getOrderCycle(start_time,end_time);
             }
 
-            //挑选护理员
-            if(type=='select'){
-                $.get(workerUrl+"/"+worker_no,function(worker_back){
-                    var price = parseInt(worker_back.data.price);
-                    var worker_level = worker_back.data.level;
+            $.get(workerUrl+"/"+worker_no,function(worker_back){
+                var price = parseInt(worker_back.data.price);
+                var worker_level = worker_back.data.level;
 
-                    var worker_level_name = worker_level_array[worker_level];
-                    var worker_name = worker_back.data.name;
-                    var pic = worker_back.data.pic;
-
-                    //实际支付
-                    var true_pay = 0;
-                    true_pay = price*days;
-                    if(has_holidays)
-                        true_pay = true_pay+price*has_holidays_num*2;
-                    //if(patient_state==2)
-                    //    true_pay = true_pay+(true_pay*patient_state_coefficient/100);
-
-                    //还需支付
-                    var need_pay = parseInt(true_pay-blance);
-                    if(need_pay<0){
-                        console.log(need_pay)
-                        $("#pay_other").hide();
-                    }
-                    var data = {
-                        'type':type,
-                        'uid':userInfo.id,
-                        'pic':pic,
-                        'mobile':mobile,
-                        'start_time': start_time,
-                        'end_time': end_time,
-                        'days':days,
-                        'hospital_id':hospital_id,
-                        'hospitals_name':hospitals_name,
-                        'department_id':department_id,
-                        'departments_name':departments_name,
-                        'patient_state':1,
-                        'patient_states_name':patient_states_name,
-                        'worker_no':worker_no,
-                        'worker_name':worker_name,
-                        'worker_level':worker_level,
-                        'worker_level_name':worker_level_name,
-                        'has_holidays':has_holidays,
-                        'has_holidays_num':has_holidays_num,
-                        'price':price,
-                        'patient_state_coefficient':patient_state_coefficient,
-                        'true_pay':true_pay,
-                        'blance':blance,
-                        'need_pay':need_pay
-                    };
-                    var bodyHtml = template('bodyTemplate', data);
-                    $('#body').html(bodyHtml);
-                });
-            }else{
-                //快速下单
-                //基础价格
-                var price = parseInt(worker_level_prirce_array[worker_level]);
+                var worker_level_name = worker_level_array[worker_level];
+                var worker_name = worker_back.data.name;
+                var pic = worker_back.data.pic;
 
                 //实际支付
                 var true_pay = 0;
@@ -158,12 +109,13 @@ getConfigs(function(configs) {
                 //还需支付
                 var need_pay = parseInt(true_pay-blance);
                 if(need_pay<0){
+                    console.log(need_pay)
                     $("#pay_other").hide();
                 }
-
                 var data = {
                     'type':type,
                     'uid':userInfo.id,
+                    'pic':pic,
                     'mobile':mobile,
                     'start_time': start_time,
                     'end_time': end_time,
@@ -175,6 +127,7 @@ getConfigs(function(configs) {
                     'patient_state':1,
                     'patient_states_name':patient_states_name,
                     'worker_no':worker_no,
+                    'worker_name':worker_name,
                     'worker_level':worker_level,
                     'worker_level_name':worker_level_name,
                     'has_holidays':has_holidays,
@@ -187,16 +140,17 @@ getConfigs(function(configs) {
                 };
                 var bodyHtml = template('bodyTemplate', data);
                 $('#body').html(bodyHtml);
-            }
+            });
 
             //支付
             $("#pay").live('click', function () {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
+                var need_pay = $('#need_pay').val();
                 if(need_pay<0) {
                     var pay_way = 1;
                 }
-
+                console.log(need_pay);
                 //当面支付或者余额支付
                 if(pay_way==1) {
                     var post_data = {
@@ -214,10 +168,13 @@ getConfigs(function(configs) {
 
                     $.post(orderCreate,post_data,function(post_response){
                         if(post_response.code == 200){
-                            location.href= "../payOffline.html";
+                            if(need_pay<0) {
+                                location.href= "../payOnline.html";
+                            }else{
+                                location.href= "../payOffline.html";
+                            }
                         }else{
                             alert('支付失败！');
-                            location.href= "../payOffline.html";
                         }
                     },"json");
                 }else if(pay_way==2){

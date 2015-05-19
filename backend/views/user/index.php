@@ -87,8 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'money',
                 'value'=>function($model) {
-                    $user_money =WalletUser::findOne($model->id);
-                    return $user_money['money'];
+                    $user_money = WalletUser::findOne($model->id);
+                    return number_format($user_money['money'],2);
                 }
             ],
             [

@@ -8,8 +8,9 @@
 	<link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-download">
-	<img src="../images/download.png" width="284" height="268" alt="您的贴身护理员 手机选择 即刻下单 信息透明 真实可靠" />
+    <div id="down" style="display: none"><img src="../images/download.png" width="284" height="268" alt="您的贴身护理员 手机选择 即刻下单 信息透明 真实可靠" /></div>
     <a class="download"  role="button">立即下载</a>
+    <div id="weixin" style="display: block"><img src="../images/2.png"></div>
     <div id="foot"></div>
     <script type='text/javascript' src='../js/zepto-with-touch.min.js'></script>
     <script type="text/javascript" src="../js/public.js"></script>
@@ -35,6 +36,10 @@
 //                if(!hasApp){//如果没安装，再打开下载地址
 //                    document.location = "跳转到appstore地址";
 //                }
+            }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
+                //微信
+                alert('weixin');
+                window.location ="downloadWei.html";
             }else if(navigator.userAgent.toLowerCase().match(/linux/i)){
                 //安卓
                 if(navigator.userAgent.toLowerCase().match(/android/i)){
@@ -59,10 +64,6 @@
                     document.getElementById("openApp").dispatchEvent(e);
                     location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk";
                 }
-            }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
-                //微信
-                alert('weixin');
-                window.location ="downloadWei.html";
             }else{
                 location.location ="http://download.youaiyihu.com/youaiyihu-android-release.apk";
             }

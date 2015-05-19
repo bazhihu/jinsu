@@ -18,6 +18,7 @@ function onSearchChange() {
     getConfigs(function(configs){
         var departments = configs.departments;
         var value = $('#name').val();
+        console.log("value:"+value)
         if(value && (value = value.trim())) {
             var search_array = new Array();
             $(departments).each(function (index, item) {
@@ -36,8 +37,8 @@ function onSearchChange() {
     });
 }
 
-$('.search-sites input').on('input', onSearchChange);
-$('.search-sites input').on('change', onSearchChange);
+$('.search-departments input').on('input', onSearchChange);
+$('.search-departments input').on('change', onSearchChange);
 window.addEventListener('load', onSearchChange);
 $('.departments').delegate('li', 'click', function () {
     [].forEach.call(this.parentNode.children, function (li) {

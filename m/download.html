@@ -54,6 +54,8 @@
                     }
                     if(!hasApp){
                         location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk"
+                    }else{
+                        window.location = "youaiyihu:open";
                     }
                 }
             }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {

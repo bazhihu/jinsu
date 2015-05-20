@@ -40,10 +40,10 @@
                 <em class="title">服务地点</em>
                 <i class="value" style="max-width: 200px;">{{data.hospitals_name}}</i>
             </div>
-            <div class="menuitem">
-                <em class="title">病患状态</em>
-                <i class="value">{{data.patient_states_name}}</i>
-            </div>
+            <!--<div class="menuitem">-->
+                <!--<em class="title">病患状态</em>-->
+                <!--<i class="value">{{data.patient_states_name}}</i>-->
+            <!--</div>-->
             <div class="nurses-selected menuitem" role="menuitem">
                 <em class="title">护理员：</em>
                 <div class="nurses-detail">
@@ -100,7 +100,7 @@
                 </div>
             {{/if}}
             {{if data.order_status=='wait_evaluate'}}
-                <div class="operations">
+                <div class="operations2">
                     <a class="evaluate" role="button" data-no="{{data.order_no}}" data-pic="{{data.pic}}" data-name="{{data.worker_name}}" href="#evaluate">评价</a>
                 </div>
             {{/if}}

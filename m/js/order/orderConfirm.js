@@ -226,3 +226,8 @@ $('.menuitemradio input[type="radio"]').live('click', function () {
         $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
     }, this);
 });
+
+if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
+    //微信
+    $('#wechat').show();
+}

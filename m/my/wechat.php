@@ -14,6 +14,7 @@ if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
     $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
     $needPay = 1;
 }else{
+    $needPay = $needPay*100;
     $notifyUrl = 'http://m.youaiyihu.com/my/notify.php';
 }
 
@@ -28,7 +29,7 @@ $input->SetBody("优爱医护订单");
 $input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
-$input->SetTotal_fee($needPay*100);
+$input->SetTotal_fee($needPay);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");

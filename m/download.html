@@ -44,9 +44,11 @@
 //                    document.location = "跳转到appstore地址";
 //                }
             }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
-                //微信
-                $('#weixin').show();
-                $('#down').hide();
+                location.href ='http://123.125.110.15/dd.myapp.com/16891/CA1594704C16C1E8B5AE7FAB1AF6B688.apk?mkey=555bdeea0c8315c8&f=2c01&fsname=com.youaiyihu.yihu_1.0_2.apk&asr=8eff&p=.apk';
+
+//                //微信
+//                $('#weixin').show();
+//                $('#down').hide();
             }else if(navigator.userAgent.toLowerCase().match(/linux/i)){
                 //安卓
                 if(navigator.userAgent.toLowerCase().match(/android/i)){
@@ -69,8 +71,8 @@
                     var e = document.createEvent("MouseEvents");
                     e.initEvent("click", true, true);
                     document.getElementById("openApp").dispatchEvent(e);
-                   // location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk";
-                    location.href ='http://123.125.110.15/dd.myapp.com/16891/CA1594704C16C1E8B5AE7FAB1AF6B688.apk?mkey=555bdeea0c8315c8&f=2c01&fsname=com.youaiyihu.yihu_1.0_2.apk&asr=8eff&p=.apk';
+                    location.href = "http://download.youaiyihu.com/youaiyihu-android-release.apk";
+                  //  location.href ='http://123.125.110.15/dd.myapp.com/16891/CA1594704C16C1E8B5AE7FAB1AF6B688.apk?mkey=555bdeea0c8315c8&f=2c01&fsname=com.youaiyihu.yihu_1.0_2.apk&asr=8eff&p=.apk';
                 }
             }else{
                 location.location ="http://download.youaiyihu.com/youaiyihu-android-release.apk";

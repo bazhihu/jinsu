@@ -226,9 +226,9 @@ function getOrderCycle(startTime,endTime){
     var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
     var days=parseInt(date3/(24*3600*1000));
 
-    if(days<1){
-        days = 1;
-    }
+    //if(days<1){
+    //    days = 1;
+    //}
     return days;
 }
 

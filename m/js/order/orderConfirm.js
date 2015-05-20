@@ -109,7 +109,6 @@ getConfigs(function(configs) {
                 //还需支付
                 var need_pay = parseInt(true_pay-blance);
                 if(need_pay<0){
-                    console.log(need_pay)
                     $("#pay_other").hide();
                 }
                 var data = {

@@ -109,8 +109,14 @@ getConfigs(function(configs) {
                 //还需支付
                 var need_pay = parseInt(true_pay-blance);
                 if(need_pay<0){
-                    console.log(need_pay)
                     $("#pay_other").hide();
+                }
+
+                //是否在微信访问
+                if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
+                    var  wechat_acess = 1;
+                }else{
+                    var  wechat_acess = 0;
                 }
                 var data = {
                     'type':type,
@@ -136,7 +142,8 @@ getConfigs(function(configs) {
                     'patient_state_coefficient':patient_state_coefficient,
                     'true_pay':true_pay,
                     'blance':blance,
-                    'need_pay':need_pay
+                    'need_pay':need_pay,
+                    'wechat_acess':wechat_acess
                 };
                 var bodyHtml = template('bodyTemplate', data);
                 $('#body').html(bodyHtml);
@@ -226,8 +233,3 @@ $('.menuitemradio input[type="radio"]').live('click', function () {
         $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
     }, this);
 });
-
-if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
-    //微信
-    $('#wechat').show();
-}

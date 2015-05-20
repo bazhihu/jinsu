@@ -6,18 +6,20 @@ require_once WEB_ROOT."/common/components/wxpay/lib/WxPay.Api.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/WxPay.JsApiPay.php";
 require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
 
-function printf_info($data)
-{
-    foreach($data as $key=>$value){
-        echo "<font color='#00ff55;'>$key</font> : $value <br/>";
-    }
+#区分测试和线上回调路径
+$notifyUrl = '';
+$totalAmount=$_REQUEST["totalAmount"];
+$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
+    $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
+    $needPay = 1;
+}else{
+    $notifyUrl = 'http://m.youaiyihu.com/my/notify.php';
 }
+
 //获取用户openid
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
-
-$totalAmount=$_REQUEST["totalAmount"]*100;
-$needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
 
 //统一下单
 $input = new WxPayUnifiedOrder();
@@ -26,11 +28,11 @@ $input->SetBody("优爱医护订单");
 $input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
-$input->SetTotal_fee(1);
+$input->SetTotal_fee($needPay*100);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");
-$input->SetNotify_url("http://uat.m.youaiyihu.com/my/notify.php");
+$input->SetNotify_url($notifyUrl);
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openId);
 $order = WxPayApi::unifiedOrder($input);
@@ -75,10 +77,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         </header>
     </section>
 <div id="foot"></div>
-<script src="../js/zepto-with-touch.min.js"></script>
-<script src="../js/public.js"></script>
+<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
+<script type="text/javascript" src="../js/public.js"></script>
 <script>
-
     loggedIn();
     //调用微信JS api 支付
     function jsApiCall()
@@ -121,7 +122,6 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
         else
             return false;
     }
-
 </script>
 </body>
 </html>

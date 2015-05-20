@@ -87,16 +87,20 @@ class Payment
      */
     private function _WeChat(){
         //支付日志
-        $logData = $this->_payData;//20150515646394
+        $logData = $this->_payData;
 
         if(isset($logData['order_no'])){
             $this->_tradeNo = $logData['order_no'];
+        }
+        #区分测试域名
+        if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
+            $this->_payData['amount'] = 1;
         }
 
         $logData['nonce_str'] = WxPayApi::getNonceStr();
         $logData['trade_type'] = $this->_payData['trade_type'];
         $logData['transaction_no'] = $this->_tradeNo;
-        $logData['total_fee'] = 1;//$this->_payData['amount'];
+        $logData['total_fee'] = $this->_payData['amount']; //todo zq
         $logData['body'] = $this->_payData['subject'];
         $logData['partner'] = Yii::$app->params['wechat']['mchId'];
         $logData['gmt_create'] = date('Y-m-d H:i:s');
@@ -111,6 +115,7 @@ class Payment
         }
         $this->_payData = '';
         $this->_payData['nonce_str'] = $logData['nonce_str'];
+        $this->_payData['gmtCreate'] = $logData['gmt_create'];
         return true;
     }
 

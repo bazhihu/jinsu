@@ -39,14 +39,14 @@
 				<span class="pay-offline"></span>
 				<em>当面支付</em>
 				<i>提交成功后，工作人员会联系您收取现金</i>
-				<input type="radio" name="payment" id="pay-offline" value="1" />
+				<input type="radio" name="payment" checked="checked" id="pay-offline" value="1" />
 			</label>
-			<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
+			<!--<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
 				<span class="pay-alipay"></span>
 				<em>支付宝支付</em>
 				<i>推荐有支付宝账号的用户使用</i>
 				<input type="radio" name="payment" id="pay-alipay" value="2" />
-			</label>
+			</label>-->
 			<label class="menuitem menuitemradio" id="wechat" for="pay-wechat" role="menuitemradio">
 				<span class="pay-wechat"></span>
 				<em>微信支付</em>
@@ -57,9 +57,8 @@
 		<input type="button" id="pay" value="立即支付" />
 	</form>
     <div id="foot"></div>
-	<script src="../js/zepto-with-touch.min.js"></script>
-	<script src="../js/public.js"></script>
-	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
+	<script type="text/javascript" src="../js/public.js"></script>
 	<script>
 		$('.menuitemradio input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
@@ -93,8 +92,7 @@
         }
         pay.on(CLICK, function(){
             var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
-                payWay = $('input[name=payment]:checked').val(),
-                openId = '';
+                payWay = $('input[name=payment]:checked').val();
             if(payWay == '3'){
                 $.ajax({
                     type: 'PUT',
@@ -107,7 +105,7 @@
                     timeout:30000,
                     success: function(data){
                         if(data.code ==200){
-                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str;
+                            self.location = '/my/wechat.php??orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
                         }
                     },
                     error: function(xhr, type){

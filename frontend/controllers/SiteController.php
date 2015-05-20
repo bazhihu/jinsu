@@ -66,7 +66,12 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-
+        $userAgent = strtolower($_SERVER['HTTP_USER_AGENT']);
+        if ((preg_match("/(iphone|ipod|android)/i", $userAgent)) AND strstr($userAgent, 'webkit')){
+            ob_start();
+            header('Location: http://m.youaiyihu.com/');
+            exit;
+        }
         return $this->render('index');
     }
 

@@ -538,6 +538,7 @@ class WxPayApi
 		//获取通知的数据
 		//$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
 		$xml = file_get_contents("php://input");
+        Yii::info('微信回调开始:'.$xml, 'wechat');
 		//如果返回成功则验证签名
 		try {
 			$result = WxPayResults::Init($xml);

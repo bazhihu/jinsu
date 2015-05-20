@@ -69,12 +69,10 @@
             var it = $(this);
             it.parent().removeClass('menuitemradio-checked');
             if(it.attr('checked')){
-                console.log(it);
                 it.parent().addClass('menuitemradio-checked');
             }
         });
         loggedIn();
-        $('input[name=payment]:checked').attr('checked','false');
         var walletMoney=0;
         var order_no = getUrlQueryString('orderNo'),
             total_amount = getUrlQueryString('totalAmount'),

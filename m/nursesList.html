@@ -8,110 +8,105 @@
 	<link href="./css/style.css" rel="stylesheet" />
 </head>
 <body id="page-nurses-list">
-
 	<header id="header">
 		<a class="back" href="javascript:history.back(1)">返回</a>
 		<h2 class="title">护理员列表</h2>
         <a class="home" href="/">首页</a>
 	</header>
-	<ul class="nurses-list" id="body">
-	</ul>
+	<ul class="nurses-list" id="body"></ul>
     <div class="loading-more loading"></div>
     <div id="foot"></div>
-    <script type='text/javascript' src='/js/zepto.min.js'></script>
-    <script type='text/javascript' src='/js/template.js'></script>
-    <script type='text/javascript' src='/js/public.js'></script>
-    <script type="text/javascript" src="/js/worker/worker.js"></script>
     <script type="text/javascript" src="/js/zepto-with-touch.min.js"></script>
-<script type="text/javascript">
-    var orderData=getCookie("orderData");
-    orderDataArr=orderData.split("#");
-    var start_time_s=orderDataArr[1];
-    var end_time_s=orderDataArr[2];
-    var department_id_s=orderDataArr[4];
-    var hospital_id_s=orderDataArr[5];
-    var department_id_s="";
+    <script type='text/javascript' src='/js/public.js'></script>
+    <script type='text/javascript' src='/js/worker/worker.js'></script>
+    <script type="text/javascript">
+        var orderData=getCookie("orderData");
 
-    ~function () {
-        var list = document.querySelector('.nurses-list'), loading = document.querySelector('.loading'), isLoading = 0;
-        function load() {
-            if (loading && !isLoading) {
-                var bounds = loading.getBoundingClientRect();
-                if (bounds.bottom < document.documentElement.clientHeight + 200) {
-                    isLoading = 1;
-                    window.removeEventListener('scroll', load);
-                    var pageNum=1;
-                    if(list.children.length>=10){
-                        pageNum =Math.ceil(list.children.length/10)+1;
-                    }
+        orderDataArr=orderData.split("#");
+        var start_time_s=orderDataArr[1];
+        var end_time_s=orderDataArr[2];
+        var department_id_s=orderDataArr[4];
+        var hospital_id_s=orderDataArr[5];
+        ~function () {
+            var list = document.querySelector('.nurses-list'), loading = document.querySelector('.loading'), isLoading = 0;
+            function load() {
+                if (loading && !isLoading) {
+                    var bounds = loading.getBoundingClientRect();
+                    if (bounds.bottom < document.documentElement.clientHeight + 200) {
+                        isLoading = 1;
+                        window.removeEventListener('scroll', load);
+                        var pageNum=1;
+                        if(list.children.length>=10){
+                            pageNum =Math.ceil(list.children.length/10)+1;
+                        }
 
-                    $.ajax({
-                        url: workerUrl_v2,
-                        data: { page: pageNum, start_time:start_time_s,department_id:department_id_s,hospital_id_s:hospital_id_s,count: 100},
-                        type: 'get',
-                        success: function (response) {
-                            if (response.data.items.length<1) {
-                                window.removeEventListener('scroll', load);
-                                loading.classList.remove('loading');
+                        $.ajax({
+                            url: workerUrl_v2,
+                            data: { page: pageNum, start_time:start_time_s,department_id:department_id_s,hospital_id_s:hospital_id_s,count: 100},
+                            type: 'get',
+                            success: function (response) {
+                                if (response.data.items.length<1) {
+                                    window.removeEventListener('scroll', load);
+                                    loading.classList.remove('loading');
 
-                                loading.innerHTML = '\u5df2\u7ecf\u5230\u6700\u540e\u4e86~';
-                                loading = null;
-                            } else {
-                                //alert(response.data.items.length);
-                                var responseHtml="";
-                                for(var i=0;i<response.data.items.length;i++){
-                                    //alert(response.data.items[i].name);
-                                    //responseHtml='';
-                                    if(response.data.items[i].office_id!=null) {
-                                        var office_str=response.data.items[i].office_id;
-                                    }else{
-                                        var office_str="";
-                                    }
-                                    responseHtml+='<li>';
-                                    responseHtml+='<a href="./nursesDetail.html?worker_id='+response.data.items[i].worker_id+'">';
-                                    responseHtml+='<div class="nurses-photo" style="background-image: url('+response.data.items[i].pic+')"></div>';
-                                    responseHtml+='<div class="nurses-detail">';
-                                    responseHtml+='<span class="nurses-price"><em>'+parseInt(response.data.items[i].price)+'</em>元/天</span>';
-                                    responseHtml+='<span class="nurses-rate">★★★★★</span>';
-                                    responseHtml+='<h4 class="nurses-name">'+response.data.items[i].name+'</h4>';
-                                    responseHtml+='<p class="nurses-intro">'+ages(response.data.items[i].birth)+'岁 | '+response.data.items[i].native_province+' | '+ages(response.data.items[i].start_work)+'年护理经验</p>';
-                                    responseHtml+='<p class="nurses-reserve">';
-                                    responseHtml+='<span class=" ';
-                                    if(response.data.items[i].level==1) responseHtml+='care-level-junior';
-                                    else if (response.data.items[i].level==2) responseHtml+='care-level-middle';
-                                    else if (response.data.items[i].level==3) responseHtml+='care-level-hight';
-                                    else if (response.data.items[i].level==4) responseHtml+='care-level-special';
-                                    responseHtml+='">'+worker_levels[response.data.items[i].level-1].name+' '+office_str +'</span>';
-                                    responseHtml+='</p>';
-                                    responseHtml+='</div>';
-                                    responseHtml+='</a>';
-                                    responseHtml+='</li> ';
-
-                                }
-                                if (list.insertAdjacentHTML) {
-                                    list.insertAdjacentHTML('beforeEnd', responseHtml);
+                                    loading.innerHTML = '\u5df2\u7ecf\u5230\u6700\u540e\u4e86~';
+                                    loading = null;
                                 } else {
-                                    var fra = document.createDocumentFragment(), temp = document.createElement('div');
-                                    div.innerHTML = responseHtml;
-                                    [].forEach.call(div.children, function (li) {
-                                        fra.appendChild(li);
-                                    });
-                                    list.appendChild(fra);
+                                    //alert(response.data.items.length);
+                                    var responseHtml="";
+                                    for(var i=0;i<response.data.items.length;i++){
+                                        //alert(response.data.items[i].name);
+                                        //responseHtml='';
+                                        if(response.data.items[i].office_id!=null) {
+                                            var office_str=response.data.items[i].office_id;
+                                        }else{
+                                            var office_str="";
+                                        }
+                                        responseHtml+='<li>';
+                                        responseHtml+='<a href="./nursesDetail.html?worker_id='+response.data.items[i].worker_id+'">';
+                                        responseHtml+='<div class="nurses-photo" style="background-image: url('+response.data.items[i].pic+')"></div>';
+                                        responseHtml+='<div class="nurses-detail">';
+                                        responseHtml+='<span class="nurses-price"><em>'+parseInt(response.data.items[i].price)+'</em>元/天</span>';
+                                        responseHtml+='<span class="nurses-rate">★★★★★</span>';
+                                        responseHtml+='<h4 class="nurses-name">'+response.data.items[i].name+'</h4>';
+                                        responseHtml+='<p class="nurses-intro">'+ages(response.data.items[i].birth)+'岁 | '+response.data.items[i].native_province+' | '+ages(response.data.items[i].start_work)+'年护理经验</p>';
+                                        responseHtml+='<p class="nurses-reserve">';
+                                        responseHtml+='<span class=" ';
+                                        if(response.data.items[i].level==1) responseHtml+='care-level-junior';
+                                        else if (response.data.items[i].level==2) responseHtml+='care-level-middle';
+                                        else if (response.data.items[i].level==3) responseHtml+='care-level-hight';
+                                        else if (response.data.items[i].level==4) responseHtml+='care-level-special';
+                                        responseHtml+='">'+worker_levels[response.data.items[i].level-1].name+' '+office_str +'</span>';
+                                        responseHtml+='</p>';
+                                        responseHtml+='</div>';
+                                        responseHtml+='</a>';
+                                        responseHtml+='</li> ';
+
+                                    }
+                                    if (list.insertAdjacentHTML) {
+                                        list.insertAdjacentHTML('beforeEnd', responseHtml);
+                                    } else {
+                                        var fra = document.createDocumentFragment(), temp = document.createElement('div');
+                                        div.innerHTML = responseHtml;
+                                        [].forEach.call(div.children, function (li) {
+                                            fra.appendChild(li);
+                                        });
+                                        list.appendChild(fra);
+                                    }
+                                    isLoading && window.addEventListener('scroll', load);
+                                    isLoading = 0;
                                 }
+                            },
+                            error: function () {
                                 isLoading && window.addEventListener('scroll', load);
                                 isLoading = 0;
                             }
-                        },
-                        error: function () {
-                            isLoading && window.addEventListener('scroll', load);
-                            isLoading = 0;
-                        }
-                    });
+                        });
+                    }
                 }
             }
-        }
-        window.addEventListener('load', load);
-    }();
-</script>
+            window.addEventListener('load', load);
+        }();
+    </script>
 </body>
 </html>

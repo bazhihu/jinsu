@@ -504,7 +504,7 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
     background: #5dd5b8;
 }
 #page-order-detail .operations2:empty { height: 0; }
-#page-order-detail .operations2:before { content: ""; display: block; height: 21px; width: 1px; position: absolute; left: 50%; top: 11px; }
+#page-order-detail .operations2:before { content: ""; display: block; height: 21px; width: 1px; position: absolute; left: 50%; top: 11px; background: url(data:image/gif;base64,R0lGODlhAgACAIAAAP///+Pj4yH5BAAAAAAALAAAAAACAAIAAAICDFwAOw==) repeat-y 0 0; -webkit-background-size: 1px 1px; background-size: 1px 1px; }
 #page-order-detail .operations2 a { display: block; float: left; width: 50%; height: 43px; text-align: center; font-size: 14px; color: #fff; }
 #page-order-detail .operations2 a:only-child { float: none; width: 100%; }
 #page-order-detail .operations2 a, #page-order-detail .operations a:visited { color: #fff; text-decoration: none; }

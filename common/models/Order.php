@@ -863,6 +863,7 @@ class Order extends \yii\db\ActiveRecord{
 
         $this->start_time = date('Y-m-d 09:00:00', strtotime($this->start_time));
         $this->end_time = date('Y-m-d 09:00:00', strtotime($this->end_time));
+        $this->reality_end_time = date('Y-m-d 09:00:00', strtotime($this->reality_end_time));
         return true;
     }
 

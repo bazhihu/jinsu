@@ -109,7 +109,7 @@ class Worker extends ActiveRecord
         }
 
         //排序
-        $orderBy = 'rand()';
+        $orderBy = 'star DESC';
 
         if(isset($params['sort'])){
             //价格排序，高到低

@@ -14,6 +14,7 @@ if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
     $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
     $needPay = 1;
 }else{
+    $needPay = $needPay*100;
     $notifyUrl = 'http://m.youaiyihu.com/my/notify.php';
 }
 
@@ -28,7 +29,7 @@ $input->SetBody("优爱医护订单");
 $input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
-$input->SetTotal_fee($needPay*100);
+$input->SetTotal_fee($needPay);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");
@@ -54,7 +55,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
     <h2 class="title">支付方式</h2>
     <a class="home" href="/">首页</a>
 </header>
-
+    <input type="hidden" id="orderId" value="<?=$_REQUEST["orderNo"]?>"/>
     <section class="menu" role="menu">
             <span class="menuitem" role="menuitem">
                 <em class="title">订单总金额：</em>
@@ -69,7 +70,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 			</span>
     </section>
 
-    <section class="payments menu" role="menu" >
+    <section class="payments menu" role="menu">
         <header class="menu-header">
             <span class="more">还需支付：<em id="needPay"><?=$needPay?></em>元</span>
             <input type="hidden" name="needPay" id="payMoney">
@@ -93,7 +94,8 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
                 if(res.err_msg=="get_brand_wcpay_request:ok"){
                     window.location.href="../payOnline.html";
                 }else{
-                    history.back(-1);
+                    location.href = host+$('#orderId').val();
+                    //history.back(-1);
                 }
             });
     }

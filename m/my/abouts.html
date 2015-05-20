@@ -23,13 +23,26 @@
     <a href="/question.html" class="menuitem" role="menuitem"><em class="title">常见问题</em></a>
     <!--<a href="#feedback" class="menuitem" role="menuitem"><em class="title">问题反馈</em></a>-->
     <!--<a href="25.job.html" class="menuitem" role="menuitem" style="display: none;"><em class="title">护理员招聘</em></a>-->
-    <div class="menuitem" role="menuitem">
+    <div class="menuitem" role="menuitem" id="account">
         <em class="title">微信公共账号</em>
         <i class="value">youaiyihu</i>
+        <textarea style="display: none;" id="accountValue">
+            youaiyihu
+        </textarea>
     </div>
 </menu>
 <footer id="footer">&#169;2015 Youaiyihu</footer>
 <div id="foot"></div>
+<script src="../js/zepto-with-touch.min.js"></script>
 <script type="text/javascript" src="../js/public.js"></script>
+<script>
+    var account = $('#account');
+    account.on(CLICK, function(){
+        var e=document.getElementById("accountValue");//对象是content
+        e.select(); //选择对象
+        document.execCommand("Copy"); //执行浏览器复制命令
+        alert('复制成功！');
+    });
+</script>
 </body>
 </html>

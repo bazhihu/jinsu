@@ -35,11 +35,11 @@
                 <input type="hidden" name="needPay" id="payMoney">
 				<h3 class="menu-title">支付方式</h3>
 			</header>
-			<label class="menuitemradio-checked menuitem menuitemradio" for="pay-offline" role="menuitemradio">
+			<label class="menuitem menuitemradio" for="pay-offline" role="menuitemradio">
 				<span class="pay-offline"></span>
 				<em>当面支付</em>
 				<i>提交成功后，工作人员会联系您收取现金</i>
-				<input type="radio" name="payment" checked="checked" id="pay-offline" value="1" />
+				<input type="radio" name="payment" checked id="pay-offline" value="1" />
 			</label>
 			<!--<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
 				<span class="pay-alipay"></span>
@@ -60,11 +60,18 @@
 	<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
 	<script type="text/javascript" src="../js/public.js"></script>
 	<script>
-		$('.menuitemradio input[type="radio"]').on('click', function () {
+        $('.menuitemradio input[type="radio"]').on('click', function () {
 			[].forEach.call(this.form.elements[this.name], function (radio) {
 				$(radio).parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
 			}, this);
 		});
+        $('input[type="radio"]').each(function(){
+            var it = $(this);
+            it.parent().removeClass('menuitemradio-checked');
+            if(it.attr('checked')){
+                it.parent().addClass('menuitemradio-checked');
+            }
+        });
         loggedIn();
         var walletMoney=0;
         var order_no = getUrlQueryString('orderNo'),

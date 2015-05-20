@@ -25,6 +25,7 @@
         $('.download').on(CLICK,function(){
             var ifrSrc="yayhapp://cn.md.dt/";//APP协议头，由APP开发人员定义提供
             if(navigator.userAgent.toLowerCase().match(/(iphone|ipad|ipod|ios)/i)){
+                alert('apple');
                 document.location ="downloadIos.html";
 //                //IOS
 //                var hasApp = true;//是否安装了app
@@ -44,13 +45,13 @@
 //                    document.location = "跳转到appstore地址";
 //                }
             }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
-                console.log(navigator.userAgent.toLowerCase().match(/MicroMessenger/i))
+                alert('weixin');
                 location.href ='http://123.125.110.15/dd.myapp.com/16891/CA1594704C16C1E8B5AE7FAB1AF6B688.apk?mkey=555bdeea0c8315c8&f=2c01&fsname=com.youaiyihu.yihu_1.0_2.apk&asr=8eff&p=.apk';
-
 //                //微信
 //                $('#weixin').show();
 //                $('#down').hide();
             }else if(navigator.userAgent.toLowerCase().match(/linux/i)){
+                alert('安卓');
                 //安卓
                 if(navigator.userAgent.toLowerCase().match(/android/i)){
                     var openAppHref=document.createElement('a');
@@ -76,7 +77,7 @@
                   //  location.href ='http://123.125.110.15/dd.myapp.com/16891/CA1594704C16C1E8B5AE7FAB1AF6B688.apk?mkey=555bdeea0c8315c8&f=2c01&fsname=com.youaiyihu.yihu_1.0_2.apk&asr=8eff&p=.apk';
                 }
             }else{
-                location.location ="http://download.youaiyihu.com/youaiyihu-android-release.apk";
+                location.href ="http://download.youaiyihu.com/youaiyihu-android-release.apk";
             }
         });
     </script>

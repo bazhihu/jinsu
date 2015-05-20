@@ -229,5 +229,5 @@ $('.menuitemradio input[type="radio"]').live('click', function () {
 
 if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
     //微信
-    $('#wechat').hide();
+    $('#wechat').show();
 }

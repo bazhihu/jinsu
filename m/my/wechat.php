@@ -10,6 +10,13 @@ require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
 $notifyUrl = '';
 $totalAmount=$_REQUEST["totalAmount"];
 $needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
+if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
+    $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
+    $needPays = 1;
+}else{
+    $needPays = $needPay*100;
+    $notifyUrl = 'http://m.youaiyihu.com/my/notify.php';
+}
 
 //获取用户openid
 $tools = new JsApiPay();
@@ -22,15 +29,7 @@ $input->SetBody("优爱医护订单");
 $input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
-
-if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
-    $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
-    $input->SetTotal_fee(1);
-}else{
-    $input->SetTotal_fee($needPay*100);
-    $notifyUrl = 'http://m.youaiyihu.com/my/notify.php';
-}
-
+$input->SetTotal_fee($needPays);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");

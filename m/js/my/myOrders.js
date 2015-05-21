@@ -9,7 +9,7 @@ function backUrl(){
     if(result>0){
         back.attr('href','/my/center.html');
     }else{
-        back.attr('href','javascript:history.back(-1)');
+        back.attr('href','javascript:history.back(1)');
     }
 }
 backUrl();

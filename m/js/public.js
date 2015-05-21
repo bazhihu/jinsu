@@ -310,7 +310,6 @@ function convertArray(o) {
 
 //页面返回上一页统一处理
 var user = getStatus();
-/*
 if(!document.referrer || (document.referrer.match(/login.html/i) && user)){
     $('.back').attr('href','/');
-}*/
+}

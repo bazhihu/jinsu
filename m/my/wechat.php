@@ -10,12 +10,11 @@ require_once WEB_ROOT."/common/components/wxpay/unit/log.php";
 $notifyUrl = '';
 $totalAmount=$_REQUEST["totalAmount"];
 $needPay=$_REQUEST["totalAmount"]-$_REQUEST["walletMoney"];
-$needPays = 0;
 if($_SERVER["HTTP_HOST"] !="m.youaiyihu.com"){
     $notifyUrl = 'http://uat.m.youaiyihu.com/my/notify.php';
-    $needPays = 1;
+    $needPay = 1;
 }else{
-    $needPays = $needPay*100;
+    $needPay = $needPay*100;
     $notifyUrl = 'http://m.youaiyihu.com/my/notify.php';
 }
 
@@ -30,7 +29,7 @@ $input->SetBody("优爱医护订单");
 $input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetOut_trade_no($_REQUEST["orderNo"]);
 //$input->SetTotal_fee($totalAmount);
-$input->SetTotal_fee($needPays);
+$input->SetTotal_fee($needPay);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");

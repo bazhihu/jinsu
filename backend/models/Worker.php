@@ -47,9 +47,11 @@ class Worker extends \yii\db\ActiveRecord
     public $isWorking;
     public $workerIds = [];
 
+    const IS_WORKING_ALL = 0;
     const IS_WORKING_ON = 1;
     const IS_WORKING_OFF = 2;
     static public $isWorkingLabel = [
+        self::IS_WORKING_ALL => '全部',
         self::IS_WORKING_OFF => '待岗',
         self::IS_WORKING_ON => '在岗'
     ];

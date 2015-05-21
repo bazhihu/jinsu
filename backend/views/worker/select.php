@@ -19,6 +19,10 @@ $this->title = '选择护工';
     </div>
 
     <?php
+    if(empty($searchModel->isWorking)){
+        $searchModel->isWorking = 0;
+    }
+
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

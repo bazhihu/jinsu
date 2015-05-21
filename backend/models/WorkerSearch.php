@@ -111,9 +111,6 @@ class WorkerSearch extends Worker
             $query->andFilterWhere(['IN', 'worker_id', $workerIds]);
         }elseif($this->isWorking == Worker::IS_WORKING_OFF){
             $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
-        }else{
-            $this->isWorking = 2;
-            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
         }
 
         $query->andFilterWhere([

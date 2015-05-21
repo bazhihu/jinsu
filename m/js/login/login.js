@@ -2,7 +2,11 @@ var sub = $('.signin-form'),
     code = $('.retrieve-button');
 var user = getStatus();
 if(user){
-    window.location.href = history.go(-1);
+    if(document.referrer){
+        window.location.href = history.back();
+    }else{
+        window.location.href = '/index.html';
+    }
 }
 function previous(){
     var previous = document.referrer,

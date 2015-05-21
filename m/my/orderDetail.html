@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>优爱医护</title>
+    <title>订单明细 优爱医护-您的贴心护理员</title>
     <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="/css/style.css" rel="stylesheet" />
@@ -48,7 +48,18 @@
                 <em class="title">护理员：</em>
                 <div class="nurses-detail">
                     <div class="nurses-photo" style="background-image: url({{if data.pic}}{{data.pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
-                    <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>
+                    {{if data.worker_level==1}}
+                        <h5 class="care-level-junior nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
+                    {{if data.worker_level==2}}
+                        <h5 class="care-level-middle nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
+                    {{if data.worker_level==3}}
+                        <h5 class="care-level-hight nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
+                    {{if data.worker_level==4}}
+                        <h5 class="care-level-special nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
                     <dl>
                         <dt>姓名：</dt>
                         <dd>{{if data.worker_name}}{{data.worker_name}}{{else}}&nbsp;{{/if}}</dd>

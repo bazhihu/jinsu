@@ -15,19 +15,18 @@ use yii\base\Exception;
 
 class Sms extends Model{
 
-    public $mobile;
-
-    const SMS_LOGIN_CODE                    = '1'; //登录时的验证码
-    const SMS_ORDERS_NOT_PAID               = '2'; //订单未支付
-    const SMS_ORDERS_SUCCESSFUL_PAYMENT     = '3'; //订单支付成功
-    const SMS_ORDERS_OVER                   = '4'; //服务结束前24小时
-    const SMS_ORDER_CANCELED                = '5'; //订单已取消
-    const SMS_ORDERS_MODIFIED_SUCCESSFULLY  = '6'; //订单修改成功
-    const SMS_ORDERS_COMPLETED              = '7'; //订单已完成
-    const SMS_WITHDRAW_APPLICATION          = '8'; //提现申请
-    const SMS_SUCCESS_RECHARGE              = '9'; //充值成功
-
-    public static $hotLine = '400-630-9860';//客服热线
+const SMS_LOGIN_CODE                    = '1';
+const SMS_ORDERS_NOT_PAID               = '2'; //登录时的验证码
+    const SMS_ORDERS_SUCCESSFUL_PAYMENT     = '3'; //订单未支付
+    const SMS_ORDERS_OVER                   = '4'; //订单支付成功
+    const SMS_ORDER_CANCELED                = '5'; //服务结束前24小时
+    const SMS_ORDERS_MODIFIED_SUCCESSFULLY  = '6'; //订单已取消
+    const SMS_ORDERS_COMPLETED              = '7'; //订单修改成功
+    const SMS_WITHDRAW_APPLICATION          = '8'; //订单已完成
+    const SMS_SUCCESS_RECHARGE              = '9'; //提现申请
+    const SMS_SANSANDEJIU = 'http://GATEWAY.IEMS.NET.CN/GsmsHttp'; //充值成功
+const SMS_MANDAOKEJI = 'http://sdk.entinfo.cn/webservice.asmx/mdSmsSend';//客服热线
+public static $hotLine = '400-630-9860';
     /**
      * 漫道科技序列号&密码
      * @var array
@@ -44,19 +43,84 @@ class Sms extends Model{
         'agencyId'  => '68878',
         'username'  => 'admin',
         'pwd'       => '25340961',
-    ];
-
-    const SMS_SANSANDEJIU = 'http://GATEWAY.IEMS.NET.CN/GsmsHttp'; //三三得玖
-    const SMS_MANDAOKEJI = 'http://sdk.entinfo.cn/webservice.asmx/mdSmsSend'; //漫道科技
+    ]; //三三得玖
+        public $mobile; //漫道科技
 
     /**
-     * @inheritdoc
+     * 发送短信接口
+     * @param $params
+     * [
+     *      'mobile'       电话号码     必
+     *      'type'         场景类型     必
+     *
+     *      #type = SMS_LOGIN_CODE  登录时的验证码 1
+     *      'code'         验证码
+     *
+     *      #type = SMS_ORDERS_NOT_PAID  订单未支付 2
+     *      'time'         订单开始时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_SUCCESSFUL_PAYMENT  订单支付成功 3
+     *      'time'         订单开始时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_OVER  服务结束前24小时 4
+     *      'time'         订单结束时间
+     *
+     *      #type = SMS_ORDER_CANCELED  订单已取消 5
+     *      'time'         订单开始时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_MODIFIED_SUCCESSFULLY  订单修改成功 6
+     *      'time'         订单时间
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_ORDERS_COMPLETED  订单已完成 7
+     *      'days'         订单持续天数
+     *      'level'        陪护等级
+     *
+     *      #type = SMS_WITHDRAW_APPLICATION  提现申请 8
+     *      'money'         提现金额
+     *      'time'          提现时间
+     *      'hospital'      提现医院
+     *
+     *      #type = SMS_SUCCESS_RECHARGE  充值成功 9
+     *      'account'         账户
+     *      'money'           充值金额
+     *      'balance'         余额
+     *
+     * ]
+     * @return array
+     * @author HZQ
      */
-    public function rules()
-    {
-        return [
-            [['mobile'], 'required', 'message'=>'手机号码不能为空']
-        ];
+    public static function send($params){
+        #2015/4/28 屏蔽发送短信
+        if($params['type'] != self::SMS_LOGIN_CODE){
+            $response = [
+                'code'=>200,
+                'msg'=>'发送短信成功'
+            ];
+            return $response;
+        }
+
+        $content = self::smsScene($params);  //内容
+        if(!$content)
+        {
+            $response['code'] =400;
+            $response['msg'] ='参数错误';
+            return $response;
+        }
+        try{
+            $response = self::_manRoadSend($params['mobile'],$content);
+            if($response['code'] == 200)
+            {
+                return $response;
+            }
+            $response = self::_nineSend($params['mobile'],$content);
+            return $response;
+        }catch (Exception $e){
+            Yii::info($e->getMessage(), 'backend');
+        }
     }
 
     /**
@@ -126,81 +190,6 @@ class Sms extends Model{
             return false;
         }
         return $content;
-    }
-
-    /**
-     * 发送短信接口
-     * @param $params
-     * [
-     *      'mobile'       电话号码     必
-     *      'type'         场景类型     必
-     *
-     *      #type = SMS_LOGIN_CODE  登录时的验证码 1
-     *      'code'         验证码
-     *
-     *      #type = SMS_ORDERS_NOT_PAID  订单未支付 2
-     *      'time'         订单开始时间
-     *      'level'        陪护等级
-     *
-     *      #type = SMS_ORDERS_SUCCESSFUL_PAYMENT  订单支付成功 3
-     *      'time'         订单开始时间
-     *      'level'        陪护等级
-     *
-     *      #type = SMS_ORDERS_OVER  服务结束前24小时 4
-     *      'time'         订单结束时间
-     *
-     *      #type = SMS_ORDER_CANCELED  订单已取消 5
-     *      'time'         订单开始时间
-     *      'level'        陪护等级
-     *
-     *      #type = SMS_ORDERS_MODIFIED_SUCCESSFULLY  订单修改成功 6
-     *      'time'         订单时间
-     *      'level'        陪护等级
-     *
-     *      #type = SMS_ORDERS_COMPLETED  订单已完成 7
-     *      'days'         订单持续天数
-     *      'level'        陪护等级
-     *
-     *      #type = SMS_WITHDRAW_APPLICATION  提现申请 8
-     *      'money'         提现金额
-     *      'time'          提现时间
-     *      'hospital'      提现医院
-     *
-     *      #type = SMS_SUCCESS_RECHARGE  充值成功 9
-     *      'account'         账户
-     *      'money'           充值金额
-     *      'balance'         余额
-     *
-     * ]
-     * @return array
-     * @author HZQ
-     */
-    public static function send($params){
-        #2015/4/28 屏蔽发送短信
-        $response = [
-            'code'=>200,
-            'msg'=>'发送短信成功'
-        ];
-        return $response;
-
-        $content = self::smsScene($params);  //内容
-        if(!$content)
-        {
-            $response['code'] =400;
-            $response['msg'] ='参数错误';
-            return $response;
-        }
-        try{
-            $response = self::_manRoadSend($params['mobile'],$content);
-            if($response['code'] == 200)
-            {
-                return $response;
-            }
-            $response = self::_nineSend($params['mobile'],$content);
-            return $response;
-        }catch (Exception $e){
-            Yii::info($e->getMessage(), 'backend');
-        }
     }
 
     /**
@@ -284,5 +273,15 @@ class Sms extends Model{
             $response['msg'] = '发送短信成功！';
         }
         return $response;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['mobile'], 'required', 'message'=>'手机号码不能为空']
+        ];
     }
 }

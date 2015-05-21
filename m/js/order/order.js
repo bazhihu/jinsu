@@ -61,13 +61,16 @@
 	});
 
 	var days = document.getElementById('care-days');
+    //alert("days:"+days);
 	days && $('#care-start,#care-end').on('change', function () {
 		var start = document.getElementById('care-start').value;
 		var end = document.getElementById('care-end').value;
+       // alert("start:"+start+":end"+end);
 		var d = '';
 		if (start && end) {
             d = getOrderCycle(start,end);
 		}
+        //alert("d:"+d);
 		days['value' in days ? 'value' : 'innerHTML'] = d;
         $('#days').val(days);
 	});

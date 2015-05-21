@@ -37,6 +37,12 @@ foreach($categories as $datetime){
     }else{
         $series['mobile'][] = 0;
     }
+
+    if(isset($data['service'][$datetime])){
+        $series['service'][] = (int)$data['service'][$datetime];
+    }else{
+        $series['service'][] = 0;
+    }
 }
 $this->title = '数据统计';
 ?>
@@ -113,6 +119,7 @@ echo Highcharts::widget([
         'series' => [
             ['name' => '全部', 'data' => $series['all']],
             ['name' => '移动端', 'data' => $series['mobile']],
+            ['name' => '后台', 'data' => $series['service']],
         ]
     ]
 ]);

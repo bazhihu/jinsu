@@ -96,7 +96,7 @@ class OrderSearch extends OrderMaster
 
         //每天的订单量
         $column = "count(*) as total,DATE_FORMAT(create_time,'%Y-%m-%d') as date";
-        $where = "create_time>='$this->start_time' AND create_time<='$this->end_time'";
+        $where = "DATE_FORMAT(create_time,'%Y-%m-%d')>='$this->start_time' AND DATE_FORMAT(create_time,'%Y-%m-%d')<='$this->end_time'";
         $groupBy = "DATE_FORMAT(create_time,'%Y-%m-%d')";
         $sql = "SELECT $column FROM yayh_order_master WHERE $where GROUP BY $groupBy";
         //echo $sql;exit;
@@ -106,7 +106,7 @@ class OrderSearch extends OrderMaster
 
         //移动端
         $column = "count(*) as total,DATE_FORMAT(create_time,'%Y-%m-%d') as date";
-        $where = "create_time>='$this->start_time' AND create_time<='$this->end_time' AND create_order_sources='".OrderMaster::ORDER_SOURCES_MOBILE."'";
+        $where = "DATE_FORMAT(create_time,'%Y-%m-%d')>='$this->start_time' AND DATE_FORMAT(create_time,'%Y-%m-%d')<='$this->end_time' AND create_order_sources='".OrderMaster::ORDER_SOURCES_MOBILE."'";
         $groupBy = "DATE_FORMAT(create_time,'%Y-%m-%d')";
         $sql = "SELECT $column FROM yayh_order_master WHERE $where GROUP BY $groupBy";
         $command = $connection->createCommand($sql);
@@ -114,7 +114,7 @@ class OrderSearch extends OrderMaster
 
         //后台
         $column = "count(*) as total,DATE_FORMAT(create_time,'%Y-%m-%d') as date";
-        $where = "create_time>='$this->start_time' AND create_time<='$this->end_time' AND create_order_sources='".OrderMaster::ORDER_SOURCES_SERVICE."'";
+        $where = "DATE_FORMAT(create_time,'%Y-%m-%d')>='$this->start_time' AND DATE_FORMAT(create_time,'%Y-%m-%d')<='$this->end_time' AND create_order_sources='".OrderMaster::ORDER_SOURCES_SERVICE."'";
         $groupBy = "DATE_FORMAT(create_time,'%Y-%m-%d')";
         $sql = "SELECT $column FROM yayh_order_master WHERE $where GROUP BY $groupBy";
         $command = $connection->createCommand($sql);

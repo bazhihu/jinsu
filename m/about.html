@@ -7,7 +7,7 @@
 	<link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-splash">
-	<div class="swiper-container">
+	<div class="swiper-container" id="down">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
 				<div class="swiper-content">
@@ -60,16 +60,18 @@
 					<img src="../images/splash/6.png" width="247" height="247" alt="" />
 
 					<!-- 客户端下载地址，建议使用应用宝地址以兼容微信打开 -->
-					<a href="download.html" class="download">立即下载客户端</a>
+					<a  class="download">立即下载客户端</a>
 					<a href="./" class="continue">继续浏览</a>
 				</div>
 			</div>
 		</div>
 	</div>
+    <div id="weixin" style="display: none"><img src="../images/4.png"></div>
     <div id="foot"></div>
 	<script type="text/javascript" src="../js/swiper.min.js"></script>
     <script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
     <script type="text/javascript" src="../js/public.js"></script>
+    <script type="text/javascript" src="../js/download.js?v=2015052001"></script>
 	<script>
 		var swiper = new Swiper('.swiper-container', {
 			direction: 'vertical',

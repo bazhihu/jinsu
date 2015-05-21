@@ -307,3 +307,7 @@ function convertArray(o) {
     }
     return v;
 }
+
+if(!document.referrer||document.referrer.match(/(login.html)/i)){
+    $('.back').attr('href','/');
+}

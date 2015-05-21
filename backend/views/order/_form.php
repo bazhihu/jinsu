@@ -22,19 +22,19 @@ use backend\models\OrderPatient;
     red{color: #ff0000;}
     .btn{margin:5px}
     form{margin-bottom: 15px}
-    .form-group{margin-bottom: 0px}
+    .form-group{margin-bottom: 5px}
 </style>
 <div class="order-master-form">
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
-        'formConfig'=>['labelSpan'=>4]
+        'formConfig'=>['labelSpan'=>3]
         //'action'=>Yii::$app->urlManager->createUrl('order/create')
     ]);
     ?>
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">用户信息</h3>
@@ -43,7 +43,7 @@ use backend\models\OrderPatient;
                     <?php echo Form::widget([
                         'model' => $model,
                         'form' => $form,
-                        'columns' => 1,
+                        'columns' => 3,
                         'attributes' => [
                             'mobile'=>[
                                 'label'=>'手机号',
@@ -52,25 +52,26 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入手机号...',
                                     'maxlength'=>11,
-                                    'style'=>'width:36%',
+                                    'style'=>'width:80%',
                                     'readOnly'=>$model->isNewRecord ? false : true,
                                     //用户来电将电话号码显示在表单中
                                     'value'=>isset($_GET['callid'])? $_GET['callid'] : $model->mobile
                                 ],
                             ],
                             'contact_name'=>[
+                                'label'=>'姓名',
                                 'type'=> Form::INPUT_TEXT,
                                 'options'=>[
                                     'placeholder'=>'请输入联系人姓名...',
                                     'maxlength'=>4,
-                                    'style'=>'width:36%'
+                                    'style'=>'width:80%'
                                 ],
                             ],
                             'contact_telephone'=>[
                                 'type'=> Form::INPUT_TEXT,
                                 'options'=>[
                                     'placeholder'=>'请输入备用电话...',
-                                    'style'=>'width:36%'
+                                    'style'=>'width:80%'
                                 ],
                             ],
 //                            'contact_address'=>[
@@ -101,7 +102,7 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Hospitals::getList(),
-                                    'options'=>['placeholder' => '请选择医院...','style'=>'width:92%']
+                                    'options'=>['placeholder' => '请选择医院...']
                                 ]
                             ],
                             'department_id'=>[
@@ -109,7 +110,7 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Departments::getList(),
-                                    'options'=>['placeholder' => '请选择医院...','style'=>'width:92%']
+                                    'options'=>['placeholder' => '请选择医院...']
                                 ]
                             ],
                             'worker_level'=>[
@@ -117,13 +118,11 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Worker::getWorkerLevel(),
-                                    'options'=>['placeholder' => '请选择护工等级...','style'=>'width:92%']
+                                    'options'=>['placeholder' => '请选择护工等级...']
                                 ]
                             ],
                             'base_price' => [
-                                'label' => '护工价格',
-                                'options'=>[
-                                    'style'=>'width:92%']
+                                'label' => '护工价格'
                             ],
                             'start_time' => [
                                 'label'=>'开始时间',
@@ -132,7 +131,7 @@ use backend\models\OrderPatient;
                                 'hint'=>'请输入开始时间(yyyy-mm-dd)',
                                 'options'=>[
                                     'removeButton' => false,
-                                    'options'=>['placeholder'=>'开始时间...','style'=>'width:90%'],
+                                    'options'=>['placeholder'=>'开始时间...'],
                                     'pluginOptions'=>[
                                         //'startDate'=>date('Y-m-d'),
                                         'todayHighlight' => true,
@@ -148,7 +147,7 @@ use backend\models\OrderPatient;
                                 'hint'=>'请输入结束时间(yyyy-mm-dd)',
                                 'options'=>[
                                     'removeButton' => false,
-                                    'options'=>['placeholder'=>'结束时间...', 'style'=>'width:90%'],
+                                    'options'=>['placeholder'=>'结束时间...'],
                                     'pluginOptions'=>[
                                         //'startDate'=>date('Y-m-d', mktime(0,0,0,date('m'),date('d')+1,date('Y'))),
                                         'todayHighlight' => true,
@@ -164,11 +163,6 @@ use backend\models\OrderPatient;
                         'model'=>$model,
                         'form'=>$form,
                         'columns'=>1,
-                        'attributeDefaults'=>[
-                            'type'=>Form::INPUT_TEXTAREA,
-                            'labelOptions'=>['class'=>'col-md-2'],
-                            'inputContainer'=>['class'=>'col-md-10']
-                        ],
                         'attributes'=>[
                             'remark'=>[
                                 'type'=>Form::INPUT_TEXTAREA
@@ -190,7 +184,7 @@ use backend\models\OrderPatient;
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">患者信息</h3>
@@ -289,10 +283,8 @@ use backend\models\OrderPatient;
 <script type="text/javascript">
     //隐藏患者健康状况
     $('#orderpatient-patient_state').parents('.form-group').hide();
-    $('#ordermaster-remark').parent().siblings('label').removeClass("col-md-4");
-    $('#ordermaster-remark').parent().siblings('label').addClass("col-md-2");
-    $('#ordermaster-remark').parent().removeClass("col-md-8");
-    $('#ordermaster-remark').parent().addClass("col-md-10");
+    $('#ordermaster-remark').parent().siblings('label').css({width:'12.5%'});
+    $('#ordermaster-remark').parent().css({width:'87.5%'});
 
     //护工等级对应价格
     var workerPrices = new Array();

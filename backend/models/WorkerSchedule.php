@@ -86,7 +86,6 @@ class WorkerSchedule extends \yii\db\ActiveRecord
             $sql .= " AND UNIX_TIMESTAMP(start_date)>UNIX_TIMESTAMP('$endDate') AND UNIX_TIMESTAMP('$endDate')<=UNIX_TIMESTAMP(end_date)";
         }
         $workers = self::findBySql($sql)->all();
-
         return ArrayHelper::map($workers, 'id', 'worker_id');
     }
 

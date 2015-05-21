@@ -112,6 +112,7 @@ $this->title = '选择护工';
         'condensed'=>true,
         'floatHeader'=>true,
         'panel' => [
+            'before'=>Html::radioList('WorkerSearch[isWorking]', $searchModel->isWorking, Worker::$isWorkingLabel),
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'primary',
             'showFooter'=>false
@@ -121,6 +122,13 @@ $this->title = '选择护工';
 
 </div>
 <script type="text/javascript">
+    //待岗，在岗
+    $('body').on('click', 'input[name="WorkerSearch[isWorking]"]', function () {
+        var params = $('input,select').serialize()
+        location.href='<?php echo Yii::$app->urlManager->createUrl(['worker/select', 'order_id'=>$orderId,'start_time'=>$startTime])?>&'+params;
+    });
+
+    //选择护工
     $('body').on('click', 'button.jsSelectWorker', function () {
         if(!confirm('确认选择此护工吗？')){
             return false;

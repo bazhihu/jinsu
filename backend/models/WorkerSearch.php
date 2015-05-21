@@ -16,7 +16,7 @@ class WorkerSearch extends Worker
         return [
             [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
             [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'gender', 'add_date', 'edit_date','pic'], 'safe'],
-            [['price', 'good_rate'], 'number'],
+            [['price', 'good_rate', 'isWorking'], 'number'],
         ];
     }
 
@@ -88,19 +88,12 @@ class WorkerSearch extends Worker
     public function select($params){
         //获取在工作中的护工
         $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
+        $this->workerIds = $workerIds;
 
         $query = Worker::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
-        $birth = null;
-        if(!empty($params['birth'])){
-            $birth = date('Y')-$params['birth'];
-        }
-        if(!empty($workerIds)){
-            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
-        }
 
         if(!empty($params['hospital_id'])){
             $this->hospital_id = $params['hospital_id'];
@@ -114,9 +107,17 @@ class WorkerSearch extends Worker
             return $dataProvider;
         }
 
+        if($this->isWorking == Worker::IS_WORKING_ON){
+            $query->andFilterWhere(['IN', 'worker_id', $workerIds]);
+        }elseif($this->isWorking == Worker::IS_WORKING_OFF){
+            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+        }else{
+            $this->isWorking = 2;
+            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+        }
+
         $query->andFilterWhere([
             'gender' => $this->gender,
-            'birth' => $birth,
             'native_province' => $this->native_province,
             'level' => $this->level,
             'status' => $this->status,
@@ -124,6 +125,7 @@ class WorkerSearch extends Worker
             'star' => $this->star,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
 
         return $dataProvider;
     }

@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
@@ -29,6 +28,7 @@ use backend\models\OrderPatient;
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
+        'formConfig'=>['labelSpan'=>4]
         //'action'=>Yii::$app->urlManager->createUrl('order/create')
     ]);
     ?>
@@ -52,7 +52,7 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入手机号...',
                                     'maxlength'=>11,
-                                    'style'=>'width:26%',
+                                    'style'=>'width:36%',
                                     'readOnly'=>$model->isNewRecord ? false : true,
                                     //用户来电将电话号码显示在表单中
                                     'value'=>isset($_GET['callid'])? $_GET['callid'] : $model->mobile
@@ -63,14 +63,14 @@ use backend\models\OrderPatient;
                                 'options'=>[
                                     'placeholder'=>'请输入联系人姓名...',
                                     'maxlength'=>4,
-                                    'style'=>'width:26%'
+                                    'style'=>'width:36%'
                                 ],
                             ],
                             'contact_telephone'=>[
                                 'type'=> Form::INPUT_TEXT,
                                 'options'=>[
                                     'placeholder'=>'请输入备用电话...',
-                                    'style'=>'width:26%'
+                                    'style'=>'width:36%'
                                 ],
                             ],
 //                            'contact_address'=>[
@@ -91,20 +91,90 @@ use backend\models\OrderPatient;
                 </div>
                 <div class="panel-body">
                     <?php
-                    echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-                        'data' => Hospitals::getList(),
-                        'options' => ['type'=> Form::INPUT_WIDGET,'placeholder' => '请选择医院...','style'=>'width:40%'],
-                        'pluginOptions' => [
-                            'allowClear' => true
+                    echo Form::widget([
+                        'model'=>$model,
+                        'form'=>$form,
+                        'columns'=>2,
+                        'attributes'=>[
+                            'hospital_id'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>Hospitals::getList(),
+                                    'options'=>['placeholder' => '请选择医院...','style'=>'width:92%']
+                                ]
+                            ],
+                            'department_id'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>Departments::getList(),
+                                    'options'=>['placeholder' => '请选择医院...','style'=>'width:92%']
+                                ]
+                            ],
+                            'worker_level'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>Worker::getWorkerLevel(),
+                                    'options'=>['placeholder' => '请选择护工等级...','style'=>'width:92%']
+                                ]
+                            ],
+                            'base_price' => [
+                                'label' => '护工价格',
+                                'options'=>[
+                                    'style'=>'width:92%']
+                            ],
+                            'start_time' => [
+                                'label'=>'开始时间',
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\DatePicker',
+                                'hint'=>'请输入开始时间(yyyy-mm-dd)',
+                                'options'=>[
+                                    'removeButton' => false,
+                                    'options'=>['placeholder'=>'开始时间...','style'=>'width:90%'],
+                                    'pluginOptions'=>[
+                                        //'startDate'=>date('Y-m-d'),
+                                        'todayHighlight' => true,
+                                        'autoclose' => true,
+                                        'format' => 'yyyy-mm-dd 09:00:00'
+                                    ]
+                                ]
+                            ],
+                            'end_time'=>[
+                                'label'=>'结束时间',
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\DatePicker',
+                                'hint'=>'请输入结束时间(yyyy-mm-dd)',
+                                'options'=>[
+                                    'removeButton' => false,
+                                    'options'=>['placeholder'=>'结束时间...', 'style'=>'width:90%'],
+                                    'pluginOptions'=>[
+                                        //'startDate'=>date('Y-m-d', mktime(0,0,0,date('m'),date('d')+1,date('Y'))),
+                                        'todayHighlight' => true,
+                                        'autoclose' => true,
+                                        'format' => 'yyyy-mm-dd 09:00:00'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]);
+
+                    echo Form::widget([
+                        'model'=>$model,
+                        'form'=>$form,
+                        'columns'=>1,
+                        'attributeDefaults'=>[
+                            'type'=>Form::INPUT_TEXTAREA,
+                            'labelOptions'=>['class'=>'col-md-2'],
+                            'inputContainer'=>['class'=>'col-md-10']
                         ],
-                    ])->label('医院');
-                    echo $form->field($model, 'department_id')->widget(Select2::classname(), [
-                        'data' => Departments::getList(),
-                        'options' => ['placeholder' => '请选择科室...','style'=>'width:40%'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ])->label('科室');
+                        'attributes'=>[
+                            'remark'=>[
+                                'type'=>Form::INPUT_TEXTAREA
+                            ]
+                        ]
+                    ]);
 
                     //续单
                     if($model->is_continue){
@@ -115,61 +185,6 @@ use backend\models\OrderPatient;
                         echo $form->field($model, 'order_type', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                     }
 
-                    echo $form->field($model, 'worker_level')->widget(Select2::classname(), [
-                        'hideSearch' => true,
-                        'data' => Worker::getWorkerLevel(),
-                        'options' => ['placeholder' => '请选择护工等级...','style'=>'width:40%'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ])->label('护工等级')->hint(Worker::getWorkerPriceHint());
-
-                    echo Form::widget([ // nesting attributes together (without labels for children)
-                        'model'=>$model,
-                        'form'=>$form,
-                        'columns'=>1,
-                        'attributeDefaults' => [
-                            'type' => Form::INPUT_TEXT,
-                            'labelOptions' => ['class'=>'col-md-2'],
-                            'inputContainer' => ['class'=>'col-md-10'],
-                        ],
-                        'attributes'=>[
-                            'date_range' => [
-                                'label' => '<red>*</red>订单时间',
-                                'attributes'=>[
-                                    'start_time' => [
-                                        'type'=>Form::INPUT_WIDGET,
-                                        'widgetClass'=>'\kartik\widgets\DatePicker',
-                                        'hint'=>'请输入开始时间(yyyy-mm-dd)',
-                                        'options'=>[
-                                            'options'=>['placeholder'=>'开始时间...'],
-                                            'pluginOptions'=>[
-                                                //'startDate'=>date('Y-m-d'),
-                                                'todayHighlight' => true,
-                                                'autoclose' => true,
-                                                'format' => 'yyyy-mm-dd 09:00:00'
-                                            ]
-                                        ]
-                                    ],
-                                    'end_time'=>[
-                                        'type'=>Form::INPUT_WIDGET,
-                                        'widgetClass'=>'\kartik\widgets\DatePicker',
-                                        'hint'=>'请输入结束时间(yyyy-mm-dd)',
-                                        'options'=>[
-                                            'options'=>['placeholder'=>'结束时间...'],
-                                            'pluginOptions'=>[
-                                                //'startDate'=>date('Y-m-d', mktime(0,0,0,date('m'),date('d')+1,date('Y'))),
-                                                'todayHighlight' => true,
-                                                'autoclose' => true,
-                                                'format' => 'yyyy-mm-dd 09:00:00'
-                                            ]
-                                        ]
-                                    ],
-                                ]
-                            ],
-                        ]
-                    ]);
-                    echo $form->field($model, 'remark')->textarea(['rows'=>2, 'style'=>'width:90%']);
                     ?>
                 </div>
             </div>
@@ -274,14 +289,30 @@ use backend\models\OrderPatient;
 <script type="text/javascript">
     //隐藏患者健康状况
     $('#orderpatient-patient_state').parents('.form-group').hide();
+    $('#ordermaster-remark').parent().siblings('label').removeClass("col-md-4");
+    $('#ordermaster-remark').parent().siblings('label').addClass("col-md-2");
+    $('#ordermaster-remark').parent().removeClass("col-md-8");
+    $('#ordermaster-remark').parent().addClass("col-md-10");
+
+    //护工等级对应价格
+    var workerPrices = new Array();
+    <?php foreach(Worker::$workerPrice as $level=>$price){
+        echo "workerPrices[$level]=$price;";
+    }
+    ?>
+
+    $('#ordermaster-worker_level').change(function(){
+        var level = $(this).val();
+        $('#ordermaster-base_price').val(workerPrices[level]);
+    });
 
     $('.js-calculate-price').click(function(){
-        var workerLevel = $('#ordermaster-worker_level').val();
+        var price = $('#ordermaster-base_price').val();
         var startTime = $('#ordermaster-start_time').val();
         var endTime = $('#ordermaster-end_time').val();
         var patientState = $('input[name="OrderPatient[patient_state]"]:checked').val();
-        if(workerLevel.length <= 0 || startTime.length <= 0 || endTime.length <= 0 || !patientState){
-            alert('护工等级、订单时间填后才能计算订单价格。');
+        if(price.length <= 0 || startTime.length <= 0 || endTime.length <= 0 || !patientState){
+            alert('护工价格、订单时间填后才能计算订单价格。');
             return false;
         }
         var arr = startTime.split("-");
@@ -298,7 +329,7 @@ use backend\models\OrderPatient;
 
         $("#priceDetail").load(
             '<?php echo $url;?>',
-            {worker_level: workerLevel,start_time:startTime,end_time:endTime,patient_state:patientState}
+            {base_price: price,start_time:startTime,end_time:endTime,patient_state:patientState}
         );
 
         jQuery('#orderPriceModal').modal({"show":true});

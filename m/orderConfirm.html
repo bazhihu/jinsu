@@ -48,13 +48,16 @@
                     <div class="nurses-detail">
                         <div class="nurses-photo" style="background-image: url({{if pic}}{{pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
                         {{if worker_level==1}}
-                            <h5 class="care-level-middle nurses-title">{{worker_level_name}}</h5>
+                            <h5 class="care-level-junior nurses-title">{{worker_level_name}}</h5>
                         {{/if}}
                         {{if worker_level==2}}
-                            <h5 class="care-level-hight nurses-title">{{worker_level_name}}</h5>
+                            <h5 class="care-level-middle nurses-title">{{worker_level_name}}</h5>
                         {{/if}}
                         {{if worker_level==3}}
-                            <h5 class="care-level-special nurses-title">{{worker_level_name}}</h5>
+                            <h5 class="care-level-hight nurses-title">{{worker_level_name}}</h5>
+                        {{/if}}
+                        {{if worker_level==4}}
+                        <h5 class="care-level-special nurses-title">{{worker_level_name}}</h5>
                         {{/if}}
                         <input type="hidden" name="worker_level" id="worker_level" value="{{worker_level}}">
                         <dl>

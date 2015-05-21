@@ -105,6 +105,7 @@ $.getJSON(getOrderUrl,function(response){
                 else
                     digital.record += '<li><span class="status">下单成功,等待支付</span>'+digital.create_time+'</li>';
             }
+            console.log(response);
             var bodyHtml = template('bodyTemplate', response);
             $('#body').html(bodyHtml);
         });

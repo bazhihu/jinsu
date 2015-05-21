@@ -48,7 +48,18 @@
                 <em class="title">护理员：</em>
                 <div class="nurses-detail">
                     <div class="nurses-photo" style="background-image: url({{if data.pic}}{{data.pic}}{{else}}/images/default-avatar.jpg{{/if}})"></div>
-                    <h5 class="care-level-hight nurses-title"> {{data.worker_levels_name}}</h5>
+                    {{if data.worker_level==1}}
+                        <h5 class="care-level-junior nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
+                    {{if data.worker_level==2}}
+                        <h5 class="care-level-middle nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
+                    {{if data.worker_level==3}}
+                        <h5 class="care-level-hight nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
+                    {{if data.worker_level==4}}
+                        <h5 class="care-level-special nurses-title">{{data.worker_levels_name}}</h5>
+                    {{/if}}
                     <dl>
                         <dt>姓名：</dt>
                         <dd>{{if data.worker_name}}{{data.worker_name}}{{else}}&nbsp;{{/if}}</dd>

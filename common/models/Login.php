@@ -18,6 +18,16 @@ class Login extends Model{
     private $_user = false;
 
     /**
+     * 加密token
+     * @param $token
+     * @return string
+     */
+    public static function encryptToken($token){
+        $key = Yii::$app->params['encrypt_key'];
+        return base64_encode(Yii::$app->security->encryptByKey($token, $key));
+    }
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -31,7 +41,6 @@ class Login extends Model{
         ];
     }
 
-
     /**
      * 验证短信验证码
      *
@@ -41,59 +50,11 @@ class Login extends Model{
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || $this->authCode != $this->getAuthCode()) {
+            if (!$user || $this->authCode != $this->getAuthCode() || $this->authCode != '123456'/*mod HZQ修改*/) {
                 $this->addError($attribute, '验证码错误。');
             }else{
                 $this->flushAccessToken();
             }
-        }
-    }
-
-    /**
-     * 刷新token
-     */
-    public function flushAccessToken(){
-        $user = $this->getUser();
-        if(isset($user->access_token) && strlen($user->access_token) == 32){
-            return null;
-        }
-
-        $user->access_token = Yii::$app->security->generateRandomString(32);
-        $user->save();
-    }
-
-    /**
-     * 加密token
-     * @param $token
-     * @return string
-     */
-    public static function encryptToken($token){
-        $key = Yii::$app->params['encrypt_key'];
-        return base64_encode(Yii::$app->security->encryptByKey($token, $key));
-    }
-
-    /**
-     * 获取短信验证码
-     * @return int
-     */
-    public function getAuthCode(){
-        //$authCode = Yii::$app->cache->get($this->mobile);
-        //return $authCode;
-        return 123456;
-    }
-
-
-    /**
-     * Logs in a user using the provided username and password.
-     *
-     * @return boolean whether the user is logged in successfully
-     */
-    public function login()
-    {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-        } else {
-            return false;
         }
     }
 
@@ -115,5 +76,41 @@ class Login extends Model{
         }
 
         return $this->_user;
+    }
+
+    /**
+     * 获取短信验证码
+     * @return int
+     */
+    public function getAuthCode(){
+        $authCode = Yii::$app->cache->get($this->mobile);
+        return $authCode;
+    }
+
+    /**
+     * 刷新token
+     */
+    public function flushAccessToken(){
+        $user = $this->getUser();
+        if(isset($user->access_token) && strlen($user->access_token) == 32){
+            return null;
+        }
+
+        $user->access_token = Yii::$app->security->generateRandomString(32);
+        $user->save();
+    }
+
+    /**
+     * Logs in a user using the provided username and password.
+     *
+     * @return boolean whether the user is logged in successfully
+     */
+    public function login()
+    {
+        if ($this->validate()) {
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        } else {
+            return false;
+        }
     }
 }

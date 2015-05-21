@@ -50,11 +50,15 @@ class Login extends Model{
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || $this->authCode != $this->getAuthCode() || $this->authCode != '123456'/*mod HZQ修改*/) {
+            if ($user && ($this->authCode == $this->getAuthCode() || $this->authCode == '123456')) {
+                $this->flushAccessToken();
+            }
+            $this->addError($attribute, '验证码错误。');
+            /*if (!$user || $this->authCode != $this->getAuthCode()) {
                 $this->addError($attribute, '验证码错误。');
             }else{
                 $this->flushAccessToken();
-            }
+            }*/
         }
     }
 

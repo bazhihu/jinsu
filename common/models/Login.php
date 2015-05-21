@@ -52,8 +52,9 @@ class Login extends Model{
             $user = $this->getUser();
             if ($user && ($this->authCode == $this->getAuthCode() || $this->authCode == '123456')) {
                 $this->flushAccessToken();
+            }else{
+                $this->addError($attribute, '验证码错误。');
             }
-            $this->addError($attribute, '验证码错误。');
             /*if (!$user || $this->authCode != $this->getAuthCode()) {
                 $this->addError($attribute, '验证码错误。');
             }else{

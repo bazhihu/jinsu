@@ -2,11 +2,7 @@ var sub = $('.signin-form'),
     code = $('.retrieve-button');
 var user = getStatus();
 if(user){
-    if(document.referrer){
-        window.location.href = history.back();
-    }else{
-        window.location.href = '/index.html';
-    }
+    window.location.href = history.back();
 }
 function previous(){
     var previous = document.referrer,
@@ -23,8 +19,7 @@ sub.submit(
         var data = $('form').serializeArray(),
             error = true;
         validateLogin(data, function(a){
-            if(!a)
-                error = false;
+            if(!a)error = false;
         });
         if(error){
             $.post(loginUrl,data,function(back){
@@ -38,6 +33,8 @@ sub.submit(
                     }else{
                         window.location.href = host;
                     }
+                }else{
+                    alert(back.msg);
                 }
             });
         }
@@ -75,13 +72,15 @@ code.on(CLICK,function(err){
 });
 function validateLogin(date, callback){
     var phone = /^(1[3|5|7|8|][0-9]{9})$/,
-        code = /\d{6}/;
+        code = /\d{6}/,
+        pass = true;
     $.map(date,function(item,index){
         if(item.name == 'mobile' && !phone.test(item.value)){
             alert('请输入正确的手机号码');
             callback(false);
+            pass = false;
         }
-        if(item.name == 'authCode' && !code.test(item.value)){
+        if(pass && item.name == 'authCode' && !code.test(item.value)){
             alert('请输入正确的验证码');
             callback(false);
         }

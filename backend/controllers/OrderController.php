@@ -137,6 +137,7 @@ class OrderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $orderPatientModel->load(Yii::$app->request->post())) {
             $orderPatientModel->save();
 
+            $model->total_amount = $model->calculateTotalPrice();
             $model->patient_name = $orderPatientModel->name;
             $model->save();
             return $this->redirect(['view', 'id' => $model->order_id]);

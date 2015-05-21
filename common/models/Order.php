@@ -156,7 +156,7 @@ class Order extends \yii\db\ActiveRecord{
             'worker_name' => '护工姓名',
             'worker_level' => '护工等级',
             'mobile' => '手机号',
-            'base_price' => '护工的基础价格（金额/天）',
+            'base_price' => '护工基础价格',
             'patient_state_coefficient' => '患者状态价格系数',
             'hospital_id' => '医院',
             'department_id' => '科室',
@@ -264,7 +264,7 @@ class Order extends \yii\db\ActiveRecord{
                     $orderData['worker_level'] = $worker->level;
                     $orderData['order_type'] = self::ORDER_TYPE_WORKER;
                 }elseif(!empty($orderData['worker_level'])){
-                    $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
+                    empty($orderData['base_price']) && $orderData['base_price'] = Worker::getWorkerPrice($orderData['worker_level']);
                     $orderData['order_type'] = self::ORDER_TYPE_FAST;
                 }
             }

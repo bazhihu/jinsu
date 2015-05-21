@@ -274,11 +274,11 @@ class WorkerController extends Controller
             }
 
             //判断护工是否在工作中
-            if(WorkerSchedule::isWorking($workerId, $startTime)){
-                $response = ['code' => '412', 'msg' => '此护工已被预定，请选择其他护工'];
-                echo Json::encode($response);
-                return false;
-            }
+//            if(WorkerSchedule::isWorking($workerId, $startTime)){
+//                $response = ['code' => '412', 'msg' => '此护工已被预定，请选择其他护工'];
+//                echo Json::encode($response);
+//                return false;
+//            }
 
             $response = Order::setWorker($orderId, $workerId, $worker->name);
             echo Json::encode($response);
@@ -292,6 +292,8 @@ class WorkerController extends Controller
         $orderId = $_GET['order_id'];
         $startTime = $_GET['start_time'];
         $searchModel = new WorkerSearch;
+
+        //获取在工作中的护工
         $dataProvider = $searchModel->select(Yii::$app->request->getQueryParams());
 
         return $this->render('select', [

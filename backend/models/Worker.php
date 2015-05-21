@@ -44,6 +44,16 @@ use yii\web\UploadedFile;
  */
 class Worker extends \yii\db\ActiveRecord
 {
+    public $isWorking;
+    public $workerIds = [];
+
+    const IS_WORKING_ON = 1;
+    const IS_WORKING_OFF = 2;
+    static public $isWorkingLabel = [
+        self::IS_WORKING_OFF => '待岗',
+        self::IS_WORKING_ON => '在岗'
+    ];
+
     /**
      * 护工等级
      */
@@ -608,7 +618,7 @@ class Worker extends \yii\db\ActiveRecord
      * @param $workerIds
      * @param string $op
      */
-    static public function  workerAudit($workerIds, $op='audit_yes'){
+    static public function workerAudit($workerIds, $op='audit_yes'){
         $connection = Yii::$app->db;
         //$auditer = yii::$app->user->getId();
         if($op=='audit_yes'){
@@ -621,5 +631,9 @@ class Worker extends \yii\db\ActiveRecord
         $sql = "update yayh_worker set audit_status = ".$audit_status." where worker_id in ($workerIds)";
         $command = $connection->createCommand($sql);
         $command->query();
+    }
+
+    public function isWorking($workerId){
+        return in_array($workerId, $this->workerIds) ? 'yes' : 'no';
     }
 }

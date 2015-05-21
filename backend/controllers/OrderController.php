@@ -297,7 +297,6 @@ class OrderController extends Controller
         if ($post) {
             $orderMaster->setAttributes($post);
             $orderMaster->reality_end_time = $orderMaster->end_time;
-            $orderMaster->base_price = Worker::getWorkerPrice($orderMaster->worker_level);
 
             //能否自理价格系数
             $patientState = $orderMaster->patient_state;

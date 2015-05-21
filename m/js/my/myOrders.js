@@ -8,13 +8,11 @@ function backUrl(){
     result = previous.indexOf('orderDetail');
     if(result>0){
         back.attr('href','/my/center.html');
-    }else{
-        back.attr('href','javascript:history.back()');
     }
     if(!previous){
         back.attr('href','/index.html');
     }
-}
+}console.log(document.referrer);
 backUrl();
 $.getJSON(url,function(response){
     if(response.code == 200){

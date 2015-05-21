@@ -11,6 +11,9 @@ function backUrl(){
     }else{
         back.attr('href','javascript:history.back()');
     }
+    if(!previous){
+        back.attr('href','/index.html');
+    }
 }
 backUrl();
 $.getJSON(url,function(response){

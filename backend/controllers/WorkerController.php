@@ -112,7 +112,7 @@ class WorkerController extends Controller
      */
     public function actionUpdate($id){
         $model = $this->findModel($id);
-var_dump($model['pic']);
+
         //户口所在地
         if($model['birth_place']){
             $place = explode(',',$model['birth_place']);
@@ -144,6 +144,8 @@ var_dump($model['pic']);
 //        }
 
         if ($model->load(Yii::$app->request->post())) {
+            var_dump($model);
+            die();
             $params = Yii::$app->request->post();
 
             $startWork = str_replace('年', '-', str_replace('月', '-', $params['start_work']));

@@ -598,12 +598,14 @@ class Worker extends \yii\db\ActiveRecord
      * @return string
      */
     static public function workerPic($workerId, $size = 240){
-        //$backend_file_name = Yii::$app->basePath."/web/uploads/".$workerId.'_'.$size.'.jpg';
-        if ($workerId){
+        $backend_file_name = Yii::$app->basePath."/web/uploads/".$workerId.'_'.$size.'.jpg';
+
+        if (file_exists($backend_file_name)){
             $file_name = 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
             return $file_name;
         }else{
-            return file_exists("img/no.jpg")?" img/no.jpg":"/images/default-avatar.jpg" ;
+            $admin_img = Yii::$app->basePath."/web/img/no.jpg";
+            return file_exists($admin_img)? $admin_img :"/images/default-avatar.jpg" ;
         }
     }
 

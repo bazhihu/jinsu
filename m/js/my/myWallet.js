@@ -19,7 +19,7 @@ if(user.id && user.token){
                 if(val.detail_type == 1){
                     item.push('支付护理服务费');
                     item.push('expenditure');
-                    item.push('-'+val.detail_money);
+                    item.push(val.detail_money);
                 }else if(val.detail_type == 2){
                     item.push('充值');
                     item.push('income');
@@ -27,7 +27,7 @@ if(user.id && user.token){
                 }else if(val.detail_type == 3){
                     item.push('余额提现');
                     item.push('expenditure');
-                    item.push('-'+val.detail_money);
+                    item.push(val.detail_money);
                 }else if(val.detail_type == 4){
                     item.push('退款');
                     item.push('income');

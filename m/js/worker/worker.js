@@ -68,6 +68,7 @@ function get_workedetail() {
             template.helper('dateFormat', function (str) {
                 return ages(str);
             });
+            if(response.){}
             var bodyHtml = template('bodyTemplate', response);
             $('#nurses_detail').html(bodyHtml);
             $('#price').html(parseInt(response.data.price));

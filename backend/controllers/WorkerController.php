@@ -143,20 +143,18 @@ class WorkerController extends Controller
 //            $model['good_at']= explode(',',$model['good_at']);
 //        }
 
+        $pic = $model['pic'];
         if ($model->load(Yii::$app->request->post())) {
-            var_dump($model);
-            die();
             $params = Yii::$app->request->post();
 
             $startWork = str_replace('年', '-', str_replace('月', '-', $params['start_work']));
             $params['Worker']['start_work'] = $startWork."01";
-            if($model['pic']){
-                $params['Worker']['pic'] = $model['pic'];
+            if($pic){
+                $params['Worker']['pic'] = $pic;
              }
-            echo $model['pic'].":".print_r($params['Worker']);
-            $model->attributes = $model->saveData($params['Worker'], 'create');
-            print_r($model->attributes);
+            print_r($params['Worker']);
             die();
+            $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 //上传照片
                 $model->uploadPic($model->worker_id);

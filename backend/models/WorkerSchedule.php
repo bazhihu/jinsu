@@ -79,10 +79,12 @@ class WorkerSchedule extends \yii\db\ActiveRecord
      * @author zhangbo
      */
     static public function getWorkingByDate($startDate, $endDate = null){
+        $startDate = date('Y-m-d 09:00:00', strtotime($startDate));
         $sql = 'SELECT id,worker_id FROM '.self::tableName();
         $sql .= "WHERE UNIX_TIMESTAMP(start_date)<=UNIX_TIMESTAMP('$startDate') AND UNIX_TIMESTAMP('$startDate')<UNIX_TIMESTAMP(end_date)";
 
         if($endDate){
+            $endDate = date('Y-m-d 09:00:00', strtotime($endDate));
             $sql .= " AND UNIX_TIMESTAMP(start_date)>UNIX_TIMESTAMP('$endDate') AND UNIX_TIMESTAMP('$endDate')<=UNIX_TIMESTAMP(end_date)";
         }
         $workers = self::findBySql($sql)->all();

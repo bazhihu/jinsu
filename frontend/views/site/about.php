@@ -2,8 +2,9 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = '关于我们';
-?>
+$this->title = '关于我们_优爱医护-您的贴心护理员';
+$this->registerMetaTag(['name'=>'Keywords', 'content'=>'护理员、护工、陪护、护理、护工网、老年护理员、养老院护理员、养老护理员、家政保姆护工、住家护工、北京护工、家庭护工、男护工、医院护工、家庭陪护、老人陪护、情感陪护、医院陪护、护工工资、医院护工招聘、医院护工价格、北京护工、北京护工工资、北京护工保姆招聘、护工培训']);
+$this->registerMetaTag(['name'=>'Description', 'content'=>'优爱医护网，关于我们介绍优爱医护网信息，在这里您可以了解到优爱医护网的准确、详尽信息。找医院陪护、情感陪护优爱医护更专业。更多功能尽在优爱医护-您的贴心护理员'])?>
 <style>
     .line {border-top: 4px solid #2dcb9c; overflow: hidden; -webkit-background-size: cover; background-size: cover; }
     .express p{

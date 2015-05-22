@@ -1,5 +1,6 @@
 var sub = $('.signin-form'),
-    code = $('.retrieve-button');
+    code = $('.retrieve-button'),
+    validCode = true;
 var user = getStatus();
 if(user){
     window.location.href = history.back();
@@ -42,10 +43,9 @@ sub.submit(
     }
 );
 code.on(CLICK,function(err){
-    var time=60,
-        validCode=true,
-        button = $(this);
-    if (validCode) {
+    if(validCode){
+        var time=60,
+            button = $(this);
         validCode=false;
         var data = $('form').serializeArray(),
             error = true;

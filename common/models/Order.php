@@ -102,7 +102,10 @@ class Order extends \yii\db\ActiveRecord{
         'cancel' => [
             self::ORDER_STATUS_WAIT_PAY,
             self::ORDER_STATUS_WAIT_SERVICE,
-            self::ORDER_STATUS_WAIT_CONFIRM
+            self::ORDER_STATUS_WAIT_CONFIRM,
+            self::ORDER_STATUS_IN_SERVICE,
+            self::ORDER_STATUS_END_SERVICE,
+            self::ORDER_STATUS_WAIT_EVALUATE
         ],
         //评价
         'evaluate' => [
@@ -691,9 +694,10 @@ class Order extends \yii\db\ActiveRecord{
 
     /**
      * 订单取消
+     * @param string $reason 取消原因
      * @return array
      */
-    public function cancel(){
+    public function cancel($reason = null){
         $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'cancel')){
             $response['code'] = 212;
@@ -707,7 +711,7 @@ class Order extends \yii\db\ActiveRecord{
             WorkerSchedule::deleteAll(['order_no' => $this->order_no]);
 
             //退款操作
-            if(in_array($this->order_status, [self::ORDER_STATUS_WAIT_CONFIRM,self::ORDER_STATUS_WAIT_SERVICE])){
+            if(!in_array($this->order_status, [self::ORDER_STATUS_WAIT_PAY,self::ORDER_STATUS_CANCEL])){
                 $refundAmount = $this->total_amount;
                 $wallet = Wallet::refundMoney($this->uid, $refundAmount);
 
@@ -733,7 +737,7 @@ class Order extends \yii\db\ActiveRecord{
 
             //记录操作
             $orderOperatorLog = new OrderOperatorLog();
-            $orderOperatorLog->addLog($this->order_no, 'cancel', $response);
+            $orderOperatorLog->addLog($this->order_no, 'cancel', $response, $reason);
 
             $response['msg'] = '取消成功';
             $transaction->commit();

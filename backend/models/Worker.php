@@ -561,8 +561,8 @@ class Worker extends \yii\db\ActiveRecord
      * 上传护工照片
      * @return bool
      */
-    public function uploadPic(){
-        $workerId = $this->worker_id;
+    public function uploadPic($workerId=''){
+        //$workerId = $this->worker_id;
         $this->pic = UploadedFile::getInstance($this, 'pic');
         if($this->pic){
             $picName = $workerId.".jpg";
@@ -598,11 +598,14 @@ class Worker extends \yii\db\ActiveRecord
      * @return string
      */
     static public function workerPic($workerId, $size = 240){
-        $file_name = 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
-        if($workerId && file_exists($file_name))
+        $backend_file_name = "uploads/".$workerId.'_'.$size.'.jpg';
+
+        if (is_file($backend_file_name)){
+            $file_name = 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
             return $file_name;
-        else
-            return file_exists("/img/no.jpg")?"/img/no.jpg":"/images/no_api.jpg" ;
+        }else{
+            return is_file("img/no.jpg")?" img/no.jpg":"/images/default-avatar.jpg" ;
+        }
     }
 
     /**

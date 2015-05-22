@@ -7,7 +7,11 @@ use yii\helpers\Html;
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <title><?= Html::encode($this->title) ?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit">
+    <meta name="mobile-agent" content="format=html5; url=http://m.youaiyihu.com">
     <link href="/css/index.css?v=2015051202" rel="stylesheet" />
+    <?php $this->head();?>
 </head>
 <body>
     <div id="header" class="section">

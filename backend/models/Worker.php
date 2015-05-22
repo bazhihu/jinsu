@@ -607,6 +607,8 @@ class Worker extends \yii\db\ActiveRecord
             $admin_img = Yii::$app->basePath."/web/img/no.jpg";
             return file_exists($admin_img)? $admin_img :"/images/default-avatar.jpg" ;
         }
+        echo $backend_file_name."<br>".$admin_img;
+        die();
     }
 
     /**

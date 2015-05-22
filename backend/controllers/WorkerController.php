@@ -90,7 +90,7 @@ class WorkerController extends Controller
             $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()){
                 //上传照片
-                $model->uploadPic();
+                $model->uploadPic($model->worker_id);
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
             }else {
                 return $this->render('create', [
@@ -149,12 +149,12 @@ class WorkerController extends Controller
             $startWork = str_replace('年', '-', str_replace('月', '-', $params['start_work']));
             $params['Worker']['start_work'] = $startWork."01";
             if($model['pic']){
-                $params['Worker']['pic'] = $model['pic'];
+                $params['Worker']['pic'] = $model->worker_id;
              }
             $model->attributes = $model->saveData($params['Worker'], 'create');
             if ($model->save()) {
                 //上传照片
-                $model->uploadPic();
+                $model->uploadPic($model->worker_id);
 
                 return $this->redirect(["workerother/update", "worker_id" => $model->worker_id]);
             }else {

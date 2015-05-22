@@ -561,8 +561,8 @@ class Worker extends \yii\db\ActiveRecord
      * 上传护工照片
      * @return bool
      */
-    public function uploadPic(){
-        $workerId = $this->worker_id;
+    public function uploadPic($workerId=''){
+        //$workerId = $this->worker_id;
         $this->pic = UploadedFile::getInstance($this, 'pic');
         if($this->pic){
             $picName = $workerId.".jpg";

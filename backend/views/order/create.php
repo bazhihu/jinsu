@@ -17,7 +17,8 @@ $this->title = '新增订单';
     </div>
     <?= $this->render('_form', [
         'model' => $model,
-        'orderPatientModel' =>$orderPatientModel
+        'orderPatientModel' => $orderPatientModel,
+        'action' => Yii::$app->urlManager->createUrl('order/create')
     ]) ?>
 
 </div>

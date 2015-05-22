@@ -28,7 +28,7 @@ use backend\models\OrderPatient;
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
         'formConfig'=>['labelSpan'=>3],
-        'action'=>Yii::$app->urlManager->createUrl('order/create')
+        'action' => $action
     ]);
     ?>
 

@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\widgets\Select2;
 use backend\models\Hospitals;
 use backend\models\Departments;
 use backend\models\Worker;
@@ -28,8 +27,8 @@ use backend\models\OrderPatient;
     <?php
     $form = ActiveForm::begin([
         'type'=>ActiveForm::TYPE_HORIZONTAL,
-        'formConfig'=>['labelSpan'=>3]
-        //'action'=>Yii::$app->urlManager->createUrl('order/create')
+        'formConfig'=>['labelSpan'=>3],
+        'action' => $action
     ]);
     ?>
 
@@ -221,7 +220,6 @@ use backend\models\OrderPatient;
                             ],
                         ]
                     ]);
-
                     echo $form->field($orderPatientModel, 'height', [
                         'addon' => ['append' => ['content'=>'cm'],'groupOptions'=>['style'=>'width:198px']]
                     ]);

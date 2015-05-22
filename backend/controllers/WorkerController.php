@@ -151,7 +151,9 @@ class WorkerController extends Controller
             if($model->pic){
                 $params['Worker']['pic'] = $model->worker_id;
              }
+            echo $model->pic.":".print_r($params['Worker']);
             $model->attributes = $model->saveData($params['Worker'], 'create');
+            print_r("attributes:".$model->attributes);
             if ($model->save()) {
                 //上传照片
                 $model->uploadPic($model->worker_id);

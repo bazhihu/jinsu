@@ -598,8 +598,9 @@ class Worker extends \yii\db\ActiveRecord
      * @return string
      */
     static public function workerPic($workerId, $size = 240){
-        if($workerId)
-            return 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
+        $file_name = 'http://'.Yii::$app->params['pic_domain']."/".$workerId.'_'.$size.'.jpg';
+        if($workerId && file_exists($file_name))
+            return $file_name;
         else
             return file_exists("/img/no.jpg")?"/img/no.jpg":"/images/no_api.jpg" ;
     }

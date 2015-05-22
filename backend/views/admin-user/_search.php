@@ -16,7 +16,7 @@ use kartik\widgets\Select2;
         margin:5px;
     }
 </style>
-<div class="admin-user-search" style="padding-bottom: 40px;border-bottom: 1px solid #eee;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: rgb(238, 238, 238);">
+<div class="admin-user-search" style="border-bottom: 1px solid #eee;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: rgb(238, 238, 238);">
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">检索</h3>

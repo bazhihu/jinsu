@@ -148,7 +148,7 @@ class WorkerController extends Controller
 
             $startWork = str_replace('年', '-', str_replace('月', '-', $params['start_work']));
             $params['Worker']['start_work'] = $startWork."01";
-            if($model['pic']){
+            if($model->pic){
                 $params['Worker']['pic'] = $model->worker_id;
              }
             $model->attributes = $model->saveData($params['Worker'], 'create');

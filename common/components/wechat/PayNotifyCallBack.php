@@ -52,7 +52,7 @@ class PayNotifyCallBack extends WxPayNotify
         $params = [
             'uid' => $this->_logModel->uid,
             'pay_from' => WalletUserDetail::PAY_FROM_WECHAT,
-            'money' => $data['total_fee'] //todo zq
+            'money' => ($data['total_fee']/100)
         ];
 
         Wallet::recharge($params);

@@ -112,7 +112,7 @@ class WorkerController extends Controller
      */
     public function actionUpdate($id){
         $model = $this->findModel($id);
-
+var_dump($model);
         //户口所在地
         if($model['birth_place']){
             $place = explode(',',$model['birth_place']);

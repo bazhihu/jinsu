@@ -64,6 +64,10 @@ class Payment
     private function _aliPay(){
         //支付日志
         $aliPayLog = new AlipayLog();
+        #mod by HZQ
+        if(isset($logData['order_no'])){
+            $this->_tradeNo = $logData['order_no'];
+        }
         $logData = $this->_payData;
         $logData['transaction_no'] = $this->_tradeNo;
         $logData['total_fee'] = $this->_payData['amount'];

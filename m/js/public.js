@@ -38,6 +38,7 @@ var UA = window.navigator.userAgent.toLowerCase(),
     smsUrl = url+version+'sms',
     userUrl = url+version+'users',
     walletUrl = url+version+'wallets',
+    walletUrlV2 = url+version_v2+'wallets',
     workerUrl = url+version+'workers',
     workerUrl_v2 = url+version_v2+'workers',
     urlToLogin = host+'/login.html',
@@ -179,7 +180,7 @@ function getUsers(id, token, callback){
 
 function getWallets(id, token, callback){
     ;(function($){
-        var url = walletUrl+'/'+id+'?access-token='+token;
+        var url = walletUrlV2+'/'+id+'?access-token='+token;
         $.getJSON(url, function(back){
             if(back.code==200)
                 callback(back.data);

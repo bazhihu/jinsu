@@ -41,12 +41,12 @@
 				<i>提交成功后，工作人员会联系您收取现金</i>
 				<input type="radio" name="payment" checked id="pay-offline" value="1" />
 			</label>
-			<!--<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
+			<label class="menuitem menuitemradio" id="alipay" for="pay-alipay" role="menuitemradio">
 				<span class="pay-alipay"></span>
 				<em>支付宝支付</em>
 				<i>推荐有支付宝账号的用户使用</i>
 				<input type="radio" name="payment" id="pay-alipay" value="2" />
-			</label>-->
+			</label>
 			<label class="menuitem menuitemradio" id="wechat" for="pay-wechat" role="menuitemradio">
 				<span class="pay-wechat"></span>
 				<em>微信支付</em>
@@ -120,8 +120,28 @@
                     }
                 });
             }else if(payWay == '2'){
-                alert('暂时没有支付宝支付');
+                //alert('暂时没有支付宝支付');
+                $.ajax({
+                    type: 'PUT',
+                    url: orderUrls,
+                    data: {'action':'payment','pay_way':payWay},
+                    dataType: 'json',
+                    async:false,
+                    cache:false,
+                    crossDomain:true,
+                    timeout:30000,
+                    success: function(data){
+                        if(data.code ==200){                
+            				//self.location = '/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
+                        	window.open('/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate,'_blank');
+                        }
+                    },
+                    error: function(xhr, type){
+                        alert('网络超时!')
+                    }
+                })         
                 return false;
+                
             }else{
                 $.ajax({
                     type: 'PUT',

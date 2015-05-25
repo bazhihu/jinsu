@@ -106,6 +106,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
                         'v2/worker',
+                        'v2/wallet',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

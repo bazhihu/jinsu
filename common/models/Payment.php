@@ -71,9 +71,9 @@ class Payment
         }
         $logData['transaction_no'] = $this->_tradeNo;
         #mod by HZQ
-        if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
-            $this->_payData['amount'] = 0.01;
-        }
+//        if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
+//            $this->_payData['amount'] = 0.01;
+//        }
         $logData['total_fee'] = $this->_payData['amount'];
         $aliPayLog->setAttributes($logData);
         if(!$aliPayLog->save()){

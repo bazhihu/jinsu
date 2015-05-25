@@ -29,5 +29,16 @@ return [
         'curl_proxy_host' =>  '0.0.0.0',
         'curl_proxy_port' =>  '0',
         'notify_url'    =>  'http://uat.api.youaiyihu.com/wechat/notify',
-    ]
+    ],
+    'aliPayWap' => [
+        'partner' => '2088911035311653',
+        'seller_email' => 'pay@youaiyihu.com',
+        'key' => 'kfg3ewy8prrjxgh0cxbj0k4rko1w4co7',
+        'ali_public_key_path' => 'key/alipay_public_key.pem',
+        'private_key_path' => 'key/rsa_private_key.pem',
+        'sign_type' => 'MD5',
+        'input_charset' => 'utf-8',
+        'cacert' => getcwd().'\\cacert.pem',
+        'transport' => 'https'
+    ],
 ];

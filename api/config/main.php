@@ -65,7 +65,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
                         'alipay/notify',
-                        'alipay/notifywap',
+                        'alipay/callback',
                     ],
                     'pluralize' => false,
                     'tokens' => [

@@ -66,7 +66,6 @@ return [
                     'controller' => [
                         'alipay/notify',
                         'alipay/notifywap',
-
                     ],
                     'pluralize' => false,
                     'tokens' => [

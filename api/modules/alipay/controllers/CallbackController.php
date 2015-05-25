@@ -97,7 +97,10 @@ class CallbackController extends ActiveController{
                         Yii::info('返回支付宝:' . $result, 'api');
                         return false;
                     }
-
+                    #区分测试和正式环境
+                    if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
+                        $postDate['total_fee'] = 1000;
+                    }
                     //给用户钱包加钱
                     $params = [
                         'uid' => $this->_logModel->uid,

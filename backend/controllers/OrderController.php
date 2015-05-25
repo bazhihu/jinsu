@@ -137,8 +137,10 @@ class OrderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $orderPatientModel->load(Yii::$app->request->post())) {
             $orderPatientModel->save();
 
+            $model->reality_end_time = $model->end_time;
             $model->total_amount = $model->calculateTotalPrice();
             $model->patient_name = $orderPatientModel->name;
+
             $model->save();
             return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
@@ -251,12 +253,22 @@ class OrderController extends Controller
     /**
      * 订单取消
      * @param $id
+     * @return string
      * @throws NotFoundHttpException
      */
     public function actionCancel($id){
+        $this->layout = "guest.php";
+        $reason = Yii::$app->getRequest()->getBodyParam('reason');
         $order = $this->findModel($id);
-        $orderStatus = $order->order_status;
-        $response = $order->cancel();
+        if($reason){
+            $orderStatus = $order->order_status;
+            $response = $order->cancel($reason);
+        }else{
+            return $this->render('cancel', [
+                'model' => $order
+            ]);
+        }
+
 
         //发送短信
         $isTrue = in_array($orderStatus, [Order::ORDER_STATUS_WAIT_CONFIRM,Order::ORDER_STATUS_WAIT_SERVICE]);

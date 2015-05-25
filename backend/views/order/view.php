@@ -297,26 +297,31 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         </div>
     </div>
 </div>
-<?php
-\yii\bootstrap\Modal::begin([
+
+<?php \yii\bootstrap\Modal::begin([
     'header' => '<strong>充值</strong>',
     'id'=>'rechargeModal',
     'size'=>'modal-lg',
-]);
-echo '<div id="rechargeModalContent"></div>';
+]);?>
+<div id="rechargeModalContent">加载中...</div>
+<?php \yii\bootstrap\Modal::end();?>
 
-\yii\bootstrap\Modal::end();
-
-//完成订单
-\yii\bootstrap\Modal::begin([
+<?php \yii\bootstrap\Modal::begin([
     'header' => '<strong>完成订单</strong>',
     'id'=>'finishOrderModal',
     'size'=>'modal-lg',
-]);
-echo '<div id="finishOrderModalContent"></div>';
+]);?>
+<div id="finishOrderModalContent">加载中...</div>
+<?php \yii\bootstrap\Modal::end();?>
 
-\yii\bootstrap\Modal::end();
-?>
+<?php \yii\bootstrap\Modal::begin([
+    'header' => '<strong>取消订单</strong>',
+    'id'=>'cancelOrderModal',
+    'size'=>'modal-lg',
+]);?>
+<div id="cancelOrderModalContent">加载中...</div>
+<?php \yii\bootstrap\Modal::end();?>
+
 <script type="text/javascript">
     $('body').on('click', '.panel-heading', function () {
         $(this).siblings().toggle();
@@ -328,7 +333,7 @@ echo '<div id="finishOrderModalContent"></div>';
             '<?php echo $url;?>'
         );
 
-        jQuery('#rechargeModal').modal({"show":true});
+        $('#rechargeModal').modal({"show":true});
     });
 
 </script>

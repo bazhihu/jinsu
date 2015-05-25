@@ -251,12 +251,22 @@ class OrderController extends Controller
     /**
      * 订单取消
      * @param $id
+     * @return string
      * @throws NotFoundHttpException
      */
     public function actionCancel($id){
+        $this->layout = "guest.php";
+        $reason = Yii::$app->getRequest()->getBodyParam('reason');
         $order = $this->findModel($id);
-        $orderStatus = $order->order_status;
-        $response = $order->cancel();
+        if($reason){
+            $orderStatus = $order->order_status;
+            $response = $order->cancel($reason);
+        }else{
+            return $this->render('cancel', [
+                'model' => $order
+            ]);
+        }
+
 
         //发送短信
         $isTrue = in_array($orderStatus, [Order::ORDER_STATUS_WAIT_CONFIRM,Order::ORDER_STATUS_WAIT_SERVICE]);

@@ -241,27 +241,23 @@ td .btn{margin: 2px}
     //Pjax::end(); ?>
 
 </div>
-<?php
-\yii\bootstrap\Modal::begin([
+
+<?php \yii\bootstrap\Modal::begin([
     'header' => '<strong>完成订单</strong>',
     'id'=>'finishOrderModal',
     'size'=>'modal-lg',
-]);
-echo '<div id="finishOrderModalContent"></div>';
+]);?>
+<div id="finishOrderModalContent">加载中...</div>
+<?php \yii\bootstrap\Modal::end();?>
 
-\yii\bootstrap\Modal::end();
-?>
-
-<?php
-\yii\bootstrap\Modal::begin([
+<?php \yii\bootstrap\Modal::begin([
     'header' => '<strong>取消订单</strong>',
     'id'=>'cancelOrderModal',
     'size'=>'modal-lg',
-]);
-?>
-<div id="cancelOrderModalContent"></div>
-
+]);?>
+<div id="cancelOrderModalContent">加载中...</div>
 <?php \yii\bootstrap\Modal::end();?>
+
 <script type="text/javascript">
 //    setInterval(function(){
 //        window.location.reload();

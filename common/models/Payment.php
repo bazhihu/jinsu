@@ -66,9 +66,9 @@ class Payment
         $aliPayLog = new AlipayLog();
         $logData = $this->_payData;
         #mod by HZQ
-        if(isset($logData['order_no'])){
-            $this->_tradeNo = $logData['order_no'];
-        }
+//        if(isset($logData['order_no'])){
+//            $this->_tradeNo = $logData['order_no'];
+//        }
         $logData['transaction_no'] = $this->_tradeNo;
         #mod by HZQ
 //        if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){

@@ -59,7 +59,7 @@ $alipay_config['transport']    = 'https';
 
 
 //服务器异步通知页面路径
-$notify_url = "http://uat.m.youaiyihu.com/wapalipay/notify_url.php";
+$notify_url = "http://uat.api.youaiyihu.com/alipay/notify";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //页面跳转同步通知页面路径

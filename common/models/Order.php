@@ -163,7 +163,7 @@ class Order extends \yii\db\ActiveRecord{
             'patient_state_coefficient' => '患者状态价格系数',
             'hospital_id' => '医院',
             'department_id' => '科室',
-            'total_amount' => '订单总金额',
+            'total_amount' => '订单金额',
             'real_amount' => '实收金额',
             'patient_state' => '患者健康状况',
             'patient_name' => '患者姓名',

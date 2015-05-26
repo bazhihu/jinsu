@@ -128,14 +128,6 @@ class Payment
     }
 
     /**
-     * 获取交易号
-     * @return null
-     */
-    public function getTradeNo(){
-        return $this->_tradeNo;
-    }
-
-    /**
      * 获取支付数据
      * @return null
      */

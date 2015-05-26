@@ -13,6 +13,7 @@ use backend\models\OrderMaster;
 class OrderSearch extends OrderMaster
 {
     public $total; //合计
+    public $real_total; //实收合计
 
     public function rules()
     {
@@ -59,7 +60,8 @@ class OrderSearch extends OrderMaster
         //Yii::error();
 
         if (!($this->load($params) && $this->validate())) {
-            $this->total = $query->sum('real_amount');
+            $this->total = $query->sum('total_amount');
+            $this->real_total = $query->sum('real_amount');
             return $dataProvider;
         }
 
@@ -80,7 +82,8 @@ class OrderSearch extends OrderMaster
             ->andFilterWhere(['like', 'patient_name', $this->patient_name]);
 
         //!isset($params['sort']) && $query->orderBy('reality_end_time ASC');
-        $this->total = $query->sum('real_amount');
+        $this->total = $query->sum('total_amount');
+        $this->real_total = $query->sum('real_amount');
         return $dataProvider;
     }
 

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
-use kartik\widgets\DateTimePicker;
+use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\WalletUserDetailSearch */
@@ -48,11 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
             echo $form->field(
                 $searchModel,
                 'fromDate'
-
-            )->widget(
-                DateTimePicker::classname(),
+            )->widget(DateControl::classname(),
                 [
-                    'options' => ['placeholder' => '请输入开始时间 ...'],
+                    'type'=>DateControl::FORMAT_DATETIME,
+                    'options' => [
+                        'options' => ['placeholder' => '请输入开始时间 ...']
+                    ],
                     'pluginOptions' => [
                         'autoclose' => true,
                         'todayHighlight' => true,
@@ -63,10 +64,12 @@ $this->params['breadcrumbs'][] = $this->title;
             echo $form->field(
                 $searchModel,
                 'toDate'
-            )->widget(
-                DateTimePicker::classname(),
+            )->widget(DateControl::classname(),
                 [
-                    'options' => ['placeholder' => '请输入结束时间 ...'],
+                    'type'=>DateControl::FORMAT_DATETIME,
+                    'options' => [
+                        'options' => ['placeholder' => '请输入结束时间 ...']
+                    ],
                     'pluginOptions' => [
                         'autoclose' => true,
                         'todayHighlight' => true,

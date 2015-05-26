@@ -36,6 +36,7 @@ td .btn{margin: 2px}
         [
             'attribute'=>'order_no',
             'format'=>'raw',
+            'pageSummary' => '小计',
             //'vAlign'=>'middle',
             'value'=>function ($model) {
                 return Html::a($model->order_no, Yii::$app->urlManager->createUrl(['order/view','id' => $model->order_id]));
@@ -98,7 +99,13 @@ td .btn{margin: 2px}
             'attribute'=>'total_amount',
             'options' => [
                 'style' => 'width:110px',
-            ]
+            ],
+        ],
+        [
+            'attribute'=>'real_amount',
+            'options' => [
+                'style' => 'width:110px',
+            ],
         ],
         [
             'attribute'=>'order_status',
@@ -228,15 +235,14 @@ td .btn{margin: 2px}
         'condensed'=>true,
         'bordered'=>false,
         'floatHeader'=>true,
-        //'showPageSummary' => true,
 
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> 新增订单', ['create'], ['class' => 'btn btn-success']),
             'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> 重置列表', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>true
         ],
+        'panelBeforeTemplate' => '<div class="pull-right"><div class="btn-toolbar kv-grid-toolbar" role="toolbar"><strong>实收金额合计：'.$searchModel->total.'元</strong></div></div>'.Html::a('<i class="glyphicon glyphicon-plus"></i> 新增订单', ['create'], ['class' => 'btn btn-success']).'<div class="clearfix"></div>'
     ]);
     //Pjax::end(); ?>
 

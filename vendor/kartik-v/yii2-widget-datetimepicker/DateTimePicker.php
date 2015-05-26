@@ -149,7 +149,7 @@ class DateTimePicker extends \kartik\base\InputWidget
         $icon = ($type === 'picker') ? 'calendar' : 'remove';
         $icon = '<span class="glyphicon glyphicon-' . ArrayHelper::remove($options, 'icon', $icon) . '"></span>';
         if (empty($options['title'])) {
-            $title = ($type === 'picker') ? Yii::t('kvdatetime', 'Select date & time') : Yii::t('kvdatetime', 'Clear field');
+            $title = ($type === 'picker') ? 'Select date & time' : 'Clear field';
             if ($title != false) {
                 $options['title'] = $title;
             }

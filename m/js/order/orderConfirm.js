@@ -146,7 +146,7 @@ getConfigs(function(configs) {
                     'blance':blance,
                     'need_pay':need_pay,
                     'wechat_acess':wechat_acess,
-                    'alipay_access':alipay_access,
+                    'alipay_access':alipay_access
                 };
                 var bodyHtml = template('bodyTemplate', data);
                 $('#body').html(bodyHtml);

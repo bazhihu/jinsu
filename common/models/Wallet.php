@@ -73,46 +73,6 @@ class Wallet
     }
 
     /**
-     * 用户收支明细
-     * @param $params
-     * [
-     *      'order_id'      int  订单ID                           必填
-     *      'order_no'   string  订单编号                           必填
-     *      'uid'           int  用户id                           必填
-     *      'detail_money'  int  交易金额                          必填
-     *      'detail_type'  int  交易类型                          必填
-     *      'wallet_money'  int  当前账户余额                       必填
-     *      'remark'        varchar 备注
-     *      'admin_uid'     int  管理员ID
-     * ]
-     * @return array
-     * @throws HttpException
-     */
-    public static function addUserDetail($params)
-    {
-        $response = [
-            'code'  =>'200',
-            'msg'   =>'',
-        ];
-        $userDetail = new WalletUserDetail();
-        $detail = [
-            'detail_no'     => self::generateWalletNo(),
-            'mobile'        => isset($params['uid'])?User::findOne(['id'=>$params['uid']])->mobile:null,
-            'detail_time'   => date('Y-m-d H:i:s'),
-        ];
-        $detail = ArrayHelper::merge($detail,$params);
-        if($detail['detail_type'] == WalletUserDetail::WALLET_TYPE_CONSUME || $detail['detail_type'] == WalletUserDetail::WALLET_TYPE_WITHDRAWALS){
-            $detail['detail_money'] = '-'.$detail['detail_money'];
-        }
-        $userDetail->setAttributes($detail,false);
-        if(!$userDetail->save()){
-            throw new HttpException(400, print_r($userDetail->getErrors(), true));
-        }
-        $response['msg'] = '记录成功';
-        return $response;
-    }
-
-    /**
      * 加钱
      * @param int $uid 用户ID
      * @param number $money 钱
@@ -140,26 +100,6 @@ class Wallet
     }
 
     /**
-     * 退款
-     * @param $uid
-     * @param $money
-     * @return null|static
-     * @throws HttpException
-     */
-    public static function refundMoney($uid, $money){
-        $wallet = WalletUser::findOne(['uid'=>$uid]);
-        if(empty($wallet)){
-            throw new NotFoundHttpException('The requested user wallet does not exist.');
-        }
-
-        $wallet->money = $wallet->money + $money;
-        $wallet->money_consumption = $wallet->money_consumption - $money;
-        if(!$wallet->save()){
-            throw new HttpException(400, print_r($wallet->getErrors(), true));
-        }
-        return $wallet;
-    }
-    /**
      * 查询用户账户信息
      * @param $uid 用户ID
      * @return WalletUser|null|static
@@ -178,6 +118,86 @@ class Wallet
             }
         }
         return $walletUser;
+    }
+
+    /**
+     * 用户收支明细
+     * @param $params
+     * [
+     *      'order_id'      int  订单ID                           必填
+     *      'order_no'   string  订单编号                           必填
+     *      'uid'           int  用户id                           必填
+     *      'detail_money'  int  交易金额                          必填
+     *      'detail_type'  int  交易类型                          必填
+     *      'wallet_money'  int  当前账户余额                       必填
+     *      'remark'        varchar 备注
+     *      'admin_uid'     int  管理员ID
+     * ]
+     * @return array
+     * @throws HttpException
+     */
+    public static function addUserDetail($params)
+    {
+        $response = [
+            'code'  =>'200',
+            'msg'   =>'',
+        ];
+        #获取对应用户的手机
+        try {
+            $mobile = isset($params['uid'])?User::findOne(['id'=>$params['uid']])->mobile:null;
+        }catch (Exception $e){
+            throw new HttpException(400, print_r($e, true));
+        }
+
+        $userDetail = new WalletUserDetail();
+        $detail = [
+            'detail_no'     => self::generateWalletNo(),
+            'mobile'        => $mobile,
+            'detail_time'   => date('Y-m-d H:i:s'),
+        ];
+        $detail = ArrayHelper::merge($detail,$params);
+        if($detail['detail_type'] == WalletUserDetail::WALLET_TYPE_CONSUME || $detail['detail_type'] == WalletUserDetail::WALLET_TYPE_WITHDRAWALS){
+            $detail['detail_money'] = '-'.$detail['detail_money'];
+        }
+        $userDetail->setAttributes($detail,false);
+        if(!$userDetail->save()){
+            throw new HttpException(400, print_r($userDetail->getErrors(), true));
+        }
+        $response['msg'] = '记录成功';
+        return $response;
+    }
+
+    /**
+     * 生成钱包流水号
+     * @return string
+     * @throws \Exception
+     * @author HZQ
+     */
+    public static function generateWalletNo(){
+        $walletIncrement = new WalletIncrement();
+        $walletIncrement->insert();
+        return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
+    }
+
+    /**
+     * 退款
+     * @param $uid
+     * @param $money
+     * @return null|static
+     * @throws HttpException
+     */
+    public static function refundMoney($uid, $money){
+        $wallet = WalletUser::findOne(['uid'=>$uid]);
+        if(empty($wallet)){
+            throw new NotFoundHttpException('The requested user wallet does not exist.');
+        }
+
+        $wallet->money = $wallet->money + $money;
+        $wallet->money_consumption = $wallet->money_consumption - $money;
+        if(!$wallet->save()){
+            throw new HttpException(400, print_r($wallet->getErrors(), true));
+        }
+        return $wallet;
     }
 
     /**
@@ -244,17 +264,5 @@ class Wallet
         }else{
             return $model->money-$model->freeze_money;
         }
-    }
-
-    /**
-     * 生成钱包流水号
-     * @return string
-     * @throws \Exception
-     * @author HZQ
-     */
-    public static function generateWalletNo(){
-        $walletIncrement = new WalletIncrement();
-        $walletIncrement->insert();
-        return date("Ymd").$walletIncrement->id.str_pad(rand(0, 999), 3, 0, STR_PAD_LEFT);
     }
 }

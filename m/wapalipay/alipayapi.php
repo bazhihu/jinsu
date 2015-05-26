@@ -55,7 +55,8 @@ $subject = "优爱医护订单";
 //必填
 
 //付款金额
-$total_fee = 0.01;
+//$total_fee = 0.01;
+$total_fee = $needPay;
 //必填
 
 //请求业务参数详细

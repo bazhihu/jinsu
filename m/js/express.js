@@ -1,5 +1,5 @@
 ﻿; ~function () {
-	var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'touchstart' in document;
+	var popupFrameId = 0, touchEnabled = navigator.msPointerEnabled || 'ontouchstart' in document;
 	touchEnabled && $('a[target="popup"]').click(function (e) {
 		e.preventDefault();
 		return false;
@@ -13,9 +13,11 @@
 			a.popupFrameId = ++popupFrameId;
 			frame = document.createElement('iframe');
 			frame.id = 'popup-frame-' + popupFrameId;
-			frame.src = a.href;
+			
 			frame.className = 'popup-frame';
+			frame.style.overflow = "visible";
 		}
+		frame.src = a.href;
 		$(frame).popup('right', false, false);
 		$(frame).one('load', function () {
 			frame.contentWindow.setValueByHash && frame.contentWindow.setValueByHash(a.querySelector('input[type="hidden"]').value);
@@ -29,7 +31,7 @@
 			$(a).trigger('change', tag);
 		});
 		return false;
-	});
+	}).click(function (e) { e.preventDefault(); return false; });
 	$('#patient-status-menuitem,#service-site-menuitem').on('change', function (e, tag) {
 		if (tag) {
 			var value = this.querySelector('.value');

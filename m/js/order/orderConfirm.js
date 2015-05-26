@@ -192,7 +192,7 @@ getConfigs(function(configs) {
                     //var url = "../payOnline.html";
                     $.ajax({
                         type: 'PUT',
-                        url: orderUrls,
+                        url: orderCreate,
                         data:{
                             'uid':userInfo.id,
                             'mobile':mobile,

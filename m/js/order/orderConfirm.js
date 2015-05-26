@@ -186,7 +186,38 @@ getConfigs(function(configs) {
                     },"json");
                 }else if(pay_way==2){
                     //支付宝支付
-                    var url = "../payOnline.html";
+                    //var url = "../payOnline.html";
+                    $.ajax({
+                        type: 'PUT',
+                        url: orderUrls,
+                        data:{
+                            'uid':userInfo.id,
+                            'mobile':mobile,
+                            'hospital_id':hospital_id,
+                            'department_id':1,
+                            'worker_level':worker_level,
+                            'worker_no':worker_no,
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'patient_state':1,
+                            'pay_way':pay_way,
+                            'action':'payment'
+                        },
+                        dataType: 'json',
+                        async:false,
+                        cache:false,
+                        crossDomain:true,
+                        timeout:30000,
+                        success: function(data){
+                            if(data.code ==200){
+                                //self.location = '/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
+                                window.open('/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate,'_blank');
+                            }
+                        },
+                        error: function(xhr, type){
+                            alert('网络超时!')
+                        }
+                    })
                 }else if(pay_way==3){
                     //微信支付
                     $.ajax({

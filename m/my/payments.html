@@ -120,7 +120,6 @@
                     }
                 });
             }else if(payWay == '2'){
-                //alert('暂时没有支付宝支付');
                 $.ajax({
                     type: 'PUT',
                     url: orderUrls,
@@ -139,9 +138,7 @@
                     error: function(xhr, type){
                         alert('网络超时!')
                     }
-                })         
-                return false;
-                
+                })
             }else{
                 $.ajax({
                     type: 'PUT',

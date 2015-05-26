@@ -48,7 +48,8 @@ if($verify_result) {//验证成功
 		
 	//echo "验证成功<br />";
 	
-	header("Location: /my/orderDetail.html?order_no=".$out_trade_no);
+	//header("Location: /my/orderDetail.html?order_no=".$out_trade_no);
+	header("Location: /payOnline.html");
 
 	//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 	

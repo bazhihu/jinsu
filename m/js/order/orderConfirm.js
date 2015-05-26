@@ -191,8 +191,8 @@ getConfigs(function(configs) {
                     //支付宝支付
                     //var url = "../payOnline.html";
                     $.ajax({
-                        type: 'PUT',
-                        url: orderUrls,
+                        type: 'POST',
+                        url: orderCreate,
                         data:{
                             'uid':userInfo.id,
                             'mobile':mobile,
@@ -214,7 +214,7 @@ getConfigs(function(configs) {
                         success: function(data){
                             if(data.code ==200){
                                 //self.location = '/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
-                                window.open('/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate,'_blank');
+                                window.open('/wapalipay/alipayapi.php?orderNo='+data.data.payment.transaction_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate,'_blank');
                             }
                         },
                         error: function(xhr, type){
@@ -247,7 +247,7 @@ getConfigs(function(configs) {
                         timeout:30000,
                         success: function(data){
                             if(data.code ==200){
-                                self.location = '/my/wechat.php??orderNo='+data.data.order.order_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
+                                self.location = '/my/wechat.php??orderNo='+data.data.payment.transaction_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
                             }
                         },
                         error: function(xhr, type){

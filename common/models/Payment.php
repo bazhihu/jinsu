@@ -65,15 +65,7 @@ class Payment
         //支付日志
         $aliPayLog = new AlipayLog();
         $logData = $this->_payData;
-        #mod by HZQ
-//        if(isset($logData['order_no'])){
-//            $this->_tradeNo = $logData['order_no'];
-//        }
         $logData['transaction_no'] = $this->_tradeNo;
-        #mod by HZQ
-//        if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
-//            $this->_payData['amount'] = 0.01;
-//        }
         $logData['total_fee'] = $this->_payData['amount'];
         $aliPayLog->setAttributes($logData);
         if(!$aliPayLog->save()){
@@ -97,9 +89,6 @@ class Payment
         //支付日志
         $logData = $this->_payData;
 
-        if(isset($logData['order_no'])){
-            $this->_tradeNo = $logData['order_no'];
-        }
         #区分测试域名
         if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
             $this->_payData['amount'] = 1;
@@ -124,6 +113,7 @@ class Payment
         $this->_payData = '';
         $this->_payData['nonce_str'] = $logData['nonce_str'];
         $this->_payData['gmtCreate'] = $logData['gmt_create'];
+        $this->_payData['transaction_no'] = $this->_tradeNo;
         return true;
     }
 

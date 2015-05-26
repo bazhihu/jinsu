@@ -216,15 +216,18 @@ function setLocal(value){
  * @returns {number}
  */
 function getOrderCycle(startTime,endTime){
-    var year1 =  startTime.substr(0,4);
+    /*var year1 =  startTime.substr(0,4);
     var year2 =  endTime.substr(0,4);
     var month1 = startTime.substr(5,2);
     var month2 = endTime.substr(5,2);
     var day1 = startTime.substr(8,2);
-    var day2 = endTime.substr(8,2);
+    var day2 = endTime.substr(8,2);console.log(startTime);
     var date1=new Date(year1,month1,day1);    //开始时间
-    var date2=new Date(year2,month2,day2);    //结束时间
-    var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
+    var date2=new Date(year2,month2,day2);    //结束时间*/
+    var date1=new Date(startTime.replace(/-/g, "/")),   //开始时间
+        date2=new Date(endTime.replace(/-/g, "/"));    //结束时间
+
+    var date3=date2.getTime()-date1.getTime();  //时间差的毫秒数
     var days=parseInt(date3/(24*3600*1000));
 
     //if(days<1){

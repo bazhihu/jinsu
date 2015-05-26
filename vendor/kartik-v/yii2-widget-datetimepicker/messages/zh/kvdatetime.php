@@ -18,5 +18,5 @@
  */
 return [
     'Clear field' => '',
-    'Select date' => '',
+    'Select date & time' => '',
 ];

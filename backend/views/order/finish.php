@@ -17,7 +17,6 @@ echo Form::widget([
             'type'=>Form::INPUT_WIDGET,
             'widgetClass'=>'\kartik\widgets\DateTimePicker',
             'options'=>[
-                'pickerButton'=>['title'=>'请选择结束时间'],
                 'pluginOptions'=>[
                     'todayHighlight' => true,
                     'autoclose' => true,

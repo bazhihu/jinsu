@@ -96,6 +96,20 @@
                 $(radio).parent()[radio === this ? 'addClass' : 'removeClass']('checked');
             }, this);
         });
+        (function () {
+            var date = document.querySelectorAll('input[type="date"]');
+            if (date.length) { // && /android/i.test(navigator.userAgent)) {
+                var jdate = document.createElement('script');
+                jdate.src = '../js/zepto.jdate-min.js';
+                jdate.onload = function () {
+                    $('input[type="date"]').jdate().forEach(function (input) {
+                        input.readOnly = true;
+                        input.type = 'text';
+                    });
+                }
+                document.body.appendChild(jdate);
+            }
+        })();
     </script>
 </body>
 </html>

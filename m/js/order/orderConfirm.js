@@ -114,9 +114,11 @@ getConfigs(function(configs) {
 
                 //是否在微信访问
                 if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
-                    var  wechat_acess = 1;
+                    var  wechat_acess = 1,
+                        alipay_access = 0;
                 }else{
-                    var  wechat_acess = 0;
+                    var  wechat_acess = 0,
+                        alipay_access = 1;
                 }
                 var data = {
                     'type':type,
@@ -143,7 +145,8 @@ getConfigs(function(configs) {
                     'true_pay':true_pay,
                     'blance':blance,
                     'need_pay':need_pay,
-                    'wechat_acess':wechat_acess
+                    'wechat_acess':wechat_acess,
+                    'alipay_access':alipay_access,
                 };
                 var bodyHtml = template('bodyTemplate', data);
                 $('#body').html(bodyHtml);

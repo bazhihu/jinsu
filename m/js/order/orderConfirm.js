@@ -191,7 +191,7 @@ getConfigs(function(configs) {
                     //支付宝支付
                     //var url = "../payOnline.html";
                     $.ajax({
-                        type: 'PUT',
+                        type: 'POST',
                         url: orderCreate,
                         data:{
                             'uid':userInfo.id,

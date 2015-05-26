@@ -45,7 +45,7 @@ class PayNotifyCallBack extends WxPayNotify
 
         #区分测试和正式环境
         if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
-            $data['total_fee'] = 1000;
+            $data['total_fee'] = 100000;
         }
 
         //给用户钱包加钱

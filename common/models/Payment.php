@@ -91,7 +91,7 @@ class Payment
 
         #区分测试域名
         if($_SERVER["HTTP_HOST"] !="api.youaiyihu.com"){
-            $this->_payData['amount'] = 1;
+            $this->_payData['amount'] = 0.01;
         }
 
         $logData['nonce_str'] = WxPayApi::getNonceStr();

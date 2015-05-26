@@ -50,6 +50,7 @@ class CommentController extends ActiveController {
         $worker_id = $id;
         $comments = \backend\models\Comment::find()
             ->andFilterWhere(['worker_id'=>$worker_id])
+            ->andFilterWhere(['status'=>2])
             ->orderBy('comment_id DESC')
             ->all();
         if($comments)

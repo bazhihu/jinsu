@@ -166,7 +166,7 @@ class OrderController extends ActiveController {
             'uid' => $uid,
             'order_no' => $order['order_no'],
             'subject' => '订单号：'.$order['order_no'].'的付款',
-            'amount' => number_format($amount, 2),
+            'amount' => round($amount, 2),
             'trade_type' => $tradeType
         ];
         $paymentModel = new Payment($payWay, $payment);

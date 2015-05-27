@@ -58,7 +58,16 @@ function getStatus() {
     }
     return JSON.parse('{"id":"'+id+'","name":"'+name+'","token":"'+token+'"}');
 }
-
+function isLoad(){
+    var user = getStatus();
+    if(!user.id || !user.token || !user.name){
+        delCookie(TOKEN);
+        delCookie(NAME);
+        delCookie(ID);
+        location.reload();
+    }
+}
+isLoad();
 function loggedIn(){
     var user = getStatus();
     if(!user){

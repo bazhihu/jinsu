@@ -129,6 +129,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '订单编号',
             ],
             [
+                'attribute'=>'uid',
+                'label' => '用户ID'
+            ],
+            [
                 'attribute'=>'mobile',
                 'label' => '帐号',
                 'value'=>function($model){

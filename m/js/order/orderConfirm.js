@@ -213,8 +213,8 @@ getConfigs(function(configs) {
                         timeout:30000,
                         success: function(data){
                             if(data.code ==200){
-                                //self.location = '/wapalipay/alipayapi.php?orderNo='+order_no+'&totalAmount='+total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
-                                window.open('/wapalipay/alipayapi.php?orderNo='+data.data.payment.transaction_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate,'_blank');
+                                self.location = '/wapalipay/alipayapi.php?orderNo='+data.data.payment.transaction_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate;
+                                //window.open('/wapalipay/alipayapi.php?orderNo='+data.data.payment.transaction_no+'&totalAmount='+data.data.order.total_amount+'&walletMoney='+walletMoney+'&nonce_str='+data.data.payment.nonce_str+'&gmt_create='+data.data.payment.gmtCreate,'_blank');
                             }
                         },
                         error: function(xhr, type){

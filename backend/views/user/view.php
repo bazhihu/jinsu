@@ -16,6 +16,15 @@ use backend\models\WalletWithdrawcash;
 $this->title = $this->title = '查看用户信息';;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+//用户余额
+$user = WalletUser::findOne($model->id);
+if($user){
+    $money = number_format($user->money, 2);
+}else{
+    $money = 0.00;
+}
+
 ?>
 <div class="page-header"> </div>
 <div class="user-view">
@@ -56,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'money',
-                'value'=>WalletUser::findOne($model->id)->money
+                'value'=>$money
             ],
             'nickname',
             'name',

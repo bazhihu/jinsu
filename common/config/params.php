@@ -28,7 +28,7 @@ return [
         'report_levenl' =>  1,
         'curl_proxy_host' =>  '0.0.0.0',
         'curl_proxy_port' =>  '0',
-        'notify_url'    =>  'http://uat.api.youaiyihu.com/wechat/notify',
+        'notify_url'    =>  'http://api.youaiyihu.com/wechat/notify',
     ],
     'aliPayWap' => [
         'partner' => '2088911035311653',

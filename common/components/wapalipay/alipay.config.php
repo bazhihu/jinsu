@@ -59,15 +59,15 @@ $alipay_config['transport']    = 'https';
 
 
 //服务器异步通知页面路径
-$notify_url = "http://uat.api.youaiyihu.com/alipay/callback";
+$notify_url = "http://api.youaiyihu.com/alipay/callback";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //页面跳转同步通知页面路径
-$call_back_url = "http://uat.m.youaiyihu.com/wapalipay/call_back_url.php";
+$call_back_url = "http://m.youaiyihu.com/wapalipay/call_back_url.php";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //操作中断返回地址
-$merchant_url = "http://uat.m.youaiyihu.com/";
+$merchant_url = "http://m.youaiyihu.com/";
 //用户付款中途退出返回商户的地址。需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 

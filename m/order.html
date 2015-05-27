@@ -105,6 +105,7 @@
                     $('input[type="date"]').jdate().forEach(function (input) {
                         input.readOnly = true;
                         input.type = 'text';
+                        input.addEventListener('focus', function () { this.blur(); });
                     });
                 }
                 document.body.appendChild(jdate);

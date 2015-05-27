@@ -54,7 +54,7 @@ use kartik\datecontrol\DateControl;
 
             <?= $form->field($model, 'total_amount')->input('text', ['style'=>'width:110px']) ?>
 
-            <?= $form->field($model, 'department_id')->dropDownList(Departments::getList(),['prompt'=>'请选择']) ?>
+            <?= $form->field($model, 'department_id')->dropDownList(Departments::getList(),['prompt'=>'请选择','style'=>'width:110px']) ?>
             <?= $form->field($model, 'order_status')->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']) ?>
 
             <?= $form->field($model, 'start_time')->widget(DateControl::classname(), [

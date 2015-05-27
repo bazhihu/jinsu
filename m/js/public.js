@@ -64,7 +64,6 @@ function isLoad(){
         delCookie(TOKEN);
         delCookie(NAME);
         delCookie(ID);
-        location.reload();
     }
 }
 isLoad();

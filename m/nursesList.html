@@ -38,7 +38,7 @@
                         isLoading = 1;
                         window.removeEventListener('scroll', load);
                         var pageNum=1;
-                        if(list.children.length>=10){
+                        if(list.children.length){
                             pageNum =Math.ceil(list.children.length/10)+1;
                         }
 

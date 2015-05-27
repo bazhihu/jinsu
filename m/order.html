@@ -30,11 +30,11 @@
             <menu class="menu">
                 <label class="menuitem" role="menuitem" for="care-start">
                     <em class="title">服务开始时间：</em>
-                    <input type="date" class="value empty" id="care-start" name="start" value=""/>
+                    <input type="date" class="value empty" id="care-start" name="start" value="" autocomplete="off"/>
                 </label>
                 <label class="menuitem" role="menuitem" for="care-end">
                     <em class="title">服务结束时间：</em>
-                    <input type="date" class="value" id="care-end" name="end" value=""/>
+                    <input type="date" class="value" id="care-end" name="end" value="" autocomplete="off"/>
                     <i data-placeholder="请选择" id="care-days" class="value"></i>
                     <input type="hidden" id="days" name="days" value="" />
                     <em class="title"><span style="font-size: 10px">服务将在您所选日期的上午9点钟结束</span></em>
@@ -86,10 +86,10 @@
         <div id="foot"></div>
         <script type='text/javascript' src='../js/zepto-with-touch.min.js'></script>
         <script type="text/javascript" src="../js/zepto.fx.min.js"></script>
-        <script src="../js/public.js?v=20150518"></script>
-        <script src="../js/popup.js"></script>
-        <script src="../js/express.js"></script>
-        <script src="../js/order/order.js?v=2015051901"></script>
+        <script type="text/javascript" src="../js/popup.js"></script>
+        <script type="text/javascript" src="../js/express.js"></script>
+        <script type="text/javascript" src="../js/public.js?v=20150518"></script>
+        <script type="text/javascript" src="../js/order/order.js?v=2015051901"></script>
     <script type="text/javascript">
         $('.care-level input[type="radio"]').live('click', function () {
             [].forEach.call(this.form.elements[this.name], function (radio) {

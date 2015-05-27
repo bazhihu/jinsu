@@ -45,45 +45,39 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]); ?>
             <?php
-            echo $form->field(
-                $searchModel,
-                'fromDate'
-            )->widget(DateControl::classname(),
-                [
-                    'type'=>DateControl::FORMAT_DATETIME,
-                    'options' => [
-                        'options' => ['placeholder' => '请输入开始时间 ...']
-                    ],
-                    'pluginOptions' => [
-                        'autoclose' => true,
-                        'todayHighlight' => true,
-                        'format' => 'yyyy-mm-dd hh:ii:ss'
-                    ]
+            echo $form->field($searchModel, 'fromDate')->widget(DateControl::classname(),[
+                'type'=>DateControl::FORMAT_DATETIME,
+                'options' => [
+                    'options' => ['placeholder' => '请输入开始时间 ...']
+                ],
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd hh:ii:ss'
                 ]
-            )->label('起始时间');
-            echo $form->field(
-                $searchModel,
-                'toDate'
-            )->widget(DateControl::classname(),
-                [
-                    'type'=>DateControl::FORMAT_DATETIME,
-                    'options' => [
-                        'options' => ['placeholder' => '请输入结束时间 ...']
-                    ],
-                    'pluginOptions' => [
-                        'autoclose' => true,
-                        'todayHighlight' => true,
-                        'format' => 'yyyy-mm-dd hh:ii:ss'
-                    ]
+            ])->label('起始时间');
+            echo $form->field($searchModel,'toDate')->widget(DateControl::classname(),[
+                'type'=>DateControl::FORMAT_DATETIME,
+                'options' => [
+                    'options' => ['placeholder' => '请输入结束时间 ...']
+                ],
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd hh:ii:ss'
                 ]
-            )->label('结束时间');
+            ])->label('结束时间');
+
+            echo $form->field($searchModel, 'uid')
+                ->input('text',['placeholder'=>'请输入用户ID...','style'=>'width:150px'])
+                ->label('用户ID');
 
             echo $form->field($searchModel, 'mobile')
-                ->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:200px'])
+                ->input('text',['placeholder'=>'请输入用户账号...','style'=>'width:150px'])
                 ->label('用户账号');
 
             echo $form->field($searchModel,'order_no')
-                 ->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:180px'])
+                 ->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:150px'])
                  ->label('订单编号');
 
             echo $form->field($searchModel,'detail_type')
@@ -127,6 +121,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'order_no',
                 'format' => 'text',
                 'label' => '订单编号',
+            ],
+            [
+                'attribute'=>'uid',
+                'label' => '用户ID'
             ],
             [
                 'attribute'=>'mobile',

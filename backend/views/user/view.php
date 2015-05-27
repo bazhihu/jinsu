@@ -16,6 +16,15 @@ use backend\models\WalletWithdrawcash;
 $this->title = $this->title = '查看用户信息';;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+//用户余额
+$user = WalletUser::findOne($model->id);
+if($user){
+    $money = number_format($user->money, 2);
+}else{
+    $money = 0.00;
+}
+
 ?>
 <div class="page-header"> </div>
 <div class="user-view">
@@ -54,6 +63,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'mobile',
                 'value'=> substr_replace($model->mobile,'****',3,4),
             ],
+            [
+                'attribute'=>'money',
+                'value'=>$money
+            ],
             'nickname',
             'name',
             'gender',
@@ -64,39 +77,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'login_ip',
             'login_time',
-//            [
-//                'attribute'=>'login_time',
-//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
-//                'type'=>DetailView::INPUT_WIDGET,
-//                'widgetOptions'=> [
-//                    'class'=>DateControl::classname(),
-//                    'type'=>DateControl::FORMAT_DATETIME
-//                ]
-//            ],
             'register_time',
-//            [
-//                'attribute'=>'register_time',
-//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
-//                'type'=>DetailView::INPUT_WIDGET,
-//                'widgetOptions'=> [
-//                    'class'=>DateControl::classname(),
-//                    'type'=>DateControl::FORMAT_DATETIME
-//                ]
-//            ],
             [
                 'attribute'=>'adder',
                 'value'=>($model->adder)? AdminUser::findOne(['admin_uid',$model->adder])->username :null,
             ],
             'edit_time',
-//            [
-//                'attribute'=>'edit_time',
-//                'format'=>['datetime',(isset(Yii::$app->modules['datecontrol']['displaySettings']['datetime'])) ? Yii::$app->modules['datecontrol']['displaySettings']['datetime'] : 'd-m-Y H:i:s A'],
-//                'type'=>DetailView::INPUT_WIDGET,
-//                'widgetOptions'=> [
-//                    'class'=>DateControl::classname(),
-//                    'type'=>DateControl::FORMAT_DATETIME
-//                ]
-//            ],
             [
                 'attribute'=>'editer',
                 'value'=>($model->editer)? AdminUser::findOne(['admin_uid',$model->editer])->username : null,

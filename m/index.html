@@ -8,8 +8,18 @@
     <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/launch-app.css" rel="stylesheet" />
 </head>
 <body id="page-index">
+<div id="launch-app">
+    <span role="button" class="close">关闭</span>
+    <img class="app-icon" src="../images/app-icon-72x72.png" width="36" height="36" alt="图标" />
+    <h2 class="title">优爱医护手机客户端</h2>
+    <p class="slogan">手机充值，余额支付更快捷</p>
+    <a href="yayhapp://www.youaiyihu.com" data-myapp="http://a.app.qq.com/o/simple.jsp?pkgname=com.youaiyihu.yihu" data-apk='http://download.youaiyihu.com/youaiyihu-android-release.apk'
+       data-appstore="https://itunes.apple.com/cn/app/you-ai-yi-hu-nin-tie-xin-hu/id993561967?l=zh&ls=1&mt=8"
+       class="launch-app-button">立即体验</a>
+</div>
 <header id="header">
     <a class="account" href="../my/center.html">个人中心</a>
     <h1 class="title">优爱医护</h1>
@@ -45,6 +55,7 @@
 <script type="text/javascript" src="../js/swiper.min.js"></script>
 <script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
 <script type="text/javascript" src="../js/public.js"></script>
+<script type="text/javascript" src="../js/launch-app.js"></script>
 <script>
     var focusSlides;
     window.addEventListener('load', function () {
@@ -54,7 +65,7 @@
             createPagination: true,
             pagination: '.swiper-pagination',
             loop: true
-        });
+        });;
     });
 //    if(!getCookie(firstEntered)){
 //        location.href = host+'/about.html'

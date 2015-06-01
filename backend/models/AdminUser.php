@@ -481,4 +481,13 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         }
         return $return;
     }
+
+    /**
+     * 获取所有客户
+     * @return array
+     */
+    static public function getService(){
+        $service = self::findAll(['staff_role' => '客服']);
+        return ArrayHelper::map($service, 'admin_uid', 'staff_name');
+    }
 }

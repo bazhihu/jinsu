@@ -8,6 +8,7 @@
 
 namespace console\controllers;
 
+use backend\models\OrderMaster;
 use Yii;
 use common\models\Order;
 use common\models\Sms;
@@ -49,7 +50,7 @@ class OrderController extends Controller {
         $dateTime = date('Y-m-d');
         $orders = Order::findAll(['reality_end_time' => $dateTime, 'order_status' => Order::ORDER_STATUS_IN_SERVICE]);
         foreach($orders as $order){
-            $orderModel = Order::findOne($order->order_id);
+            $orderModel = OrderMaster::findOne($order->order_id);
             $response = $orderModel->finish(strtotime($dateTime));
             $log = 'OrderNo:'.$order->order_no.' OrderStatus:'.$order->order_status;
             $log .= ' $responseCode:'.$response['code'].' $responseMsg:'.$response['msg'];

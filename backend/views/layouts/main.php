@@ -45,7 +45,10 @@ AppAsset::register($this);
             ],
             [
                 'label' => '订单',
-                'url' => ['/order/index']
+                'items' => [
+                    ['label' => '订单列表', 'url' => ['/order/index']],
+                    ['label' => '订单统计', 'url' => ['/order/chart']]
+                ]
             ],
             [
                 'label' => '用户',

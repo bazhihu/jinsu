@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\OrderMaster;
 use common\models\Order;
 use backend\models\WorkerSchedule;
 use Yii;
@@ -285,7 +286,7 @@ class WorkerController extends Controller
 //                return false;
 //            }
 
-            $response = Order::setWorker($orderId, $workerId, $worker->name);
+            $response = OrderMaster::setWorker($orderId, $workerId, $worker->name);
             echo Json::encode($response);
             return false;
         }

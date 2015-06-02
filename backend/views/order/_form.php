@@ -42,7 +42,7 @@ use backend\models\OrderPatient;
                     <?php echo Form::widget([
                         'model' => $model,
                         'form' => $form,
-                        'columns' => 3,
+                        'columns' => 2,
                         'attributes' => [
                             'mobile'=>[
                                 'label'=>'手机号',
@@ -73,13 +73,15 @@ use backend\models\OrderPatient;
                                     'style'=>'width:80%'
                                 ],
                             ],
-//                            'contact_address'=>[
-//                                'type'=> Form::INPUT_TEXT,
-//                                'options'=>[
-//                                    'placeholder'=>'请输入住址...',
-//                                    'style'=>'width:26%'
-//                                ],
-//                            ],
+                            'city_id'=>[
+                                'label'=> '所在城市',
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>Hospitals::getList(),
+                                    'options'=>['placeholder' => '请选择城市...']
+                                ]
+                            ],
                         ]
                     ]);?>
                 </div>

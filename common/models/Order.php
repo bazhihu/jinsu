@@ -129,7 +129,7 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'order_type'], 'required'],
+            [['order_no', 'mobile', 'city_id','hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'order_type'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue', 'order_type'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
@@ -161,6 +161,7 @@ class Order extends \yii\db\ActiveRecord{
             'mobile' => '手机号',
             'base_price' => '护工基础价格',
             'patient_state_coefficient' => '患者状态价格系数',
+            'city_id' => '城市',
             'hospital_id' => '医院',
             'department_id' => '科室',
             'total_amount' => '订单金额',

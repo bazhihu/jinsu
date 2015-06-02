@@ -1,5 +1,7 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
+use kartik\widgets\DepDrop;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use backend\models\Hospitals;
@@ -66,21 +68,21 @@ use backend\models\OrderPatient;
                                     'style'=>'width:80%'
                                 ],
                             ],
+                            'city_id'=>[
+                                'label'=> '所在城市',
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>\backend\models\City::getList(null, true),
+                                    'options'=>['placeholder' => '请选择城市...','style'=>'width:80%']
+                                ]
+                            ],
                             'contact_telephone'=>[
                                 'type'=> Form::INPUT_TEXT,
                                 'options'=>[
                                     'placeholder'=>'请输入备用电话...',
                                     'style'=>'width:80%'
                                 ],
-                            ],
-                            'city_id'=>[
-                                'label'=> '所在城市',
-                                'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>'\kartik\widgets\Select2',
-                                'options'=>[
-                                    'data'=>Hospitals::getList(),
-                                    'options'=>['placeholder' => '请选择城市...']
-                                ]
                             ],
                         ]
                     ]);?>
@@ -93,25 +95,41 @@ use backend\models\OrderPatient;
                 </div>
                 <div class="panel-body">
                     <?php
+//                    echo $form->field($model, 'hospital_id')->widget(DepDrop::classname(), [
+//                        'data'=> [],
+//                        'options' => ['placeholder' => '请选择'],
+//                        'type' => DepDrop::TYPE_SELECT2,
+//                        'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+//                        'pluginOptions'=>[
+//                            'depends'=>['ordermaster-city_id'],
+//                            'url' => Url::to(['worker/getcity/']),
+//                            'loadingText' => '加载中...',
+//                        ]
+//                    ]);
+
                     echo Form::widget([
                         'model'=>$model,
                         'form'=>$form,
                         'columns'=>2,
                         'attributes'=>[
                             'hospital_id'=>[
+                                'widgetClass'=>DepDrop::className(),
                                 'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
-                                    'data'=>Hospitals::getList(),
-                                    'options'=>['placeholder' => '请选择医院...']
-                                ]
+                                    'data'=> [''=>'请选择'],
+                                    'pluginOptions'=>[
+                                        'depends'=>['ordermaster-city_id'],
+                                        'placeholder'=>'请选择',
+                                        'url'=>Url::to(['worker/getcity/']),
+                                    ]
+                                ],
                             ],
                             'department_id'=>[
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Departments::getList(),
-                                    'options'=>['placeholder' => '请选择医院...']
+                                    'options'=>['placeholder' => '请选择科室...']
                                 ]
                             ],
                             'worker_level'=>[

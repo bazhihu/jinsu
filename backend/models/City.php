@@ -65,11 +65,18 @@ class City extends \yii\db\ActiveRecord
 
     /**
      * 获取省份城市列表
-     * @param int $parent_id 省ID 市ID 区县ID
+     * @param int $parentId 省ID 市ID 区县ID
+     * @param bool $display 是启用显示隐藏城市功能
      * @return static[]
      */
-     static public function getList($parent_id = 1){
-        $findArr = ['parent_id' => $parent_id];
+    static public function getList($parentId = null, $display = false){
+        $findArr = [];
+        if($parentId != null){
+            $findArr['parent_id'] = $parentId;
+        }
+        if($display){
+            $findArr['display'] = 1;
+        }
         $result =ArrayHelper::map(self::findAll($findArr), 'id', 'name');
         //var_dump($result);
         return $result;

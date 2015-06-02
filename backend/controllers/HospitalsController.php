@@ -111,6 +111,9 @@ class HospitalsController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * 获取某城市的医院
+     */
     public function actionList(){
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
@@ -122,7 +125,6 @@ class HospitalsController extends Controller
             }
         }
         echo Json::encode(['output'=>'', 'selected'=>'']);
-
     }
 
     /**

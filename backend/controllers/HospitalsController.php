@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Hospitals;
 use backend\models\HospitalsSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -108,6 +109,20 @@ class HospitalsController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionList(){
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            $cityId = $parents[0];
+            if ($cityId != null) {
+                $out = Hospitals::getDropList(0, $cityId);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+
     }
 
     /**

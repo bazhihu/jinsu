@@ -76,16 +76,50 @@ class Hospitals extends \yii\db\ActiveRecord
      * @return static[]
      * @author zhangbo
      */
-    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0)
-    {
+    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
         $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
         if(!$data = Redis::get($cacheKey)){
-            $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
+            $findArr = [];
+            if($provinceId > 0){
+                $findArr['province_id'] = $provinceId;
+            }
+            if($cityId > 0){
+                $findArr['city_id'] = $cityId;
+            }
             if ($areaId > 0) {
                 $findArr['area_id'] = $areaId;
             }
 
             $data = ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+            Redis::set($cacheKey, $data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * 获取医院列表
+     * @param int $provinceId 省ID
+     * @param int $cityId 市ID
+     * @param int $areaId 区县ID
+     * @return static[]
+     * @author zhangbo
+     */
+    static public function getDropList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
+        $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
+        if(!$data = Redis::get($cacheKey)){
+            $findArr = [];
+            if($provinceId > 0){
+                $findArr['province_id'] = $provinceId;
+            }
+            if($cityId > 0){
+                $findArr['city_id'] = $cityId;
+            }
+            if ($areaId > 0) {
+                $findArr['area_id'] = $areaId;
+            }
+
+            $data = self::find()->select('id,name')->where($findArr)->asArray()->all();
             Redis::set($cacheKey, $data);
         }
 

@@ -95,18 +95,6 @@ use backend\models\OrderPatient;
                 </div>
                 <div class="panel-body">
                     <?php
-//                    echo $form->field($model, 'hospital_id')->widget(DepDrop::classname(), [
-//                        'data'=> [],
-//                        'options' => ['placeholder' => '请选择'],
-//                        'type' => DepDrop::TYPE_SELECT2,
-//                        'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
-//                        'pluginOptions'=>[
-//                            'depends'=>['ordermaster-city_id'],
-//                            'url' => Url::to(['worker/getcity/']),
-//                            'loadingText' => '加载中...',
-//                        ]
-//                    ]);
-
                     echo Form::widget([
                         'model'=>$model,
                         'form'=>$form,
@@ -116,11 +104,12 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>DepDrop::className(),
                                 'type'=>Form::INPUT_WIDGET,
                                 'options'=>[
+                                    'type' => DepDrop::TYPE_SELECT2,
                                     'data'=> [''=>'请选择'],
                                     'pluginOptions'=>[
                                         'depends'=>['ordermaster-city_id'],
                                         'placeholder'=>'请选择',
-                                        'url'=>Url::to(['worker/getcity/']),
+                                        'url'=>Url::to(['hospitals/list/']),
                                     ]
                                 ],
                             ],

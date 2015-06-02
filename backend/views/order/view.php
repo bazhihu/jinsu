@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use backend\models\OrderMaster;
@@ -7,6 +6,7 @@ use backend\models\OrderPatient;
 use backend\models\Hospitals;
 use backend\models\Departments;
 use backend\models\Worker;
+use backend\models\City;
 
 /**
  * @var yii\web\View $this
@@ -133,6 +133,11 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                 'attribute'=>'real_amount',
                 'value'=>'<font style="font-weight: bold;color: #aa0000">'.$model->real_amount.'</font>',
                 'format'=>'raw'
+            ],
+            [
+                'attribute'=>'city_id',
+                'type'=>DetailView::INPUT_WIDGET,
+                'value'=>City::getCityName($model->city_id)
             ],
             [
                 'attribute'=>'hospital_id',

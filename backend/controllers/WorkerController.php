@@ -3,6 +3,10 @@
 namespace backend\controllers;
 
 use backend\models\OrderMaster;
+use backend\models\WorkerCard;
+use backend\models\WorkerCardSearch;
+use backend\models\WorkerLeave;
+use backend\models\WorkerLeaveSearch;
 use common\models\Order;
 use backend\models\WorkerSchedule;
 use Yii;
@@ -75,6 +79,22 @@ class WorkerController extends Controller
     }
 
     /**
+     * Finds the Worker model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return Worker the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Worker::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
      * Creates a new Worker model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -104,6 +124,19 @@ class WorkerController extends Controller
             ]);
         }
     }
+
+    /**
+     * Deletes an existing Worker model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
+  /*  public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }*/
 
     /**
      * Updates an existing Worker model.
@@ -169,35 +202,6 @@ class WorkerController extends Controller
             return $this->render('update', [
                 'model' => $model,
             ]);
-        }
-    }
-
-    /**
-     * Deletes an existing Worker model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
-     */
-  /*  public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }*/
-
-    /**
-     * Finds the Worker model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Worker the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Worker::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
@@ -307,6 +311,92 @@ class WorkerController extends Controller
             'searchModel' => $searchModel,
             'orderId' => $orderId,
             'startTime' => $startTime
+        ]);
+    }
+    /**
+     * 护工银行卡号
+     * @return string
+     */
+    public function actionCardIndex(){
+        $searchModel = new WorkerCardSearch;
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        return $this->render('cardIndex', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
+    /**
+     * 删除银行卡数据
+     */
+    public function actionCardDelete(){
+        $params = Yii::$app->request->post();
+        $id = $params['id'];
+        $workerCard = new WorkerCard();
+        $return = $workerCard->cardDelete($id);
+        echo json_encode($return);
+    }
+
+    /**
+     * 创建银行卡
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionCardCreate($id){
+        $model = new WorkerCard();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['cardIndex', 'id' => $model->id]);
+        } else {
+            return $this->render('cardCreate', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionLeaveCreate(){
+        $model = new WorkerLeave();
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            return $this->redirect(['leaveIndex', 'id' => $model->id]);
+        }
+
+        return $this->render('leaveCreate', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionLeaveEnd($id){
+        $this->layout = "guest.php";
+        $params = Yii::$app->getRequest()->getBodyParams();
+        $leave = $this->findLeaveModel($id);
+
+        if(empty($params['real_end'])){
+            return $this->render('end', [
+                'model' => $leave
+            ]);
+        }else{
+            $endTime = $params['real_end'];
+            $response = $leave->end($endTime);
+            echo Json::encode($response);
+        }
+    }
+
+    protected function findLeaveModel($id)
+    {
+        if (($model = WorkerLeave::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionLeaveIndex(){
+        $searchModel = new WorkerLeaveSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        return $this->render('leaveIndex', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 }

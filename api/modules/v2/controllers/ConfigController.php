@@ -76,7 +76,7 @@ class ConfigController extends ActiveController {
         $return['provinces'] = City::getList(1, false, false);
 
         //区域
-        $return['provinces'] = City::getList($cityId, false, false);
+        $return['areas'] = City::getList($cityId, false, false);
 
         return $return;
     }

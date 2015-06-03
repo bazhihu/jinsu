@@ -7,14 +7,15 @@
  */
 namespace api\modules\v2\controllers;
 
-use backend\models\Comment;
-use backend\models\Worker;
-use backend\models\Workerother;
-use common\models\Order;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
+use backend\models\Comment;
+use backend\models\Worker;
+use backend\models\Workerother;
+use common\models\Order;
+use backend\models\WorkerSchedule;
 
 class WorkerController extends ActiveController {
     public $modelClass = false;
@@ -44,13 +45,16 @@ class WorkerController extends ActiveController {
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionIndex()
-    {
-        //随机十个护工
+    public function actionIndex(){
         $params = Yii::$app->getRequest()->get();
         $worker = \api\modules\v2\models\Worker::select($params);
 
-        $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items']);
+        //获取在服务中的护工
+        $workerIds = [];
+        if(isset($params['start_time'])){
+            $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
+        }
+        $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items'], $workerIds);
 
         return $worker;
     }

@@ -122,7 +122,7 @@ class WorkerSearch extends Worker
             'star' => $this->star,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
+        //$query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
 
         return $dataProvider;
     }

@@ -49,10 +49,11 @@ class ConfigController extends ActiveController {
 
     public function actionIndex()
     {
+        $cityId = Yii::$app->request->get('city_id');
+        $return = array();
 
-        $return  = array();
         #医院
-        $return['hospitals'] =Hospitals::find()->all();
+        $return['hospitals'] = Hospitals::find()->where(['city'=>$cityId])->all();
         foreach($return['hospitals'] as $hospitals)
         {
             unset($hospitals['province_id']);
@@ -60,14 +61,10 @@ class ConfigController extends ActiveController {
             unset($hospitals['area_id']);
             unset($hospitals['phone']);
         }
+        
         #科室
-        $return['departments'] = Departments::find()
-            //->andFilterWhere(['parent_id'=>0])
-            ->all();
-        foreach($return['departments'] as $departments)
-        {
-            unset($departments['parent_id']);
-        }
+        $return['departments'] = Departments::find()->all();
+
         #护工等级
         $return['worker_levels'] = Config::generateWorker([Worker::WORKER_LEVEL_PRIMARY,Worker::WORKER_LEVEL_MEDIUM,Worker::WORKER_LEVEL_HIGH,Worker::WORKER_LEVEL_SUPER]);
 

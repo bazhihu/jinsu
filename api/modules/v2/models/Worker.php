@@ -81,6 +81,12 @@ class Worker extends ActiveRecord{
             $countQuery->andFilterWhere(['gender' => $params['gender']]);
         }
 
+        //护工等级
+        if(!empty($params['worker_level'])){
+            $query->andFilterWhere(['level' => $params['worker_level']]);
+            $countQuery->andFilterWhere(['level' => $params['worker_level']]);
+        }
+
         $totalCount = $countQuery->count();
 //        if(!empty($params['hospital_id']) && $totalCount == 0){
 //            unset($params['hospital_id']);

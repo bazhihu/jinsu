@@ -53,7 +53,10 @@ class ConfigController extends ActiveController {
         $return = array();
 
         #医院
-        $return['hospitals'] = Hospitals::find()->where(['city'=>$cityId])->all();
+        if(empty($cityId)){
+            $cityId = 110100;
+        }
+        $return['hospitals'] = Hospitals::find()->where(['city_id'=>$cityId])->all();
         foreach($return['hospitals'] as $hospitals)
         {
             unset($hospitals['province_id']);
@@ -61,7 +64,7 @@ class ConfigController extends ActiveController {
             unset($hospitals['area_id']);
             unset($hospitals['phone']);
         }
-        
+
         #科室
         $return['departments'] = Departments::find()->all();
 

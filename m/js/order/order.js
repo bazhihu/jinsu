@@ -96,25 +96,36 @@
         else if(!$("#department_id").val())
             des = "请选择服务科室！";
 
-        if($("#care-start").val() && $("#care-end").val() && ($("#care-start").val()>$("#care-end").val())){
-            alert("服务开始时间不能大于服务结束时间！");
-            return false;
-        }
+        var start = $('#care-start').val(),
+            end = $('#care-end').val(),
+            today = new Date().format("yyyy-MM-dd");
 
-        var today = new Date().format("yyyy-MM-dd");
-        if($("#care-start").val() && ($("#care-start").val()<today)){
-            alert("服务开始时间不能小于当天！");
-            return false;
-        }
+        if(start && end){
+            var dateOne   = new Date(start.replace(/-/g, "/")),
+                dateTwo   = new Date(end.replace(/-/g, "/"));
+                today   = new Date(today.replace(/-/g, "/"));
+            dateOne   = dateOne.getTime();
+            dateTwo   = dateTwo.getTime();
+            today     = today.getTime();
 
-        if($("#care-end").val() && ($("#care-end").val()<today)){
-            alert("服务结束时间不能小于当天！");
-            return false;
-        }
+            if((dateOne>dateTwo)){
+                alert("服务开始时间不能大于服务结束时间！");
+                return false;
+            }
+            if((dateOne<today)){
+                alert("服务开始时间不能小于当天！");
+                return false;
+            }
 
-        if($("#care-start").val()==$("#care-end").val()){
-            alert("服务开始时间和服务结束时间不能为同一天！");
-            return false;
+            if((dateTwo<today)){
+                alert("服务结束时间不能小于当天！");
+                return false;
+            }
+
+            if(dateOne==dateTwo){
+                alert("服务开始时间和服务结束时间不能为同一天！");
+                return false;
+            }
         }
 
         if(des){

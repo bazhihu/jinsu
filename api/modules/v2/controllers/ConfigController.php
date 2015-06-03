@@ -76,7 +76,7 @@ class ConfigController extends ActiveController {
         $return['holidays'] = ArrayHelper::getColumn(Holidays::find()->all(),'date');
 
         //开通城市
-        $return['openCities'] = City::getList(null, true, false);
+        $return['open_cities'] = City::getList(null, true, false);
 
         //省份列表
         $return['provinces'] = City::getList(1, false, false);

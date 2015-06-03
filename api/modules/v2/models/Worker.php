@@ -38,6 +38,7 @@ class Worker extends ActiveRecord
             $params[$key]['education']       = \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = \backend\models\Worker::getCertificateName($value['certificate']);
             $params[$key]['level_name']      = \backend\models\Worker::getWorkerLevel($value['level']);
+            $params[$key]['city_id']         = City::getCityName($value['city_id']);
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
             $params[$key]['office_id']       = Departments::getDepartmentNames($value['office_id']);
             $params[$key]['pic'] = \backend\models\Worker::workerPic($value['worker_id'], 120);
@@ -60,19 +61,19 @@ class Worker extends ActiveRecord
         }
         $perPage = 10;
 
-        $worker = new \backend\models\Worker();
-        $query = $worker::find();
-
-        $countQuery = $worker::find();
-
-        $query->andFilterWhere(['audit_status' => 1])
-            ->andFilterWhere(['status' => 1]);
-
         //城市
         if(empty($params['city_id'])){
-            $query->andFilterWhere(['city_id' => 110100]);
-            $countQuery->andFilterWhere(['city_id' => 110100]);
+            $cityId = 110100;
+        }else{
+            $cityId = $params['city_id'];
         }
+
+        $worker = new \backend\models\Worker();
+        $query = $worker::find();
+        $countQuery = $worker::find();
+
+        $query->andFilterWhere(['audit_status' => 1, 'status' => 1, 'city_id' => $cityId]);
+        $countQuery->andFilterWhere(['audit_status' => 1, 'status' => 1, 'city_id' => $cityId]);
 
         //获取在工作中的护工
         if(isset($params['start_time'])){

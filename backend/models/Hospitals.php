@@ -106,7 +106,7 @@ class Hospitals extends \yii\db\ActiveRecord
      * @author zhangbo
      */
     static public function getDropList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
-        $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
+        $cacheKey = self::$_keyPrefix."/DropList/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
         if(!$data = Redis::get($cacheKey)){
             $findArr = [];
             if($provinceId > 0){

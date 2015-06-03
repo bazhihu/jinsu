@@ -225,7 +225,6 @@ use backend\models\Hospitals;
             ]
         ]);
 
-
         //籍贯
         echo $form->field($model, 'native_province')->widget(Select2::classname(), [
             'data' => City::getList(1),
@@ -235,19 +234,30 @@ use backend\models\Hospitals;
             ],
         ])->label('籍贯');
 
-        // 常驻医院
-        echo $form->field($model, 'hospital_id')->widget(Select2::classname(), [
-            'data' =>   Hospitals::getList('110000'),
-            'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:30%'],
+        //常驻城市
+        echo $form->field($model, 'city_id')->widget(Select2::classname(), [
+            'data' => City::getList(null, true),
+            'options' => ['placeholder' => '请选择城市','style'=>'width:30%'],
             'pluginOptions' => [
-                'allowClear' => true,
-                'maximumInputLength' => 20
+                'allowClear' => true
             ],
+        ])->label('常驻城市');
+
+        // 常驻医院
+        echo $form->field($model, 'hospital_id')->widget(DepDrop::className(), [
+            'type' => DepDrop::TYPE_SELECT2,
+            'data'=> $model->city_id ? Hospitals::getList(0, $model->city_id):[''=>'请选择'],
+            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+            'options' => ['placeholder' => '请选择常驻医院','multiple'=>true,'style'=>'width:30%'],
+            'pluginOptions'=>[
+                'depends'=>['worker-city_id'],
+                'url'=>Url::to(['hospitals/list/']),
+            ]
         ])->label('常驻医院');
 
         // 常驻科室
         echo $form->field($model, 'office_id')->widget(Select2::classname(), [
-            'data' =>   Departments::getList(),
+            'data' => Departments::getList(),
             'options' => ['placeholder' => '请选择常驻科室','multiple'=>true,'style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true,

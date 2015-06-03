@@ -237,8 +237,8 @@ class WorkerController extends Controller
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
-                $birth_place = $parents[0];
-                $data  = City::getListPlace($birth_place);
+                $birthPlace = $parents[0];
+                $data = City::getList($birthPlace, false, false);
                 echo Json::encode(['output'=>$data,'selected'=>'']);
                 return;
             }
@@ -250,9 +250,9 @@ class WorkerController extends Controller
     public function actionGetarea() {
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
-            $birth_place_city = $parents[0];
-            if ($birth_place_city != null) {
-                $out = City::getListPlace($birth_place_city);
+            $birthPlaceCity = $parents[0];
+            if ($birthPlaceCity != null) {
+                $out = City::getList($birthPlaceCity, false, false);
                 echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }

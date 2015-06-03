@@ -120,7 +120,7 @@ class HospitalsController extends Controller
             $cityId = $parents[0];
             if ($cityId != null) {
                 $out = Hospitals::getDropList(0, $cityId);
-                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                echo Json::encode(['output'=>$out, 'selected'=>""]);
                 return;
             }
         }

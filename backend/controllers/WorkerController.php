@@ -356,13 +356,13 @@ class WorkerController extends Controller
 
     public function actionLeaveCreate(){
         $model = new WorkerLeave();
-        if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            return $this->redirect(['leaveIndex', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['leave-index', 'id' => $model->id]);
+        }else{
+            return $this->render('leaveCreate', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('leaveCreate', [
-            'model' => $model,
-        ]);
     }
 
     public function actionLeaveEnd($id){

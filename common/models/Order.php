@@ -256,7 +256,6 @@ class Order extends \yii\db\ActiveRecord{
             $orderData = $params['OrderMaster'];
             $orderData['order_no'] = $orderNo;
             $orderData['reality_end_time'] = $orderData['end_time'];
-
             $orderData['patient_name'] = isset($params['OrderPatient']['name']) ? $params['OrderPatient']['name'] : null;
 
             //获取护工价格
@@ -275,6 +274,11 @@ class Order extends \yii\db\ActiveRecord{
 
             if(empty($orderData['base_price'])){
                 throw new HttpException(400, '无法获取护工价格');
+            }
+
+            //城市判断
+            if(empty($orderData['city_id'])){
+                $orderData['city_id'] = 110100;
             }
 
             //能否自理价格系数

@@ -237,7 +237,7 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','idcard'], 'required'],
+            [['name','city_id','idcard'], 'required'],
             [['gender'],'string', 'max' => 1],
             [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status','parent_worker_id'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
@@ -280,6 +280,7 @@ class Worker extends \yii\db\ActiveRecord
             'phone1' => '手机号',
             'phone2' => '手机号',
             'price' => '服务价格',
+            'city_id' => '所属城市',
             'hospital_id' => '常驻医院',
             'office_id' => '常驻科室',
             'good_at' => '擅长护理的疾病',

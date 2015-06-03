@@ -37,6 +37,7 @@ class Worker extends ActiveRecord
             $params[$key]['chinese_level']   = \backend\models\Worker::getChineseLevel($value['chinese_level']);
             $params[$key]['education']       = \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = \backend\models\Worker::getCertificateName($value['certificate']);
+            $params[$key]['level_name']      = \backend\models\Worker::getWorkerLevel($value['level']);
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
             $params[$key]['office_id']       = Departments::getDepartmentNames($value['office_id']);
             $params[$key]['pic'] = \backend\models\Worker::workerPic($value['worker_id'], 120);
@@ -66,6 +67,12 @@ class Worker extends ActiveRecord
 
         $query->andFilterWhere(['audit_status' => 1])
             ->andFilterWhere(['status' => 1]);
+
+        //城市
+        if(empty($params['city_id'])){
+            $query->andFilterWhere(['city_id' => 110100]);
+            $countQuery->andFilterWhere(['city_id' => 110100]);
+        }
 
         //获取在工作中的护工
         if(isset($params['start_time'])){

@@ -60,7 +60,7 @@ use kartik\datecontrol\DateControl;
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('客户');?>
+            ])->label('客服');?>
 
             <?= $form->field($model, 'create_order_sources')
                 ->dropDownList(OrderMaster::$orderSources,['prompt'=>'请选择'])

@@ -137,6 +137,7 @@ return [
             'tq/index',
             'tq/select',
             'order/calculate',
+            'datecontrol/parse/convert'
         ]
     ],
     'params' => $params,

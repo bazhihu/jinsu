@@ -77,18 +77,12 @@ class CityController extends Controller
     }
 // THE CONTROLLER
     public function actionSubcat() {
-        $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $cat_id = $parents[0];
-                $out = City::getListPlace($cat_id);
-                // the getSubCatList function will query the database based on the
-                // cat_id and return an array like below:
-                // [
-                //    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
-                //    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
-                // ]
+                $out = City::getList($cat_id, false, false);
+
                 echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }
@@ -97,13 +91,11 @@ class CityController extends Controller
     }
 
     public function actionProd() {
-        $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $ids = $_POST['depdrop_parents'];
-            $cat_id = empty($ids[0]) ? null : $ids[0];
-            $subcat_id = empty($ids[1]) ? null : $ids[1];
-            if ($subcat_id != null) {
-                $data = City::getListPlace($subcat_id);
+            $subCatId = empty($ids[1]) ? null : $ids[1];
+            if ($subCatId != null) {
+                $data = City::getList($subCatId, false, false);
                 echo Json::encode(['output'=>$data, 'selected'=>'']);
                 return;
             }

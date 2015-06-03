@@ -108,6 +108,7 @@ return [
                     'controller' => [
                         'v2/worker',
                         'v2/wallet',
+                        'v2/config',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

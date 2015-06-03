@@ -56,14 +56,8 @@ class ConfigController extends ActiveController {
         if(empty($cityId)){
             $cityId = 110100;
         }
-        $return['hospitals'] = Hospitals::find()->where(['city_id'=>$cityId])->all();
-        foreach($return['hospitals'] as $hospitals)
-        {
-            unset($hospitals['province_id']);
-            unset($hospitals['city_id']);
-            unset($hospitals['area_id']);
-            unset($hospitals['phone']);
-        }
+        $columns = ['id','name','province_id','city_id','area_id','pinyin'];
+        $return['hospitals'] = Hospitals::find()->select($columns)->where(['city_id'=>$cityId])->all();
 
         #科室
         $return['departments'] = Departments::find()->all();
@@ -80,6 +74,9 @@ class ConfigController extends ActiveController {
 
         //省份列表
         $return['provinces'] = City::getList(1, false, false);
+
+        //区域
+        $return['provinces'] = City::getList($cityId, false, false);
 
         return $return;
     }

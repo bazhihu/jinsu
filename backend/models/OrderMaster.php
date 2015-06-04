@@ -274,8 +274,9 @@ class OrderMaster extends Order
             //给护工加订单总数
             Worker::plusTotalOrder($this->worker_no);
 
-            //@TODO...记录护工订单收入
-
+            //记录护工订单收入
+            $workerBill = new WorkerBill();
+            $workerBill->addBill($this);
 
             $response['msg'] = '完成订单成功';
             $transaction->commit();

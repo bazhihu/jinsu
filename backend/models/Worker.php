@@ -69,10 +69,10 @@ class Worker extends \yii\db\ActiveRecord
      * 护工等级标签
      */
     static public $workerLevelLabel = [
-        self::WORKER_LEVEL_PRIMARY => '初级',
-        self::WORKER_LEVEL_MEDIUM => '中级',
-        self::WORKER_LEVEL_HIGH   => '高级',
-        self::WORKER_LEVEL_SUPER  => '特级'
+        self::WORKER_LEVEL_PRIMARY => '初级护理员',
+        self::WORKER_LEVEL_MEDIUM => '中级护理员',
+        self::WORKER_LEVEL_HIGH   => '高级护理员',
+        self::WORKER_LEVEL_SUPER  => '特级护理员'
     ];
 
     /**

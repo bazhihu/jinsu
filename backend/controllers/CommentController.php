@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\models\OrderMaster;
 use backend\models\Worker;
+use backend\models\WorkerIntegral;
+use common\models\Integral;
 use common\models\Order;
 use kartik\alert\Alert;
 use Yii;
@@ -46,6 +48,18 @@ class CommentController extends Controller
         if($comment_id_array) {
             $comment_ids = implode(',', $comment_id_array);
             Comment::commentAudit($comment_ids,$op);
+
+            #审核通过加积分
+            foreach($comment_id_array as $commentKey=>$commentVal){
+                if($commentVal){
+                    $params = [
+                        'worker_id'=>5001,
+                        'type'=>WorkerIntegral::WORKER_INTEGRAL_TYPE_ONE,
+                        'integral'=>Integral::integralCalculus(WorkerIntegral::WORKER_INTEGRAL_TYPE_ONE,['comment_id'=>$commentVal]),
+                    ];
+                    Integral::addWorkerIntegral($params);
+                }
+            }
         }
         return $this->render('index', [
             'dataProvider' => $dataProvider,

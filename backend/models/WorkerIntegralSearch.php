@@ -12,13 +12,15 @@ use backend\models\WorkerIntegral;
  */
 class WorkerIntegralSearch extends WorkerIntegral
 {
+    public $fromDate;//起始时间
+    public $toDate;//结束时间
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'type', 'integral', 'cumulative'], 'integer'],
+            [['id', 'worker_id', 'type', 'integral', 'cumulative'], 'integer'],
             [['time', 'remarks'], 'safe'],
         ];
     }
@@ -57,6 +59,7 @@ class WorkerIntegralSearch extends WorkerIntegral
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'worker_id' => $this->worker_id,
             'time' => $this->time,
             'type' => $this->type,
             'integral' => $this->integral,

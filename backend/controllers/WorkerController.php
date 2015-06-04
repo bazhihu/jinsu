@@ -5,6 +5,8 @@ namespace backend\controllers;
 use backend\models\OrderMaster;
 use backend\models\WorkerCard;
 use backend\models\WorkerCardSearch;
+use backend\models\WorkerIntegral;
+use backend\models\WorkerIntegralSearch;
 use backend\models\WorkerLeave;
 use backend\models\WorkerLeaveSearch;
 use common\models\Order;
@@ -354,6 +356,10 @@ class WorkerController extends Controller
         }
     }
 
+    /**
+     * 请假申请
+     * @return string|\yii\web\Response
+     */
     public function actionLeaveCreate(){
         $model = new WorkerLeave();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -365,6 +371,13 @@ class WorkerController extends Controller
         }
     }
 
+    /**
+     * 请假结束
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionLeaveEnd($id){
         $this->layout = "guest.php";
         $params = Yii::$app->getRequest()->getBodyParams();
@@ -381,6 +394,13 @@ class WorkerController extends Controller
         }
     }
 
+    /**
+     * 查找对应类
+     * @param $id
+     * @return null|static
+     * @throws NotFoundHttpException
+     *
+     */
     protected function findLeaveModel($id)
     {
         if (($model = WorkerLeave::findOne($id)) !== null) {
@@ -390,6 +410,10 @@ class WorkerController extends Controller
         }
     }
 
+    /**
+     * 请假列表
+     * @return string
+     */
     public function actionLeaveIndex(){
         $searchModel = new WorkerLeaveSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
@@ -398,5 +422,36 @@ class WorkerController extends Controller
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
+    }
+
+    /**
+     * 积分详情
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionIntegralView($id){
+        $searchModel = new WorkerIntegralSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        return $this->render('integralView', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'id'=>$id
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return null|static
+     * @throws NotFoundHttpException
+     */
+    protected function findIntegralModel($id)
+    {
+        if (($model = WorkerIntegral::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }

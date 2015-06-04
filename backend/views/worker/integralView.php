@@ -9,18 +9,17 @@ use kartik\widgets\DatePicker;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '护工请假列表';
-//$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
+$this->title = '护工积分列表';
 ?>
 <style>
     .panel-body .form-group{
         float:left;
         margin:5px;
     }
-    .field-workerleavesearch-fromdate{
+    .field-workerintegralsearch-fromdate{
         width:250px
     }
-    .field-workerleavesearch-todate{
+    .field-workerintegralsearch-todate{
         width:250px
     }
 </style>
@@ -33,11 +32,23 @@ $this->title = '护工请假列表';
     <div class="worker-leave-list">
         <div class="panel panel-info">
             <div class="panel-heading">
+                <h3 class="panel-title">护工信息</h3>
+            </div>
+            <div class="panel-body">
+                <span class="btn-lg">姓名：<?=\backend\models\Worker::findOne(['worker_id'=>$id])->name?></span>
+                <span class="btn-lg">工号：<?=$id?></span>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
                 <h3 class="panel-title">检索</h3>
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['leave-index'],
+                    'action' => ['integral-view','id'=>$id],
                     'method' => 'get',
 
                     'type' => ActiveForm::TYPE_VERTICAL,
@@ -77,22 +88,8 @@ $this->title = '护工请假列表';
                 ?>
                 <?= $form->field(
                     $searchModel,
-                    'worker_name',
-                    [
-                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                    ]
-                )->input('text',['placeholder'=>'请输入护工姓名...'])->label('姓名') ?>
-                <?= $form->field(
-                    $searchModel,
-                    'worker_id',
-                    [
-                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                    ]
-                )->input('text',['placeholder'=>'请输入护工编号...'])->label('工号') ?>
-                <?= $form->field(
-                    $searchModel,
-                    'status'
-                )->dropDownList(['1'=>'请假中','10'=>'请假结束'],['prompt'=>'选择'])->label("状态") ?>
+                    'type'
+                )->dropDownList(\backend\models\WorkerIntegral::$IntegralType,['prompt'=>'选择'])->label("状态") ?>
 
                 <div class="form-group" style="padding-top: 25px">
                     <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -110,64 +107,23 @@ $this->title = '护工请假列表';
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'worker_id',
-            'worker_name',
-            'start_time',
-            'end_time',
-            'real_end',
-            'leave_cause',
+            'id',
+            'time',
             [
-                'header'=>'状态',
-                'attribute'=>'status',
+                'header'=>'类别',
+                'attribute'=>'type',
                 'value'=>function($model){
-                    if($model->status==10){
-                        return '请假结束';
-                    } else {
-                        return '请假中';
-                    }
-                }
+                    return \backend\models\WorkerIntegral::$IntegralType[$model->type];
+                },
             ],
-            ['class' => 'yii\grid\ActionColumn',
-                'header'=>'操作',
-                'buttons' => [
-                    'leave-end' => function ($url, $model) {
-                        return $model->status==10?"":Html::button('结束', [
-                                'title' => Yii::t('yii', '结束'),
-                                'class' => 'btn btn-danger jsEndLeave',//jsNix
-                                'data-url'=>$url,
-                            ]);
-                    },
-                ],
-                'template'=>'{leave-end}',
-            ],
+            'integral',
+            'cumulative',
+            'remarks',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>
-                Html::a('<i class="glyphicon glyphicon-plus"></i> 添加请假信息', ['worker/leave-create'], ['class' => 'btn btn-success']/*[
-                    'data-url'=>Yii::$app->urlManager->createUrl(['worker/leave-create']),
-                    'class'=>'btn btn-sm btn-success myModal jsLeaveCreate',
-                    'data-toggle'=>'modal',
-                    'data-target'=>'#myModal',
-                ]*/),
             'showFooter'=>true
         ],
     ]); ?>
 </div>
-<?php \yii\bootstrap\Modal::begin([
-    'header' => '<strong>结束请假</strong>',
-    'id'=>'finishLeaveModal',
-    'size'=>'modal-lg',
-]);?>
-<div id="finishLeaveModalContent">加载中...</div>
-<?php \yii\bootstrap\Modal::end();?>
-
-<script>
-    //结束请假
-    $('body').on('click', 'button.jsEndLeave', function () {
-        var url = $(this).attr('data-url');
-        $("#finishLeaveModalContent").load(url);
-        $('#finishLeaveModal').modal({"show":true});
-    });
-</script>

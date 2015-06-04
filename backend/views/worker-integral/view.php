@@ -9,35 +9,46 @@ use kartik\widgets\DatePicker;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '护工工资卡';
-//$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
+$this->title = '护工积分列表';
 ?>
 <style>
     .panel-body .form-group{
         float:left;
         margin:5px;
     }
-    .field-workercardsearch-fromdate{
-        width:270px
+    .field-workerintegralsearch-fromdate{
+        width:250px
     }
-    .field-workercardsearch-todate{
-        width:270px
+    .field-workerintegralsearch-todate{
+        width:250px
     }
 </style>
-<div class="worker-card-index">
+<div class="worker-leave-index">
 
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
 
-    <div class="worker-card-list">
+    <div class="worker-leave-list">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">护工信息</h3>
+            </div>
+            <div class="panel-body">
+                <span class="btn-lg">姓名：<?=\backend\models\Worker::findOne(['worker_id'=>$id])->name?></span>
+                <span class="btn-lg">工号：<?=$id?></span>
+            </div>
+        </div>
+    </div>
+
+
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">检索</h3>
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['card-index'],
+                    'action' => ['view','id'=>$id],
                     'method' => 'get',
 
                     'type' => ActiveForm::TYPE_VERTICAL,
@@ -77,18 +88,8 @@ $this->title = '护工工资卡';
                 ?>
                 <?= $form->field(
                     $searchModel,
-                    'worker_name',
-                    [
-                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                    ]
-                )->input('text',['placeholder'=>'请输入护工姓名...'])->label('姓名') ?>
-                <?= $form->field(
-                    $searchModel,
-                    'worker_id',
-                    [
-                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                    ]
-                )->input('text',['placeholder'=>'请输入护工编号...'])->label('工号') ?>
+                    'type'
+                )->dropDownList(\backend\models\WorkerIntegral::$IntegralType,['prompt'=>'选择'])->label("状态") ?>
 
                 <div class="form-group" style="padding-top: 25px">
                     <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
@@ -106,33 +107,18 @@ $this->title = '护工工资卡';
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'add_date',
-            'worker_name',
-            'identity_card',
+            'id',
+            'time',
             [
-                'header'=>'开户行',
-                'attribute'=>'bank',
+                'header'=>'类别',
+                'attribute'=>'type',
                 'value'=>function($model){
-                    return \backend\models\WorkerCard::$_BANK[$model->bank];
+                    return \backend\models\WorkerIntegral::$IntegralType[$model->type];
                 },
             ],
-            'bank_card',
-            ['class' => 'yii\grid\ActionColumn',
-                'header'=>'操作',
-                'buttons' => [
-                    'apply' => function ($url, $model) {
-                        return $model->status?"":Html::button('删除', [
-                                'title' => Yii::t('yii', '删除'),
-                                'class' => 'btn btn-danger myModal',//jsNix
-                                'id' => 'cardDelete',
-                                'data-url'=>Yii::$app->urlManager->createUrl(['worker/card-delete'],['id'=>$model->id]),
-                                'data-toggle'=>'modal',
-                                'data-target'=>'#myModal',
-                            ]);
-                    },
-                ],
-                'template'=>'{apply}',
-            ],
+            'integral',
+            'cumulative',
+            'remarks',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
@@ -141,29 +127,3 @@ $this->title = '护工工资卡';
         ],
     ]); ?>
 </div>
-<script>
-    //关闭帐号
-    $('body').on('click', '#cardDelete', function () {
-        if(!confirm('确认执行此操作吗？')){
-            return false;
-        }
-        var num = $(this);
-        var key = num.parent().parent().attr('data-key');
-        var url = $(this).attr('data-url');
-        $.ajax({
-            type    :'POST',
-            cache   : false,
-            url     : url,
-            data    : {'id':key},
-            dataType : 'json' ,
-            success : function(response) {
-                if(response.code=='200'){
-                    location.reload();
-                } else {
-                    alert(response.message);
-                }
-            }
-        });
-        return false;
-    });
-</script>

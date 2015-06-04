@@ -51,7 +51,7 @@ class WorkerIntegral extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '编号',
             'worker_id' => '护工编号',
             'time' => '时间',
             'type' => '类别',

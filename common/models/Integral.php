@@ -92,7 +92,6 @@ class Integral
      * @param $params
      * [
      *      'comment_id'=>'评价id'
-     *      'star'=>'星级'
      * ]
      * @return int
      */

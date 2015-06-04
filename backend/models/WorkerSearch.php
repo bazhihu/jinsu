@@ -87,8 +87,7 @@ class WorkerSearch extends Worker
      */
     public function select($params){
         //获取在工作中的护工
-        $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
-        $this->workerIds = $workerIds;
+        $workerIds = WorkerSchedule::getWorkingByDate(urldecode($params['start_time']));
 
         $query = Worker::find();
         $dataProvider = new ActiveDataProvider([
@@ -122,7 +121,7 @@ class WorkerSearch extends Worker
             'star' => $this->star,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
+        //$query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
 
         return $dataProvider;
     }

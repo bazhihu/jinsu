@@ -49,7 +49,7 @@ echo $form->field($model, 'pay_from')
             return false;
         }
         if(pay_from.length < 1){
-            alert('请选择充值试。');
+            alert('请选择充值方式。');
             $('#recharge-pay_from').focus();
             return false;
         }

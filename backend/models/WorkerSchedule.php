@@ -16,6 +16,44 @@ use yii\helpers\ArrayHelper;
  */
 class WorkerSchedule extends \yii\db\ActiveRecord
 {
+    const SERVICES = 1; //服务中
+    const LEAVE = 2;    //请假
+
+    /**
+     * 判断某护工在给予的日期是否在工作中
+     * @param $workerId
+     * @param $date
+     * @return bool
+     */
+    static public function isWorking($workerId, $date){
+        $workerIds = self::getWorkingByDate($date);
+        if(in_array($workerId, $workerIds)){
+            return true;
+        }
+        return false;
+
+    }
+
+    /**
+     * 获取给予日期在工作中的护工
+     * @param string $startDate
+     * @param string $endDate
+     * @return array
+     * @author zhangbo
+     */
+    static public function getWorkingByDate($startDate, $endDate = null){
+        $startDate = date('Y-m-d 09:00:00', strtotime($startDate));
+        $sql = 'SELECT id,worker_id FROM '.self::tableName();
+        $sql .= "WHERE UNIX_TIMESTAMP(start_date)<=UNIX_TIMESTAMP('$startDate') AND UNIX_TIMESTAMP('$startDate')<UNIX_TIMESTAMP(end_date)";
+
+        if($endDate){
+            $endDate = date('Y-m-d 09:00:00', strtotime($endDate));
+            $sql .= " AND UNIX_TIMESTAMP(start_date)>UNIX_TIMESTAMP('$endDate') AND UNIX_TIMESTAMP('$endDate')<=UNIX_TIMESTAMP(end_date)";
+        }
+        $workers = self::findBySql($sql)->all();
+        return ArrayHelper::map($workers, 'id', 'worker_id');
+    }
+
     /**
      * @inheritdoc
      */
@@ -69,40 +107,5 @@ class WorkerSchedule extends \yii\db\ActiveRecord
         ];
         $this->setAttributes($data);
         return $this->save();
-    }
-
-    /**
-     * 获取给予日期在工作中的护工
-     * @param string $startDate
-     * @param string $endDate
-     * @return array
-     * @author zhangbo
-     */
-    static public function getWorkingByDate($startDate, $endDate = null){
-        $startDate = date('Y-m-d 09:00:00', strtotime($startDate));
-        $sql = 'SELECT id,worker_id FROM '.self::tableName();
-        $sql .= "WHERE UNIX_TIMESTAMP(start_date)<=UNIX_TIMESTAMP('$startDate') AND UNIX_TIMESTAMP('$startDate')<UNIX_TIMESTAMP(end_date)";
-
-        if($endDate){
-            $endDate = date('Y-m-d 09:00:00', strtotime($endDate));
-            $sql .= " AND UNIX_TIMESTAMP(start_date)>UNIX_TIMESTAMP('$endDate') AND UNIX_TIMESTAMP('$endDate')<=UNIX_TIMESTAMP(end_date)";
-        }
-        $workers = self::findBySql($sql)->all();
-        return ArrayHelper::map($workers, 'id', 'worker_id');
-    }
-
-    /**
-     * 判断某护工在给予的日期是否在工作中
-     * @param $workerId
-     * @param $date
-     * @return bool
-     */
-    static public function isWorking($workerId, $date){
-        $workerIds = self::getWorkingByDate($date);
-        if(in_array($workerId, $workerIds)){
-            return true;
-        }
-        return false;
-
     }
 }

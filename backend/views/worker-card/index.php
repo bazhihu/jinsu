@@ -37,7 +37,7 @@ $this->title = '护工工资卡';
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['card-index'],
+                    'action' => ['index'],
                     'method' => 'get',
 
                     'type' => ActiveForm::TYPE_VERTICAL,
@@ -107,6 +107,7 @@ $this->title = '护工工资卡';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'add_date',
+            'worker_id',
             'worker_name',
             'identity_card',
             [
@@ -125,7 +126,7 @@ $this->title = '护工工资卡';
                                 'title' => Yii::t('yii', '删除'),
                                 'class' => 'btn btn-danger myModal',//jsNix
                                 'id' => 'cardDelete',
-                                'data-url'=>Yii::$app->urlManager->createUrl(['worker/card-delete'],['id'=>$model->id]),
+                                'data-url'=>Yii::$app->urlManager->createUrl(['worker-card/delete'],['id'=>$model->id]),
                                 'data-toggle'=>'modal',
                                 'data-target'=>'#myModal',
                             ]);

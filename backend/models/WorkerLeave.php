@@ -2,7 +2,10 @@
 
 namespace backend\models;
 
+use api\modules\v2\models\Worker;
 use Yii;
+use yii\web\HttpException;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "{{%worker_leave}}".
@@ -18,6 +21,7 @@ use Yii;
  */
 class WorkerLeave extends \yii\db\ActiveRecord
 {
+    public static $_Leave = 'leave_';
     /**
      * @inheritdoc
      */
@@ -55,8 +59,37 @@ class WorkerLeave extends \yii\db\ActiveRecord
             'status' => '状态',
         ];
     }
+
+    /**
+     * 创建请假信息
+     * @return bool
+     */
     public function create(){
-        return false;
+        if(!$this->save()){
+            return false;
+        }
+        $schedule = new WorkerSchedule();
+        $params = [
+            'order_no'=>self::getScheduleId($this->id),
+            'type'=>WorkerSchedule::LEAVE,
+            'worker_id'=>$this->worker_id,
+            'start_date'=>$this->start_time,
+            'end_date'=>$this->end_time,
+        ];
+        $schedule->setAttributes($params,false);
+        if(!$schedule->save()){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 获取工单编号
+     * @param $id
+     * @return string
+     */
+    public static function getScheduleId($id){
+        return self::$_Leave.$id;
     }
     /**
      * 结束请假
@@ -72,6 +105,13 @@ class WorkerLeave extends \yii\db\ActiveRecord
             $this->real_end = $endTime;
             $this->status = 10;
             if($this->save()){
+                try {
+                    $schedule = WorkerSchedule::findOne(['order_no'=>self::getScheduleId($this->id),'type'=>WorkerSchedule::LEAVE]);
+                    #删除请假工单
+                    $schedule->delete();
+                }catch (Exception $e){
+                    throw new HttpException(400, print_r($e, true));
+                }
                 $response['msg'] = '结束成功';
                 return $response;
             }else{

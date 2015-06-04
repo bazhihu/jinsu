@@ -36,7 +36,7 @@ ActiveForm::end();
 ?>
 <script type="text/javascript">
     $('.js-confirm-finish').click(function(){
-        var url='<?=Yii::$app->urlManager->createUrl(['worker/leave-end', 'id'=>$model->id]);?>';
+        var url='<?=Yii::$app->urlManager->createUrl(['worker-leave/end', 'id'=>$model->id]);?>';
         var reality_end_time = $('#workerleave-real_end').val();
         $.ajax({
             type: "POST",

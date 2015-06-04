@@ -10,7 +10,6 @@ use kartik\widgets\DatePicker;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '护工请假列表';
-//$this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
 ?>
 <style>
     .panel-body .form-group{
@@ -37,7 +36,7 @@ $this->title = '护工请假列表';
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['leave-index'],
+                    'action' => ['index'],
                     'method' => 'get',
 
                     'type' => ActiveForm::TYPE_VERTICAL,
@@ -130,22 +129,22 @@ $this->title = '护工请假列表';
             ['class' => 'yii\grid\ActionColumn',
                 'header'=>'操作',
                 'buttons' => [
-                    'leave-end' => function ($url, $model) {
-                        return $model->status==10?"":Html::button('结束', [
+                    'end' => function ($url, $model) {
+                        return $model->status==10?"已结束":Html::button('结束', [
                                 'title' => Yii::t('yii', '结束'),
                                 'class' => 'btn btn-danger jsEndLeave',//jsNix
                                 'data-url'=>$url,
                             ]);
                     },
                 ],
-                'template'=>'{leave-end}',
+                'template'=>'{end}',
             ],
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
             'before'=>
-                Html::a('<i class="glyphicon glyphicon-plus"></i> 添加请假信息', ['worker/leave-create'], ['class' => 'btn btn-success']/*[
+                Html::a('<i class="glyphicon glyphicon-plus"></i> 添加请假信息', ['worker-leave/create'], ['class' => 'btn btn-success']/*[
                     'data-url'=>Yii::$app->urlManager->createUrl(['worker/leave-create']),
                     'class'=>'btn btn-sm btn-success myModal jsLeaveCreate',
                     'data-toggle'=>'modal',

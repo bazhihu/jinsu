@@ -48,7 +48,7 @@ $this->title = '护工积分列表';
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['integral-view','id'=>$id],
+                    'action' => ['view','id'=>$id],
                     'method' => 'get',
 
                     'type' => ActiveForm::TYPE_VERTICAL,

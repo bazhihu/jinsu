@@ -50,10 +50,12 @@ class WorkerController extends ActiveController {
         $worker = \api\modules\v2\models\Worker::select($params);
 
         //获取在服务中的护工
-        $workerIds = [];
-        if(isset($params['start_time'])){
-            $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
+        if(empty($params['start_time'])){
+            $startTime = date('Y-m-d');
+        }else{
+            $startTime = $params['start_time'];
         }
+        $workerIds = WorkerSchedule::getWorkingByDate($startTime);
         $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items'], $workerIds);
 
         return $worker;
@@ -69,6 +71,7 @@ class WorkerController extends ActiveController {
 
         $worker = Worker::findOne(['worker_id'=>$workerId]);
         $worker = ArrayHelper::toArray($worker);
+
         #拼接护工信息
         $worker = \api\modules\v1\models\Worker::formatWorker(['0'=>$worker]);
         $worker = $worker[0];
@@ -80,12 +83,14 @@ class WorkerController extends ActiveController {
             ->limit(self::$commentOffset)
             ->all();
         $worker['comments'] = \api\modules\v1\models\Worker::getMobile($worker['comments']);
+
         #护工自我介绍
         $worker['selfIntros'] = Workerother::find()
             ->andFilterWhere(['worker_id'=>$workerId])
             ->andFilterWhere(['info_type'=>self::$workerSelf])
             ->all();
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
+
         #护工订单信息
         $worker['orders'] = Order::find()
             ->andFilterWhere(['worker_no'=>$workerId])

@@ -25,9 +25,10 @@ class WorkerBill extends \yii\db\ActiveRecord
     const TYPE_REFERRAL = 'referral';
 
     static public $types = [
-        self::TYPE_ORDER => '订单',
-        self::TYPE_REFERRAL => '推荐',
+        self::TYPE_ORDER => '订单收入',
+        self::TYPE_REFERRAL => '推荐收入',
     ];
+
     public $total; //合计
 
     /**

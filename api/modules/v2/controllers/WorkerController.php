@@ -50,10 +50,12 @@ class WorkerController extends ActiveController {
         $worker = \api\modules\v2\models\Worker::select($params);
 
         //获取在服务中的护工
-        $workerIds = [];
-        if(isset($params['start_time'])){
-            $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
+        if(empty($params['start_time'])){
+            $startTime = date('Y-m-d');
+        }else{
+            $startTime = $params['start_time'];
         }
+        $workerIds = WorkerSchedule::getWorkingByDate($startTime);
         $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items'], $workerIds);
 
         return $worker;

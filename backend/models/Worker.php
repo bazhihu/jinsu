@@ -45,7 +45,6 @@ use yii\web\UploadedFile;
 class Worker extends \yii\db\ActiveRecord
 {
     public $isWorking;
-    public $workerIds = [];
 
     const IS_WORKING_ALL = 0;
     const IS_WORKING_ON = 1;
@@ -638,9 +637,5 @@ class Worker extends \yii\db\ActiveRecord
         $sql = "update yayh_worker set audit_status = ".$audit_status." where worker_id in ($workerIds)";
         $command = $connection->createCommand($sql);
         $command->query();
-    }
-
-    public function isWorking($workerId){
-        return in_array($workerId, $this->workerIds) ? 'yes' : 'no';
     }
 }

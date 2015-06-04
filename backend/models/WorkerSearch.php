@@ -87,8 +87,7 @@ class WorkerSearch extends Worker
      */
     public function select($params){
         //获取在工作中的护工
-        $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
-        $this->workerIds = $workerIds;
+        $workerIds = WorkerSchedule::getWorkingByDate(urldecode($params['start_time']));
 
         $query = Worker::find();
         $dataProvider = new ActiveDataProvider([

@@ -58,7 +58,7 @@ class Worker extends ActiveRecord{
 //        }
 
         //医院
-        if(isset($params['hospital_id'])){
+        if(!empty($params['hospital_id'])){
             $query->andFilterWhere(['like', 'hospital_id', ','.$params['hospital_id'].',']);
             $countQuery->andFilterWhere(['like', 'hospital_id', ','.$params['hospital_id'].',']);
         }

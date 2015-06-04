@@ -71,6 +71,7 @@ class WorkerController extends ActiveController {
 
         $worker = Worker::findOne(['worker_id'=>$workerId]);
         $worker = ArrayHelper::toArray($worker);
+
         #拼接护工信息
         $worker = \api\modules\v1\models\Worker::formatWorker(['0'=>$worker]);
         $worker = $worker[0];
@@ -82,12 +83,14 @@ class WorkerController extends ActiveController {
             ->limit(self::$commentOffset)
             ->all();
         $worker['comments'] = \api\modules\v1\models\Worker::getMobile($worker['comments']);
+
         #护工自我介绍
         $worker['selfIntros'] = Workerother::find()
             ->andFilterWhere(['worker_id'=>$workerId])
             ->andFilterWhere(['info_type'=>self::$workerSelf])
             ->all();
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
+
         #护工订单信息
         $worker['orders'] = Order::find()
             ->andFilterWhere(['worker_no'=>$workerId])

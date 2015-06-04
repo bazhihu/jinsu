@@ -73,7 +73,7 @@ class WorkerController extends ActiveController {
         $worker = ArrayHelper::toArray($worker);
 
         #拼接护工信息
-        $worker = \api\modules\v1\models\Worker::formatWorker(['0'=>$worker]);
+        $worker = \api\modules\v2\models\Worker::formatWorker(['0'=>$worker]);
         $worker = $worker[0];
 
         #护工评价

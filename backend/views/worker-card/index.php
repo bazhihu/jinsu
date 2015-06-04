@@ -107,6 +107,7 @@ $this->title = '护工工资卡';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'add_date',
+            'worker_id',
             'worker_name',
             'identity_card',
             [

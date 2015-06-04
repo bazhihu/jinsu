@@ -12,6 +12,7 @@ use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
+use yii\filters\auth\QueryParamAuth;
 
 
 class PatientController extends ActiveController {
@@ -23,9 +24,10 @@ class PatientController extends ActiveController {
     {
         $behaviors = parent::behaviors();
         $behaviors['contentNegotiator']['formats'] = ['application/json' => Response::FORMAT_JSON];
+
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                //'class' => HttpBearerAuth::className()
+                'class' => QueryParamAuth::className()
             ],
         ]);
     }

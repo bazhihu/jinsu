@@ -41,7 +41,11 @@ AppAsset::register($this);
         $menuItems = [
             [
                 'label' => '护工',
-                'url' => ['/worker/index']
+                'items' => [
+                    ['label' => '护工', 'url' => ['/worker/index']],
+                    ['label' => '工资卡', 'url' => ['/worker-card/index']],
+                    ['label' => '请假', 'url' => ['/worker-leave/index']],
+                ]
             ],
             [
                 'label' => '订单',

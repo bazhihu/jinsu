@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "{{%worker_integral}}".
  *
  * @property string $id
+ * @property string $worker_id
  * @property string $time
  * @property integer $type
  * @property integer $integral
@@ -16,6 +17,13 @@ use Yii;
  */
 class WorkerIntegral extends \yii\db\ActiveRecord
 {
+    const WORKER_INTEGRAL_TYPE_ONE      = 1;
+
+    #积分类型
+    public static $IntegralType = [
+        self::WORKER_INTEGRAL_TYPE_ONE      =>'用户评价',
+    ];
+
     /**
      * @inheritdoc
      */
@@ -30,9 +38,9 @@ class WorkerIntegral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['time', 'type', 'integral', 'cumulative', 'remarks'], 'required'],
+            [['worker_id', 'time', 'type', 'integral', 'cumulative', 'remarks'], 'required'],
+            [['worker_id', 'type', 'integral', 'cumulative'], 'integer'],
             [['time'], 'safe'],
-            [['type', 'integral', 'cumulative'], 'integer'],
             [['remarks'], 'string', 'max' => 255]
         ];
     }
@@ -44,11 +52,12 @@ class WorkerIntegral extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'time' => 'Time',
-            'type' => 'Type',
-            'integral' => 'Integral',
-            'cumulative' => 'Cumulative',
-            'remarks' => 'Remarks',
+            'worker_id' => '护工编号',
+            'time' => '时间',
+            'type' => '类别',
+            'integral' => '积分情况',
+            'cumulative' => '累积积分',
+            'remarks' => '备注',
         ];
     }
 }

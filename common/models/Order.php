@@ -27,7 +27,7 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
     const ORDER_SOURCES_SERVICE = 'service'; //客服
 
-    static $orderSources = [
+    static public $orderSources = [
         self::ORDER_SOURCES_WEB => '网站',
         self::ORDER_SOURCES_MOBILE => '移动客户端',
         self::ORDER_SOURCES_SERVICE => '客服后台',

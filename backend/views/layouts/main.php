@@ -46,6 +46,7 @@ AppAsset::register($this);
             [
                 'label' => '订单',
                 'items' => [
+                    ['label' => '创建订单', 'url' => ['/order/create']],
                     ['label' => '订单列表', 'url' => ['/order/index']],
                     ['label' => '订单统计', 'url' => ['/order/chart']]
                 ]
@@ -64,6 +65,8 @@ AppAsset::register($this);
                     ['label' => '提现申请', 'url' => ['/wallet/cash-list']],
                     ['label' => '提现支付', 'url' => ['/wallet/confirm-list']],
                     ['label' => '交易明细', 'url' => ['/wallet/debit-records']],
+                    '<li class="divider"></li>',
+                    ['label' => '护工账户', 'url' => ['/worker-account']],
                 ]
             ],
             [
@@ -75,7 +78,7 @@ AppAsset::register($this);
                 'items' => [
                     ['label' => '医院管理', 'url' => ['/hospitals/index']],
                     ['label' => '科室管理', 'url' => ['/departments/index']],
-                    ['label' => '节假日管理', 'url' => ['/holidays/index']],
+                    ['label' => '节假日管理', 'url' => ['/holidays/index']]
                 ]
             ]
         ];

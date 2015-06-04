@@ -105,7 +105,7 @@ use backend\models\OrderPatient;
                                 'type'=>Form::INPUT_WIDGET,
                                 'options'=>[
                                     'type' => DepDrop::TYPE_SELECT2,
-                                    'data'=> [''=>'请选择'],
+                                    'data'=> $model->city_id ? Hospitals::getList(0, $model->city_id):[''=>'请选择'],
                                     'pluginOptions'=>[
                                         'depends'=>['ordermaster-city_id'],
                                         'placeholder'=>'请选择',

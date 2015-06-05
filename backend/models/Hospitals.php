@@ -30,6 +30,34 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['province_id', 'name', 'phone'], 'required'],
+            [['province_id', 'city_id', 'area_id'], 'integer'],
+            [['name'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 11]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => '编号',
+            'name' => '医院名称',
+            'province_id' => '所属省份',
+            'city_id' => '所属市',
+            'area_id' => '所属区',
+            'phone' => '医院电话',
+        ];
+    }
+
+    /**
      * @return array|mixed
      */
     public static function getData(){
@@ -48,11 +76,16 @@ class Hospitals extends \yii\db\ActiveRecord
      * @return static[]
      * @author zhangbo
      */
-    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0)
-    {
+    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
         $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
         if(!$data = Redis::get($cacheKey)){
-            $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
+            $findArr = [];
+            if($provinceId > 0){
+                $findArr['province_id'] = $provinceId;
+            }
+            if($cityId > 0){
+                $findArr['city_id'] = $cityId;
+            }
             if ($areaId > 0) {
                 $findArr['area_id'] = $areaId;
             }
@@ -62,6 +95,51 @@ class Hospitals extends \yii\db\ActiveRecord
         }
 
         return $data;
+    }
+
+    /**
+     * 获取医院列表
+     * @param int $provinceId 省ID
+     * @param int $cityId 市ID
+     * @param int $areaId 区县ID
+     * @return static[]
+     * @author zhangbo
+     */
+    static public function getDropList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
+        $cacheKey = self::$_keyPrefix."/DropList/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
+        if(!$data = Redis::get($cacheKey)){
+            $findArr = [];
+            if($provinceId > 0){
+                $findArr['province_id'] = $provinceId;
+            }
+            if($cityId > 0){
+                $findArr['city_id'] = $cityId;
+            }
+            if ($areaId > 0) {
+                $findArr['area_id'] = $areaId;
+            }
+
+            $data = self::find()->select('id,name')->where($findArr)->asArray()->all();
+            Redis::set($cacheKey, $data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * 获取医院名称
+     * @param int $id
+     * @return string
+     * @author zhangbo
+     */
+    static function getName($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data['name'];
     }
 
     /**
@@ -85,22 +163,6 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
-     * 获取医院名称
-     * @param int $id
-     * @return string
-     * @author zhangbo
-     */
-    static function getName($id){
-        $cacheKey = self::$_keyPrefix."/id:".$id;
-        if(!$data = Redis::get($cacheKey)){
-            $data = self::findOne($id);
-            $data && Redis::set($cacheKey, $data);
-        }
-
-        return $data['name'];
-    }
-
-    /**
      * 获取医院电话
      * @param $id
      * @return string
@@ -116,35 +178,6 @@ class Hospitals extends \yii\db\ActiveRecord
             return $data['phone'];
         }
         return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['province_id', 'name', 'phone'], 'required'],
-            [['province_id', 'city_id', 'area_id'], 'integer'],
-            [['name', 'pinyin'], 'string', 'max' => 255],
-            [['phone'], 'string', 'max' => 11]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => '编号',
-            'name' => '医院名称',
-            'province_id' => '所属省份',
-            'city_id' => '所属市',
-            'area_id' => '所属区',
-            'phone' => '医院电话',
-            'pinyin' => '拼音',
-        ];
     }
 
     /**

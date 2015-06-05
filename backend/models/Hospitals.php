@@ -37,7 +37,7 @@ class Hospitals extends \yii\db\ActiveRecord
         return [
             [['province_id', 'name', 'phone'], 'required'],
             [['province_id', 'city_id', 'area_id'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'pinyin'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 11]
         ];
     }
@@ -54,9 +54,9 @@ class Hospitals extends \yii\db\ActiveRecord
             'city_id' => '所属市',
             'area_id' => '所属区',
             'phone' => '医院电话',
+            'pinyin' => '拼音',
         ];
     }
-
     /**
      * @return array|mixed
      */
@@ -178,35 +178,6 @@ class Hospitals extends \yii\db\ActiveRecord
             return $data['phone'];
         }
         return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['province_id', 'name', 'phone'], 'required'],
-            [['province_id', 'city_id', 'area_id'], 'integer'],
-            [['name', 'pinyin'], 'string', 'max' => 255],
-            [['phone'], 'string', 'max' => 11]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => '编号',
-            'name' => '医院名称',
-            'province_id' => '所属省份',
-            'city_id' => '所属市',
-            'area_id' => '所属区',
-            'phone' => '医院电话',
-            'pinyin' => '拼音',
-        ];
     }
 
     /**

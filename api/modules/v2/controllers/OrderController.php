@@ -73,7 +73,7 @@ class OrderController extends ActiveController {
                 $item['pic'] = Worker::workerPic($item['worker_no']);
                 $item['hospital_id'] = Hospitals::getName($item['hospital_id']);
                 $item['department_id'] = Departments::getName($item['department_id']);
-                $item['worker_level_name'] = Worker::getWorkerLevel($item['level']);
+                $item['worker_level_name'] = Worker::getWorkerLevel($item['worker_level']);
                 $item['city_name'] = City::getCityName($item['city_id']);
 
                 $result[$key] = $item;

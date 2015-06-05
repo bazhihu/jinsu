@@ -11,7 +11,6 @@ use Yii;
 use backend\models\City;
 use backend\models\Departments;
 use backend\models\Hospitals;
-use backend\models\Worker;
 
 /**
  * Config Model
@@ -20,10 +19,10 @@ class Order extends \common\models\Order{
     static public function format($data){
         if(!empty($data)){
             foreach($data as $key => $item){
-                $item['pic'] = Worker::workerPic($item['worker_no']);
+                $item['pic'] = \backend\models\Worker::workerPic($item['worker_no']);
                 $item['hospital_id'] = Hospitals::getName($item['hospital_id']);
                 $item['department_id'] = Departments::getName($item['department_id']);
-                $item['worker_level_name'] = Worker::getWorkerLevel($item['worker_level']);
+                $item['worker_level_name'] = \backend\models\Worker::getWorkerLevel($item['worker_level']);
                 $item['city_name'] = City::getCityName($item['city_id']);
 
                 $result[$key] = $item;

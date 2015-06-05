@@ -50,17 +50,16 @@ class ConfigController extends ActiveController {
 
     public function actionIndex()
     {
+        $cityId = Yii::$app->request->get('city_id');
+        $return = array();
 
-        $return  = array();
         #医院
-        $return['hospitals'] =Hospitals::find()->all();
-        foreach($return['hospitals'] as $hospitals)
-        {
-            unset($hospitals['province_id']);
-            unset($hospitals['city_id']);
-            unset($hospitals['area_id']);
-            unset($hospitals['phone']);
+        if(empty($cityId)){
+            $cityId = 110100;
         }
+        $columns = ['id','name','province_id','city_id','area_id','pinyin'];
+        $return['hospitals'] = Hospitals::find()->select($columns)->where(['city_id'=>$cityId])->all();
+
         #科室
         $return['departments'] = Departments::find()
             //->andFilterWhere(['parent_id'=>0])

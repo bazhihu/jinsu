@@ -26,33 +26,39 @@ use kartik\datecontrol\DateControl;
                 'method' => 'get',
             ]); ?>
 
-            <?= $form->field($model, 'type') ?>
+            <?= $form->field($model, 'type')
+                ->dropDownList(\backend\models\WorkerBill::$types, ['prompt'=>'请选择','style'=>'width:90px']);
+            ?>
 
-            <?= $form->field($model, 'worker_id') ?>
+            <?= $form->field($model, 'worker_id')
+                ->input('text',['placeholder'=>'护工编号...','style'=>'width:130px']) ?>
 
-            <?= $form->field($model, 'worker_name') ?>
 
-            <?php echo $form->field($model, 'order_no') ?>
+            <?= $form->field($model, 'worker_name')
+                ->input('text',['placeholder'=>'护工姓名...','style'=>'width:130px'])?>
+
+            <?php echo $form->field($model, 'order_no')
+                ->input('text',['placeholder'=>'订单编号...','style'=>'width:130px'])?>
 
             <?= $form->field($model, 'start_time')->widget(DateControl::classname(), [
-                'type'=>DateControl::FORMAT_DATE,
+                'type'=>DateControl::FORMAT_DATETIME,
                 'ajaxConversion'=>false,
                 'options' => [
                     'pluginOptions' => [
                         'autoclose' => true
                     ],
-                    'options'=>['style'=>'width:130px']
+                    'options'=>['style'=>'width:170px']
                 ]
             ])->label('订单时间范围'); ?>
 
             <?= $form->field($model, 'end_time')->widget(DateControl::classname(), [
-                'type'=>DateControl::FORMAT_DATE,
+                'type'=>DateControl::FORMAT_DATETIME,
                 'ajaxConversion'=>false,
                 'options' => [
                     'pluginOptions' => [
                         'autoclose' => true
                     ],
-                    'options'=>['style'=>'width:130px']
+                    'options'=>['style'=>'width:170px']
                 ]
             ])->label('至'); ?>
 

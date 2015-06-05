@@ -6,7 +6,6 @@ use kartik\widgets\ActiveForm;
 use kartik\widgets\DepDrop;
 use backend\models\Hospitals;
 
-
 /* @var $this yii\web\View */
 /* @var $model backend\models\WorkerAccountSearch */
 /* @var $form yii\widgets\ActiveForm */

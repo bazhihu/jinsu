@@ -211,36 +211,7 @@ class Order extends \yii\db\ActiveRecord{
     }
 
     /**
-     * 创建订单
-     * Array(
-        [OrderMaster] => Array(
-            [mobile] => 13520895446
-            [contact_name] => 张三
-            [contact_telephone] => 123456789
-            [contact_address] => 北京
-            [hospital_id] => 2
-            [department_id] => 5
-            [worker_level] => 2
-            [start_time] => 2015-03-24
-            [end_time] => 2015-03-30
-            [remark] => 快一点
-            [uid] => 7
-            [patient_state] => 0
-            [create_order_sources] => service
-        )
-        [OrderPatient] => Array(
-            [name] => 李国
-            [gender] => 1
-            [age] => 33
-            [height] => 178
-            [weight] => 68
-            [patient_state] => 0
-            [in_hospital_reason] => 被K了
-            [admission_date] => 2015-03-21
-            [room_no] => 201
-            [bed_no] => 3
-        )
-      )
+     * 创建订
      * @param array $params
      * @return bool
      * @throws HttpException

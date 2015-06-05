@@ -109,11 +109,12 @@ return [
                         'v2/worker',
                         'v2/wallet',
                         'v2/config',
+                        'v2/patient',
+                        'v2/comment',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'
-                    ],
-                    'except' => ['delete']
+                    ]
                 ]
             ],        
         ]

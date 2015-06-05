@@ -14,7 +14,7 @@ class WorkerSearch extends Worker
     public function rules()
     {
         return [
-            [['worker_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
+            [['worker_id', 'city_id', 'nation', 'marriage', 'education', 'politics', 'chinese_level', 'phone1', 'phone2', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status'], 'integer'],
             [['name', 'birth', 'birth_place', 'native_province', 'idcard', 'certificate', 'start_work', 'place', 'hospital_id', 'office_id', 'gender', 'add_date', 'edit_date','pic'], 'safe'],
             [['price', 'good_rate', 'isWorking'], 'number'],
         ];
@@ -56,6 +56,7 @@ class WorkerSearch extends Worker
         $query->andFilterWhere([
             'gender' => $this->gender,
             'birth' => $this->birth,
+            'city_id' => $this->city_id,
             'native_province' => $this->native_province,
             'level' => $this->level,
             'status' => $this->status,

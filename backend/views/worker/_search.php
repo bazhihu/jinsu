@@ -1,12 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use backend\models\Worker;
 use backend\models\City;
 use backend\models\Hospitals;
-use backend\models\Departments;
+use kartik\widgets\DepDrop;
 
 /**
  * @var yii\web\View $this
@@ -36,31 +37,17 @@ use backend\models\Departments;
             <h3 class="panel-title">检索</h3>
         </div>
         <div class="panel-body">
-            <?= $form->field(
-                $model,
-                'worker_id'
-            )->input('text',['placeholder'=>'请输入护工编号...','style'=>'width:135px'])?>
+            <?= $form->field($model,'worker_id')
+                ->input('text',['placeholder'=>'护工编号','style'=>'width:135px'])?>
 
-            <?= $form->field(
-                $model,
-                'name'
-            )->input('text',['placeholder'=>'请输入姓名...'])->label("姓名") ?>
+            <?= $form->field($model,'name')
+                ->input('text',['placeholder'=>'护工姓名','style'=>'width:135px'])->label("姓名") ?>
 
-            <?= $form->field(
-                $model,
-                'gender',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
-                ]
-            )->dropDownList(['男'=>'男','女'=>'女'],['prompt'=>'请选择'])->label("性别") ?>
+            <?= $form->field($model,'gender')
+                ->dropDownList(['男'=>'男','女'=>'女'],['prompt'=>'请选择'])->label("性别") ?>
 
-           <?= $form->field(
-               $model,
-               'native_province',
-               [
-                   //'labelOptions'=> ['class'=>'col-sm-5 col-md-5 col-lg-5']
-               ]
-           )->widget(Select2::classname(),[
+           <?= $form->field($model,'native_province')
+               ->widget(Select2::classname(),[
                'data' => City::getList(1),
                'options' => ['placeholder' => '请选择','style'=>'width:140px'],
                'pluginOptions' => [
@@ -68,56 +55,38 @@ use backend\models\Departments;
                ],
            ])->label('籍贯');?>
 
-            <?= $form->field(
-                $model,
-                'hospital_id',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
-                ]
-            )->widget(Select2::classname(),[
-                'data' =>  Hospitals::getList('110000'),
-                'options' => ['placeholder' => '请选择','style'=>'width:200px'],
+            <?= $form->field($model, 'city_id')->widget(\kartik\widgets\Select2::classname(),[
+                'data' => \backend\models\City::getList(null, true),
+                'options' => ['placeholder' => '请选择','style'=>'width:110px'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label('常驻医院');?>
+            ])?>
 
-            <?= $form->field(
-                $model,
-                'level'
-            )->dropDownList(Worker::getWorkerLevel(),['prompt'=>'请选择']);?>
-
-            <?= $form->field(
-                $model,
-                'price'
-            )->dropDownList(['1'=>'50-150','2'=>'150-250','3'=>'250以上'],['prompt'=>'请选择']); ?>
-
-            <?= $form->field(
-                $model,
-                'status',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
+            <?= $form->field($model, 'hospital_id')->widget(DepDrop::className(),[
+                'type' => DepDrop::TYPE_SELECT2,
+                'data'=> $model->city_id ? Hospitals::getList(0, $model->city_id):[''=>'请选择'],
+                'options' => ['placeholder' => '请选择','style'=>'width:280px'],
+                'pluginOptions'=>[
+                    'depends'=>['workersearch-city_id'],
+                    'placeholder'=>'请选择',
+                    'url'=>Url::to(['hospitals/list/']),
                 ]
-            )->dropDownList(['1'=>'在职','2'=>'离职'],['prompt'=>'请选择'])->label("工作状态") ?>
+            ])?>
 
-            <?= $form->field(
-                $model,
-                'audit_status',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
-                ]
-            )->dropDownList(['1'=>'上线','2'=>'下线'],['prompt'=>'请选择'])->label("上线状态") ?>
+            <?= $form->field($model,'level')
+                ->dropDownList(Worker::getWorkerLevel(),['prompt'=>'请选择']);?>
 
-            <?= $form->field(
-                $model,
-                'chinese_level',
-                [
-                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
-                ],
-                [
-                    'pluginOptions' => ['allowClear' => true]
-                ]
-            )->widget(Select2::classname(),[
+            <?= $form->field($model,'price')
+                ->dropDownList(['1'=>'50-150','2'=>'150-250','3'=>'250以上'],['prompt'=>'请选择']); ?>
+
+            <?= $form->field($model,'status')
+                ->dropDownList(['1'=>'在职','2'=>'离职'],['prompt'=>'请选择'])->label("工作状态") ?>
+
+            <?= $form->field($model,'audit_status')
+                ->dropDownList(['1'=>'上线','2'=>'下线'],['prompt'=>'请选择'])->label("上线状态") ?>
+
+            <?= $form->field($model,'chinese_level')->widget(Select2::classname(),[
                 'data' => Worker::getChineseLevel(),
                 'options' => ['placeholder' => '请选择'],
                 'pluginOptions' => [
@@ -129,20 +98,6 @@ use backend\models\Departments;
                 ->dropDownList([1=>'有', 2=>'无'],['prompt'=>'请选择'])
                 ->label("是否有照片");
             ?>
-
-<!--            --><?//= $form->field(
-//                $model,
-//                'good_at',
-//                [
-//                    //'labelOptions'=> ['class'=>'col-sm-6 col-md-6 col-lg-6']
-//                ]
-//            )->widget(Select2::classname(),[
-//                'data' =>   Departments::getList(),
-//                'options' => ['placeholder' => '请选择','style'=>'width:160px'],
-//                'pluginOptions' => [
-//                    'allowClear' => true
-//                ],
-//            ])->label('擅长护理疾病');?>
 
             <div class="form-group" style="margin-top: 30px;">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>

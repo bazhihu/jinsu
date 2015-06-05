@@ -46,7 +46,6 @@ class OrderMaster extends Order
 {
     const IS_CONTINUE_YES = 1; //是续单
     const IS_CONTINUE_NO = 0; //不是续单
-    const PROFIT = 20; //每天利润20元
 
     public function rules(){
         $rules = parent::rules();
@@ -275,8 +274,9 @@ class OrderMaster extends Order
             //给护工加订单总数
             Worker::plusTotalOrder($this->worker_no);
 
-            //@TODO...记录护工订单收入
-
+            //记录护工订单收入
+            $workerBill = new WorkerBill();
+            $workerBill->addBill($this);
 
             $response['msg'] = '完成订单成功';
             $transaction->commit();

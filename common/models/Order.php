@@ -27,7 +27,7 @@ class Order extends \yii\db\ActiveRecord{
     const ORDER_SOURCES_MOBILE = 'mobile'; //移动客户端
     const ORDER_SOURCES_SERVICE = 'service'; //客服
 
-    static $orderSources = [
+    static public $orderSources = [
         self::ORDER_SOURCES_WEB => '网站',
         self::ORDER_SOURCES_MOBILE => '移动客户端',
         self::ORDER_SOURCES_SERVICE => '客服后台',
@@ -129,7 +129,7 @@ class Order extends \yii\db\ActiveRecord{
     public function rules()
     {
         return [
-            [['order_no', 'mobile', 'hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'order_type'], 'required'],
+            [['order_no', 'mobile', 'city_id','hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'order_type'], 'required'],
             [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue', 'order_type'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
@@ -161,6 +161,7 @@ class Order extends \yii\db\ActiveRecord{
             'mobile' => '手机号',
             'base_price' => '护工基础价格',
             'patient_state_coefficient' => '患者状态价格系数',
+            'city_id' => '城市',
             'hospital_id' => '医院',
             'department_id' => '科室',
             'total_amount' => '订单金额',
@@ -210,36 +211,7 @@ class Order extends \yii\db\ActiveRecord{
     }
 
     /**
-     * 创建订单
-     * Array(
-        [OrderMaster] => Array(
-            [mobile] => 13520895446
-            [contact_name] => 张三
-            [contact_telephone] => 123456789
-            [contact_address] => 北京
-            [hospital_id] => 2
-            [department_id] => 5
-            [worker_level] => 2
-            [start_time] => 2015-03-24
-            [end_time] => 2015-03-30
-            [remark] => 快一点
-            [uid] => 7
-            [patient_state] => 0
-            [create_order_sources] => service
-        )
-        [OrderPatient] => Array(
-            [name] => 李国
-            [gender] => 1
-            [age] => 33
-            [height] => 178
-            [weight] => 68
-            [patient_state] => 0
-            [in_hospital_reason] => 被K了
-            [admission_date] => 2015-03-21
-            [room_no] => 201
-            [bed_no] => 3
-        )
-      )
+     * 创建订
      * @param array $params
      * @return bool
      * @throws HttpException
@@ -255,7 +227,6 @@ class Order extends \yii\db\ActiveRecord{
             $orderData = $params['OrderMaster'];
             $orderData['order_no'] = $orderNo;
             $orderData['reality_end_time'] = $orderData['end_time'];
-
             $orderData['patient_name'] = isset($params['OrderPatient']['name']) ? $params['OrderPatient']['name'] : null;
 
             //获取护工价格
@@ -274,6 +245,11 @@ class Order extends \yii\db\ActiveRecord{
 
             if(empty($orderData['base_price'])){
                 throw new HttpException(400, '无法获取护工价格');
+            }
+
+            //城市判断
+            if(empty($orderData['city_id'])){
+                $orderData['city_id'] = 110100;
             }
 
             //能否自理价格系数

@@ -15,7 +15,7 @@ class HospitalsSearch extends Hospitals
     public function rules()
     {
         return [
-            [['id', 'province_id', 'city_id', 'area_id'], 'integer'],
+            [['id', 'province_id'], 'integer'],
             [['name', 'phone'], 'safe'],
         ];
     }

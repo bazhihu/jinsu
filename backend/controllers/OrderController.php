@@ -269,7 +269,6 @@ class OrderController extends Controller
             ]);
         }
 
-
         //发送短信
         $isTrue = in_array($orderStatus, [Order::ORDER_STATUS_WAIT_CONFIRM,Order::ORDER_STATUS_WAIT_SERVICE]);
         if($response['code'] == 200 && $isTrue){

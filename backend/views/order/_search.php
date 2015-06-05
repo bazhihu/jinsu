@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use backend\models\Departments;

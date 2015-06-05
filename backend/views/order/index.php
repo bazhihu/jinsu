@@ -36,7 +36,6 @@ td .btn{margin: 2px}
         [
             'attribute'=>'order_no',
             'format'=>'raw',
-            'pageSummary' => '小计',
             //'vAlign'=>'middle',
             'value'=>function ($model) {
                 return Html::a($model->order_no, Yii::$app->urlManager->createUrl(['order/view','id' => $model->order_id]));

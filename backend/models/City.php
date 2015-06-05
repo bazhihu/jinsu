@@ -65,12 +65,25 @@ class City extends \yii\db\ActiveRecord
 
     /**
      * 获取省份城市列表
-     * @param int $parent_id 省ID 市ID 区县ID
+     * @param int $parentId 省ID 市ID 区县ID
+     * @param bool $display 是否启用显示隐藏城市功能
+     * @param bool $format 是否格式化数组
      * @return static[]
      */
-     static public function getList($parent_id = 1){
-        $findArr = ['parent_id' => $parent_id];
-        $result =ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+    static public function getList($parentId = null, $display = false, $format = true){
+        $findArr = [];
+        if($parentId != null){
+            $findArr['parent_id'] = $parentId;
+        }
+        if($display){
+            $findArr['display'] = 1;
+        }
+        if($format){
+            $result = ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+        }else{
+            $result = self::find()->select('id,name')->where($findArr)->asArray()->all();
+        }
+
         //var_dump($result);
         return $result;
     }
@@ -80,19 +93,11 @@ class City extends \yii\db\ActiveRecord
      * @param int $parent_id 省ID 市ID 区县ID
      * @return static[]
      */
-    static public function getListPlace($parent_id = 1){
-        $findArr = ['parent_id' => $parent_id];
-        $result = self::findAll($findArr);
-
-        $data = array();
-        foreach($result as $key=>$value) {
-            $data[] = array(
-                'id' => $value['id'],
-                'name' => $value['name']
-            );
-        }
-        return $data;
-    }
+//    static public function getListPlace($parent_id = 1){
+//        $findArr = ['parent_id' => $parent_id];
+//        $data = self::find()->select('id,name')->where($findArr)->asArray()->all();
+//        return $data;
+//    }
 
     /**
      * 获取城市

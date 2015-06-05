@@ -1,5 +1,7 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
+use kartik\widgets\DepDrop;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use backend\models\Hospitals;
@@ -42,7 +44,7 @@ use backend\models\OrderPatient;
                     <?php echo Form::widget([
                         'model' => $model,
                         'form' => $form,
-                        'columns' => 3,
+                        'columns' => 2,
                         'attributes' => [
                             'mobile'=>[
                                 'label'=>'手机号',
@@ -66,6 +68,15 @@ use backend\models\OrderPatient;
                                     'style'=>'width:80%'
                                 ],
                             ],
+                            'city_id'=>[
+                                'label'=> '所在城市',
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>\backend\models\City::getList(null, true),
+                                    'options'=>['placeholder' => '请选择城市...','style'=>'width:80%']
+                                ]
+                            ],
                             'contact_telephone'=>[
                                 'type'=> Form::INPUT_TEXT,
                                 'options'=>[
@@ -73,13 +84,6 @@ use backend\models\OrderPatient;
                                     'style'=>'width:80%'
                                 ],
                             ],
-//                            'contact_address'=>[
-//                                'type'=> Form::INPUT_TEXT,
-//                                'options'=>[
-//                                    'placeholder'=>'请输入住址...',
-//                                    'style'=>'width:26%'
-//                                ],
-//                            ],
                         ]
                     ]);?>
                 </div>
@@ -97,19 +101,24 @@ use backend\models\OrderPatient;
                         'columns'=>2,
                         'attributes'=>[
                             'hospital_id'=>[
+                                'widgetClass'=>DepDrop::className(),
                                 'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
-                                    'data'=>Hospitals::getList(),
-                                    'options'=>['placeholder' => '请选择医院...']
-                                ]
+                                    'type' => DepDrop::TYPE_SELECT2,
+                                    'data'=> $model->city_id ? Hospitals::getList(0, $model->city_id):[''=>'请选择'],
+                                    'pluginOptions'=>[
+                                        'depends'=>['ordermaster-city_id'],
+                                        'placeholder'=>'请选择',
+                                        'url'=>Url::to(['hospitals/list/']),
+                                    ]
+                                ],
                             ],
                             'department_id'=>[
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Departments::getList(),
-                                    'options'=>['placeholder' => '请选择医院...']
+                                    'options'=>['placeholder' => '请选择科室...']
                                 ]
                             ],
                             'worker_level'=>[

@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\HospitalDepartmentRelation;
-use backend\models\HospitalDepartmentRelationSearch;
+use backend\models\WorkerBill;
+use backend\models\WorkerBillSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * HospitalDepartmentRelationController implements the CRUD actions for HospitalDepartmentRelation model.
+ * WorkerBillController implements the CRUD actions for WorkerBill model.
  */
-class HospitalDepartmentRelationController extends Controller
+class WorkerBillController extends Controller
 {
     public function behaviors()
     {
@@ -27,44 +27,40 @@ class HospitalDepartmentRelationController extends Controller
     }
 
     /**
-     * Lists all HospitalDepartmentRelation models.
+     * Lists all WorkerBill models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new HospitalDepartmentRelationSearch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        $searchModel = new WorkerBillSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single HospitalDepartmentRelation model.
+     * Displays a single WorkerBill model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-        return $this->render('view', ['model' => $model]);
-}
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
     /**
-     * Creates a new HospitalDepartmentRelation model.
+     * Creates a new WorkerBill model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new HospitalDepartmentRelation;
+        $model = new WorkerBill();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +72,7 @@ class HospitalDepartmentRelationController extends Controller
     }
 
     /**
-     * Updates an existing HospitalDepartmentRelation model.
+     * Updates an existing WorkerBill model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -95,7 +91,7 @@ class HospitalDepartmentRelationController extends Controller
     }
 
     /**
-     * Deletes an existing HospitalDepartmentRelation model.
+     * Deletes an existing WorkerBill model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -108,15 +104,15 @@ class HospitalDepartmentRelationController extends Controller
     }
 
     /**
-     * Finds the HospitalDepartmentRelation model based on its primary key value.
+     * Finds the WorkerBill model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return HospitalDepartmentRelation the loaded model
+     * @return WorkerBill the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = HospitalDepartmentRelation::findOne($id)) !== null) {
+        if (($model = WorkerBill::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

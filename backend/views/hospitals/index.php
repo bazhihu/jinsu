@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use backend\models\City;
 
 /**
  * @var yii\web\View $this
@@ -18,34 +19,50 @@ $this->title = '医院管理';
     </div>
 
 
-    <?php Pjax::begin(); echo GridView::widget([
+    <?php
+    Pjax::begin();
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            [
+                'attribute'=>'id',
+                'options' => [
+                    'style' => 'width:150px',
+                ],
+            ],
             'name',
             [
                 'attribute'=>'province_id',
-                'value'=>
-                    function($model){
-                        return \backend\models\City::getCity($model->province_id)->name;
-                    }
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>City::getList(1),
+                'filterInputOptions'=>['placeholder'=>'请选择'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                    //'hideSearch'=>true,
+                ],
+                'options' => [
+                    'style' => 'width:160px',
+                ],
+                'value'=>function ($model){
+                    return $model->province_id ? City::getCityName($model->province_id) : null;
+                }
             ],
             [
                 'attribute'=>'city_id',
-                'value'=>
-                    function($model){
-                        return \backend\models\City::getCity($model->city_id)->name;
-                    }
+                'value'=>function ($model){
+                    return $model->city_id ? City::getCityName($model->city_id) : null;
+                }
+
             ],
             [
                 'attribute'=>'area_id',
-                'value'=>
-                    function($model){
-                        return \backend\models\City::getCity($model->area_id)->name;
-                    }
+                'value'=>function ($model){
+                    return $model->area_id ? City::getCityName($model->area_id) : null;
+                }
+
             ],
 //            'phone', 
 

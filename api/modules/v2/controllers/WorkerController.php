@@ -7,14 +7,15 @@
  */
 namespace api\modules\v2\controllers;
 
-use backend\models\Comment;
-use backend\models\Worker;
-use backend\models\Workerother;
-use common\models\Order;
 use Yii;
 use yii\web\Response;
 use yii\rest\ActiveController;
 use yii\helpers\ArrayHelper;
+use backend\models\Comment;
+use backend\models\Worker;
+use backend\models\Workerother;
+use common\models\Order;
+use backend\models\WorkerSchedule;
 
 class WorkerController extends ActiveController {
     public $modelClass = false;
@@ -44,13 +45,18 @@ class WorkerController extends ActiveController {
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionIndex()
-    {
-        //随机十个护工
+    public function actionIndex(){
         $params = Yii::$app->getRequest()->get();
         $worker = \api\modules\v2\models\Worker::select($params);
 
-        $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items']);
+        //获取在服务中的护工
+        if(empty($params['start_time'])){
+            $startTime = date('Y-m-d');
+        }else{
+            $startTime = $params['start_time'];
+        }
+        $workerIds = WorkerSchedule::getWorkingByDate($startTime);
+        $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items'], $workerIds);
 
         return $worker;
     }
@@ -65,8 +71,9 @@ class WorkerController extends ActiveController {
 
         $worker = Worker::findOne(['worker_id'=>$workerId]);
         $worker = ArrayHelper::toArray($worker);
+
         #拼接护工信息
-        $worker = \api\modules\v1\models\Worker::formatWorker(['0'=>$worker]);
+        $worker = \api\modules\v2\models\Worker::formatWorker(['0'=>$worker]);
         $worker = $worker[0];
 
         #护工评价
@@ -76,12 +83,14 @@ class WorkerController extends ActiveController {
             ->limit(self::$commentOffset)
             ->all();
         $worker['comments'] = \api\modules\v1\models\Worker::getMobile($worker['comments']);
+
         #护工自我介绍
         $worker['selfIntros'] = Workerother::find()
             ->andFilterWhere(['worker_id'=>$workerId])
             ->andFilterWhere(['info_type'=>self::$workerSelf])
             ->all();
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
+
         #护工订单信息
         $worker['orders'] = Order::find()
             ->andFilterWhere(['worker_no'=>$workerId])

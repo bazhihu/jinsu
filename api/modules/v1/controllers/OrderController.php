@@ -184,9 +184,9 @@ class OrderController extends ActiveController {
      * @throws \yii\base\InvalidConfigException
      */
     public function actionUpdate(){
-        $order_no = Yii::$app->request->get('id');
+        $orderNo = Yii::$app->request->get('id');
         $uid = Yii::$app->user->id;
-        $orderModel = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
+        $orderModel = Order::findOne(['order_no' => $orderNo, 'uid' => $uid]);
         if(empty($orderModel)){
             $this->responseCode = 404;
             $this->responseMsg = '找不到要取消的订单';

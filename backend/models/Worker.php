@@ -45,7 +45,6 @@ use yii\web\UploadedFile;
 class Worker extends \yii\db\ActiveRecord
 {
     public $isWorking;
-    public $workerIds = [];
 
     const IS_WORKING_ALL = 0;
     const IS_WORKING_ON = 1;
@@ -69,10 +68,10 @@ class Worker extends \yii\db\ActiveRecord
      * 护工等级标签
      */
     static public $workerLevelLabel = [
-        self::WORKER_LEVEL_PRIMARY => '初级',
-        self::WORKER_LEVEL_MEDIUM => '中级',
-        self::WORKER_LEVEL_HIGH   => '高级',
-        self::WORKER_LEVEL_SUPER  => '特级'
+        self::WORKER_LEVEL_PRIMARY => '初级护理员',
+        self::WORKER_LEVEL_MEDIUM => '中级护理员',
+        self::WORKER_LEVEL_HIGH   => '高级护理员',
+        self::WORKER_LEVEL_SUPER  => '特级护理员'
     ];
 
     /**
@@ -237,7 +236,7 @@ class Worker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','idcard'], 'required'],
+            [['name','city_id','idcard'], 'required'],
             [['gender'],'string', 'max' => 1],
             [['marriage', 'education', 'politics', 'chinese_level', 'adder', 'editer', 'total_score', 'star', 'total_order', 'total_comment', 'level', 'status','audit_status','parent_worker_id'], 'integer'],
             [['birth', 'start_work', 'add_date', 'edit_date','hospital_id','office_id','good_at'], 'safe'],
@@ -280,6 +279,7 @@ class Worker extends \yii\db\ActiveRecord
             'phone1' => '手机号',
             'phone2' => '手机号',
             'price' => '服务价格',
+            'city_id' => '所属城市',
             'hospital_id' => '常驻医院',
             'office_id' => '常驻科室',
             'good_at' => '擅长护理的疾病',
@@ -637,9 +637,5 @@ class Worker extends \yii\db\ActiveRecord
         $sql = "update yayh_worker set audit_status = ".$audit_status." where worker_id in ($workerIds)";
         $command = $connection->createCommand($sql);
         $command->query();
-    }
-
-    public function isWorking($workerId){
-        return in_array($workerId, $this->workerIds) ? 'yes' : 'no';
     }
 }

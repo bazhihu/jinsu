@@ -3,8 +3,6 @@
 namespace backend\controllers;
 
 use backend\models\OrderMaster;
-use backend\models\WorkerCard;
-use backend\models\WorkerCardSearch;
 use common\models\Order;
 use backend\models\WorkerSchedule;
 use Yii;
@@ -239,8 +237,8 @@ class WorkerController extends Controller
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
-                $birth_place = $parents[0];
-                $data  = City::getListPlace($birth_place);
+                $birthPlace = $parents[0];
+                $data = City::getList($birthPlace, false, false);
                 echo Json::encode(['output'=>$data,'selected'=>'']);
                 return;
             }
@@ -252,9 +250,9 @@ class WorkerController extends Controller
     public function actionGetarea() {
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
-            $birth_place_city = $parents[0];
-            if ($birth_place_city != null) {
-                $out = City::getListPlace($birth_place_city);
+            $birthPlaceCity = $parents[0];
+            if ($birthPlaceCity != null) {
+                $out = City::getList($birthPlaceCity, false, false);
                 echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }
@@ -310,58 +308,5 @@ class WorkerController extends Controller
             'orderId' => $orderId,
             'startTime' => $startTime
         ]);
-    }
-
-    /**
-     * 护工银行卡号
-     * @return string
-     */
-    public function actionCardIndex(){
-        $searchModel = new WorkerCardSearch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
-        return $this->render('cardIndex', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
-    }
-
-    /**
-     * 删除银行卡数据
-     */
-    public function actionCardDelete(){
-        $params = Yii::$app->request->post();
-        $id = $params['id'];
-        $workerCard = new WorkerCard();
-        $return = $workerCard->cardDelete($id);
-        echo json_encode($return);
-    }
-
-    /**
-     * 创建银行卡
-     * @param $id
-     * @return string|\yii\web\Response
-     */
-    public function actionCardCreate($id){
-        $model = new WorkerCard();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['cardIndex', 'id' => $model->id]);
-        } else {
-            return $this->render('cardCreate', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionLeaveCreate(){
-
-    }
-
-    public function actionLeaveEnd(){
-
-    }
-
-    public function actionLeaveIndex(){
-
     }
 }

@@ -49,7 +49,13 @@ use kartik\datecontrol\DateControl;
             <?= $form->field($model, 'patient_name')->input('text',['placeholder'=>'请输入患者姓名...','style'=>'width:135px']) ?>
 
             <?= $form->field($model, 'department_id')
-                ->dropDownList(Departments::getList(),['prompt'=>'请选择','style'=>'width:110px']);
+                ->widget(\kartik\widgets\Select2::classname(),[
+                    'data' => Departments::getList(),
+                    'options' => ['placeholder' => '请选择','style'=>'width:190px'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]);
             ?>
             <?= $form->field($model, 'order_status')
                 ->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']);

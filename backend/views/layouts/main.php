@@ -42,9 +42,9 @@ AppAsset::register($this);
             [
                 'label' => '护工',
                 'items' => [
-                    ['label' => '护工', 'url' => ['/worker/index']],
+                    ['label' => '护工列表', 'url' => ['/worker/index']],
                     ['label' => '工资卡', 'url' => ['/worker-card/index']],
-                    ['label' => '请假', 'url' => ['/worker-leave/index']],
+                    ['label' => '请假申请', 'url' => ['/worker-leave/index']],
                 ]
             ],
             [

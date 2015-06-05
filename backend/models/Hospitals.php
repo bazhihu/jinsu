@@ -30,95 +30,6 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return array|mixed
-     */
-    public static function getData(){
-        if(!$data = Redis::get(self::$_keyPrefix)){
-            $data = ArrayHelper::toArray(self::find()->all());
-            Redis::set(self::$_keyPrefix, $data);
-        }
-        return $data;
-    }
-
-    /**
-     * 获取医院列表
-     * @param int $provinceId 省ID
-     * @param int $cityId 市ID
-     * @param int $areaId 区县ID
-     * @return static[]
-     * @author zhangbo
-     */
-    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0)
-    {
-        $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
-        if(!$data = Redis::get($cacheKey)){
-            $findArr = ['province_id' => $provinceId, 'city_id' => $cityId];
-            if ($areaId > 0) {
-                $findArr['area_id'] = $areaId;
-            }
-
-            $data = ArrayHelper::map(self::findAll($findArr), 'id', 'name');
-            Redis::set($cacheKey, $data);
-        }
-
-        return $data;
-    }
-
-    /**
-     * 根据ID获取医院的NAME
-     * @param string $IdStr
-     * @return null|string
-     */
-    static public function getHospitalsName($IdStr){
-        $ids = explode(',', $IdStr);
-        if(empty($ids)) return null;
-
-        $result = [];
-        foreach ($ids as $id) {
-            if(empty($id)) continue;
-            $result[] = self::getName($id);
-        }
-
-        $data = implode('、', $result);
-
-        return $data;
-    }
-
-    /**
-     * 获取医院名称
-     * @param int $id
-     * @return string
-     * @author zhangbo
-     */
-    static function getName($id){
-        $cacheKey = self::$_keyPrefix."/id:".$id;
-        if(!$data = Redis::get($cacheKey)){
-            $data = self::findOne($id);
-            $data && Redis::set($cacheKey, $data);
-        }
-
-        return $data['name'];
-    }
-
-    /**
-     * 获取医院电话
-     * @param $id
-     * @return string
-     */
-    static public function getHospitalPhone($id){
-        $cacheKey = self::$_keyPrefix."/id:".$id;
-        if(!$data = Redis::get($cacheKey)){
-            $data = ArrayHelper::toArray(self::findOne($id));
-            $data && Redis::set($cacheKey, $data);
-        }
-
-        if(!empty($data)) {
-            return $data['phone'];
-        }
-        return '';
-    }
-
-    /**
      * @inheritdoc
      */
     public function rules()
@@ -146,8 +57,129 @@ class Hospitals extends \yii\db\ActiveRecord
             'pinyin' => '拼音',
         ];
     }
+    /**
+     * @return array|mixed
+     */
+    public static function getData(){
+        if(!$data = Redis::get(self::$_keyPrefix)){
+            $data = ArrayHelper::toArray(self::find()->all());
+            Redis::set(self::$_keyPrefix, $data);
+        }
+        return $data;
+    }
 
-    
+    /**
+     * 获取医院列表
+     * @param int $provinceId 省ID
+     * @param int $cityId 市ID
+     * @param int $areaId 区县ID
+     * @return static[]
+     * @author zhangbo
+     */
+    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
+        $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
+        if(!$data = Redis::get($cacheKey)){
+            $findArr = [];
+            if($provinceId > 0){
+                $findArr['province_id'] = $provinceId;
+            }
+            if($cityId > 0){
+                $findArr['city_id'] = $cityId;
+            }
+            if ($areaId > 0) {
+                $findArr['area_id'] = $areaId;
+            }
+
+            $data = ArrayHelper::map(self::findAll($findArr), 'id', 'name');
+            Redis::set($cacheKey, $data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * 获取医院列表
+     * @param int $provinceId 省ID
+     * @param int $cityId 市ID
+     * @param int $areaId 区县ID
+     * @return static[]
+     * @author zhangbo
+     */
+    static public function getDropList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
+        $cacheKey = self::$_keyPrefix."/DropList/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
+        if(!$data = Redis::get($cacheKey)){
+            $findArr = [];
+            if($provinceId > 0){
+                $findArr['province_id'] = $provinceId;
+            }
+            if($cityId > 0){
+                $findArr['city_id'] = $cityId;
+            }
+            if ($areaId > 0) {
+                $findArr['area_id'] = $areaId;
+            }
+
+            $data = self::find()->select('id,name')->where($findArr)->asArray()->all();
+            Redis::set($cacheKey, $data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * 获取医院名称
+     * @param int $id
+     * @return string
+     * @author zhangbo
+     */
+    static function getName($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data['name'];
+    }
+
+    /**
+     * 根据ID获取医院的NAME
+     * @param string $IdStr
+     * @return null|string
+     */
+    static public function getHospitalsName($IdStr){
+        $ids = explode(',', $IdStr);
+        if(empty($ids)) return null;
+
+        $result = [];
+        foreach ($ids as $id) {
+            if(empty($id)) continue;
+            $result[] = self::getName($id);
+        }
+
+        $data = implode('、', $result);
+
+        return $data;
+    }
+
+    /**
+     * 获取医院电话
+     * @param $id
+     * @return string
+     */
+    static public function getHospitalPhone($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = ArrayHelper::toArray(self::findOne($id));
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        if(!empty($data)) {
+            return $data['phone'];
+        }
+        return '';
+    }
+
     /**
      * 删除缓存
      * @param bool $insert

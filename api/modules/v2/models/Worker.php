@@ -174,6 +174,7 @@ class Worker extends ActiveRecord{
             $params[$key]['education']       = \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = \backend\models\Worker::getCertificateName($value['certificate']);
             $params[$key]['level_name']      = \backend\models\Worker::getWorkerLevel($value['level']);
+            $params[$key]['level_des']       = \backend\models\Worker::getWorkerLevelDescription($value['level']);
             $params[$key]['city_id']         = City::getCityName($value['city_id']);
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
             $params[$key]['office_id']       = Departments::getDepartmentNames($value['office_id']);

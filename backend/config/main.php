@@ -72,9 +72,7 @@ return [
                 'datetime' => ['pluginOptions'=>['autoclose'=>true,'todayHighlight' => true]], // setup if needed
 
             ],
-
         ]
-
     ],
     'components' => [
         'i18n' => [

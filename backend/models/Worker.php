@@ -62,12 +62,14 @@ class Worker extends \yii\db\ActiveRecord
     const WORKER_LEVEL_MEDIUM = 2; //中级
     const WORKER_LEVEL_HIGH = 3; //高级
     const WORKER_LEVEL_SUPER = 4; //特级
+    const WORKER_LEVEL_NEW = 5; //新护理员
 
 
     /**
      * 护工等级标签
      */
     static public $workerLevelLabel = [
+        self::WORKER_LEVEL_NEW => '新护理员',
         self::WORKER_LEVEL_PRIMARY => '初级护理员',
         self::WORKER_LEVEL_MEDIUM => '中级护理员',
         self::WORKER_LEVEL_HIGH   => '高级护理员',
@@ -78,6 +80,7 @@ class Worker extends \yii\db\ActiveRecord
      * 护工价格
      */
     static public $workerPrice = [
+        self::WORKER_LEVEL_NEW => 120,
         self::WORKER_LEVEL_PRIMARY => 150,
         self::WORKER_LEVEL_MEDIUM => 180,
         self::WORKER_LEVEL_HIGH   => 220,
@@ -361,6 +364,35 @@ class Worker extends \yii\db\ActiveRecord
         } else {
             return isset(self::$workerLevelLabel[$level]) ? self::$workerLevelLabel[$level] : self::$workerLevelLabel;
         }
+    }
+
+    /**
+     * 获取护工等级描述
+     * @param int $level 护工等级
+     * @return string
+     */
+    static public function getWorkerLevelDescription($level){
+        switch($level){
+            case self::WORKER_LEVEL_NEW:
+                $description = '服务内容:负责患者日常生活护理，保持患者身体及床单位卫生清洁；帮助患者打饭及陪患者散步等';
+                break;
+            case self::WORKER_LEVEL_PRIMARY:
+                $description = '服务内容:负责患者日常生活护理，保持患者身体及床单位卫生清洁；帮助患者打饭及陪患者散步等';
+                break;
+            case self::WORKER_LEVEL_MEDIUM:
+                $description = '服务内容:包括初级护理的所有服务内容,及帮助患者翻身、扣背,防止患者身体长褥疮,观察患者病情变化等';
+                break;
+            case self::WORKER_LEVEL_HIGH:
+                $description = '服务内容:包括中级护理的所有服务内容,懂得ICU及危重、特殊病人的看护,协助患者进行简单康复锻炼等';
+                break;
+            case self::WORKER_LEVEL_SUPER:
+                $description = '服务内容:包括高级护理的所有服务内容,并协助安抚病人情绪、为病人做心理辅导等';
+                break;
+            default:
+                $description = '';
+        }
+
+        return $description;
     }
 
     /**

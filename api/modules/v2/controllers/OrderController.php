@@ -6,7 +6,7 @@
  * Time: 0:31
  */
 
-namespace api\modules\v1\controllers;
+namespace api\modules\v2\controllers;
 
 use backend\models\City;
 use backend\models\Departments;

@@ -98,7 +98,7 @@ class WorkerController extends ActiveController {
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)
-            ->all();
+            ->asArray()->all();
 
         //护工排期
 //        $worker['schedule'] = WorkerSchedule::find()

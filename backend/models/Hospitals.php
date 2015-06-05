@@ -30,34 +30,6 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['province_id', 'name', 'phone'], 'required'],
-            [['province_id', 'city_id', 'area_id'], 'integer'],
-            [['name'], 'string', 'max' => 255],
-            [['phone'], 'string', 'max' => 11]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => '编号',
-            'name' => '医院名称',
-            'province_id' => '所属省份',
-            'city_id' => '所属市',
-            'area_id' => '所属区',
-            'phone' => '医院电话',
-        ];
-    }
-
-    /**
      * @return array|mixed
      */
     public static function getData(){
@@ -93,22 +65,6 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
-     * 获取医院名称
-     * @param int $id
-     * @return string
-     * @author zhangbo
-     */
-    static function getName($id){
-        $cacheKey = self::$_keyPrefix."/id:".$id;
-        if(!$data = Redis::get($cacheKey)){
-            $data = self::findOne($id);
-            $data && Redis::set($cacheKey, $data);
-        }
-
-        return $data['name'];
-    }
-
-    /**
      * 根据ID获取医院的NAME
      * @param string $IdStr
      * @return null|string
@@ -129,6 +85,22 @@ class Hospitals extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取医院名称
+     * @param int $id
+     * @return string
+     * @author zhangbo
+     */
+    static function getName($id){
+        $cacheKey = self::$_keyPrefix."/id:".$id;
+        if(!$data = Redis::get($cacheKey)){
+            $data = self::findOne($id);
+            $data && Redis::set($cacheKey, $data);
+        }
+
+        return $data['name'];
+    }
+
+    /**
      * 获取医院电话
      * @param $id
      * @return string
@@ -144,6 +116,35 @@ class Hospitals extends \yii\db\ActiveRecord
             return $data['phone'];
         }
         return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['province_id', 'name', 'phone'], 'required'],
+            [['province_id', 'city_id', 'area_id'], 'integer'],
+            [['name', 'pinyin'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 11]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => '编号',
+            'name' => '医院名称',
+            'province_id' => '所属省份',
+            'city_id' => '所属市',
+            'area_id' => '所属区',
+            'phone' => '医院电话',
+            'pinyin' => '拼音',
+        ];
     }
 
     /**

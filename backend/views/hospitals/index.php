@@ -26,9 +26,27 @@ $this->title = '医院管理';
 
             'id',
             'name',
-            'province_id',
-            'city_id',
-            'area_id',
+            [
+                'attribute'=>'province_id',
+                'value'=>
+                    function($model){
+                        return \backend\models\City::getCity($model->province_id)->name;
+                    }
+            ],
+            [
+                'attribute'=>'city_id',
+                'value'=>
+                    function($model){
+                        return \backend\models\City::getCity($model->city_id)->name;
+                    }
+            ],
+            [
+                'attribute'=>'area_id',
+                'value'=>
+                    function($model){
+                        return \backend\models\City::getCity($model->area_id)->name;
+                    }
+            ],
 //            'phone', 
 
             [

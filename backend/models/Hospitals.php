@@ -147,6 +147,7 @@ class Hospitals extends \yii\db\ActiveRecord
         ];
     }
 
+    
     /**
      * 删除缓存
      * @param bool $insert

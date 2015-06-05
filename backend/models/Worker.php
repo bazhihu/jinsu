@@ -69,6 +69,7 @@ class Worker extends \yii\db\ActiveRecord
      * 护工等级标签
      */
     static public $workerLevelLabel = [
+        self::WORKER_LEVEL_NEW => '新护理员',
         self::WORKER_LEVEL_PRIMARY => '初级护理员',
         self::WORKER_LEVEL_MEDIUM => '中级护理员',
         self::WORKER_LEVEL_HIGH   => '高级护理员',
@@ -79,6 +80,7 @@ class Worker extends \yii\db\ActiveRecord
      * 护工价格
      */
     static public $workerPrice = [
+        self::WORKER_LEVEL_NEW => 120,
         self::WORKER_LEVEL_PRIMARY => 150,
         self::WORKER_LEVEL_MEDIUM => 180,
         self::WORKER_LEVEL_HIGH   => 220,

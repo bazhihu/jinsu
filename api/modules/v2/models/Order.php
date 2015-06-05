@@ -8,7 +8,6 @@
 namespace api\modules\v2\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use backend\models\City;
 use backend\models\Departments;
 use backend\models\Hospitals;

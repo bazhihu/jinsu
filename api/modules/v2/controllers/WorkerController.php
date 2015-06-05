@@ -15,7 +15,7 @@ use backend\models\Comment;
 use backend\models\Worker;
 use backend\models\Workerother;
 use backend\models\WorkerSchedule;
-use \api\modules\v2\models\Order;
+use api\modules\v2\models\Order;
 
 class WorkerController extends ActiveController {
     public $modelClass = false;

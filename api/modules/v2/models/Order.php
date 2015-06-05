@@ -16,6 +16,11 @@ use backend\models\Hospitals;
  * Config Model
  */
 class Order extends \common\models\Order{
+    /**
+     * 数据转换
+     * @param $data
+     * @return mixed
+     */
     static public function format($data){
         if(!empty($data)){
             foreach($data as $key => $item){
@@ -25,7 +30,7 @@ class Order extends \common\models\Order{
                 $item['worker_level_name'] = \backend\models\Worker::getWorkerLevel($item['worker_level']);
                 $item['city_name'] = City::getCityName($item['city_id']);
 
-                $result[$key] = $item;
+                $data[$key] = $item;
             }
         }
 

@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>$model->area_id?\backend\models\City::findOne(['id'=>$model->area_id])->name:"",
             ],
             'phone',
+            'pinyin',
         ],
         'deleteOptions'=>[
         'url'=>['delete', 'id' => $model->id],

@@ -32,6 +32,10 @@ use kartik\widgets\Select2;
             'type'=> Form::INPUT_TEXT,
             'options'=>['placeholder'=>'Enter Phone...', 'maxlength'=>11]
         ],
+        'pinyin'=>[
+            'type'=> Form::INPUT_TEXT,
+            'options'=>['placeholder'=>'Enter Phone...', 'maxlength'=>11]
+        ],
     ]
     ]);
     echo $form->field($model, 'province_id')->widget(Select2::classname(), [
@@ -60,7 +64,7 @@ use kartik\widgets\Select2;
             'loadingText' => 'Loading child level 2 ...',
         ]
     ]);
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+    echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', '修改'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>
 
 </div>

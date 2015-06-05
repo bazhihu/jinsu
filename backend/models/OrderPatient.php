@@ -67,8 +67,8 @@ class OrderPatient extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['order_no','patient_state', 'name'], 'required'],
             [['order_id', 'gender', 'age', 'height', 'weight', 'patient_state'], 'integer'],
-            [['order_no','patient_state'], 'required'],
             [['patient_state'], 'in', 'range' => [self::PATIENT_STATE_DISABLED,self::PATIENT_STATE_OK]],
             [['admission_date', 'create_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],

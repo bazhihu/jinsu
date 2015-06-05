@@ -7,6 +7,7 @@
  */
 namespace common\models;
 
+use backend\models\Patient;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -269,7 +270,10 @@ class Order extends \yii\db\ActiveRecord{
             $orderPatient['order_id'] = $this->order_id;
             $orderPatient['order_no'] = $orderNo;
             $orderPatient['create_time'] = date('Y-m-d H:i:s');
-            $this->saveOrderPatient($orderPatient);
+            $this->_saveOrderPatient($orderPatient);
+
+            $orderPatient['user_id'] = $orderData['uid'];
+            $this->_savePatient($orderPatient);
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -286,13 +290,29 @@ class Order extends \yii\db\ActiveRecord{
      * @throws HttpException
      * @author zhangbo
      */
-    protected function saveOrderPatient($params){
+    protected function _saveOrderPatient($params){
         $orderPatient = new OrderPatient();
         $orderPatient->attributes = $params;
         if($orderPatient->save()){
             return true;
         }else{
             throw new HttpException(400, print_r($orderPatient->getErrors(), true));
+        }
+    }
+
+    /**
+     * 保存患者数据
+     * @param array $data
+     * @return bool
+     * @throws HttpException
+     */
+    protected function _savePatient($data){
+        $patient = new Patient();
+        $patient->setAttributes($data);
+        if($patient->save()){
+            return true;
+        }else{
+            throw new HttpException(400, print_r($patient->getErrors(), true));
         }
     }
 

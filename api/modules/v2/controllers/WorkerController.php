@@ -14,8 +14,8 @@ use yii\helpers\ArrayHelper;
 use backend\models\Comment;
 use backend\models\Worker;
 use backend\models\Workerother;
-use common\models\Order;
 use backend\models\WorkerSchedule;
+use \api\modules\v2\models\Order;
 
 class WorkerController extends ActiveController {
     public $modelClass = false;
@@ -93,7 +93,7 @@ class WorkerController extends ActiveController {
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
 
         #护工订单信息
-        $worker['orders'] = Order::find()
+        $orders = Order::find()
             ->andFilterWhere(['worker_no'=>$workerId])
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
@@ -106,7 +106,10 @@ class WorkerController extends ActiveController {
 //            ->orderBy('start_date ASC')
 //            ->all();
 
-        $worker['orders'] = $worker['orders']?$worker['orders']:[];
+        $worker['orders'] = [];
+        if(!empty($orders)){
+            $worker['orders'] = Order::format($orders);
+        }
         return $worker;
     }
 

@@ -19,10 +19,10 @@ use yii\helpers\ArrayHelper;
 use yii\filters\auth\QueryParamAuth;
 use backend\models\Worker;
 use common\models\Wallet;
-use common\models\Order;
+use api\modules\v2\models\Order;
 
 class OrderController extends ActiveController {
-    public $modelClass = 'common\models\Order';
+    public $modelClass = 'api\modules\v2\models\Order';
     public $responseCode = 200;
     public $responseMsg = null;
     public $serializer = [
@@ -58,7 +58,7 @@ class OrderController extends ActiveController {
         }
         $perPage = 10;
 
-        $query = Order::find()
+        $query =Order::find()
             ->andFilterWhere(['uid' => $uid])
             ->orderBy(['order_id' => SORT_DESC])
             ->offset($perPage*$page)
@@ -68,17 +68,7 @@ class OrderController extends ActiveController {
         $totalCount = Order::find()->andFilterWhere(['uid' => $uid])->count();
 
         $result = ArrayHelper::toArray($query);
-        if(!empty($result)){
-            foreach($result as $key => $item){
-                $item['pic'] = Worker::workerPic($item['worker_no']);
-                $item['hospital_id'] = Hospitals::getName($item['hospital_id']);
-                $item['department_id'] = Departments::getName($item['department_id']);
-                $item['worker_level_name'] = Worker::getWorkerLevel($item['worker_level']);
-                $item['city_name'] = City::getCityName($item['city_id']);
-
-                $result[$key] = $item;
-            }
-        }
+        $result = Order::format($result);
         $meta = [
             'totalCount' => $totalCount,
             'pageCount' => ceil($totalCount/$perPage),
@@ -99,14 +89,9 @@ class OrderController extends ActiveController {
 
         $result['pic'] = '';
         if(!empty($result['worker_no'])){
-            //获取护工照片
-            $result['pic'] = Worker::workerPic($result['worker_no']);
-            $result['hospital_id'] = Hospitals::getName($result['hospital_id']);
-            $result['department_id'] = Departments::getName($result['department_id']);
-            $result['worker_level_name'] = Worker::getWorkerLevel($result['level']);
-            $result['city_name'] = City::getCityName($result['city_id']);
+            $result = Order::format([0 => $result]);
         }
-        return $result;
+        return $result[0];
     }
 
     /**

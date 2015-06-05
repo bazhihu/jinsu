@@ -57,6 +57,7 @@ class CommentController extends ActiveController {
             ->andFilterWhere(['worker_id'=>$worker_id])
             ->andFilterWhere(['status'=>2])
             ->orderBy('comment_id DESC')
+            ->where("`content`!=''")
             ->all();
         if($comments)
         {

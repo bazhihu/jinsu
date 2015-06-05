@@ -47,7 +47,6 @@ class WorkerController extends ActiveController {
      */
     public function actionIndex(){
         $params = Yii::$app->getRequest()->get();
-        $worker = \api\modules\v2\models\Worker::select($params);
 
         //获取在服务中的护工
         if(empty($params['start_time'])){
@@ -56,6 +55,8 @@ class WorkerController extends ActiveController {
             $startTime = $params['start_time'];
         }
         $workerIds = WorkerSchedule::getWorkingByDate($startTime);
+        $worker = \api\modules\v2\models\Worker::select($params, $workerIds);
+
         $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items'], $workerIds);
 
         return $worker;

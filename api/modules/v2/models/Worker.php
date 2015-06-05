@@ -25,10 +25,11 @@ class Worker extends ActiveRecord{
 
     /**
      * 护工筛选
-     * @param $params
+     * @param array $params
+     * @param array $workerIds
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function select($params){
+    public static function select($params, $workerIds){
         if(empty($params['page'])){
             $page = 0;
         }else{
@@ -51,11 +52,10 @@ class Worker extends ActiveRecord{
         $countQuery->andFilterWhere(['audit_status' => 1, 'status' => 1, 'city_id' => $cityId]);
 
         //获取在工作中的护工
-//        if(isset($params['start_time'])){
-//            $workerIds = WorkerSchedule::getWorkingByDate($params['start_time']);
-//            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
-//            $countQuery->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
-//        }
+        if(isset($params['free']) && $params['free'] == 'yes'){
+            $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+            $countQuery->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
+        }
 
         //医院
         if(!empty($params['hospital_id'])){

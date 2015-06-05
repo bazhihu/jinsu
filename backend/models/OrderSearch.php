@@ -18,8 +18,8 @@ class OrderSearch extends OrderMaster
     public function rules()
     {
         return [
-            [['order_no', 'uid', 'hospital_id', 'department_id', 'worker_level', 'worker_no', 'customer_service_id'], 'integer'],
-            [['order_no', 'mobile', 'patient_name', 'start_time', 'end_time', 'reality_end_time', 'order_status', 'worker_name','create_order_sources'], 'safe'],
+            [['order_no', 'uid', 'department_id', 'worker_level', 'worker_no', 'customer_service_id'], 'integer'],
+            [['order_no', 'mobile', 'patient_name', 'start_time', 'end_time', 'reality_end_time', 'order_status', 'worker_name','create_time','create_order_sources'], 'safe'],
             [['total_amount'], 'number'],
             [['start_time', 'end_time'], 'required', 'on'=>'chart'],
         ];
@@ -72,15 +72,18 @@ class OrderSearch extends OrderMaster
             'patient_state' => $this->patient_state,
             'worker_no' => $this->worker_no,
             'mobile' => $this->mobile,
+            'hospital_id' => $this->hospital_id,
             'department_id' => $this->department_id,
             'customer_service_id' => $this->customer_service_id,
             'create_order_sources' => $this->create_order_sources,
             'order_status' => $this->order_status
         ]);
 
-        $query->andFilterWhere(['>=', 'start_time', $this->start_time])
-            ->andFilterWhere(['<=', 'end_time', $this->end_time])
+        $query->andFilterWhere(['like', 'start_time', $this->start_time])
+            ->andFilterWhere(['like', 'end_time', $this->end_time])
+            ->andFilterWhere(['like', 'create_time', $this->create_time])
             ->andFilterWhere(['like', 'worker_name', $this->worker_name])
+            ->andFilterWhere(['like', 'reality_end_time', $this->reality_end_time])
             ->andFilterWhere(['like', 'patient_name', $this->patient_name]);
 
         //!isset($params['sort']) && $query->orderBy('reality_end_time ASC');

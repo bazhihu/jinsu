@@ -6,6 +6,9 @@ use kartik\grid\GridView;
 use backend\models\OrderMaster;
 //use backend\models\OrderPatient;
 use backend\models\Hospitals;
+use kartik\datetime\DateTimePicker;
+use backend\models\Departments;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -44,30 +47,35 @@ td .btn{margin: 2px}
         [
             'label'=>'下单时间',
             'attribute'=>'create_time',
-            'options' => [
-                'style' => 'width:100px',
+            'filterType'=>GridView::FILTER_DATETIME,
+            'filterWidgetOptions'=>[
+                'type' => DateTimePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true]
             ]
         ],
         [
             'attribute'=>'start_time',
-            'options' => [
-                'style' => 'width:100px',
+            'filterType'=>GridView::FILTER_DATETIME,
+            'filterWidgetOptions'=>[
+                'type' => DateTimePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true]
             ],
-            //'format'=>['datetime','yyyy-MM-dd']
         ],
         [
             'attribute'=>'end_time',
-            //'format'=>['datetime','yyyy-MM-dd'],
-            'options' => [
-                'style' => 'width:100px',
-            ]
+            'filterType'=>GridView::FILTER_DATETIME,
+            'filterWidgetOptions'=>[
+                'type' => DateTimePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true]
+            ],
         ],
         [
             'attribute'=>'reality_end_time',
-            //'format'=>['datetime','yyyy-MM-dd'],
-            'options' => [
-                'style' => 'width:100px',
-            ]
+            'filterType'=>GridView::FILTER_DATETIME,
+            'filterWidgetOptions'=>[
+                'type' => DateTimePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true]
+            ],
         ],
         [
             'attribute'=>'mobile',
@@ -84,12 +92,24 @@ td .btn{margin: 2px}
         'patient_name',
         [
             'attribute'=>'hospital_id',
+//            'filterType'=>GridView::FILTER_SELECT2,
+//            'filterWidgetOptions'=>[
+//                'data'=>Hospitals::getList(0, 110100),
+//                'pluginOptions'=>['allowClear'=>true]
+//            ],
+
             'value'=>function($model){
                 return Hospitals::getName($model->hospital_id);
             }
         ],
         [
             'attribute'=>'department_id',
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filterInputOptions'=>['placeholder'=>'请选择'],
+            'filterWidgetOptions'=>[
+                'data'=>Departments::getList(),
+                'pluginOptions'=>['allowClear'=>true]
+            ],
             'value'=>function($model){
                 return \backend\models\Departments::getName($model->department_id);
             }
@@ -225,7 +245,7 @@ td .btn{margin: 2px}
     //Pjax::begin(['enablePushState'=>true,'timeout'=>5000]);
     echo GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => $columns,
         //'export' => true,//是否显示导出
         'toggleData' => false,

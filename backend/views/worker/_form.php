@@ -241,7 +241,7 @@ use backend\models\Hospitals;
             'pluginOptions' => [
                 'allowClear' => true
             ],
-        ])->label('常驻城市');
+        ]);
 
         // 常驻医院
         echo $form->field($model, 'hospital_id')->widget(DepDrop::className(), [

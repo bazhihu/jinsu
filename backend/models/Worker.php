@@ -282,7 +282,7 @@ class Worker extends \yii\db\ActiveRecord
             'phone1' => '手机号',
             'phone2' => '手机号',
             'price' => '服务价格',
-            'city_id' => '所属城市',
+            'city_id' => '服务城市',
             'hospital_id' => '常驻医院',
             'office_id' => '常驻科室',
             'good_at' => '擅长护理的疾病',
@@ -446,7 +446,8 @@ class Worker extends \yii\db\ActiveRecord
         }
 
         if (!empty($params['hospital_id'])) {
-            $params['hospital_id'] = ','.implode(',', $params['hospital_id']).',';
+            $hospitalIds = array_filter($params['hospital_id']);
+            $params['hospital_id'] = ','.implode(',', $hospitalIds).',';
         }
 
         if (!empty($params['office_id'])) {

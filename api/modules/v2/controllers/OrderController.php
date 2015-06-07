@@ -87,9 +87,11 @@ class OrderController extends ActiveController {
         $query = Order::findOne(['order_no' => $order_no, 'uid' => $uid]);
         $result = ArrayHelper::toArray($query);
 
-        $result['pic'] = '';
         if(!empty($result['worker_no'])){
             $result = Order::format([0 => $result]);
+        }else{
+            $result['pic'] = '';
+            $result[0] = $result;
         }
         return $result[0];
     }

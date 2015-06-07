@@ -357,13 +357,9 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author zhangbo
      */
-    static public function getWorkerLevel($level = null,$op='')
+    static public function getWorkerLevel($level)
     {
-        if ($op && $level == null) {
-            return null;
-        } else {
-            return isset(self::$workerLevelLabel[$level]) ? self::$workerLevelLabel[$level] : self::$workerLevelLabel;
-        }
+        return isset(self::$workerLevelLabel[$level]) ? self::$workerLevelLabel[$level] : null;
     }
 
     /**
@@ -401,14 +397,8 @@ class Worker extends \yii\db\ActiveRecord
      * @return null|int
      * @author zhangbo
      */
-    static public function getWorkerPrice($level,$op='')
-    {
-        if ($op && $level == null) {
-            return null;
-        } else {
-            return isset(self::$workerPrice[$level]) ? self::$workerPrice[$level] : null;
-        }
-
+    static public function getWorkerPrice($level){
+        return isset(self::$workerPrice[$level]) ? self::$workerPrice[$level] : null;
     }
 
     /**
@@ -490,69 +480,44 @@ class Worker extends \yii\db\ActiveRecord
     /**
      * 文化程度
      * @param null $education
-     * @param string $op
      * @return array
      * @author tiancq
      */
-    static public function getEducationLevel($education = null, $op='')
-    {
+    static public function getEducationLevel($education = null){
         if(!empty($education) && $education <= self::EDUCATION_3){
             return "初中及以下";
         }
-
-        if ($op && $education == null) {
-            return null;
-        } else {
-            return isset(self::$educationLabel[$education]) ? self::$educationLabel[$education] : self::$educationLabel;
-         }
+        return isset(self::$educationLabel[$education]) ? self::$educationLabel[$education] : null;
     }
 
     /**
      * 政治面貌
      * @param null $politics
-     * @param $op
      * @return array
      * @author tiancq
      */
-    static public function getPoliticsLevel($politics = null,$op='')
-    {
-        if ($op && $politics == null) {
-            return null;
-        } else {
-            return isset(self::$politicsLabel[$politics]) ? self::$politicsLabel[$politics] : self::$politicsLabel;
-        }
+    static public function getPoliticsLevel($politics){
+        return isset(self::$politicsLabel[$politics]) ? self::$politicsLabel[$politics] : null;
     }
 
     /**
      * 普通话水平
      * @param null $chineseLevel
-     * @param $op
      * @return array
      * @author tiancq
      */
-    static public function getChineseLevel($chineseLevel = null, $op='')
-    {
-        if ($op && $chineseLevel == null) {
-            return null;
-        } else {
-            return isset(self::$chineselevelLabel[$chineseLevel]) ? self::$chineselevelLabel[$chineseLevel] : self::$chineselevelLabel;
-        }
+    static public function getChineseLevel($chineseLevel){
+        return isset(self::$chineselevelLabel[$chineseLevel]) ? self::$chineselevelLabel[$chineseLevel] : null;
     }
 
     /**
      * 资质证书
      * @param null $certificate
-     * @param $op
      * @return array
      * @author tiancq
      */
-    static public function getCertificate($certificate = null,$op='')
-    {
-        if ($op && $certificate == null) {
-            return null;
-        } else {
-            return isset(self::$certificateLabel[$certificate]) ? self::$certificateLabel[$certificate] : self::$certificateLabel;
-        }
+    static public function getCertificate($certificate){
+        return isset(self::$certificateLabel[$certificate]) ? self::$certificateLabel[$certificate] : null;
     }
 
     /**
@@ -581,13 +546,8 @@ class Worker extends \yii\db\ActiveRecord
      * @return array
      * @author tiancq
      */
-    static public function getNation($nationLevel=null,$op='')
-    {
-        if ($op && $nationLevel == null) {
-            return null;
-        } else {
-            return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : self::$nation;
-        }
+    static public function getNation($nationLevel){
+        return isset(self::$nation[$nationLevel]) ? self::$nation[$nationLevel] : null;
     }
 
     /**

@@ -75,7 +75,7 @@ $this->title = '选择护工';
             [
                 'attribute'=>'level',
                 'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>Worker::getWorkerLevel(),
+                'filter'=>Worker::$workerLevelLabel,
                 'filterInputOptions'=>['placeholder'=>'请选择'],
                 'filterWidgetOptions'=>[
                     'pluginOptions'=>['allowClear'=>true],

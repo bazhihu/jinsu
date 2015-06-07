@@ -75,7 +75,7 @@ use kartik\widgets\DepDrop;
             ])?>
 
             <?= $form->field($model,'level')
-                ->dropDownList(Worker::getWorkerLevel(),['prompt'=>'请选择']);?>
+                ->dropDownList(Worker::$workerLevelLabel,['prompt'=>'请选择']);?>
 
             <?= $form->field($model,'price')
                 ->dropDownList(['1'=>'50-150','2'=>'150-250','3'=>'250以上'],['prompt'=>'请选择']); ?>
@@ -87,7 +87,7 @@ use kartik\widgets\DepDrop;
                 ->dropDownList(['1'=>'上线','2'=>'下线'],['prompt'=>'请选择'])->label("上线状态") ?>
 
             <?= $form->field($model,'chinese_level')->widget(Select2::classname(),[
-                'data' => Worker::getChineseLevel(),
+                'data' => Worker::$chineselevelLabel,
                 'options' => ['placeholder' => '请选择'],
                 'pluginOptions' => [
                     'allowClear' => true

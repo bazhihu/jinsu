@@ -272,8 +272,6 @@ class Order extends \yii\db\ActiveRecord{
             $orderPatient['create_time'] = date('Y-m-d H:i:s');
             $this->_saveOrderPatient($orderPatient);
 
-            $orderPatient['user_id'] = $orderData['uid'];
-            $this->_savePatient($orderPatient);
             $transaction->commit();
         }catch (Exception $e){
             $transaction->rollBack();
@@ -297,22 +295,6 @@ class Order extends \yii\db\ActiveRecord{
             return true;
         }else{
             throw new HttpException(400, print_r($orderPatient->getErrors(), true));
-        }
-    }
-
-    /**
-     * 保存患者数据
-     * @param array $data
-     * @return bool
-     * @throws HttpException
-     */
-    protected function _savePatient($data){
-        $patient = new Patient();
-        $patient->setAttributes($data);
-        if($patient->save()){
-            return true;
-        }else{
-            throw new HttpException(400, print_r($patient->getErrors(), true));
         }
     }
 

@@ -80,7 +80,7 @@ class WorkerController extends ActiveController {
         #护工评价
         $worker['comments'] = Comment::find()
             ->andFilterWhere(['worker_id'=>$workerId, 'status' => Comment::STATUS_AUDIT_OK])
-            ->andFilterWhere(['and', 'content', 'not null'])
+            ->andWhere("content <>''")
             ->orderBy('comment_id DESC')
             ->limit(self::$commentOffset)
             ->all();

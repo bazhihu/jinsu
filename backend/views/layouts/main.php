@@ -42,9 +42,10 @@ AppAsset::register($this);
             [
                 'label' => '护工',
                 'items' => [
+                    ['label' => '添加护工', 'url' => ['/worker/create']],
                     ['label' => '护工列表', 'url' => ['/worker/index']],
-                    ['label' => '工资卡', 'url' => ['/worker-card/index']],
-                    ['label' => '请假申请', 'url' => ['/worker-leave/index']],
+                    //['label' => '工资卡', 'url' => ['/worker-card/index']],
+                    //['label' => '请假申请', 'url' => ['/worker-leave/index']],
                 ]
             ],
             [
@@ -69,9 +70,9 @@ AppAsset::register($this);
                     ['label' => '提现申请', 'url' => ['/wallet/cash-list']],
                     ['label' => '提现支付', 'url' => ['/wallet/confirm-list']],
                     ['label' => '交易明细', 'url' => ['/wallet/debit-records']],
-                    '<li class="divider"></li>',
-                    ['label' => '护工账户', 'url' => ['/worker-account']],
-                    ['label' => '护工账单', 'url' => ['/worker-bill']],
+                    //'<li class="divider"></li>',
+                    //['label' => '护工账户', 'url' => ['/worker-account']],
+                    //['label' => '护工账单', 'url' => ['/worker-bill']],
                 ]
             ],
             [

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use backend\models\Worker;
 use backend\models\Hospitals;
+use backend\models\City;
 
 /**
  * @var yii\web\View $this
@@ -39,9 +40,6 @@ $this->title = '选择护工';
                 'filterWidgetOptions'=>[
                     'pluginOptions'=>['allowClear'=>true],
                     'hideSearch'=>true,
-                ],
-                'options' => [
-                    'style' => 'width:90px',
                 ]
             ],
             [
@@ -50,27 +48,32 @@ $this->title = '选择护工';
 
                 'value'=> function ($model){
                     return $model->workerAge($model->birth);
-                },
-                'options' => [
-                    'style' => 'width:90px',
-                ]
+                }
+            ],
+            [
+                'attribute'=>'city_id',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>City::getList(null, true),
+                'filterInputOptions'=>['placeholder'=>'请选择','style' => 'display:none'],
+
+                'value'=> function ($model){
+                    return City::getCityName($model->city_id);
+                }
             ],
             [
                 'attribute'=>'hospital_id',
                 'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>Hospitals::getList(),
+                'filter'=>Hospitals::getList(0, $cityId),
                 'filterInputOptions'=>['placeholder'=>'请选择'],
                 'filterWidgetOptions'=>[
-                    'pluginOptions'=>['allowClear'=>true],
+                    'pluginOptions'=>[
+                        'allowClear'=>true
+                    ],
                     'hideSearch'=>true,
                 ],
                 'value'=> function ($model){
                     return Hospitals::getHospitalsName($model->hospital_id);
-                },
-                'options' => [
-                    'style' => 'width:150px',
-                ],
-                'format'=>'raw'
+                }
             ],
             [
                 'attribute'=>'level',
@@ -129,7 +132,11 @@ $this->title = '选择护工';
     //待岗，在岗
     $('body').on('click', 'input[name="WorkerSearch[isWorking]"]', function () {
         var params = $('input,select').serialize();
-        location.href='<?php echo Yii::$app->urlManager->createUrl(['worker/select', 'order_id'=>$orderId,'start_time'=>$startTime])?>&'+params;
+        location.href='<?php echo Yii::$app->urlManager->createUrl([
+        'worker/select',
+        'order_id'=>$orderId,
+        'start_time'=>$startTime,
+        'city_id'=>$cityId])?>&'+params;
     });
 
     //选择护工

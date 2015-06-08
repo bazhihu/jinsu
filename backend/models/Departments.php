@@ -158,7 +158,9 @@ class Departments extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes){
         parent::afterSave($insert, $changedAttributes);
         $keys = Redis::keys(self::$_keyPrefix.'/*');
-        Redis::del($keys);
+        if($keys){
+            Redis::del($keys);
+        }
     }
 
     /**

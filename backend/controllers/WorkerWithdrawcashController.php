@@ -71,14 +71,14 @@ class WorkerWithdrawcashController extends Controller
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return WorkerWithdrawcash the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws HttpException if the model cannot be found
      */
     protected function findModel($id)
     {
         if (($model = WorkerWithdrawcash::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new HttpException('The requested page does not exist.');
         }
     }
 

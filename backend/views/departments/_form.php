@@ -21,6 +21,7 @@ use Yii\helpers\Url;
 
     echo $form->field($model, 'parent_id')->dropDownList(\backend\models\Departments::getParent());
     echo $form->field($model, 'name');
+    echo $form->field($model, 'pinyin');
 
     echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
     ActiveForm::end(); ?>

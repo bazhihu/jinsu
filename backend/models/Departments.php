@@ -146,6 +146,7 @@ class Departments extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '科室名称',
             'parent_id' => '父亲科室',
+            'pinyin'=>'拼音'
         ];
     }
 

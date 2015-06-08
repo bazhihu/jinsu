@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'parent_id',
-
+            'pinyin',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [

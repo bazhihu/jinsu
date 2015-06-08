@@ -126,7 +126,10 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Worker::$workerLevelLabel,
-                                    'options'=>['placeholder' => '请选择护工等级...', 'style'=>'width:70%;float:left']
+                                    'options'=>[
+                                        'placeholder' => '请选择护工等级...',
+                                        'style'=>'width:100%;float:left'
+                                    ]
                                 ]
                             ],
                             'base_price' => [
@@ -336,7 +339,7 @@ use backend\models\OrderPatient;
 
     //选择护工
     $(function(){
-        $('#ordermaster-worker_level').after('<a class="btn btn-success js-select-worker" style="margin:0 0 0 5px">选护工</a><div id="worker_name" style="margin-top:10px;display: none"></div>');
+        //$('#ordermaster-worker_level').after('<a class="btn btn-success js-select-worker" style="margin:0 0 0 5px">选护工</a><div id="worker_name" style="margin-top:10px;display: none"></div>');
 
         $('.js-select-worker').on('click', function(){
             $('#selectWorkerModal').modal({"show":true});

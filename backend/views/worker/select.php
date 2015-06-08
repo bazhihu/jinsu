@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use backend\models\Worker;
 use backend\models\Hospitals;
+use backend\models\City;
 
 /**
  * @var yii\web\View $this
@@ -39,9 +40,6 @@ $this->title = '选择护工';
                 'filterWidgetOptions'=>[
                     'pluginOptions'=>['allowClear'=>true],
                     'hideSearch'=>true,
-                ],
-                'options' => [
-                    'style' => 'width:90px',
                 ]
             ],
             [
@@ -50,10 +48,21 @@ $this->title = '选择护工';
 
                 'value'=> function ($model){
                     return $model->workerAge($model->birth);
-                },
-                'options' => [
-                    'style' => 'width:90px',
-                ]
+                }
+            ],
+            [
+                'attribute'=>'city_id',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>City::getList(null, true),
+                'filterInputOptions'=>['placeholder'=>'请选择'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                    'hideSearch'=>true,
+                    'disabled' => true,
+                ],
+                'value'=> function ($model){
+                    return City::getCityName($model->city_id);
+                }
             ],
             [
                 'attribute'=>'hospital_id',
@@ -61,16 +70,14 @@ $this->title = '选择护工';
                 'filter'=>Hospitals::getList(0, $cityId),
                 'filterInputOptions'=>['placeholder'=>'请选择'],
                 'filterWidgetOptions'=>[
-                    'pluginOptions'=>['allowClear'=>true],
+                    'pluginOptions'=>[
+                        'allowClear'=>true
+                    ],
                     'hideSearch'=>true,
                 ],
                 'value'=> function ($model){
                     return Hospitals::getHospitalsName($model->hospital_id);
-                },
-                'options' => [
-                    'style' => 'width:150px',
-                ],
-                'format'=>'raw'
+                }
             ],
             [
                 'attribute'=>'level',

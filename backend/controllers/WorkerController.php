@@ -295,7 +295,7 @@ class WorkerController extends Controller
 
         $orderId = $_GET['order_id'];
         $startTime = $_GET['start_time'];
-        $cityId = $_GET['city_id'];
+        $cityId = isset($_GET['city_id']) ? $_GET['city_id'] : 110100;
         $searchModel = new WorkerSearch;
 
         //获取在工作中的护工

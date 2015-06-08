@@ -54,12 +54,8 @@ $this->title = '选择护工';
                 'attribute'=>'city_id',
                 'filterType'=>GridView::FILTER_SELECT2,
                 'filter'=>City::getList(null, true),
-                'filterInputOptions'=>['placeholder'=>'请选择'],
-                'filterWidgetOptions'=>[
-                    'pluginOptions'=>['allowClear'=>true],
-                    'hideSearch'=>true,
-                    'disabled' => true,
-                ],
+                'filterInputOptions'=>['placeholder'=>'请选择','style' => 'display:none'],
+
                 'value'=> function ($model){
                     return City::getCityName($model->city_id);
                 }

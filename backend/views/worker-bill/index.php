@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use backend\models\WorkerBill;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\WorkerBillSearch */
@@ -25,6 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'type',
+            [
+                'attribute'=>'type',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>WorkerBill::$types,
+                'filterInputOptions'=>['placeholder'=>'请选择'],
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                    'hideSearch'=>true,
+                ],
+                'value'=>function($model){
+                    return WorkerBill::$types[$model->type];
+                }
+            ],
             'worker_id',
             'worker_name',
             //'order_id',

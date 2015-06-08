@@ -40,11 +40,13 @@ class WorkerCard extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['worker_id', 'worker_name', 'identity_card', 'bank', 'bank_card', 'add_date'], 'required'],
+            [['worker_id', 'worker_name', 'identity_card', 'bank', 'bank_card','bank_sub_account', 'add_date'], 'required'],
             [['worker_id', 'status'], 'integer'],
             [['add_date'], 'safe'],
             [['worker_name', 'bank', 'bank_card'], 'string', 'max' => 255],
-            [['identity_card'], 'string', 'max' => 18]
+            [['identity_card'], 'string', 'max' => 18],
+            [['bank_sub_account'], 'string', 'max' => 50],
+            [['identity_card'],'match','pattern'=>'/^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/','message'=>'{attribute}匹配失败！'],
         ];
     }
 
@@ -60,11 +62,17 @@ class WorkerCard extends \yii\db\ActiveRecord
             'identity_card' => '身份证号码',
             'bank' => '开户行',
             'bank_card' => '银行卡号',
+            'bank_sub_account' => '子账户',
             'add_date' => '添加时间',
             'status' => '状态',
         ];
     }
 
+    /**
+     * 删除银行卡
+     * @param $id
+     * @return array
+     */
     public function cardDelete($id){
         $response = [
             'code'=>200,
@@ -81,5 +89,12 @@ class WorkerCard extends \yii\db\ActiveRecord
             ];
             return $response;
         }
+    }
+    public function create(){
+        $this->add_date = date("Y-m-d H:i:s");
+        if(!$this->save()){
+            return false;
+        }
+        return true;
     }
 }

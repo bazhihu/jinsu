@@ -58,11 +58,13 @@ class WorkerCardController extends Controller
      */
     public function actionCreate($id){
         $model = new WorkerCard();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'id'=>$id,
+                'name'=>$id?\backend\models\Worker::findOne(['worker_id'=>$id])->name:''
             ]);
         }
     }

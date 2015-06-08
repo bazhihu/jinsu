@@ -62,11 +62,11 @@ class WorkerBillSearch extends WorkerBill
             'worker_id' => $this->worker_id,
             'order_id' => $this->order_id,
             'amount' => $this->amount,
-            'add_time' => $this->add_time,
         ]);
 
-        $query->andFilterWhere(['>=', 'start_time', $this->start_time])
-            ->andFilterWhere(['<=', 'end_time', $this->end_time])
+        $query->andFilterWhere(['like', 'start_time', $this->start_time])
+            ->andFilterWhere(['like', 'end_time', $this->end_time])
+            ->andFilterWhere(['like', 'add_time', $this->add_time])
             ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'worker_name', $this->worker_name])
             ->andFilterWhere(['like', 'order_no', $this->order_no]);

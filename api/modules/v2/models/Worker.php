@@ -64,10 +64,10 @@ class Worker extends ActiveRecord{
         }
 
         //科室
-        if(!empty($params['department_id'])){
-            $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
-            $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
-        }
+//        if(!empty($params['department_id'])){
+//            $query->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
+//            $countQuery->andFilterWhere(['like', 'office_id', ','.$params['department_id'].',']);
+//        }
 
         //籍贯
         if(!empty($params['native_province'])){
@@ -88,10 +88,10 @@ class Worker extends ActiveRecord{
         }
 
         $totalCount = $countQuery->count();
-//        if(!empty($params['hospital_id']) && $totalCount == 0){
-//            unset($params['hospital_id']);
-//            return self::select($params);
-//        }
+        if(!empty($params['hospital_id']) && $totalCount == 0){
+            unset($params['hospital_id']);
+            return self::select($params, $workerIds);
+        }
 
         //排序
         $orderBy = 'star DESC';

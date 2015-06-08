@@ -307,4 +307,9 @@ class WorkerController extends Controller
             'startTime' => $startTime
         ]);
     }
+
+    public function actionSchedule(){
+
+        return $this->render('schedule');
+    }
 }

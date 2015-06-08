@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use backend\models\WorkerBill;
+use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\WorkerBillSearch */
@@ -16,16 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?></h1>
     </div>
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'type',
             [
                 'attribute'=>'type',
                 'filterType'=>GridView::FILTER_SELECT2,
@@ -39,14 +39,36 @@ $this->params['breadcrumbs'][] = $this->title;
                     return WorkerBill::$types[$model->type];
                 }
             ],
+            [
+                'attribute'=>'add_time',
+                'filterType'=>GridView::FILTER_DATETIME,
+                'filterWidgetOptions'=>[
+                    'type' => DateTimePicker::TYPE_INPUT,
+                    'pluginOptions'=>['allowClear'=>true]
+                ],
+            ],
             'worker_id',
             'worker_name',
             //'order_id',
-             'order_no',
-             'start_time',
-             'end_time',
-             'amount',
-             'add_time',
+            'order_no',
+            [
+                'attribute'=>'start_time',
+                'filterType'=>GridView::FILTER_DATETIME,
+                'filterWidgetOptions'=>[
+                    'type' => DateTimePicker::TYPE_INPUT,
+                    'pluginOptions'=>['allowClear'=>true]
+                ]
+            ],
+            [
+                'attribute'=>'end_time',
+                'filterType'=>GridView::FILTER_DATETIME,
+                'filterWidgetOptions'=>[
+                    'type' => DateTimePicker::TYPE_INPUT,
+                    'pluginOptions'=>['allowClear'=>true]
+                ]
+            ],
+            'amount',
+
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
@@ -54,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> 重置列表', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>true
         ],
-        'panelBeforeTemplate' => '<div class="pull-right"><div class="btn-toolbar kv-grid-toolbar" role="toolbar">{toolbar}</div></div><strong>订单收入：'.$searchModel->total.'元</strong><div class="clearfix"></div>'
+        'panelBeforeTemplate' => '<div class="pull-right"><div class="btn-toolbar kv-grid-toolbar" role="toolbar">{toolbar}</div></div><strong>总收入：'.(int)$searchModel->total.'元</strong><div class="clearfix"></div>'
     ]); ?>
 
 </div>

@@ -37,12 +37,26 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'balance',
             'withdraw_amount',
-            'recommend_amount',
+            [
+                'attribute'=>'recommend_amount',
+                'format'=>'raw',
+                'value'=>function ($model) {
+                    if($model->recommend_amount > 0){
+                        return Html::a($model->recommend_amount, Yii::$app->urlManager->createUrl(['worker-bill/index','WorkerBillSearch[worker_id]' => $model->worker_id]));
+                    }else{
+                        return $model->recommend_amount;
+                    }
+                }
+            ],
             [
                 'attribute'=>'order_amount',
                 'format'=>'raw',
                 'value'=>function ($model) {
-                    return Html::a($model->order_amount, Yii::$app->urlManager->createUrl(['worker-bill/index','WorkerBillSearch[worker_id]' => $model->worker_id]));
+                    if($model->order_amount > 0){
+                        return Html::a($model->order_amount, Yii::$app->urlManager->createUrl(['worker-bill/index','WorkerBillSearch[worker_id]' => $model->worker_id]));
+                    }else{
+                        return $model->order_amount;
+                    }
                 }
             ],
             [

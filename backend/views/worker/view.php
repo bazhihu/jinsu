@@ -67,17 +67,17 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
 
             [
                 'attribute'=>'education',
-                'value'=>Worker::getEducationLevel($model->education,'view')
+                'value'=>Worker::getEducationLevel($model->education)
             ],
 
             [
                 'attribute'=>'politics',
-                'value'=>Worker::getPoliticsLevel($model->politics,'view')
+                'value'=>Worker::getPoliticsLevel($model->politics)
             ],
 
             [
                 'attribute'=>'chinese_level',
-                'value'=>Worker::getChineseLevel($model->chinese_level,'view')
+                'value'=>Worker::getChineseLevel($model->chinese_level)
             ],
 
             [
@@ -91,7 +91,7 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
 
             [
                 'attribute'=>'level',
-                'value'=>Worker::getWorkerLevel($model->level,'view')
+                'value'=>Worker::getWorkerLevel($model->level)
             ],
 
             'parent_worker_id',
@@ -121,10 +121,9 @@ $modelOther = Workerother::findAll(['worker_id'=>$model->worker_id]);
 //            ],
 
             'place',
-
             [
                 'attribute'=>'nation',
-                'value'=>Worker::getNation($model->nation,'view')
+                'value'=>Worker::getNation($model->nation)
             ],
 
             [

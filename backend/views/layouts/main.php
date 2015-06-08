@@ -71,6 +71,7 @@ AppAsset::register($this);
                     ['label' => '交易明细', 'url' => ['/wallet/debit-records']],
                     '<li class="divider"></li>',
                     ['label' => '护工账户', 'url' => ['/worker-account']],
+                    ['label' => '护工账单', 'url' => ['/worker-bill']],
                 ]
             ],
             [

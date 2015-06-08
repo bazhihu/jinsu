@@ -54,13 +54,11 @@ class CommentController extends ActiveController {
     {
         $worker_id = $id;
         $comments = \backend\models\Comment::find()
-            ->andFilterWhere(['worker_id'=>$worker_id])
-            ->andFilterWhere(['status'=>2])
-            ->orderBy('comment_id DESC')
-            ->where("`content`!=''")
-            ->all();
-        if($comments)
-        {
+            ->andFilterWhere([
+                'worker_id'=>$worker_id,
+                'status'=>\backend\models\Comment::STATUS_AUDIT_OK]
+            )->orderBy('comment_id DESC')->all();
+        if($comments){
             $comments = \api\modules\v1\models\Worker::getMobile($comments);
         }
         return $comments;

@@ -22,6 +22,11 @@ use Yii;
  */
 class Comment extends \yii\db\ActiveRecord
 {
+    //评论审核状态
+    const STATUS_AUDIT_WAIT = 1; //待审核
+    const STATUS_AUDIT_OK = 2; //审核通过
+    const STATUS_AUDIT_NOT = 3; //审核未通过
+
     /**
      * @inheritdoc
      */
@@ -79,9 +84,9 @@ class Comment extends \yii\db\ActiveRecord
         $connection = Yii::$app->db;
         $auditer = yii::$app->user->getId();
         if($op=='audit_yes'){
-            $status = 2;
+            $status = self::STATUS_AUDIT_OK;
         }else{
-            $status = 3;
+            $status = self::STATUS_AUDIT_NOT;
         }
 
         //更新评价状态

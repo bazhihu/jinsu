@@ -39,25 +39,20 @@ use kartik\datecontrol\DateControl;
                 ],
             ]); ?>
 
-            <?= $form->field($model, 'order_no')->input('text',['placeholder'=>'请输入订单编号...','style'=>'width:135px']) ?>
 
-            <?= $form->field($model, 'mobile')->input('text',['placeholder'=>'请输入手机号...','style'=>'width:125px']) ?>
-
-            <?= $form->field($model, 'worker_name')->input('text',['placeholder'=>'请输入护工姓名...','style'=>'width:135px']) ?>
-
-            <?= $form->field($model, 'patient_name')->input('text',['placeholder'=>'请输入患者姓名...','style'=>'width:135px']) ?>
-
-            <?= $form->field($model, 'department_id')
-                ->widget(\kartik\widgets\Select2::classname(),[
-                    'data' => Departments::getList(),
-                    'options' => ['placeholder' => '请选择','style'=>'width:190px'],
-                    'pluginOptions' => [
-                        'allowClear' => true
-                    ],
-                ]);
+            <?php
+//            echo $form->field($model, 'department_id')
+//                ->widget(\kartik\widgets\Select2::classname(),[
+//                    'data' => Departments::getList(),
+//                    'options' => ['placeholder' => '请选择','style'=>'width:200px'],
+//                    'pluginOptions' => [
+//                        'allowClear' => true
+//                    ],
+//                ]);
             ?>
-            <?= $form->field($model, 'order_status')
-                ->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']);
+            <?php
+//            echo $form->field($model, 'order_status')
+//                ->dropDownList(OrderMaster::$orderStatusLabels,['prompt'=>'请选择']);
             ?>
             <?= $form->field($model, 'customer_service_id')->widget(\kartik\widgets\Select2::classname(),[
                 'data' => \backend\models\AdminUser::getService(),
@@ -72,27 +67,31 @@ use kartik\datecontrol\DateControl;
                 ->label('订单来源');
             ?>
 
-            <?= $form->field($model, 'start_time')->widget(DateControl::classname(), [
-                'type'=>DateControl::FORMAT_DATE,
-                'ajaxConversion'=>false,
-                'options' => [
-                    'pluginOptions' => [
-                        'autoclose' => true
-                    ],
-                    'options'=>['style'=>'width:130px']
-                ]
-            ])->label('订单时间范围'); ?>
+            <?php
+//            echo $form->field($model, 'start_time')->widget(DateControl::classname(), [
+//                'type'=>DateControl::FORMAT_DATE,
+//                'ajaxConversion'=>false,
+//                'options' => [
+//                    'pluginOptions' => [
+//                        'autoclose' => true
+//                    ],
+//                    'options'=>['style'=>'width:130px']
+//                ]
+//            ])->label('订单时间范围');
+            ?>
 
-            <?= $form->field($model, 'end_time')->widget(DateControl::classname(), [
-                'type'=>DateControl::FORMAT_DATE,
-                'ajaxConversion'=>false,
-                'options' => [
-                    'pluginOptions' => [
-                        'autoclose' => true
-                    ],
-                    'options'=>['style'=>'width:130px']
-                ]
-            ])->label('至'); ?>
+            <?php
+//            echo $form->field($model, 'end_time')->widget(DateControl::classname(), [
+//                'type'=>DateControl::FORMAT_DATE,
+//                'ajaxConversion'=>false,
+//                'options' => [
+//                    'pluginOptions' => [
+//                        'autoclose' => true
+//                    ],
+//                    'options'=>['style'=>'width:130px']
+//                ]
+//            ])->label('至');
+            ?>
 
             <div class="form-group" style="margin-top: 30px">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>

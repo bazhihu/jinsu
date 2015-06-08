@@ -111,6 +111,7 @@ return [
                         'v2/config',
                         'v2/patient',
                         'v2/comment',
+                        'v2/order'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\w+>'

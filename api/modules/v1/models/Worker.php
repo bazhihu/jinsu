@@ -33,10 +33,10 @@ class Worker extends ActiveRecord
     public static function formatWorker($params)
     {
         foreach($params as $key=>$value){
-            $params[$key]['native_province'] = City::findOne(['id'=>$value['native_province']])->name;
+            $params[$key]['native_province'] = City::getCityName($value['native_province']);
             $params[$key]['nation']          = \backend\models\Worker::getNation($value['nation']);
             $params[$key]['chinese_level']   = \backend\models\Worker::getChineseLevel($value['chinese_level']);
-            $params[$key]['education']       = ($value['education']<=3) ? "初中及以下": \backend\models\Worker::getEducationLevel($value['education']);
+            $params[$key]['education']       = \backend\models\Worker::getEducationLevel($value['education']);
             $params[$key]['certificate']     = \backend\models\Worker::getCertificateName($value['certificate']);
             $params[$key]['hospital_id']     = Hospitals::getHospitalsName($value['hospital_id']);
             $params[$key]['office_id']       = Departments::getDepartmentNames($value['office_id']);

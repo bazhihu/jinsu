@@ -92,14 +92,14 @@ use backend\models\Hospitals;
             'education'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
                 'options'=>['placeholder'=>'请选择文化程度...'],
-                'items'=>Worker::getEducationLevel(),
+                'items'=>Worker::$educationLabel,
                 'options'=>['inline'=>true]
             ],
 
             'politics'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
                 'options'=>['placeholder'=>'请选择政治面貌...'],
-                'items'=>Worker::getPoliticsLevel(),
+                'items'=>Worker::$politicsLabel,
                 'options'=>['inline'=>true]
             ],
 
@@ -123,19 +123,19 @@ use backend\models\Hospitals;
             'chinese_level'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
                 'options'=>['placeholder'=>'请选择普通话水平...'],
-                'items'=>Worker::getChineseLevel(), 'options'=>['inline'=>true]
+                'items'=>Worker::$chineselevelLabel, 'options'=>['inline'=>true]
             ],
 
             'certificate'=>[
                 'type'=> Form::INPUT_CHECKBOX_LIST,
                 'options'=>['placeholder'=>'请选择资质证书...'],
-                'items'=>Worker::getCertificate(),
+                'items'=>Worker::$certificateLabel,
                 'options'=>['inline'=>true], 'maxlength'=>10
             ],
 
             'level'=>[
                 'type'=> Form::INPUT_RADIO_LIST,
-                'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::getWorkerLevel(), 'options'=>['inline'=>true]
+                'options'=>['placeholder'=>'请选择护工等级...'],'items'=>Worker::$workerLevelLabel, 'options'=>['inline'=>true]
             ],
 
             'parent_worker_id'=>[
@@ -164,7 +164,7 @@ use backend\models\Hospitals;
                 </div>';
 
         echo $form->field($model, 'nation')->widget(Select2::classname(), [
-            'data' =>Worker::getNation(),
+            'data' => Worker::$nation,
             'options' => ['placeholder' => '请选择民族','style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true
@@ -241,7 +241,7 @@ use backend\models\Hospitals;
             'pluginOptions' => [
                 'allowClear' => true
             ],
-        ])->label('常驻城市');
+        ]);
 
         // 常驻医院
         echo $form->field($model, 'hospital_id')->widget(DepDrop::className(), [

@@ -125,7 +125,7 @@ use backend\models\OrderPatient;
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
-                                    'data'=>Worker::getWorkerLevel(),
+                                    'data'=>Worker::$workerLevelLabel,
                                     'options'=>['placeholder' => '请选择护工等级...']
                                 ]
                             ],

@@ -14,8 +14,8 @@ use yii\helpers\ArrayHelper;
 use backend\models\Comment;
 use backend\models\Worker;
 use backend\models\Workerother;
-use common\models\Order;
 use backend\models\WorkerSchedule;
+use api\modules\v2\models\Order;
 
 class WorkerController extends ActiveController {
     public $modelClass = false;
@@ -47,7 +47,6 @@ class WorkerController extends ActiveController {
      */
     public function actionIndex(){
         $params = Yii::$app->getRequest()->get();
-        $worker = \api\modules\v2\models\Worker::select($params);
 
         //获取在服务中的护工
         if(empty($params['start_time'])){
@@ -56,6 +55,8 @@ class WorkerController extends ActiveController {
             $startTime = $params['start_time'];
         }
         $workerIds = WorkerSchedule::getWorkingByDate($startTime);
+        $worker = \api\modules\v2\models\Worker::select($params, $workerIds);
+
         $worker['items'] = \api\modules\v2\models\Worker::formatWorker($worker['items'], $workerIds);
 
         return $worker;
@@ -78,7 +79,8 @@ class WorkerController extends ActiveController {
 
         #护工评价
         $worker['comments'] = Comment::find()
-            ->andFilterWhere(['worker_id'=>$workerId])
+            ->andFilterWhere(['worker_id'=>$workerId, 'status' => Comment::STATUS_AUDIT_OK])
+            ->andWhere("content <>''")
             ->orderBy('comment_id DESC')
             ->limit(self::$commentOffset)
             ->all();
@@ -92,12 +94,12 @@ class WorkerController extends ActiveController {
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
 
         #护工订单信息
-        $worker['orders'] = Order::find()
+        $orders = Order::find()
             ->andFilterWhere(['worker_no'=>$workerId])
             ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
             ->orderBy('order_id DESC')
             ->limit(self::$commentOffset)
-            ->all();
+            ->asArray()->all();
 
         //护工排期
 //        $worker['schedule'] = WorkerSchedule::find()
@@ -105,7 +107,10 @@ class WorkerController extends ActiveController {
 //            ->orderBy('start_date ASC')
 //            ->all();
 
-        $worker['orders'] = $worker['orders']?$worker['orders']:[];
+        $worker['orders'] = [];
+        if(!empty($orders)){
+            $worker['orders'] = Order::format($orders);
+        }
         return $worker;
     }
 

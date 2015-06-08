@@ -67,7 +67,7 @@ $this->title = '护工管理';
             [
                 'attribute'=>'level',
                 'value'=>function ($model){
-                    return $model->level ? Worker::getWorkerLevel($model->level) : null;
+                    return Worker::getWorkerLevel($model->level);
                 }
             ],
             'price',

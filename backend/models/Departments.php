@@ -162,7 +162,6 @@ class Departments extends \yii\db\ActiveRecord
             Redis::del($keys);
         }
     }
-
     /**
      * 删除缓存
      */

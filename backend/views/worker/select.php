@@ -132,7 +132,11 @@ $this->title = '选择护工';
     //待岗，在岗
     $('body').on('click', 'input[name="WorkerSearch[isWorking]"]', function () {
         var params = $('input,select').serialize();
-        location.href='<?php echo Yii::$app->urlManager->createUrl(['worker/select', 'order_id'=>$orderId,'start_time'=>$startTime])?>&'+params;
+        location.href='<?php echo Yii::$app->urlManager->createUrl([
+        'worker/select',
+        'order_id'=>$orderId,
+        'start_time'=>$startTime,
+        'city_id'=>$cityId])?>&'+params;
     });
 
     //选择护工

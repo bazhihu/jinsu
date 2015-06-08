@@ -133,7 +133,7 @@ class Departments extends \yii\db\ActiveRecord
         return [
             [['name', 'parent_id'], 'required'],
             [['parent_id'], 'integer'],
-            [['name'], 'string', 'max' => 255]
+            [['name', 'pinyin'], 'string', 'max' => 255]
         ];
     }
 

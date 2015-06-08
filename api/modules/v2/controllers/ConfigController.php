@@ -47,8 +47,7 @@ class ConfigController extends ActiveController {
     }
 
 
-    public function actionIndex()
-    {
+    public function actionIndex(){
         $cityId = Yii::$app->request->get('city_id');
         $return = array();
 
@@ -63,11 +62,10 @@ class ConfigController extends ActiveController {
         $return['departments'] = Departments::find()->all();
 
         #护工等级
-        $return['worker_levels'] = Config::generateWorker([Worker::WORKER_LEVEL_PRIMARY,Worker::WORKER_LEVEL_MEDIUM,Worker::WORKER_LEVEL_HIGH,Worker::WORKER_LEVEL_SUPER]);
+        $return['worker_levels'] = Config::getWorkerLevels();
 
-        #患者等级
-        $return['patient_states'] = Config::generatePatient([OrderPatient::PATIENT_STATE_OK,OrderPatient::PATIENT_STATE_DISABLED]);
-        $return['holidays'] = ArrayHelper::getColumn(Holidays::find()->all(),'date');
+        #节假日
+        $return['holidays'] = ArrayHelper::getColumn(Holidays::find()->all(), 'date');
 
         //开通城市
         $return['open_cities'] = City::getList(null, true, false);

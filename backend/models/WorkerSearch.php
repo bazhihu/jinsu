@@ -116,6 +116,7 @@ class WorkerSearch extends Worker
 
         $query->andFilterWhere([
             'gender' => $this->gender,
+            'city_id' => $this->city_id,
             'native_province' => $this->native_province,
             'level' => $this->level,
             'status' => $this->status,

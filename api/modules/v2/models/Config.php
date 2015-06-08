@@ -29,43 +29,22 @@ class Config extends ActiveRecord
      * @var array
      */
     public static $workerDes = [
+        Worker::WORKER_LEVEL_NEW =>'0年工作经验',
         Worker::WORKER_LEVEL_PRIMARY =>'3年工作经验',
         Worker::WORKER_LEVEL_MEDIUM =>'5年工作经验',
         Worker::WORKER_LEVEL_HIGH   =>'7年工作经验',
         Worker::WORKER_LEVEL_SUPER  =>'8年工作经验',
     ];
 
-    /**
-     *获取患者等级数组
-     * @param $array
-     * @return array
-     */
-    public static function generatePatient($array)
-    {
-        $return = array();
-        foreach($array as $key=>$value)
-        {
-            $return[$key] = [
-                "id"    => $value,
-                "name"  => OrderPatient::$patientStateLabels[$value],
-                "des"   => self::$patientDes[$value],
-                "price" => intval(OrderPatient::$patientStatePrice[$value]*100),
-            ];
-        }
-        return $return;
-    }
 
     /**
      * 获取护工等级数组
-     * @param $array
      * @return array
      */
-    public static function generateWorker($array)
-    {
+    public static function getWorkerLevels(){
         $return = array();
-        foreach($array as $key=>$value)
-        {
-            $return[$key] = [
+        foreach(array_keys(Worker::$workerLevelLabel) as $value){
+            $return[] = [
                 "id"    => $value,
                 "name"  => Worker::$workerLevelLabel[$value],
                 "des"   => self::$workerDes[$value],

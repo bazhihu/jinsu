@@ -158,6 +158,7 @@ td .btn{margin: 2px}
                             'class'=>'btn btn-sm btn-primary jsConfirmOrder',
                             'select-worker-url'=>Yii::$app->urlManager->createUrl([
                                 'worker/select',
+                                'city_id' => $model->city_id,
                                 'order_id' => $model->order_id,
                                 'start_time' => $model->start_time,
                                 'hospital_id' => $model->hospital_id

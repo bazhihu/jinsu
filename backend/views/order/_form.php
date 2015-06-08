@@ -126,7 +126,7 @@ use backend\models\OrderPatient;
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
                                     'data'=>Worker::$workerLevelLabel,
-                                    'options'=>['placeholder' => '请选择护工等级...']
+                                    'options'=>['placeholder' => '请选择护工等级...', 'style'=>'width:70%;float:left']
                                 ]
                             ],
                             'base_price' => [
@@ -331,8 +331,24 @@ use backend\models\OrderPatient;
             {base_price: price,start_time:startTime,end_time:endTime,patient_state:patientState}
         );
 
-        jQuery('#orderPriceModal').modal({"show":true});
+        $('#orderPriceModal').modal({"show":true});
     });
+
+    //选择护工
+    $(function(){
+        $('#ordermaster-worker_level').after('<a class="btn btn-success js-select-worker" style="margin:0 0 0 5px">选护工</a><div id="worker_name" style="margin-top:10px;display: none"></div>');
+
+        $('.js-select-worker').on('click', function(){
+            $('#selectWorkerModal').modal({"show":true});
+        });
+
+        //确认选择护工
+        $('.js-confirm-select-worker').on('click', function(){
+            $('form').append('<input name="OrderMaster[contact_telephone]" value=""')
+        });
+
+    });
+
 </script>
 <?php
 \yii\bootstrap\Modal::begin([
@@ -340,7 +356,18 @@ use backend\models\OrderPatient;
     'id'=>'orderPriceModal',
     'size'=>'modal-lg',
 ]);
-echo '<div id="priceDetail"></div>';
+echo '<div id="priceDetail">加载中...</div>';
+
+\yii\bootstrap\Modal::end()
+?>
+
+<?php
+\yii\bootstrap\Modal::begin([
+    'header' => '<strong>选护工</strong>',
+    'id'=>'selectWorkerModal',
+    'size'=>'modal-lg',
+]);
+echo '<div id="selectWorker">加载中...</div>';
 
 \yii\bootstrap\Modal::end()
 ?>

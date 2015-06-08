@@ -58,7 +58,7 @@ $this->title = '选择护工';
             [
                 'attribute'=>'hospital_id',
                 'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>Hospitals::getList(),
+                'filter'=>Hospitals::getList(0, $cityId),
                 'filterInputOptions'=>['placeholder'=>'请选择'],
                 'filterWidgetOptions'=>[
                     'pluginOptions'=>['allowClear'=>true],

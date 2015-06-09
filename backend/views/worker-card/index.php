@@ -118,6 +118,7 @@ $this->title = '护工工资卡';
                 },
             ],
             'bank_card',
+            'bank_sub_account',
             ['class' => 'yii\grid\ActionColumn',
                 'header'=>'操作',
                 'buttons' => [

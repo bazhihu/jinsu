@@ -76,7 +76,7 @@ class Hospitals extends \yii\db\ActiveRecord
      * @return static[]
      * @author zhangbo
      */
-    static public function getList($provinceId = 110000, $cityId = 110100, $areaId = 0) {
+    static public function getList($provinceId = 0, $cityId = 110100, $areaId = 0) {
         $cacheKey = self::$_keyPrefix."/provinceId:$provinceId/cityId:$cityId/areaId:$areaId";
         if(!$data = Redis::get($cacheKey)){
             $findArr = [];

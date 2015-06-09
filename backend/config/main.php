@@ -135,6 +135,7 @@ return [
             'tq/index',
             'tq/select',
             'order/calculate',
+            'hospitals/list',
             'datecontrol/parse/convert'
         ]
     ],

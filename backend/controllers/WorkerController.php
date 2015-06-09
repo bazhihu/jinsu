@@ -295,16 +295,29 @@ class WorkerController extends Controller
 
         $orderId = $_GET['order_id'];
         $startTime = $_GET['start_time'];
+        $cityId = isset($_GET['city_id']) ? $_GET['city_id'] : 110100;
         $searchModel = new WorkerSearch;
 
         //获取在工作中的护工
         $dataProvider = $searchModel->select(Yii::$app->request->getQueryParams());
 
-        return $this->render('select', [
+        //模板
+        $template = Yii::$app->getRequest()->get('template');
+        if(empty($template)){
+            $template = 'select';
+        }
+
+        return $this->render($template, [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
             'orderId' => $orderId,
-            'startTime' => $startTime
+            'startTime' => $startTime,
+            'cityId' => $cityId
         ]);
+    }
+
+    public function actionSchedule(){
+
+        return $this->render('schedule');
     }
 }

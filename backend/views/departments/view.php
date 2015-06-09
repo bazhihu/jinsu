@@ -34,7 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'parent_id',
                 'value'=>$model->parent_id?\backend\models\Departments::findOne(['id'=>$model->parent_id])->name:'无',
-            ]
+            ],
+            'pinyin'
+            
         ],
         'deleteOptions'=>[
         'url'=>['delete', 'id' => $model->id],

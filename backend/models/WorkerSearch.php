@@ -95,6 +95,7 @@ class WorkerSearch extends Worker
             'query' => $query,
         ]);
 
+        $this->city_id = isset($params['city_id']) ? $params['city_id'] : 110100;
         if(!empty($params['hospital_id'])){
             $this->hospital_id = $params['hospital_id'];
             $query->andFilterWhere(['like', 'hospital_id', ','.$params['hospital_id'].',']);
@@ -115,6 +116,7 @@ class WorkerSearch extends Worker
 
         $query->andFilterWhere([
             'gender' => $this->gender,
+            'city_id' => $this->city_id,
             'native_province' => $this->native_province,
             'level' => $this->level,
             'status' => $this->status,

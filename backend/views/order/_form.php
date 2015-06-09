@@ -121,20 +121,6 @@ use backend\models\OrderPatient;
                                     'options'=>['placeholder' => '请选择科室...']
                                 ]
                             ],
-                            'worker_level'=>[
-                                'type'=>Form::INPUT_WIDGET,
-                                'widgetClass'=>'\kartik\widgets\Select2',
-                                'options'=>[
-                                    'data'=>Worker::$workerLevelLabel,
-                                    'options'=>[
-                                        'placeholder' => '请选择护工等级...',
-                                        'style'=>'width:100%;float:left'
-                                    ]
-                                ]
-                            ],
-                            'base_price' => [
-                                'label' => '护工价格'
-                            ],
                             'start_time' => [
                                 'label'=>'开始时间',
                                 'type'=>Form::INPUT_WIDGET,
@@ -166,6 +152,20 @@ use backend\models\OrderPatient;
                                         'format' => 'yyyy-mm-dd 09:00:00'
                                     ]
                                 ]
+                            ],
+                            'worker_level'=>[
+                                'type'=>Form::INPUT_WIDGET,
+                                'widgetClass'=>'\kartik\widgets\Select2',
+                                'options'=>[
+                                    'data'=>Worker::$workerLevelLabel,
+                                    'options'=>[
+                                        'placeholder' => '请选择护工等级...',
+                                        'style'=>'width:70%;float:left'
+                                    ]
+                                ]
+                            ],
+                            'base_price' => [
+                                'label' => '护工价格'
                             ]
                         ]
                     ]);
@@ -339,15 +339,31 @@ use backend\models\OrderPatient;
 
     //选择护工
     $(function(){
-        //$('#ordermaster-worker_level').after('<a class="btn btn-success js-select-worker" style="margin:0 0 0 5px">选护工</a><div id="worker_name" style="margin-top:10px;display: none"></div>');
+        var workerHtml = '<a class="btn btn-success js-select-worker" style="margin:0 0 0 5px">选护工</a>';
 
+        <?php if($model->worker_name):?>
+            workerHtml += '<div style="margin-top:10px;">已选护工：<span id="worker-name"><?php echo $model->worker_name;?></span></div>';
+        <?php else:?>
+            workerHtml += '<div style="margin-top:10px;display:none">已选护工：<span id="worker-name"></span></div>';
+        <?php endif;?>
+        $('#ordermaster-worker_level').after(workerHtml);
+
+        //打开选择护工窗口
         $('.js-select-worker').on('click', function(){
-            $('#selectWorkerModal').modal({"show":true});
-        });
+            var startTime = encodeURI($('#ordermaster-start_time').val());
+            var cityId = $('#ordermaster-city_id').val();
+            var hospitalId = $('#ordermaster-hospital_id').val();
+            if(startTime.length <= 0 || cityId.length <= 0){
+                alert('请先选择城市和开始时间');
+                return false;
+            }
 
-        //确认选择护工
-        $('.js-confirm-select-worker').on('click', function(){
-            $('form').append('<input name="OrderMaster[contact_telephone]" value=""')
+            <?php $url = Yii::$app->urlManager->createUrl(['worker/select']);?>
+            var url = '<?php echo $url;?>&city_id='+cityId+'&start_time='+startTime+'&hospital_id='+hospitalId;
+            url += '&template=select_modal';
+            $("#workerFrame").attr('src', url);
+
+            $('#selectWorkerModal').modal({"show":true});
         });
 
     });
@@ -370,7 +386,6 @@ echo '<div id="priceDetail">加载中...</div>';
     'id'=>'selectWorkerModal',
     'size'=>'modal-lg',
 ]);
-echo '<div id="selectWorker">加载中...</div>';
-
-\yii\bootstrap\Modal::end()
 ?>
+<IFRAME id="workerFrame" src="" height="600" width="100%" frameborder="0"></IFRAME>
+<?php \yii\bootstrap\Modal::end()?>

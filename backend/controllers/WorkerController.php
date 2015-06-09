@@ -289,23 +289,32 @@ class WorkerController extends Controller
             return false;
         }
 
-        if(empty($_GET['order_id']) || empty($_GET['start_time'])){
-            throw new BadRequestHttpException('请求参数错误');
-        }
+        $template = Yii::$app->getRequest()->get('template');
+        if($template == 'select_modal'){
+            $this->layout = "modal.php";
+            if(empty($_GET['start_time']) || empty($_GET['city_id'])){
+                throw new BadRequestHttpException('请求参数错误');
+            }
 
-        $orderId = $_GET['order_id'];
-        $startTime = $_GET['start_time'];
-        $cityId = isset($_GET['city_id']) ? $_GET['city_id'] : 110100;
-        $searchModel = new WorkerSearch;
+            $orderId = 0;
+            $startTime = $_GET['start_time'];
+            $cityId = $_GET['city_id'];
+
+        }else{
+            $template = 'select';
+            if(empty($_GET['order_id']) || empty($_GET['start_time']) || empty($_GET['city_id'])){
+                throw new BadRequestHttpException('请求参数错误');
+            }
+
+            $orderId = $_GET['order_id'];
+            $startTime = $_GET['start_time'];
+            $cityId = $_GET['city_id'];
+        }
 
         //获取在工作中的护工
+        $searchModel = new WorkerSearch;
         $dataProvider = $searchModel->select(Yii::$app->request->getQueryParams());
 
-        //模板
-        $template = Yii::$app->getRequest()->get('template');
-        if(empty($template)){
-            $template = 'select';
-        }
 
         return $this->render($template, [
             'dataProvider' => $dataProvider,

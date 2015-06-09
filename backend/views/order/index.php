@@ -6,7 +6,7 @@ use kartik\grid\GridView;
 use backend\models\OrderMaster;
 //use backend\models\OrderPatient;
 use backend\models\Hospitals;
-use kartik\datetime\DateTimePicker;
+use kartik\date\DatePicker;
 use backend\models\Departments;
 
 /**
@@ -46,37 +46,11 @@ td .btn{margin: 2px}
         ],
         [
             'label'=>'下单时间',
-            'attribute'=>'create_time',
-            'filterType'=>GridView::FILTER_DATETIME,
-            'filterWidgetOptions'=>[
-                'type' => DateTimePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true]
-            ]
+            'attribute'=>'create_time'
         ],
-        [
-            'attribute'=>'start_time',
-            'filterType'=>GridView::FILTER_DATETIME,
-            'filterWidgetOptions'=>[
-                'type' => DateTimePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true]
-            ],
-        ],
-        [
-            'attribute'=>'end_time',
-            'filterType'=>GridView::FILTER_DATETIME,
-            'filterWidgetOptions'=>[
-                'type' => DateTimePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true]
-            ],
-        ],
-        [
-            'attribute'=>'reality_end_time',
-            'filterType'=>GridView::FILTER_DATETIME,
-            'filterWidgetOptions'=>[
-                'type' => DateTimePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true]
-            ],
-        ],
+        'attribute'=>'start_time',
+        'end_time',
+        'reality_end_time',
         [
             'attribute'=>'mobile',
             'format'=>'raw',

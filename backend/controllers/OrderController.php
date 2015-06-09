@@ -165,6 +165,7 @@ class OrderController extends Controller
         $model->contact_name = $oldOrder->contact_name;
         $model->contact_telephone = $oldOrder->contact_telephone;
         $model->contact_address = $oldOrder->contact_address;
+        $model->city_id = $oldOrder->city_id;
         $model->hospital_id = $oldOrder->hospital_id;
         $model->department_id = $oldOrder->department_id;
         $model->worker_no = $oldOrder->worker_no;

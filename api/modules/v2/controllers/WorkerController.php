@@ -94,12 +94,12 @@ class WorkerController extends ActiveController {
         $worker['selfIntros'] = $worker['selfIntros']?$worker['selfIntros']:[];
 
         #护工订单信息
-        $orders = Order::find()
-            ->andFilterWhere(['worker_no'=>$workerId])
-            ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
-            ->orderBy('order_id DESC')
-            ->limit(self::$commentOffset)
-            ->asArray()->all();
+//        $orders = Order::find()
+//            ->andFilterWhere(['worker_no'=>$workerId])
+//            ->andFilterWhere(['order_status'=>Order::ORDER_STATUS_END_SERVICE])
+//            ->orderBy('order_id DESC')
+//            ->limit(self::$commentOffset)
+//            ->asArray()->all();
 
         //护工排期
 //        $worker['schedule'] = WorkerSchedule::find()
@@ -108,9 +108,9 @@ class WorkerController extends ActiveController {
 //            ->all();
 
         $worker['orders'] = [];
-        if(!empty($orders)){
-            $worker['orders'] = Order::format($orders);
-        }
+//        if(!empty($orders)){
+//            $worker['orders'] = Order::format($orders);
+//        }
         return $worker;
     }
 

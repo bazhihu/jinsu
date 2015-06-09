@@ -27,6 +27,7 @@ use yii\web\UploadedFile;
  * @property string $phone1
  * @property string $phone2
  * @property double $price
+ * @property integer $city_id
  * @property string $hospital_id
  * @property string $office_id
  * @property string $good_at

@@ -94,14 +94,14 @@ public static $hotLine = '400-630-9860';
      * @author HZQ
      */
     public static function send($params){
-        #2015/4/28 屏蔽发送短信
+        /*#2015/4/28 屏蔽发送短信
         if($params['type'] != self::SMS_LOGIN_CODE){
             $response = [
                 'code'=>200,
                 'msg'=>'发送短信成功'
             ];
             return $response;
-        }
+        }*/
 
         $content = self::smsScene($params);  //内容
         if(!$content)

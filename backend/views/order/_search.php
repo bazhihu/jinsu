@@ -16,10 +16,16 @@ use kartik\datecontrol\DateControl;
         float:left;
         margin:5px;
     }
+    .field-ordersearch-create_time{
+        float:left;width:210px
+    }
     .field-ordersearch-start_time{
         float:left;width:210px
     }
     .field-ordersearch-end_time{
+        float:left;width:210px
+    }
+    .field-ordersearch-reality_end_time{
         float:left;width:210px
     }
 </style>

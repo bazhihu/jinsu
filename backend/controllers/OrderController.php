@@ -172,7 +172,7 @@ class OrderController extends Controller
         $model->worker_name = $oldOrder->worker_name;
         $model->worker_level = $oldOrder->worker_level;
         $model->base_price = $oldOrder->base_price;
-        $model->start_time = date('Y-m-d',strtotime($oldOrder->reality_end_time));
+        $model->start_time = $oldOrder->reality_end_time;
         $model->remark = $oldOrder->remark;
         $model->is_continue = OrderMaster::IS_CONTINUE_YES;
         $model->order_type = $oldOrder->order_type;

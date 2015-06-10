@@ -113,6 +113,10 @@ class WorkerSearch extends Worker
             return $dataProvider;
         }
 
+        if($this->hospital_id){
+            $query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
+        }
+
         if($this->isWorking == Worker::IS_WORKING_ON){
             $query->andFilterWhere(['IN', 'worker_id', $workerIds]);
         }elseif($this->isWorking == Worker::IS_WORKING_OFF){
@@ -130,7 +134,7 @@ class WorkerSearch extends Worker
             'star' => $this->star,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name]);
-        //$query->andFilterWhere(['like', 'hospital_id', ','.$this->hospital_id.',']);
+
 
         return $dataProvider;
     }

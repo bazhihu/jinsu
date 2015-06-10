@@ -81,7 +81,7 @@ if(empty($searchModel->isWorking)){
                     return $model->level ? Worker::getWorkerLevel($model->level) : null;
                 }
             ],
-
+            'price',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',

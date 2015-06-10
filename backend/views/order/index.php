@@ -46,11 +46,37 @@ td .btn{margin: 2px}
         ],
         [
             'label'=>'下单时间',
-            'attribute'=>'create_time'
+            'attribute'=>'create_time',
+            'filterType'=>GridView::FILTER_DATE,
+            'filterWidgetOptions'=>[
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+            ]
         ],
-        'attribute'=>'start_time',
-        'end_time',
-        'reality_end_time',
+        [
+            'attribute'=>'start_time',
+            'filterType'=>GridView::FILTER_DATE,
+            'filterWidgetOptions'=>[
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+            ],
+        ],
+        [
+            'attribute'=>'end_time',
+            'filterType'=>GridView::FILTER_DATE,
+            'filterWidgetOptions'=>[
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+            ],
+        ],
+        [
+            'attribute'=>'reality_end_time',
+            'filterType'=>GridView::FILTER_DATE,
+            'filterWidgetOptions'=>[
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+            ],
+        ],
         [
             'attribute'=>'mobile',
             'format'=>'raw',

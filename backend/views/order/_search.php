@@ -39,6 +39,57 @@ use kartik\datecontrol\DateControl;
                 ],
             ]); ?>
 
+            <?php
+            echo $form->field($model, 'create_time')->widget(DateControl::classname(), [
+                'type'=>DateControl::FORMAT_DATE,
+                'ajaxConversion'=>false,
+                'options' => [
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ],
+                    'options'=>['style'=>'width:130px']
+                ]
+            ])->label('下单时间');
+            ?>
+
+            <?php
+            echo $form->field($model, 'start_time')->widget(DateControl::classname(), [
+                'type'=>DateControl::FORMAT_DATE,
+                'ajaxConversion'=>false,
+                'options' => [
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ],
+                    'options'=>['style'=>'width:130px']
+                ]
+            ])->label('开始时间');
+            ?>
+
+            <?php
+            echo $form->field($model, 'end_time')->widget(DateControl::classname(), [
+                'type'=>DateControl::FORMAT_DATE,
+                'ajaxConversion'=>false,
+                'options' => [
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ],
+                    'options'=>['style'=>'width:130px']
+                ]
+            ])->label('结束时间');
+            ?>
+
+            <?php
+            echo $form->field($model, 'reality_end_time')->widget(DateControl::classname(), [
+                'type'=>DateControl::FORMAT_DATE,
+                'ajaxConversion'=>false,
+                'options' => [
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ],
+                    'options'=>['style'=>'width:130px']
+                ]
+            ]);
+            ?>
 
             <?php
 //            echo $form->field($model, 'department_id')
@@ -67,31 +118,7 @@ use kartik\datecontrol\DateControl;
                 ->label('订单来源');
             ?>
 
-            <?php
-//            echo $form->field($model, 'start_time')->widget(DateControl::classname(), [
-//                'type'=>DateControl::FORMAT_DATE,
-//                'ajaxConversion'=>false,
-//                'options' => [
-//                    'pluginOptions' => [
-//                        'autoclose' => true
-//                    ],
-//                    'options'=>['style'=>'width:130px']
-//                ]
-//            ])->label('订单时间范围');
-            ?>
 
-            <?php
-//            echo $form->field($model, 'end_time')->widget(DateControl::classname(), [
-//                'type'=>DateControl::FORMAT_DATE,
-//                'ajaxConversion'=>false,
-//                'options' => [
-//                    'pluginOptions' => [
-//                        'autoclose' => true
-//                    ],
-//                    'options'=>['style'=>'width:130px']
-//                ]
-//            ])->label('至');
-            ?>
 
             <div class="form-group" style="margin-top: 30px">
                 <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>

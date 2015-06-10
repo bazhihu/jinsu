@@ -49,16 +49,6 @@ class OrderSearch extends OrderMaster
             ],
         ]);
 
-        // enable sorting for the related columns
-        $addSortAttributes = ["profile.full_name"];
-        foreach ($addSortAttributes as $addSortAttribute) {
-            $dataProvider->sort->attributes[$addSortAttribute] = [
-                'asc'   => [$addSortAttribute => SORT_ASC],
-                'desc'  => [$addSortAttribute => SORT_DESC],
-            ];
-        }
-        //Yii::error();
-
         if (!($this->load($params) && $this->validate())) {
             $this->total = $query->sum('total_amount');
             $this->real_total = $query->sum('real_amount');
@@ -80,11 +70,16 @@ class OrderSearch extends OrderMaster
         ]);
 
         $query->andFilterWhere(['like', 'start_time', $this->start_time])
-            ->andFilterWhere(['like', 'end_time', $this->end_time])
             ->andFilterWhere(['like', 'create_time', $this->create_time])
             ->andFilterWhere(['like', 'worker_name', $this->worker_name])
             ->andFilterWhere(['like', 'reality_end_time', $this->reality_end_time])
             ->andFilterWhere(['like', 'patient_name', $this->patient_name]);
+
+        if(isset($params['referer']) && $params['referer'] == 'index'){
+            $query->andFilterWhere(['<=', 'end_time', $this->end_time]);
+        }else{
+            $query->andFilterWhere(['like', 'end_time', $this->end_time]);
+        }
 
         //!isset($params['sort']) && $query->orderBy('reality_end_time ASC');
         $this->total = $query->sum('total_amount');

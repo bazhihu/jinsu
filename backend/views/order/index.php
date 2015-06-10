@@ -47,35 +47,35 @@ td .btn{margin: 2px}
         [
             'label'=>'下单时间',
             'attribute'=>'create_time',
-            'filterType'=>GridView::FILTER_DATE,
-            'filterWidgetOptions'=>[
-                'type' => DatePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
-            ]
+//            'filterType'=>GridView::FILTER_DATE,
+//            'filterWidgetOptions'=>[
+//                'type' => DatePicker::TYPE_INPUT,
+//                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+//            ]
         ],
         [
             'attribute'=>'start_time',
-            'filterType'=>GridView::FILTER_DATE,
-            'filterWidgetOptions'=>[
-                'type' => DatePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
-            ],
+//            'filterType'=>GridView::FILTER_DATE,
+//            'filterWidgetOptions'=>[
+//                'type' => DatePicker::TYPE_INPUT,
+//                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+//            ],
         ],
         [
             'attribute'=>'end_time',
-            'filterType'=>GridView::FILTER_DATE,
-            'filterWidgetOptions'=>[
-                'type' => DatePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
-            ],
+//            'filterType'=>GridView::FILTER_DATE,
+//            'filterWidgetOptions'=>[
+//                'type' => DatePicker::TYPE_INPUT,
+//                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+//            ],
         ],
         [
             'attribute'=>'reality_end_time',
-            'filterType'=>GridView::FILTER_DATE,
-            'filterWidgetOptions'=>[
-                'type' => DatePicker::TYPE_INPUT,
-                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
-            ],
+//            'filterType'=>GridView::FILTER_DATE,
+//            'filterWidgetOptions'=>[
+//                'type' => DatePicker::TYPE_INPUT,
+//                'pluginOptions'=>['allowClear'=>true,'format' => 'yyyy-mm-dd']
+//            ],
         ],
         [
             'attribute'=>'mobile',
@@ -262,7 +262,7 @@ td .btn{margin: 2px}
             'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> 重置列表', ['index'], ['class' => 'btn btn-info']),
             'showFooter'=>true
         ],
-        'panelBeforeTemplate' => '<div class="pull-right"><div class="btn-toolbar kv-grid-toolbar" role="toolbar"><strong>订单金额合计：'.$searchModel->total.'元</strong><br><strong>实收金额合计：'.$searchModel->real_total.'元</strong></div></div>'.Html::a('<i class="glyphicon glyphicon-plus"></i> 新增订单', ['create'], ['class' => 'btn btn-success']).' {export}<div class="clearfix"></div>',
+        'panelBeforeTemplate' => '<div class="pull-right"><div class="btn-toolbar kv-grid-toolbar" role="toolbar"><strong>订单金额合计：'.(int)$searchModel->total.'元</strong><br><strong>实收金额合计：'.(int)$searchModel->real_total.'元</strong></div></div>'.Html::a('<i class="glyphicon glyphicon-plus"></i> 新增订单', ['create'], ['class' => 'btn btn-success']).' {export}<div class="clearfix"></div>',
 
     ]);
     //Pjax::end(); ?>

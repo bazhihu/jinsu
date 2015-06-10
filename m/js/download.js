@@ -17,7 +17,8 @@ $('.download').on(CLICK,function(){
                     hasApp = false;
                 }
                 if(!hasApp){//如果没安装，再打开下载地址
-                    document.location = "https://itunes.apple.com/cn/app/you-ai-yi-hu-nin-tie-xin-hu/id993561967?mt=8";
+                    location.href="http://a.app.qq.com/o/simple.jsp?pkgname=com.youaiyihu.yihu";
+                    //location.href = "https://itunes.apple.com/cn/app/you-ai-yi-hu-nin-tie-xin-hu/id993561967?mt=8";
                 }
     }else if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger") {
         //微信

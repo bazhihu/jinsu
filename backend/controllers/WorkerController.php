@@ -293,7 +293,7 @@ class WorkerController extends Controller
         if($template == 'select_modal'){
             $this->layout = "modal.php";
             if(empty($_GET['start_time']) || empty($_GET['city_id'])){
-                throw new BadRequestHttpException('请求参数错误');
+                throw new BadRequestHttpException('请求参数错误1');
             }
 
             $orderId = 0;
@@ -321,7 +321,8 @@ class WorkerController extends Controller
             'searchModel' => $searchModel,
             'orderId' => $orderId,
             'startTime' => $startTime,
-            'cityId' => $cityId
+            'cityId' => $cityId,
+            'template' => $template
         ]);
     }
 

@@ -24,6 +24,7 @@ use backend\models\OrderPatient;
     .btn{margin:5px}
     form{margin-bottom: 15px}
     .form-group{margin-bottom: 5px}
+    .modal-lg{width:1024px}
 </style>
 <div class="order-master-form">
     <?php
@@ -125,7 +126,7 @@ use backend\models\OrderPatient;
                                 'label'=>'开始时间',
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\DatePicker',
-                                'hint'=>'请输入开始时间(yyyy-mm-dd)',
+                                //'hint'=>'请输入开始时间(yyyy-mm-dd)',
                                 'options'=>[
                                     'removeButton' => false,
                                     'options'=>['placeholder'=>'开始时间...'],
@@ -141,7 +142,7 @@ use backend\models\OrderPatient;
                                 'label'=>'结束时间',
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\DatePicker',
-                                'hint'=>'请输入结束时间(yyyy-mm-dd)',
+                                //'hint'=>'请输入结束时间(yyyy-mm-dd)',
                                 'options'=>[
                                     'removeButton' => false,
                                     'options'=>['placeholder'=>'结束时间...'],
@@ -157,10 +158,11 @@ use backend\models\OrderPatient;
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
+                                    'hideSearch'=>true,
                                     'data'=>Worker::$workerLevelLabel,
                                     'options'=>[
                                         'placeholder' => '请选择护工等级...',
-                                        'style'=>'width:70%;float:left'
+                                        'style'=>'width:50%;float:left'
                                     ]
                                 ]
                             ],
@@ -186,7 +188,6 @@ use backend\models\OrderPatient;
                         echo $form->field($model, 'is_continue', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                         echo $form->field($model, 'worker_no', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                         echo $form->field($model, 'worker_name', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
-                        echo $form->field($model, 'base_price', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                         echo $form->field($model, 'order_type', ['options'=>['style'=>'display:none']])->hiddenInput()->label(false);
                     }
 
@@ -306,6 +307,9 @@ use backend\models\OrderPatient;
     $('#ordermaster-worker_level').change(function(){
         var level = $(this).val();
         $('#ordermaster-base_price').val(workerPrices[level]);
+        $('#ordermaster-worker_no').remove();
+        $('#ordermaster-worker_name').remove();
+        $('#worker-name').parent().hide();
     });
 
     $('.js-calculate-price').click(function(){
@@ -364,6 +368,7 @@ use backend\models\OrderPatient;
             $("#workerFrame").attr('src', url);
 
             $('#selectWorkerModal').modal({"show":true});
+            $('#selectWorkerModal').show();
         });
 
     });

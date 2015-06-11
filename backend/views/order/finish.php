@@ -15,12 +15,12 @@ echo Form::widget([
     'attributes' => [
         'reality_end_time'=>[
             'type'=>Form::INPUT_WIDGET,
-            'widgetClass'=>'\kartik\widgets\DateTimePicker',
+            'widgetClass'=>'\kartik\widgets\DatePicker',
             'options'=>[
                 'pluginOptions'=>[
                     'todayHighlight' => true,
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd hh:ii:ss'
+                    'format' => 'yyyy-mm-dd 09:00:00'
                 ]
             ]
         ],

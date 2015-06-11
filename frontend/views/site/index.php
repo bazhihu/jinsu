@@ -14,8 +14,8 @@ $this->registerMetaTag(['name'=>'Description', 'content'=>'优爱医护在北京
         </div>
         <div class="download">
             <img class="qr" src="/images/index/qr-app.png" alt="二维码" width="142" />
-            <a class="appstore" href="#">App Store</a>
-            <a class="android" href="#">Android</a>
+            <a class="appstore" href="https://itunes.apple.com/cn/app/you-ai-yi-hu-nin-tie-xin-hu/id993561967?l=zh&ls=1&mt=8">App Store</a>
+            <a class="android" href="http://download.youaiyihu.com/youaiyihu-android-release.apk">Android</a>
         </div>
     </div>
 </div>

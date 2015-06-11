@@ -157,8 +157,6 @@ $('body').on('click', 'button.jsFinishOrder', function () {
     var url = $(this).attr('data-url');
     $("#finishOrderModalContent").load(url);
     $('#finishOrderModal').modal({"show":true});
-
-
 });
 
 //取消订单

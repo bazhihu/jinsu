@@ -152,6 +152,39 @@ class OrderController extends Controller
     }
 
     /**
+     * 修改备注
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdateRemark($id){
+        $this->layout = 'none.php';
+        $model = $this->findModel($id);
+
+        $remark = Yii::$app->getRequest()->post('remark');
+        if (empty($remark)) {
+            return $this->render('update_remark', [
+                'model' => $model
+            ]);
+        } else {
+            $model->remark = $remark;
+            if($model->save()){
+                $response = [
+                    'code' => 200,
+                    'msg' => '修改成功',
+                ];
+            }else{
+                $response = [
+                    'code' => 500,
+                    'msg' => '修改失败:'.print_r($model->getErrors()),
+                ];
+            }
+
+            echo json_encode($response);
+        }
+    }
+
+    /**
      * 续单
      * @param $id
      * @return string

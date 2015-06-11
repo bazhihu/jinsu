@@ -128,10 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'mobile',
-                'label' => '帐号',
-                'value'=>function($model){
-                    return $model->mobile?substr_replace($model->mobile,'****',3,4):'';
-                }
+                'label' => '帐号'
             ],
             [
                 'attribute'=>'detail_type',

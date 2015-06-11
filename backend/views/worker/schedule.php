@@ -20,10 +20,22 @@ $this->title = '护工排期';
     <div id="schedule"></div>
 </div>
 <style>
-    .ui-state-highlight-leave {
+    body{line-height: 5}
+    .ui-datepicker {
+        display: none;
+        padding: 0.2em 0.2em 0;
+        width: 1024px;
+    }
+    .ui-datepicker table {
+        border-collapse: collapse;
+        font-size: 1em;
+    }
+    .ui-state-highlight-leave{
+        padding:2px;
         background: #ff0000;
         color: #fff;
     }
+
 </style>
 <script type="text/javascript">
     Date.prototype.Format = function (fmt) { //author: meizz
@@ -49,7 +61,7 @@ $this->title = '护工排期';
             var d = date.Format("yyyy-MM-dd");
             console.log(d);
             if($.inArray(d, leave) >= 0){
-                return [true, 'ui-state-highlight-leave','请假'];
+                return [false, 'ui-state-highlight-leave','请假'];
             }
             return [true, '', ''];
         }

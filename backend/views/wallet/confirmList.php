@@ -105,10 +105,7 @@ $this->registerJsFile('js/wallet.js', ['position'=>yii\web\View::POS_END]);
             ],
             [
                 'header'=>'用户账号',
-                'attribute'=>'mobile',
-                'value'=>function($model){
-                    return $model->mobile?substr_replace($model->mobile,'****',3,4):'';
-                },
+                'attribute'=>'mobile'
             ],
             [
                 'attribute'=>'money',

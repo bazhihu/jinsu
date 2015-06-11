@@ -29,7 +29,6 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
     </div>
 
     <!--订单操作-->
-    <?php if($model->order_status != OrderMaster::ORDER_STATUS_END_SERVICE && $model->order_status != OrderMaster::ORDER_STATUS_CANCEL):?>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">订单操作</h3>
@@ -95,10 +94,25 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
                     'class'=>'btn btn-primary jsEvaluateOrder'
                 ]);
             }
+
+            if(OrderMaster::checkOrderStatusAction($model->order_status, 'copy')){
+                echo Html::button('复制', [
+                    'data-url'=>Yii::$app->urlManager->createUrl(['order/continue', 'id'=>$model->order_id]),
+                    'class'=>'btn btn-primary jsContinueOrder'
+                ]);
+            }
+
+            echo Html::button('修改备注', [
+                'data-url'=>Yii::$app->urlManager->createUrl([
+                    'order/update-remark',
+                    'id' => $model->order_id
+                ]),
+                'class'=>'btn btn-primary jsUpdateRemark'
+            ]);
+
             ?>
         </div>
     </div>
-    <?php endif;?>
 
     <?php
     if($model->order_status == OrderMaster::ORDER_STATUS_WAIT_PAY){
@@ -312,6 +326,7 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 <div id="rechargeModalContent">加载中...</div>
 <?php \yii\bootstrap\Modal::end();?>
 
+
 <?php \yii\bootstrap\Modal::begin([
     'header' => '<strong>完成订单</strong>',
     'id'=>'finishOrderModal',
@@ -320,12 +335,22 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
 <div id="finishOrderModalContent">加载中...</div>
 <?php \yii\bootstrap\Modal::end();?>
 
+
 <?php \yii\bootstrap\Modal::begin([
     'header' => '<strong>取消订单</strong>',
     'id'=>'cancelOrderModal',
     'size'=>'modal-lg',
 ]);?>
 <div id="cancelOrderModalContent">加载中...</div>
+<?php \yii\bootstrap\Modal::end();?>
+
+
+<?php \yii\bootstrap\Modal::begin([
+    'header' => '<strong>修改备注</strong>',
+    'id'=>'remarkModal',
+    'size'=>'modal-lg',
+]);?>
+<div id="remarkModalContent">加载中...</div>
 <?php \yii\bootstrap\Modal::end();?>
 
 <script type="text/javascript">
@@ -340,6 +365,13 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         );
 
         $('#rechargeModal').modal({"show":true});
+    });
+
+    //修改备注
+    $('body').on('click', 'button.jsUpdateRemark', function () {
+        var url = $(this).attr('data-url');
+        $("#remarkModalContent").load(url);
+        $('#remarkModal').modal({"show":true});
     });
 
 </script>

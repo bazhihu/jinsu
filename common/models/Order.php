@@ -111,6 +111,10 @@ class Order extends \yii\db\ActiveRecord{
         //评价
         'evaluate' => [
             self::ORDER_STATUS_WAIT_EVALUATE
+        ],
+        //复制订单
+        'copy' => [
+            self::ORDER_STATUS_CANCEL
         ]
     ];
 

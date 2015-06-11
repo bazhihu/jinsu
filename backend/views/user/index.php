@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute'=>'mobile',
                 'format'=>'raw',
                 'value'=>function ($model) {
-                    return Html::a(substr_replace($model->mobile,'****',3,4), Yii::$app->urlManager->createUrl(['user/view','id'=>$model->id]));
+                    return Html::a($model->mobile, Yii::$app->urlManager->createUrl(['user/view','id'=>$model->id]));
                 },
                 'options' => [
                     'style' => 'width:110px',

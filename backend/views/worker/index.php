@@ -28,8 +28,14 @@ $this->title = '护工管理';
     <form action="" method="post" name="worker" id="worker">
         <input type="hidden" value="" name="op" id="op">
         <?php
-        $buttons ='<input type="button" name="audit_yes" id="audit_yes" value="上线" class="btn btn-success">';
-        $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_no" id="audit_no" value="下线" class="btn btn-success">';
+
+        $role = key(Yii::$app->authManager->getRolesByUser(yii::$app->user->identity->getId()));
+        if ($role=='系统管理员' || $role=='护工信息编辑'){
+            $buttons ='<input type="button" name="audit_yes" id="audit_yes" value="上线" class="btn btn-success">';
+            $buttons.= '&nbsp;&nbsp;<input type="button" name="audit_no" id="audit_no" value="下线" class="btn btn-success">';
+        }else{
+            $buttons="";
+        }
 
         Pjax::begin();
         echo GridView::widget([

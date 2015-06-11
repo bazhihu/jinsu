@@ -108,7 +108,7 @@ class OrderController extends Controller
                 $params['level'] = Worker::$workerLevelLabel[$order->worker_level];
                 Sms::send($params);
             }
-            return $this->redirect(['view', 'id' => $order->order_id]);
+            return $this->redirect(['index']);
         } else {
             //$model->addError('end_time', '结束时间不能小于或等于开始时间。');
             return $this->render('create', [

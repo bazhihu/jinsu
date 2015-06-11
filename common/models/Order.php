@@ -114,6 +114,8 @@ class Order extends \yii\db\ActiveRecord{
         ],
         //复制订单
         'copy' => [
+            self::ORDER_STATUS_END_SERVICE,
+            self::ORDER_STATUS_WAIT_EVALUATE,
             self::ORDER_STATUS_CANCEL
         ]
     ];

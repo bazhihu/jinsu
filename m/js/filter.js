@@ -17,7 +17,7 @@
     var end_time = getUrlQueryString('end_time');
     if(end_time) {
         $('.nurses-filter-tips').html("服务时间:"+start_time);
-        select_url+="&start_time="+start_time;
+        select_url+="&end_time="+end_time;
     }
 
     //性别

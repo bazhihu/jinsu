@@ -56,8 +56,8 @@ class TqController extends Controller
             $userModel = new User();
             $user = $userModel->findByMobile($callid);
             if ($user && isset($user->id)) {
-                $uid = $user->id;
-                $this->redirect(['user/view', 'id' => $uid]);
+//                $uid = $user->id;
+                $this->redirect(['order/index', 'OrderSearch[mobile]' => $callid]);
             } else {
                 $this->redirect(['order/create', 'callid' => $callid]);
             }

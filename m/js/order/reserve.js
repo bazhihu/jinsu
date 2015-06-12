@@ -1,4 +1,5 @@
 ; $(function () {
+    loggedIn();
     var start = getUrlQueryString('start_time'),
         end = getUrlQueryString('end_time'),
         workerNo = getUrlQueryString('worker_id');

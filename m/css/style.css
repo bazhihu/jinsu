@@ -692,7 +692,7 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 .nurses-filters .filter-label-selected { color: #33c9ab; }
 .nurses-filters .filter-label-selected:after { background-image: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAMAAAD+zz7+AAAAQlBMVEX///8trZItrZItrZItrZItrZItrZItrZItrZItrZItrpMtsJQusZUutJcvtpkwuZw0yqoyxKUzxqczyKg0yakywaMgJdvEAAAAEHRSTlMAAwoVJDdOaZKWscjb6vX8fzB3ZQAAAEJJREFUeF5Nx1UCgCAQBcCldalH3f+qBhjzNzQ5Rz82Z/vNJCCZZzp2oEc9p0LDqQV1TfqKW/WSSHDBUljQNvAa+wGR5wOeLWf+AAAAAABJRU5ErkJggg==); }
 
-.nurses-filter-tips { height: 20px; line-height: 20px; text-align: center; font-size: 11px; color: #33c9ac; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; background: #fdfbf0; }
+.nurses-filter-tips { height: 20px; line-height: 20px; text-align: center; font-size: 11px; color: #ff0000; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; background: #fdfbf0; }
 .nurses-filter-tips:empty { display: none; }
 #page-nurses-filter .nurses-list li:first-child { margin-top: 0; border-top: 0 none; }
 #page-nurses-filter { padding-top: 106px; }

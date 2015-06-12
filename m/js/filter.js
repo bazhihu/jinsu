@@ -172,7 +172,7 @@
 		input.readOnly = true;
 	});
 
-	document.getElementById('service-time').addEventListener('button', function (e) {
+	document.getElementById('service-time').addEventListener('submit', function (e) {
 		e.preventDefault();
 		var start = new Date(Date.parse(document.getElementById('start-time').value));
 		var end = new Date(Date.parse(document.getElementById('end-time').value));

@@ -74,7 +74,7 @@ use backend\models\OrderPatient;
                                 'type'=>Form::INPUT_WIDGET,
                                 'widgetClass'=>'\kartik\widgets\Select2',
                                 'options'=>[
-                                    'data'=>\backend\models\City::getList(null, true),
+                                    'data'=>\backend\models\City::getList(null, 3),
                                     'options'=>['placeholder' => '请选择城市...','style'=>'width:80%']
                                 ]
                             ],

@@ -2,11 +2,13 @@
 
 use Yii\helpers\Html;
 use Yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
-use kartik\datecontrol\DateControl;
 use kartik\widgets\DepDrop;
 use kartik\widgets\Select2;
+use backend\models\City;
+
 
 /**
  * @var yii\web\View $this
@@ -39,11 +41,11 @@ use kartik\widgets\Select2;
     ]
     ]);
     echo $form->field($model, 'province_id')->widget(Select2::classname(), [
-            'data' => \backend\models\City::getList(1),
+            'data' => ArrayHelper::map(City::getListByParentId(1), 'id', 'name'),
             'options' => ['placeholder' => 'Select ...'],
     ]);
     echo $form->field($model, 'city_id')->widget(DepDrop::classname(), [
-        'data'=> $model->province_id?\backend\models\City::getList(['parent_id'=>$model->province_id]):"",
+        'data'=> $model->province_id?ArrayHelper::map(City::getListByParentId($model->province_id), 'id', 'name'):"",
         'options' => ['placeholder' => 'Select ...'],
         'type' => DepDrop::TYPE_SELECT2,
         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
@@ -54,7 +56,7 @@ use kartik\widgets\Select2;
         ]
     ]);
     echo $form->field($model, 'area_id')->widget(DepDrop::classname(), [
-        'data'=> $model->city_id?\backend\models\City::getList(['parent_id'=>$model->city_id]):"",
+        'data'=> $model->city_id?ArrayHelper::map(City::getListByParentId($model->city_id), 'id', 'name'):"",
         'options' => ['placeholder' => 'Select ...'],
         'type' => DepDrop::TYPE_SELECT2,
         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],

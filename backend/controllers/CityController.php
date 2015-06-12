@@ -81,7 +81,7 @@ class CityController extends Controller
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $cat_id = $parents[0];
-                $out = City::getList($cat_id, false, false);
+                $out = City::getListByParentId($cat_id);
 
                 echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
@@ -95,7 +95,7 @@ class CityController extends Controller
             $ids = $_POST['depdrop_parents'];
             $subCatId = empty($ids[1]) ? null : $ids[1];
             if ($subCatId != null) {
-                $data = City::getList($subCatId, false, false);
+                $data = City::getListByParentId($subCatId);
                 echo Json::encode(['output'=>$data, 'selected'=>'']);
                 return;
             }

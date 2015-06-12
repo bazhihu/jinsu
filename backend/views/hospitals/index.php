@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use backend\models\City;
@@ -37,7 +38,7 @@ $this->title = '医院管理';
             [
                 'attribute'=>'province_id',
                 'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>City::getList(1),
+                'filter'=>ArrayHelper::map(City::getListByParentId(1), 'id', 'name'),
                 'filterInputOptions'=>['placeholder'=>'请选择'],
                 'filterWidgetOptions'=>[
                     'pluginOptions'=>['allowClear'=>true],

@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\widgets\Select2;
@@ -190,7 +191,7 @@ use backend\models\Hospitals;
                     'attributes'=>[
                         'birth_place'=>[
                             'type'=>Form::INPUT_DROPDOWN_LIST,
-                            'items'=> City::getList(1),
+                            'items'=> ArrayHelper::map(City::getListByParentId(1), 'id', 'name'),
                             'value'=>$model->birth_place,
                             'options'=>['prompt'=>'请选择'],
                         ],
@@ -198,7 +199,7 @@ use backend\models\Hospitals;
                             'type'=>Form::INPUT_WIDGET,
                             'widgetClass'=>DepDrop::classname(),
                             'options'=>[
-                                'data'=> $model->birth_place ? City::getList(['parent_id'=>$model->birth_place]):[''=>'请选择'],
+                                'data'=> $model->birth_place ? ArrayHelper::map(City::getListByParentId($model->birth_place), 'id', 'name'):[''=>'请选择'],
                                 'pluginOptions'=>[
                                     'depends'=>['worker-birth_place'],
                                     'placeholder'=>'请选择',
@@ -210,7 +211,7 @@ use backend\models\Hospitals;
                             'type'=>Form::INPUT_WIDGET,
                             'widgetClass'=>DepDrop::classname(),
                             'options'=>[
-                                'data'=> $model->birth_place_city ? City::getList(['parent_id'=>$model->birth_place_city]):[''=>'请选择'],
+                                'data'=> $model->birth_place_city ? ArrayHelper::map(City::getListByParentId($model->birth_place_city), 'id', 'name'):[''=>'请选择'],
                                 'pluginOptions'=>[
                                     'allowClear'=>true,
                                     'depends'=>['worker-birth_place_city'],
@@ -226,16 +227,16 @@ use backend\models\Hospitals;
 
         //籍贯
         echo $form->field($model, 'native_province')->widget(Select2::classname(), [
-            'data' => City::getList(1),
+            'data' => ArrayHelper::map(City::getListByParentId(1), 'id', 'name'),
             'options' => ['placeholder' => '请选择籍贯','style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true
             ],
         ])->label('籍贯');
 
-        //常驻城市
+        //服务城市
         echo $form->field($model, 'city_id')->widget(Select2::classname(), [
-            'data' => City::getList(null, true),
+            'data' => City::getList(null, 3),
             'options' => ['placeholder' => '请选择城市','style'=>'width:30%'],
             'pluginOptions' => [
                 'allowClear' => true

@@ -32,7 +32,7 @@ use backend\models\Hospitals;
             <?= $form->field($model, 'worker_name') ?>
 
             <?= $form->field($model, 'city_id')->widget(\kartik\widgets\Select2::classname(),[
-                'data' => \backend\models\City::getList(null, true),
+                'data' => \backend\models\City::getList(null, 3),
                 'options' => ['placeholder' => '请选择','style'=>'width:110px'],
                 'pluginOptions' => [
                     'allowClear' => true

@@ -236,7 +236,7 @@ class WorkerController extends Controller
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $birthPlace = $parents[0];
-                $data = City::getList($birthPlace, false, false);
+                $data = City::getListByParentId($birthPlace);
                 echo Json::encode(['output'=>$data,'selected'=>'']);
                 return;
             }
@@ -250,7 +250,7 @@ class WorkerController extends Controller
             $parents = $_POST['depdrop_parents'];
             $birthPlaceCity = $parents[0];
             if ($birthPlaceCity != null) {
-                $out = City::getList($birthPlaceCity, false, false);
+                $out = City::getListByParentId($birthPlaceCity);
                 echo Json::encode(['output'=>$out, 'selected'=>'']);
                 return;
             }

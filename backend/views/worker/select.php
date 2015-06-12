@@ -53,7 +53,7 @@ $this->title = '选择护工';
             [
                 'attribute'=>'city_id',
                 'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>City::getList(null, true),
+                'filter'=>City::getList(null, 3),
                 'filterInputOptions'=>['placeholder'=>'请选择','style' => 'display:none'],
 
                 'value'=> function ($model){

@@ -116,29 +116,34 @@ function get_workelist() {
                         var sort_html = ' <ul class="options">';
                         if(sort=='star_down' || !sort){
                             sort_html+='<li><a href="'+sort_url+'&sort=star_down" class="selected">好评最多</a></li> ';
+                            sort_tab = "好评最多";
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=star_down">好评最多</a></li> ';
                         }
 
                         if(sort=='price_down'){
                             sort_html+='<li><a href="'+sort_url+'&sort=price_down" class="selected">等级最高</a></li> ';
+                            sort_tab = "等级最高";
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=price_down">等级最高</a></li> ';
                         }
 
                         if(sort=='price_up'){
                             sort_html+='<li><a href="'+sort_url+'&sort=price_up" class="selected">价格最低</a></li>';
+                            sort_tab = "价格最低";
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=price_up">价格最低</a></li>';
                         }
 
                         if(sort=='birth_down'){
+                            sort_tab = "年龄最小";
                             sort_html+='<li><a href="'+sort_url+'&sort=birth_down" class="selected">年龄最小</a></li>';
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=birth_down">年龄最小</a></li> ';
                         }
                         sort_html+='</ul>';
                         $('#sort').html(sort_html);
+                        $("#sort_tab").html(sort_tab);
                         //排序 end
 
                         //性别 start
@@ -174,11 +179,11 @@ function get_workelist() {
                             }else{
                                 native_province_html+= '<li data-value="'+provinces[i].id+'">'+provinces[i].name+'</li> ' ;
                             }
-
                         }
                         native_province_html+= '</ul>';
                         $('.native_province').html(native_province_html);
                         //籍贯 end
+
 
                         //护理员级别 start
                         if(worker_level){
@@ -200,7 +205,8 @@ function get_workelist() {
                         $('.worker_level').html(worker_level_html);
                         //护理员级别 end
 
-                        $('#select_num').attr('data-badge',select_num);
+                        if(select_num>0)
+                            $('#select_num').attr('data-badge',select_num);
 
                         //设置时间控件默认的开始和结束时间
                         if(!start_time && !end_time){

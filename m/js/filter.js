@@ -176,7 +176,7 @@
 		e.preventDefault();
 		var start = new Date(Date.parse(document.getElementById('start-time').value));
 		var end = new Date(Date.parse(document.getElementById('end-time').value));
-		document.querySelector('.nurses-filter-tips').innerHTML = '\u670d\u52a1\u65f6\u95f4\uff1a' + start.getFullYear() + '\u5e74' + (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + end.getFullYear() + '\u5e74' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5';
+		//document.querySelector('.nurses-filter-tips').innerHTML = '\u670d\u52a1\u65f6\u95f4\uff1a' + start.getFullYear() + '\u5e74' + (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + end.getFullYear() + '\u5e74' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5';
 		$('#jdate-btn-remove').trigger('click');
 		$('.nurses-filters label[for="service-time"]').trigger('tap');
 

@@ -17,7 +17,7 @@
     var end_time = getUrlQueryString('end_time');
     if(end_time) {
         $('.nurses-filter-tips').html("服务时间:"+start_time);
-        select_url+="&start_time="+start_time;
+        select_url+="&end_time="+end_time;
     }
 
     //性别
@@ -172,7 +172,7 @@
 		input.readOnly = true;
 	});
 
-	document.getElementById('service-time').addEventListener('button', function (e) {
+	document.getElementById('service-time').addEventListener('submit', function (e) {
 		e.preventDefault();
 		var start = new Date(Date.parse(document.getElementById('start-time').value));
 		var end = new Date(Date.parse(document.getElementById('end-time').value));

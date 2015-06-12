@@ -8,9 +8,12 @@
 
 namespace api\modules\v2\models;
 
+use backend\models\City;
 use \yii\db\ActiveRecord;
 use backend\models\Worker;
 use backend\models\OrderPatient;
+use yii\helpers\ArrayHelper;
+
 /**
  * Config Model
  */
@@ -52,5 +55,19 @@ class Config extends ActiveRecord
             ];
         }
         return $return;
+    }
+
+    /**
+     * 获取有护工的省份
+     * @param $cityId
+     * @return array
+     */
+    public static function getHaveWorkerProvinces($cityId){
+        $connection = \Yii::$app->db;
+        $sql = "SELECT native_province FROM yayh_worker WHERE city_id=$cityId AND audit_status=1";
+        $sql = "SELECT `id`,`name` FROM yayh_city WHERE `id` IN($sql)";
+        $command = $connection->createCommand($sql);
+        $provinces = $command->queryAll();
+        return $provinces;
     }
 }

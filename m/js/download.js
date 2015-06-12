@@ -1,7 +1,7 @@
 $('.download').on(CLICK,function(){
     var ifrSrc="yayhapp://cn.md.dt/";//APP协议头，由APP开发人员定义提供
     if(navigator.userAgent.toLowerCase().match(/(iphone|ipad|ipod|ios)/i)){
-        //document.location ="downloadIos.html";
+        document.location ="downloadIos.html";
                 //IOS
                 var hasApp = true;//是否安装了app
                 var t1 = Date.now();

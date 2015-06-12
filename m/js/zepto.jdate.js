@@ -583,10 +583,10 @@ if (window.jQuery || window.Zepto) {
 	}
 
 	//初始化
-	Jdate.prototype.init = function ($target, year, month) {
+	Jdate.prototype.init = function ($target, year, month, closeOnSelected) {
 
 		var $jdate = $("#jdate") || null;
-
+		this.closeOnSelected = closeOnSelected;
 		//如果页面不存在jdate则创建
 		if ($jdate.length < 1) {
 
@@ -619,8 +619,12 @@ if (window.jQuery || window.Zepto) {
 
 			$jdateheader_btn_check.click(function () {
 				//写入表单元素中，并触发change事件
-				$target.val(selectedDate.year + "-" + selectedDate.month + "-" + selectedDate.date).trigger('change');
-				_close($jdate);
+				var value = selectedDate.year + "-" + ((parseInt(selectedDate.month) + 100) + '').substr(1) + "-" + ((parseInt(selectedDate.date) + 100) + '').substr(1);
+
+				$target.val(value).trigger('change');
+				if (closeOnSelected !== false) {
+					_close($jdate);
+				}
 			});
 
 			//头部
@@ -847,17 +851,17 @@ if (window.jQuery || window.Zepto) {
 		$overlay.fadeIn(300);
 	}
 
-	$.fn.jdate = function () {
+	$.fn.jdate = function (closeOnSelected) {
 		return $(this).each(function () {
 			var $self = $(this);
 
 			var init = function () {
-
+				$('#jdate').remove();
 				var val = $self.val() == "" ? null : $self.val().replace(/-/g, "/");
 				var jdate = new Jdate();
 				//如果input没有值的话，日期初始化以今天为准，否则以input中的日期为准
 				if (!val) {
-					jdate.init($self, now.year, now.month, now.date);
+					jdate.init($self, now.year, now.month, now.date, closeOnSelected);
 				}
 				else {
 					var tempdate = new Date(val);
@@ -865,8 +869,9 @@ if (window.jQuery || window.Zepto) {
 					selectedDate.year = tempdate.getFullYear();
 					selectedDate.month = tempdate.getMonth() + 1;
 					selectedDate.date = tempdate.getDate();
-					jdate.init($self, selectedDate.year, selectedDate.month);
+					jdate.init($self, selectedDate.year, selectedDate.month, closeOnSelected);
 				}
+				$self.blur();
 			};
 			//当input获取焦点时打开日期选择器
 			$self.click(init);

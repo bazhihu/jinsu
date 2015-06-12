@@ -29,7 +29,10 @@ var UA = window.navigator.userAgent.toLowerCase(),
     TOKEN = 'youaiyihu',
     CONFIGS = 'configs',
     CYCLE = 'cycle',
+    CITY = 'city',
+    orderDate = 'orderDate',
     configUrl = url+version+'configs',
+    configUrlV2 = url+version_v2+'configs',
     loginUrl = url+version+'logins',
     commentUrl = url+version+'comments',
     orderUrl = url+version+'orders',
@@ -145,18 +148,37 @@ function cycles(){
     return false;
 }
 
-function getConfigs(callback){
-    var configs = JSON.parse(localStorage.getItem(CONFIGS)),
-        cycle = cycles();
-    if(!configs || cycle){
-        deploy(function(err,response){
+function defaultCity(city){
+    setCookie(CITY,city);
+}
+
+function getDefaultCity(){
+    return getCookie(CITY);
+}
+
+function getConfigs(callback, city){
+    if(!city){
+        var city =  getDefaultCity()?getDefaultCity():110100;
+        var configs = JSON.parse(localStorage.getItem(CONFIGS)),
+            cycle = cycles();
+        if(!configs || cycle){
+            deploy(city,function(err,response){
+                if(!err){
+                    callback(response);
+                    setConfigs(JSON.stringify(response));
+                }
+            });
+        }else{
+            callback(configs);
+        }
+    }else{
+        defaultCity(city);
+        deploy(city,function(err,response){
             if(!err){
                 callback(response);
                 setConfigs(JSON.stringify(response));
             }
         });
-    }else{
-        callback(configs);
     }
 }
 
@@ -164,8 +186,9 @@ function setConfigs(value){
     localStorage.setItem(CONFIGS,value);
 }
 
-function deploy(callback){
-    $.getJSON(configUrl, function(e){
+function deploy(city,callback){
+    configsUrl = configUrlV2+'?city_id='+city;
+    $.getJSON(configsUrl, function(e){
         if(e.code==200){
             callback(null, e.data);
         }else{
@@ -208,13 +231,17 @@ function getUrlQueryString(name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
-function getLocal(){
-    var configs = localStorage.getItem(CONFIGS);
-    return configs;
+function getLocal(name){
+    var val = localStorage.getItem(name);
+    if(val){
+        return val;
+    } else {
+        return false;
+    }
 }
 
-function setLocal(value){
-    localStorage.setItem(CONFIGS,value);
+function setLocal(name,value){
+    localStorage.setItem(name,value);
 }
 
 /**

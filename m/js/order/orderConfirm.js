@@ -1,28 +1,37 @@
-var type = getUrlQueryString('type'),
-    worker_no = getUrlQueryString('worker_no'),
+var orderDate = getLocal(orderDate),
+    date =  JSON.parse(orderDate),
+    type = getUrlQueryString('type'),
+    worker_no = date.workerId,
     userInfo = getStatus(),
     orderCreate = orderUrl+'?access-token='+userInfo.token,
-    userUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token;
+    userUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token,
+    careMsg = date.patient;
+    //病患信息
+    careInfo = JSON.parse(careMsg);
+
+loggedIn();
+if(!date || !careInfo){
+    location.href = '/';
+}
+
 var walletMoney=0;
 getConfigs(function(configs) {
     //获取余额
     $.get(userUrl,function(response){
         if(response.code == 200){
-            var blance= parseInt(response.data.wallet.money);
-            var orderData = getCookie('orderData');
-            var dataArray= orderData.split("#");
-            var mobile = dataArray[0];
-            var start_time = dataArray[1];
-            var end_time = dataArray[2];
-            var days = dataArray[3];
-            var hospital_id = dataArray[4];
-            var department_id = dataArray[5];
-            var worker_level = dataArray[6];
-            var patient_state= 1;
+            var blance= parseInt(response.data.wallet.money),
+                mobile =userInfo.name,
+                start_time = date.startData,
+                end_time = date.endData,
+                hospital_id = date.serviceSite,
+                department_id = date.disease,
+                room = date.room,
+                misc = date.misc,
+                patient_state= 1;
             walletMoney=blance;
 
             //常驻医院
-            var lenth =configs.hospitals.length;
+            var lenth = configs.hospitals.length;
             var data  = configs.hospitals;
             var hospitals_array = new Array();
             for(var i =0;i<=lenth-1;i++){
@@ -40,19 +49,6 @@ getConfigs(function(configs) {
                 departments_array[id] = departments_data[m]['name'];
             }
             var departments_name = departments_array[department_id];
-
-            //护理员级别
-            var worker_level_lenth =configs.worker_levels.length;
-            var worker_level_data  = configs.worker_levels;
-            var worker_level_array = new Array();
-            var worker_level_prirce_array = new Array();
-
-            for(var j =0;j<=worker_level_lenth-1;j++){
-                var id = worker_level_data[j]['id'];
-                worker_level_array[id] = worker_level_data[j]['name'];
-                worker_level_prirce_array[id] = worker_level_data[j]['price'];
-            }
-            var worker_level_name = worker_level_array[worker_level];
 
             //病患状态
             var patient_states_lenth =configs.patient_states.length;
@@ -90,9 +86,21 @@ getConfigs(function(configs) {
                     var days = getOrderCycle(start_time,end_time);
             }
 
-            $.get(workerUrl+"/"+worker_no,function(worker_back){
+            $.get(workerUrl+"/"+worker_no,function(worker_back){console.log(worker_back);
                 var price = parseInt(worker_back.data.price);
                 var worker_level = worker_back.data.level;
+
+                //护理员级别
+                var worker_level_lenth =configs.worker_levels.length;
+                var worker_level_data  = configs.worker_levels;
+                var worker_level_array = new Array();
+                var worker_level_prirce_array = new Array();
+
+                for(var j =0;j<=worker_level_lenth-1;j++){
+                    var id = worker_level_data[j]['id'];
+                    worker_level_array[id] = worker_level_data[j]['name'];
+                    worker_level_prirce_array[id] = worker_level_data[j]['price'];
+                }
 
                 var worker_level_name = worker_level_array[worker_level];
                 var worker_name = worker_back.data.name;
@@ -120,14 +128,32 @@ getConfigs(function(configs) {
                     var  wechat_acess = 0,
                         alipay_access = 1;
                 }
+                var startData = start_time.substr(5,2)+'月'+start_time.substr(8,2)+'日',
+                    endData = end_time.substr(5,2)+'月'+end_time.substr(8,2)+'日',
+                    time  = startData+'-'+endData,
+                    locations;
+                if(room != ''){
+                    locations = hospitals_name+'/'+departments_name+'/'+room;
+                }else{
+                    locations = hospitals_name+'/'+departments_name;
+                }
                 var data = {
                     'type':type,
                     'uid':userInfo.id,
                     'pic':pic,
                     'mobile':mobile,
+                    'careName':careInfo.name,
+                    'careGender':careInfo.gender,
+                    'careAge':careInfo.age,
+                    'careHeight':careInfo.height,
+                    'careWeight':careInfo.weight,
+                    'time':time,
                     'start_time': start_time,
                     'end_time': end_time,
                     'days':days,
+                    'locations':locations,//服务地点
+                    'room':room,
+                    'remark':misc,
                     'hospital_id':hospital_id,
                     'hospitals_name':hospitals_name,
                     'department_id':department_id,
@@ -157,6 +183,15 @@ getConfigs(function(configs) {
                 var pay_way = $('input[name="pay_way"]:checked').val();
                 var worker_level = $('#worker_level').val();
                 var need_pay = $('#need_pay').val();
+
+                var careName = $('input[name="careName"]').val();
+                var careGender = $('input[name="careGender"]').val();
+                var careAge = $('input[name="careAge"]').val();
+                var careHeight = $('input[name="careHeight"]').val();
+                var careWeight = $('input[name="careWeight"]').val();
+                var room = $('input[name="room"]').val();
+                var remark = $('input[name="remark"]').val();
+                var department_id = $('input[name="department_id"]').val();
                 if(need_pay<0) {
                     var pay_way = 1;
                 }
@@ -167,13 +202,22 @@ getConfigs(function(configs) {
                         'uid':userInfo.id,
                         'mobile':mobile,
                         'hospital_id':hospital_id,
-                        'department_id':1,
-                        'worker_level':worker_level,
+                        'department_id':department_id,
+                        'worker_level':worker_level,//注视
                         'worker_no':worker_no,
                         'start_time': start_time,
                         'end_time': end_time,
                         'patient_state':1,
-                        'pay_way':pay_way
+                        'pay_way':pay_way,
+
+                        //add Huzq
+                        'name':careName,
+                        'gender':careGender,
+                        'age':careAge,
+                        'height':careHeight,
+                        'weight':careWeight,
+                        'room_no':room,
+                        'remark':remark
                     };
 
                     $.post(orderCreate,post_data,function(post_response){
@@ -197,14 +241,23 @@ getConfigs(function(configs) {
                             'uid':userInfo.id,
                             'mobile':mobile,
                             'hospital_id':hospital_id,
-                            'department_id':1,
+                            'department_id':department_id,
                             'worker_level':worker_level,
                             'worker_no':worker_no,
                             'start_time': start_time,
                             'end_time': end_time,
                             'patient_state':1,
                             'pay_way':pay_way,
-                            'action':'payment'
+                            'action':'payment',
+
+                            //add Huzq
+                            'name':careName,
+                            'gender':careGender,
+                            'age':careAge,
+                            'height':careHeight,
+                            'weight':careWeight,
+                            'room_no':room,
+                            'remark':remark
                         },
                         dataType: 'json',
                         async:false,
@@ -230,7 +283,7 @@ getConfigs(function(configs) {
                             'uid':userInfo.id,
                             'mobile':mobile,
                             'hospital_id':hospital_id,
-                            'department_id':1,
+                            'department_id':department_id,
                             'worker_level':worker_level,
                             'worker_no':worker_no,
                             'start_time': start_time,
@@ -238,7 +291,16 @@ getConfigs(function(configs) {
                             'patient_state':1,
                             'pay_way':pay_way,
                             'action':'payment',
-                            'trade_type':'JSAPI'
+                            'trade_type':'JSAPI',
+
+                            //add Huzq
+                            'name':careName,
+                            'gender':careGender,
+                            'age':careAge,
+                            'height':careHeight,
+                            'weight':careWeight,
+                            'room_no':room,
+                            'remark':remark
                         },
                         dataType: 'json',
                         async:false,

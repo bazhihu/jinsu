@@ -1,77 +1,78 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+	<meta charset="utf-8" />
     <title>优爱医护-您的贴心护理员</title>
     <meta name="Keywords"  content="护理员、护工、陪护、护理、医院护工、家庭陪护、老年护理员、北京护工" />
     <meta name="Description" content="优爱医护在北京卫生局相关部门的监督和领导下，平台所有护理员均经过岗前培训，并通过严格的考试获得护理员资格上岗，超过4000名专业护理员提供服务，全城覆盖，最快的速度帮您找到最合适的护理员。" />
     <meta name="viewport" content="width=320,user-scalable=no" />
-    <meta content="telephone=no" name="format-detection" />
-    <link href="../css/style.css" rel="stylesheet" />
-    <link href="../css/launch-app.css" rel="stylesheet" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/zepto.jdate-min.css" rel="stylesheet" />
 </head>
-<body id="page-index">
-<div id="launch-app">
-    <span role="button" class="close">关闭</span>
-    <img class="app-icon" src="../images/app-icon-72x72.png" width="36" height="36" alt="图标" />
-    <h2 class="title">优爱医护手机客户端</h2>
-    <p class="slogan">手机充值，余额支付更快捷</p>
-    <a href="yayhapp://www.youaiyihu.com"
-       data-myapp="http://a.app.qq.com/o/simple.jsp?pkgname=com.youaiyihu.yihu"
-       data-apk='http://download.youaiyihu.com/youaiyihu-android-release.apk'
-       data-appstore="https://itunes.apple.com/cn/app/you-ai-yi-hu-nin-tie-xin-hu/id993561967?l=zh&ls=1&mt=8"
-       class="launch-app-button">立即体验</a>
-</div>
-<header id="header">
-    <a class="account" href="../my/center.html">个人中心</a>
-    <h1 class="title">优爱医护</h1>
-    <!--<select id="select-city">
-       <option value="beijing">北京</option>
-      <option value="shanghai">上海</option>
-       <option value="mars">火星</option>
-    </select>-->
-</header>
-
-<div class="swiper-container">
-    <div class="swiper-wrapper">
-        <div class="swiper-slide" style="">
-            <a href="about.html"><img src="../images/slides/1.jpg" alt="优爱医护，您的贴心护理员" /></a>
-        </div>
-        <div class="swiper-slide" style="">
-            <a href="question.html"><img src="../images/slides/2.jpg" alt="优爱医护，您的贴心护理员" /></a>
-        </div>
-        <!--<div class="swiper-slide" style="">-->
-            <!--<img src="../images/slides/1.jpg" alt="优爱医护，您的贴心护理员" />-->
-        <!--</div>-->
+<body id="page-nurses-filter">
+    <header id="header">
+        <label for="city" class="city-label filter-label">北京</label>
+        <h2 class="title">优爱医护</h2>
+        <a class="account1" href="../my/center.html">个人中心</a>
+    </header>
+    <div class="nurses-filters">
+        <label for="service-time" class="filter-label">服务时间</label>
+        <label for="sort" class="filter-label">智能排序</label>
+        <label for="more" class="filter-label" data-badge="0" id="select_num">筛选</label>
     </div>
-    <div class="swiper-pagination"></div>
-</div>
 
-<div role="menu" class="tiles">
-    <a class="express" role="menuitem" href="order.html?type=select">立即下单</a>
-    <a class="nurses" role="menuitem" href="../my/myOrders.html">我的订单</a>
-    <a class="orders" role="menuitem" href="question.html">常见问题</a>
-    <a class="service" role="menuitem" href="tel:400-630-9860">呼叫客服</a>
-</div>
-<div id="foot"></div>
-<script type="text/javascript" src="../js/swiper.min.js"></script>
-<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
-<script type="text/javascript" src="../js/public.js"></script>
-<script type="text/javascript" src="../js/launch-app.js"></script>
-<script>
-    var focusSlides;
-    window.addEventListener('load', function () {
-        focusSlides = new Swiper('.swiper-container', {
-            mode: 'horizontal',
-            autoplay: 5000,
-            createPagination: true,
-            pagination: '.swiper-pagination',
-            loop: true
-        });;
-    });
-//    if(!getCookie(firstEntered)){
-//        location.href = host+'/about.html'
-//    }
-</script>
+    <div id="city" class="filter-options">
+        <div class="container">
+            <i class="about">更多城市敬请期待</i>
+            <p class="title">请选择城市</p>
+            <ul class="cities">
+                <li class="selected" id="city_id_110100">
+                    <a href="?city_id=110100">北京</a>
+                </li>
+                <li  id="city_id_120100">
+                    <a href="?city_id=120100">天津</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <form id="service-time" class="filter-options">
+        <input type="submit" value="确定" id="service-time-submit"/>
+        <div class="times">
+            <label for="start-time" class="selected">开始时间<input type="date" id="start-time" value="" /></label>
+            <label for="end-time">结束时间<input type="date" id="end-time" value="" /></label>
+        </div>
+    </form>
+    <div id="sort" class="filter-options"></div>
+    <form id="more" class="filter-category filter-options">
+        <div class="container">
+            <ul class="category">
+                <li data-id="gender" class="selected">性别</li>
+                <li data-id="native_province">籍贯</li>
+                <li data-id="worker_level">护理员级别</li>
+            </ul>
+        </div>
+        <div class="gender subcategory-selected container subcategory" data-category="gender"></div>
+        <div class="native_province container subcategory" data-category="native_province"></div>
+        <div class="worker_level container subcategory" data-category="worker_level"></div>
+        <div class="operations">
+            <span role="button" class="reset-button button">重置</span>
+            <span role="button" class="submit-button button">确认</span>
+        </div>
+    </form>
+    <p class="nurses-filter-tips">请先设置服务开始时间与结束时间</p>
+    <ul class="nurses-list" id="body"></ul>
+    <div class="loading-more loading"></div>
+    <div id="foot"></div>
+    <script src="/js/zepto-with-touch.min.js"></script>
+    <script type='text/javascript' src='/js/public.js'></script>
+    <script type='text/javascript' src='/js/worker/worker.js'></script>
+    <script type="text/javascript">
+        get_workelist();
+    </script>
+    <script src="/js/iscroll-lite.min.js"></script>
+    <script src="/js/zepto.fx.min.js"></script>
+    <script src="/js/zepto.jdate.js"></script>
+    <script src="/js/filter.js"></script>
 </body>
 </html>

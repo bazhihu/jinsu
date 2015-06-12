@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>预约</title>
+    <meta name="viewport" content="width=320,user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-reserve">
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">预约</h2>
+    <a class="home" href="1.index.html">首页</a>
+</header>
+<div class="card">
+    <div class="nurses-photo" style="background-image: url(http://img.youaiyihu.com/default-avatar.jpg)"></div>
+    <div class="nurses-intro">
+        <h3 class="nurses-name">&nbsp;</h3>
+        <em class="care-level">&nbsp;</em>
+        <i class="code">工号:&nbsp;</i>
+    </div>
+</div>
+<form class="menu-form">
+    <div class="menu">
+        <input type="hidden" id="workerId" name="workerId" value="" />
+        <label class="menu-header">预约信息</label>
+        <label class="menuitem" role="menuitem">
+            <em class="title">服务时间：</em>
+            <span class="value hours" style="max-width: 200px;">6月3日-6月5日 <em class="nurses-days">共2天</em></span>
+            <input type="hidden" id="start" name="start" value="" />
+            <input type="hidden" id="end" name="end" value="" />
+        </label>
+        <a href="patient.html" id="patient-menuitem" target="popup" class="menuitem" role="menuitem">
+            <em class="title">被护理人：</em>
+            <label class="value" data-placeholder="请选择"></label>
+            <input type="hidden" id="patient" name="patient" />
+        </a>
+        <label for="hospitals" class="filter-label menuitem" role="menuitem">
+            <em class="title">医　　院：</em>
+            <i class="value" data-placeholder="请选择服务医院"></i>
+            <input type="hidden" id="service-site" name="hospitals" value="" />
+        </label>
+        <label for="department" class="filter-label menuitem" role="menuitem">
+            <em class="title">科　　室：</em>
+            <i class="value" data-placeholder="请选择服务科室"></i>
+            <input type="hidden" id="disease" name="department" value="" />
+        </label>
+        <div class="menuiteminput menuitem">
+            <label class="title" for="room">病　　房：</label>
+            <input type="text" name="room" id="room" value="" placeholder="请输入所在病房及床位号" />
+        </div>
+        <div class="menuiteminput menuitem">
+            <label class="title" for="misc">备注信息：</label>
+            <input type="text" name="misc" id="misc" value="" placeholder="其他要求 (非必填)" />
+        </div>
+    </div>
+    <input type="button" id="submit" value="确定预约" />
+</form>
+<div id="hospitals" class="filter-category filter-options">
+
+</div>
+<script id="contentHospital" type="text/html">
+    <div class="container" style="width: 32%">
+        <ul class="category">
+            {{each areas as value i}}
+            {{if i==0}}
+            <li data-id="{{value.id}}" class="selected">{{value.name}}</li>
+            {{else}}
+            <li data-id="{{value.id}}">{{value.name}}</li>
+            {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+    {{each hospitalList as value i}}
+        <div class="container subcategory  subcategory-selected container subcategory" data-category="{{i}}" style="width:68%">
+            <ul class="options">
+                {{each value as val i}}
+                    <li data-value="{{val.id}}" style="overflow: hidden;">{{val.name}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    {{/each}}
+    <span role="button" class="ok">确定</span>
+</script>
+<div id="department" class="filter-category filter-options">
+
+</div>
+<script id="contentDepartment" type="text/html">
+    <div class="container" style="width: 45%">
+        <ul class="category">
+            {{each father as value i}}
+                {{if i ==0}}
+                    <li data-id="{{value.id}}" class="selected">{{value.name}}</li>
+                {{else}}
+                    <li data-id="{{value.id}}">{{value.name}}</li>
+                {{/if}}
+
+            {{/each}}
+        </ul>
+    </div>
+    {{each child as value i}}
+    <div class="container subcategory subcategory-selected container subcategory" data-category="{{i}}" style="width: 55%">
+        <ul class="options">
+            {{each value as val i}}
+            <li data-value="{{val.id}}">{{val.name}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/each}}
+    <span role="button" class="ok ok-disabled">确定</span>
+</script>
+
+<div id="foot"></div>
+<script src="../js/zepto-with-touch.min.js"></script>
+<script src="../js/zepto.fx.min.js"></script>
+<script src="../js/iscroll-lite.min.js"></script>
+<script src="../js/template.js" type="text/javascript"></script>
+<script src="../js/popup.js"></script>
+<script src="../js/express.js"></script>
+<script type='text/javascript' src='../js/public.js'></script>
+<script type="text/javascript" src='../js/order/reserve.js'></script>
+<script src="../js/selector.js"></script>
+</body>
+</html>

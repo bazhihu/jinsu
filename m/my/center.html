@@ -2,33 +2,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>个人中心 优爱医护-您的贴心护理员</title>
+    <title>个人中心</title>
     <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
 </head>
 <body id="page-account">
-<header id="header">
-    <a class="back" href="/index.html">返回</a>
+<header id="header" class="signedin">
+    <a class="back" href="javascript:history.back(1)">返回</a>
     <h2 class="title">个人中心</h2>
-    <div class="unsignedin unsign" style="display: none">
-        您还没有登录
-        <a class="signin-button" role="button" href="../login.html">登录</a>
-    </div>
-    <!--<div class="account-intro" style="display: none">-->
-    <div class="unsignedin intro" style="display: none">
-        <!--<div class="photo" style="background-image:url(../images/nurses-simple.jpg)"></div>-->
-        <em class="name" id="name"></em>
-        <span class="signin-button quit">退出登录</span>
-    </div>
+    <a class="home" href="/">首页</a>
 </header>
 
+<div class="swiper-container">
+    <div class="account-slides swiper-wrapper">
+        <div class="swiper-slide" style="">
+            <img src="../images/slides/1.jpg" alt="优爱医护，您的贴身护理专家" />
+        </div>
+        <div class="swiper-slide" style="">
+            <img src="../images/slides/2.jpg" alt="优爱医护，您的贴身护理专家" />
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
 <menu class="menu" role="menu">
-    <a href="/order.html?type=select" class="menuitem" role="menuitem"><em class="express title">我要预约</em></a>
-    <a href="myOrders.html" class="menuitem" role="menuitem"><em class="orders title">我的订单</em><i class="badge" style="display: none"></i></a>
+		<span class="menuitem intro" role="menuitem" style="display: none;">
+			<em class="name title" id="name">****</em>
+			<span class="signout quit">退出登录</span>
+		</span>
+        <span class="menuitem unsignedin" role="menuitem" style="display: none;">
+			<em class="name title">您还未登录</em>
+			<a class="signin" role="button" href="../login.html">登录</a>
+		</span>
+</menu>
+
+<menu class="menu" role="menu">
+    <a href="/" class="menuitem" role="menuitem"><em class="express title">我要预约</em></a>
+    <a href="myOrders.html" class="menuitem" role="menuitem"><em class="orders title">我的订单</em></a>
     <a href="myWallet.html" class="menuitem" role="menuitem"><em class="wallet title">我的钱包</em></a>
     <a href="abouts.html" class="menuitem" role="menuitem"><em class="aboutus title">关于我们</em></a>
-    <a href="download.html" class="menuitem" style="display: none;" role="menuitem"><em class="download title">下载App</em></a>
+    <a href="/download.html" class="menuitem" role="menuitem"><em class="download title">下载App</em></a>
 </menu>
 
 <a class="call" href="tel:400-630-9860">400-630-9860</a>
@@ -36,5 +49,18 @@
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/public.js"></script>
 <script src="../js/center.js"></script>
+<script src="../js/swiper.min.js"></script>
+<script>
+    var focusSlides;
+    window.addEventListener('load', function () {
+        focusSlides = new Swiper('.swiper-container', {
+            mode: 'horizontal',
+            autoplay: 5000,
+            createPagination: true,
+            pagination: '.swiper-pagination',
+            loop: true
+        });
+    });
+</script>
 </body>
 </html>

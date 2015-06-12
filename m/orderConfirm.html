@@ -23,27 +23,39 @@
         <section class="menu">
             <h3 class="menu-title">订单内容</h3>
             <div class="menuitem" role="menuitem">
+                <em class="title">联系电话：</em>
+                <span class="value" style="margin-left: 55px;">{{mobile}}</span>
+            </div>
+            <div class="menuitem" role="menuitem">
                 <em class="title">服务时间：</em>
-                <span class="detail">{{start_time}}至{{end_time}}</span>
+                <span class="detail" style="margin-left: 55px;">{{time}}</span>
                 <input type="hidden"  name="start_time" value="{{start_time}}">
                 <input type="hidden" name="end_time" value="{{end_time}}">
-                <i class="value">共{{days}}天</i>
+                <em class="nurses-days">共{{days}}天</em>
             </div>
             <div class="menuitem" role="menuitem">
-                <em class="title">服务医院：</em>
-                <i class="value">{{hospitals_name}}</i>
+                <em class="title">被护理人：</em>
+                <i class="value">{{careName}}</i>
+                <input type="hidden"  name="careName" value="{{careName}}">
+                <input type="hidden" name="careGender" value="{{careGender}}">
+                <input type="hidden" name="careAge" value="{{careAge}}">
+                <input type="hidden" name="careHeight" value="{{careHeight}}">
+                <input type="hidden" name="careWeight" value="{{careWeight}}">
+            </div>
+            <div class="menuitem" role="menuitem">
+                <em class="title">服务地点：</em>
+                <i class="value" style="max-width: 220px;">{{locations}}</i>
                 <input type="hidden" name="hospital_id" value="{{hospital_id}}">
-            </div>
-            <div class="menuitem" role="menuitem">
-                <em class="title">服务科室：</em>
-                <i class="value">{{departments_name}}</i>
                 <input type="hidden" name="department_id" value="{{department_id}}">
+                <input type="hidden" name="room" value="{{room}}">
             </div>
-            <!--<div class="menuitem" role="menuitem">-->
-                <!--<em class="title">病患状态：</em>-->
-                <!--<i class="value">{{patient_states_name}}</i>-->
-                <!--<input type="hidden" name="patient_state" value="{{patient_state}}">-->
-            <!--</div>-->
+            {{if remark != ''}}
+                <div class="menuitem" role="menuitem">
+                    <em class="title">订单备注：</em>
+                    <i class="value">{{remark}}</i>
+                    <input type="hidden" name="remark" value="{{remark}}">
+                </div>
+            {{/if}}
             {{if type=='select'}}
                 <div class="nurses-selected menuitem" role="menuitem">
                     <em class="title">护理员：</em>

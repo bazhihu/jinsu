@@ -3,9 +3,9 @@
  */
 var user = getStatus(),
     logged = $('.intro'),
-    unsigned = $('.unsign'),
+    unsigned = $('.unsignedin'),
     name = $('.name'),
-    quit = $('.quit');console.log(user.token);
+    quit = $('.quit');
 
 if(user.id && user.name && user.token){
     logged.attr('style', null);

@@ -32,7 +32,7 @@
 		});
 		return false;
 	}).click(function (e) { e.preventDefault(); return false; });
-	$('#patient-status-menuitem,#service-site-menuitem').on('change', function (e, tag) {
+	$('#patient-status-menuitem,#service-site-menuitem,#patient-menuitem,#disease-menuitem').on('change', function (e, tag) {
 		if (tag) {
 			var value = this.querySelector('.value');
 			value.innerHTML = tag.text || '';

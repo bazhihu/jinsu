@@ -20,18 +20,19 @@
 	<div class="menu card" >
         <div class="nurses-photo" style="background-image: url({{data.pic}})"></div>
         <div class="nurses-intro">
-            {{if data.level==1}}
-                <h2 class="nurses-name care-level care-level-junior">
-            {{else if data.level==2}}
-                <h2 class="nurses-name care-level care-level-middle">
-            {{else if data.level==3}}
-                <h2 class="nurses-name care-level care-level-hight">
-            {{else if data.level==4}}
-                <h2 class="nurses-name care-level care-level-special">
-            {{/if}}
-            {{data.name}}</h2>
+            <!--{{if data.level==1}}-->
+                <!--<h2 class="nurses-name care-level care-level-junior">-->
+            <!--{{else if data.level==2}}-->
+                <!--<h2 class="nurses-name care-level care-level-middle">-->
+            <!--{{else if data.level==3}}-->
+                <!--<h2 class="nurses-name care-level care-level-hight">-->
+            <!--{{else if data.level==4}}-->
+                <!--<h2 class="nurses-name care-level care-level-special">-->
+            <!--{{/if}}-->
+            <h2 class="nurses-name care-level">{{data.name}}</h2>
             <p class="code">工号：{{data.worker_id}}</p>
             <p class="info">
+                <span class="years" id="gender">{{data.gender}}</span>
                 <span class="years" id="start_work">{{dateFormat(data.start_work)}}年护理经验</span>
                 <span class="mandarin">普通话{{data.chinese_level}}</span>
             </p>
@@ -49,14 +50,14 @@
             <a class="menuitem" id="self-intro">自我介绍：{{data.selfIntros[0]['ext1']}}</a>
         </section>
     {{/if}}
-    {{if data.hospital_id}}
-        <div class="menu detail">
-            <a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>
-        </div>
-    {{/if}}
+    <!--{{if data.hospital_id}}-->
+        <!--<div class="menu detail">-->
+            <!--<a class="menuitem" id="position">常驻医院：{{data.hospital_id}}</a>-->
+        <!--</div>-->
+    <!--{{/if}}-->
     {{if data.office_id}}
         <div class="menu detail">
-            <a class="menuitem" id="department">常驻科室：{{data.office_id}}</a>
+            <a class="menuitem" id="department">擅长科室：{{data.office_id}}</a>
         </div>
     {{/if}}
 	<!--<div class="menu detail">-->
@@ -82,8 +83,43 @@
             {{/if}}
         </a>
     </div>
+    {{if data.total_comment>0}}
+    <div class="menu reviews">
+        <div class="menu-title"><a href="nursesReviews.html?worker_id={{data.worker_id}}" class="more" >{{data.total_comment}}条评论</a>
+            <span class="nurses-rate">
+                {{if data.star ==5}}☆☆☆☆☆{{/if}}
+                {{if data.star ==4}}☆☆☆☆{{/if}}
+                {{if data.star ==3}}☆☆☆{{/if}}
+                {{if data.star ==2}}☆☆{{/if}}
+                {{if data.star ==1}}☆{{/if}}
+            </span>
+        </div>
+        <ul>
+            {{each data.comments as value i}}
+            <li>
+                <div>
+                    <span class="nurses-rate">
+                        {{if value.star ==5}}☆☆☆☆☆{{/if}}
+                        {{if value.star ==4}}☆☆☆☆{{/if}}
+                        {{if value.star ==3}}☆☆☆{{/if}}
+                        {{if value.star ==2}}☆☆{{/if}}
+                        {{if value.star ==1}}☆{{/if}}
+                    </span>
+                    <em class="user">{{value.mobile}}</em>
+                    <i class="time">{{value.audit_date}}</i>
+                </div>
+                <p>{{value.content}}</p>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
     <div class="pay-operation">
-        <a href="orderConfirm.html?type=select&worker_no={{data.worker_id}}" role="button" class="pay">立即预约</a>
+        {{if data.in_service=='true'}}
+            <span role="button" class="busy">服务中</span>
+        {{else}}
+            <button role="button" class="pay" id="pay" onclick="pay('{{data.worker_id}}','{{data.start_time}}','{{data.end_time}}')">立即预约</button>
+        {{/if}}
         <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
     </div>
     </script>
@@ -91,7 +127,7 @@
     <script type='text/javascript' src='/js/zepto.min.js'></script>
     <script type='text/javascript' src='/js/template.js'></script>
     <script type='text/javascript' src='/js/public.js'></script>
-    <script type="text/javascript" src="/js/worker/worker.js"></script>
+    <script type="text/javascript" src="/js/worker/worker.js?v=2015061101"></script>
     <script type="text/javascript">
         get_workedetail();
     </script>

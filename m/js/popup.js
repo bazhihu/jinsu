@@ -51,7 +51,7 @@
 			popupTimeout = 0;
 			document.body.style.pointerEvents = '';
 			document.body.style.removeProperty('pointer-events');
-		}, 400);
+		}, 500);
 		return this;
 	};
 
@@ -76,7 +76,7 @@
 			});
 			popuped.length = 0;
 			popuped.length = 0;
-		}, 400);
+		}, 500);
 		popuped.forEach(function (k) {
 			$(k).trigger('dismiss', tag);
 		});

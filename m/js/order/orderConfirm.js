@@ -51,17 +51,8 @@ getConfigs(function(configs) {
             var departments_name = departments_array[department_id];
 
             //病患状态
-            var patient_states_lenth =configs.patient_states.length;
-            var patient_states_data  = configs.patient_states;
-            var patient_states_array = new Array();
-            var patient_states_price_array =  new Array();
-            for(var h =0;h<=patient_states_lenth-1;h++){
-                var id = data[h]['id'];
-                patient_states_array[id] = patient_states_data[h]['name'];
-                patient_states_price_array[id] = patient_states_data[h]['price'];
-            }
-            var patient_states_name = patient_states_array[patient_state];
-            var patient_state_coefficient = patient_states_price_array[patient_state];
+            var patient_states_lenth =1;
+
 
             //假期
             var holidays_lenth =configs.holidays.length;
@@ -159,7 +150,6 @@ getConfigs(function(configs) {
                     'department_id':department_id,
                     'departments_name':departments_name,
                     'patient_state':1,
-                    'patient_states_name':patient_states_name,
                     'worker_no':worker_no,
                     'worker_name':worker_name,
                     'worker_level':worker_level,
@@ -167,7 +157,6 @@ getConfigs(function(configs) {
                     'has_holidays':has_holidays,
                     'has_holidays_num':has_holidays_num,
                     'price':price,
-                    'patient_state_coefficient':patient_state_coefficient,
                     'true_pay':true_pay,
                     'blance':blance,
                     'need_pay':need_pay,

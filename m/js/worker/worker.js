@@ -244,11 +244,10 @@ function get_workelist() {
                             },
                             type: 'get',
                             success: function (response) {
-                                console.log(response);
                                 if (response.data.items.length<1) {
                                     window.removeEventListener('scroll', load);
                                     loading.classList.remove('loading');
-                                    loading.innerHTML = '\u5df2\u7ecf\u5230\u6700\u540e\u4e86~';
+                                    loading.innerHTML = '<div class="nurses-list-none nurses-list"></div>';
                                     loading = null;
                                 } else {
                                     var responseHtml="";

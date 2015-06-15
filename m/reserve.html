@@ -65,7 +65,7 @@
         <ul class="category">
             {{each areas as value i}}
             {{if i==0}}
-            <li data-id="{{value.id}}" class="selected">{{value.name}}</li>
+            <li data-id='{{value.id}}' class="selected">{{value.name}}</li>
             {{else}}
             <li data-id="{{value.id}}">{{value.name}}</li>
             {{/if}}
@@ -120,6 +120,6 @@
 <script src="../js/express.js"></script>
 <script type='text/javascript' src='../js/public.js'></script>
 <script type="text/javascript" src='../js/order/reserve.js'></script>
-<script src="../js/selector.js"></script>
+<script src="../js/selector.js?v=1.0"></script>
 </body>
 </html>

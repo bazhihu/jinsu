@@ -20,8 +20,13 @@
 		<h3 class="requested">已提交申请</h3>
 		<p>服务人员将在 <em>半小时内联系您上门收款</em> 请耐心等待</p>
 	</div>
-	<a class="already" href="/my/center.html">知道了</a>
+	<a class="already">知道了</a>
     <div id="foot"></div>
+    <script type="text/javascript" src="/js/zepto-with-touch.min.js"></script>
     <script type="text/javascript" src="../js/public.js"></script>
+    <script type="text/javascript" >
+        var order_no = getUrlQueryString("order_no");
+        $('.already').attr('href','/my/orderDetail.html?order_no='+order_no);
+    </script>
 </body>
 </html>

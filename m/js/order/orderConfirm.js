@@ -77,7 +77,7 @@ getConfigs(function(configs) {
                     var days = getOrderCycle(start_time,end_time);
             }
 
-            $.get(workerUrl+"/"+worker_no,function(worker_back){console.log(worker_back);
+            $.get(workerUrl+"/"+worker_no,function(worker_back){
                 var price = parseInt(worker_back.data.price);
                 var worker_level = worker_back.data.level;
 
@@ -184,7 +184,7 @@ getConfigs(function(configs) {
                 if(need_pay<0) {
                     var pay_way = 1;
                 }
-                console.log(need_pay);
+
                 //当面支付或者余额支付
                 if(pay_way==1) {
                     var post_data = {
@@ -212,9 +212,9 @@ getConfigs(function(configs) {
                     $.post(orderCreate,post_data,function(post_response){
                         if(post_response.code == 200){
                             if(need_pay<0) {
-                                location.href= "../payOnline.html";
+                                location.href= "../payOnline.html?order_no="+post_response.data.order.order_no;
                             }else{
-                                location.href= "../payOffline.html";
+                                location.href= "../payOffline.html?order_no="+post_response.data.order.order_no;
                             }
                         }else{
                             alert('支付失败！');

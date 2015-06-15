@@ -330,7 +330,7 @@ function get_workedetail() {
     var start_time = getUrlQueryString("start_time");
     var end_time = getUrlQueryString("end_time");
     var in_service = getUrlQueryString("in_service");
-    var workeDetailUrl=workerUrl+"/"+worker_id;
+    var workeDetailUrl=workerUrl_v2+"/"+worker_id;
     $.getJSON(workeDetailUrl, function (response) {
         if (response.code == 200) {console.log(response.data);
             template.helper('dateFormat', function (str) {

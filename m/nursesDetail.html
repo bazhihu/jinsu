@@ -29,8 +29,8 @@
             <!--{{else if data.level==4}}-->
                 <!--<h2 class="nurses-name care-level care-level-special">-->
             <!--{{/if}}-->
-            <h2 class="nurses-name care-level">{{data.name}}</h2>
-            <p class="code">工号：{{data.worker_id}}</p>
+            <h2 class="nurses-name care-level">{{data.name}}</h2> <span class="code">{{data.level_name}}</span>
+            <p class="code">工号：{{data.worker_id}}  </p>
             <p class="info">
                 <span class="years" id="gender">{{data.gender}}</span>
                 <span class="years" id="start_work">{{dateFormat(data.start_work)}}年护理经验</span>

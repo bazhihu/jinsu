@@ -161,7 +161,8 @@
 		// TODO 将参数拼接到适当的 URL 后进行跳转。
         location.href = select_url+"&"+parameters;
 	});
-	$('#service-time input[type="date"]').jdate(false).forEach(function (input) {
+    $('input[type="date"]').click(function(e){e.preventDefault();return false;});
+    $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
 			var parent = this.parentNode;
@@ -222,16 +223,17 @@
 				$(timeWiz).addClass('filter-wiz-visible');
 				setTimeout(function () {
 					document.body.removeChild(cityWiz);
-				}, 300);
+				}, 500);
 			});
 			$(timeWiz).tap(function () {
 				$(timeWiz).removeClass('filter-wiz-visible');
 				setTimeout(function () {
 					document.body.removeChild(timeWiz);
-				}, 300);
+				}, 500);
 				// 使用本地存储设置已经提示过了
 				localStorage.setItem('filter-wiz', 'closed');
 			});
 		}
 	} catch (error) { }
 }();
+

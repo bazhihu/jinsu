@@ -162,11 +162,11 @@
         location.href = select_url+"&"+parameters;
 	});
 
-    $('#service-time input[type="date"]').click(function(e){alert(1);e.preventDefault();return false;});
+    //$('#service-time input[type="date"]').click(function(e){return false;});
     $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
-        alert(2);
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
+            e.preventDefault();
 			var parent = this.parentNode;
 			[].forEach.call(parent.parentNode.children, function (label) {
 				$(label)[label === parent ? 'addClass' : 'removeClass']('selected');

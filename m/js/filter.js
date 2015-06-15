@@ -172,7 +172,7 @@
 		});
 		input.readOnly = true;
 	});
-    $('input[type="date"]').click(function(e){e.preventDefault();return false;});
+    $('input[type="date"]').click(function(e){alert(1);e.preventDefault();return false;});
 
 	document.getElementById('service-time').addEventListener('submit', function (e) {
 		e.preventDefault();

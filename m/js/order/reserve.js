@@ -104,7 +104,7 @@
                 var ai = hospitals[j],
                     il = new Object();
                 if(li.id == ai.area_id){
-                    il.dataValue = ai.id;
+                    il.id = ai.id;
                     il.name = ai.name;
                     index ++;
                     options[index] = il;

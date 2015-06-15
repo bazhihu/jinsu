@@ -162,11 +162,10 @@
         location.href = select_url+"&"+parameters;
 	});
 
-    //$('#service-time input[type="date"]').click(function(e){return false;});
+    $('#service-time input[type="date"]').tap(function(e){e.preventDefault();return false;});
     $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
-            e.preventDefault();
 			var parent = this.parentNode;
 			[].forEach.call(parent.parentNode.children, function (label) {
 				$(label)[label === parent ? 'addClass' : 'removeClass']('selected');

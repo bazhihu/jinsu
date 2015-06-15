@@ -162,6 +162,7 @@
         location.href = select_url+"&"+parameters;
 	});
 
+    $('#service-time input[type="date"]').click(function(e){e.preventDefault();return false;});
     $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
@@ -172,7 +173,7 @@
 		});
 		input.readOnly = true;
 	});
-    $('input[type="date"]').click(function(e){alert(1);e.preventDefault();return false;});
+
 
 	document.getElementById('service-time').addEventListener('submit', function (e) {
 		e.preventDefault();

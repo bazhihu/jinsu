@@ -86,5 +86,21 @@
     <script src="/js/zepto.fx.min.js"></script>
     <script src="/js/zepto.jdate.js"></script>
     <script src="/js/filter.js?v=2015061507"></script>
+    <script type="text/javascript" src="/js/launch-app.js"></script>
+    <script>
+        var focusSlides;
+        window.addEventListener('load', function () {
+            focusSlides = new Swiper('.swiper-container', {
+                mode: 'horizontal',
+                autoplay: 5000,
+                createPagination: true,
+                pagination: '.swiper-pagination',
+                loop: true
+            });;
+        });
+        //    if(!getCookie(firstEntered)){
+        //        location.href = host+'/about.html'
+        //    }
+    </script>
 </body>
 </html>

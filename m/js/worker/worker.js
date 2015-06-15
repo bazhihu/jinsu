@@ -162,7 +162,6 @@ function get_workelist() {
                             gender_html+='<li data-value="1">男</li><li data-value="2">女</li> ';
                         }
                         gender_html+= '</ul>';
-                        console.log(gender_html);
                         $('.gender').html(gender_html);
                         //性别 end
 
@@ -262,7 +261,21 @@ function get_workelist() {
                                         responseHtml+='<div class="nurses-photo" style="background-image: url('+response.data.items[i].pic+')"></div>';
                                         responseHtml+='<div class="nurses-detail">';
                                         responseHtml+='<span class="nurses-price"><em>'+parseInt(response.data.items[i].price)+'</em>元/天</span>';
-                                        responseHtml+='<span class="nurses-rate">★★★★★</span>';
+                                        responseHtml+='<span class="nurses-rate">';
+                                            if(response.data.items[i].star>4 || !response.data.items[i].star){
+                                                responseHtml+='★★★★★';
+                                            } else if(response.data.items[i].star>3){
+                                                responseHtml+='★★★★';
+                                            }else if(response.data.items[i].star>2){
+                                                responseHtml+='★★★';
+                                            }else if(response.data.items[i].star>1){
+                                                responseHtml+='★★';
+                                            }else if(response.data.items[i].star>0){
+                                                responseHtml+='★';
+                                            }
+
+
+                                        responseHtml+='</span>';
                                         responseHtml+='<h4 class="nurses-name">'+response.data.items[i].name+'</h4>';
                                         responseHtml+='<p class="nurses-intro">'+ages(response.data.items[i].birth)+'岁 | '+response.data.items[i].native_province+' | '+ages(response.data.items[i].start_work)+'年护理经验</p>';
                                         responseHtml+='<p class="nurses-reserve">';

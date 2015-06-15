@@ -161,7 +161,7 @@
 		// TODO 将参数拼接到适当的 URL 后进行跳转。
         location.href = select_url+"&"+parameters;
 	});
-    $('input[type="date"]').click(function(e){e.preventDefault();return false;});
+
     $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
@@ -172,6 +172,7 @@
 		});
 		input.readOnly = true;
 	});
+    $('input[type="date"]').click(function(e){e.preventDefault();return false;});
 
 	document.getElementById('service-time').addEventListener('submit', function (e) {
 		e.preventDefault();

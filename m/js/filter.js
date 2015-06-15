@@ -225,13 +225,13 @@
 				$(timeWiz).addClass('filter-wiz-visible');
 				setTimeout(function () {
 					document.body.removeChild(cityWiz);
-				}, 500);
+				}, 1000);
 			});
 			$(timeWiz).tap(function () {
 				$(timeWiz).removeClass('filter-wiz-visible');
 				setTimeout(function () {
 					document.body.removeChild(timeWiz);
-				}, 500);
+				}, 1000);
 				// 使用本地存储设置已经提示过了
 				localStorage.setItem('filter-wiz', 'closed');
 			});

@@ -162,7 +162,7 @@
         location.href = select_url+"&"+parameters;
 	});
 
-    $('#service-time input[type="date"]').click(function(e){e.preventDefault();return false;});
+    $('#service-time input[type="date"]').click(function(e){return false;});
     $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {

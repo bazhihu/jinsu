@@ -65,6 +65,7 @@
 	}
 
 	$labels.tap(function () {
+        $('#launch-app').hide();
 		var cid = this.htmlFor, $option = $('#' + cid), t = this, $this = $(this);
 		if ($this.hasClass('filter-label-selected')) {
 			$option.removeClass('filter-options-expanded');

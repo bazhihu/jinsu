@@ -65,6 +65,7 @@
 	}
 
 	$labels.tap(function () {
+        $('#launch-app').hide();
 		var cid = this.htmlFor, $option = $('#' + cid), t = this, $this = $(this);
 		if ($this.hasClass('filter-label-selected')) {
 			$option.removeClass('filter-options-expanded');
@@ -162,7 +163,6 @@
         location.href = select_url+"&"+parameters;
 	});
 
-    $('#service-time input[type="date"]').tap(function(e){e.preventDefault();return false;});
     $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
@@ -172,6 +172,7 @@
 			});
 		});
 		input.readOnly = true;
+        input.type = 'button';
 	});
 
 
@@ -216,6 +217,8 @@
 			var cityWiz = document.createElement('div'), timeWiz = document.createElement('div');
 			cityWiz.className = 'filter-wiz-visible filter-wiz-city filter-wiz';
 			timeWiz.className = 'filter-wiz-time filter-wiz';
+            document.body.style.pointerEvents='none';
+            cityWiz.style.pointerEvents='all';
 			document.body.appendChild(timeWiz);
 			document.body.appendChild(cityWiz);
 			timeWiz.addEventListener('touchmove', preventDefault);
@@ -224,14 +227,17 @@
 				$(cityWiz).removeClass('filter-wiz-visible');
 				$(timeWiz).addClass('filter-wiz-visible');
 				setTimeout(function () {
+                    timeWiz.style.pointerEvents='all';
 					document.body.removeChild(cityWiz);
-				}, 1000);
+				}, 500);
 			});
 			$(timeWiz).tap(function () {
 				$(timeWiz).removeClass('filter-wiz-visible');
 				setTimeout(function () {
-					document.body.removeChild(timeWiz);
-				}, 1000);
+                    document.body.removeChild(timeWiz);
+                    document.body.style.pointerEvents='';
+                    document.body.style.removeProperty('point-events');
+				}, 500);
 				// 使用本地存储设置已经提示过了
 				localStorage.setItem('filter-wiz', 'closed');
 			});

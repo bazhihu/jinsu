@@ -31,6 +31,7 @@ function ages(str)
 function get_workelist() {
     ~function () {
         var list = document.querySelector('.nurses-list'), loading = document.querySelector('.loading'), isLoading = 0;
+        var total_num = 0;
         function load() {
             if (loading && !isLoading) {
                 var bounds = loading.getBoundingClientRect();
@@ -246,11 +247,22 @@ function get_workelist() {
                                 if (response.data.items.length<1) {
                                     window.removeEventListener('scroll', load);
                                     loading.classList.remove('loading');
-                                    loading.innerHTML = '<div class="nurses-list-none nurses-list"></div>';
+                                    if(total_num==0){
+                                        loading.innerHTML = '<div class="nurses-list-none nurses-list"></div>';
+                                    }else{
+                                        loading.innerHTML = '';
+                                    }
+
                                     loading = null;
                                 } else {
                                     var responseHtml="";
+                                    var this_load_num=0;
                                     for(var i=0;i<response.data.items.length;i++){
+                                        total_num++;
+                                        this_load_num++;
+                                        if(response.data.items.length<10){
+                                            loading.classList.remove('loading');
+                                        }
                                         if(response.data.items[i].office_id!=null) {
                                             var office_str=response.data.items[i].office_id;
                                         }else{

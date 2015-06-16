@@ -1,7 +1,6 @@
 <?php
 
 namespace backend\controllers;
-
 use backend\models\OrderMaster;
 use Yii;
 use backend\Models\Work;
@@ -49,8 +48,11 @@ class WorkController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $orderInfo = OrderMaster::findOne($model['order_id']);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'orderInfo'=>$orderInfo
         ]);
     }
 
@@ -66,6 +68,8 @@ class WorkController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $params = Yii::$app->request->post()['Work'];
+            $params['order_id'] = $orderInfo['order_id'];
+            $params['order_no'] = $orderInfo['order_no'];
             $params['worker_id'] = $orderInfo['worker_no'];
             $params['worker_name'] =  $orderInfo['worker_name'];
             $params['from_where'] =  '400';

@@ -31,39 +31,39 @@ use common\models\Order;
                 <div class="panel-body">
                     <table>
                         <tr>
-                            <td height="35">订单编号：<?=$orderInfo['order_no']?></td>
+                            <td height="35"><b>订单编号：</b><?=$orderInfo['order_no']?></td>
                         </tr>
                         <tr>
-                            <td height="35">员工号：<?=$orderInfo['worker_no']?></td>
+                            <td height="35"><b>员工号：</b><?=$orderInfo['worker_no']?></td>
                         </tr>
                         <tr>
-                            <td height="35">员工姓名：<?=$orderInfo['worker_name']?></td>
+                            <td height="35"><b>员工姓名：</b><?=$orderInfo['worker_name']?></td>
                         </tr>
                         <tr>
-                            <td height="35">订单价格：<?=$orderInfo['real_amount']?></td>
+                            <td height="35"><b>订单价格：</b><?=$orderInfo['real_amount']?></td>
                         </tr>
                         <tr>
-                            <td height="35">订单时间：<?=$orderInfo['start_time']."--".$orderInfo['reality_end_time']?></td>
+                            <td height="35"><b>订单时间：</b><?=$orderInfo['start_time']."--".$orderInfo['reality_end_time']?></td>
                         </tr>
                         <tr>
-                            <td height="35">订单周期：<?=Order::getOrderCycle($orderInfo['start_time'],$orderInfo['reality_end_time'])?></td>
+                            <td height="35"><b>订单周期：</b><?=Order::getOrderCycle($orderInfo['start_time'],$orderInfo['reality_end_time'])?></td>
                         </tr>
                         <tr>
-                            <td height="35">服务城市：<?=City::getCityName($orderInfo['city_id'])?></td>
+                            <td height="35"><b>服务城市：</b><?=City::getCityName($orderInfo['city_id'])?></td>
                         </tr>
                         <tr>
-                            <td height="35">服务医院：<?=Hospitals::getHospitalsName($orderInfo['hospital_id'])?></td>
+                            <td height="35"><b>服务医院：</b><?=Hospitals::getHospitalsName($orderInfo['hospital_id'])?></td>
                         </tr>
                         <tr>
-                            <td height="35">科室：<?=Departments::getDepartmentNames($orderInfo['department_id'])?></td>
+                            <td height="35"><b>科室：</b><?=Departments::getDepartmentNames($orderInfo['department_id'])?></td>
                         </tr>
                         <tr>
-                            <td height="35">联系人：<?=($orderInfo['contact_name'])?></td>
+                            <td height="35"><b>联系人：</b><?=($orderInfo['contact_name'])?></td>
                         </tr>
                         <tr>
-                            <td height="35">账号：<?=($orderInfo['mobile'])?></td>
+                            <td height="35"><b>账号：</b><?=($orderInfo['mobile'])?></td>
                         </tr>
-                        </table>
+                    </table>
 
                 </div>
             </div>

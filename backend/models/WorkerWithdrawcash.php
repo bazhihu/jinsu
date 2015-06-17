@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\base\Exception;
+use yii\web\HttpException;
 
 /**
  * This is the model class for table "{{%worker_withdrawcash}}".
@@ -126,5 +128,36 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
             ];
             return $response;
         }
+    }
+
+    /**
+     * 付款
+     * @return array
+     */
+    public function pay($id){
+        $response = [
+            'code'=>'200',
+            'msg'=>''
+        ];
+        if(!$id){
+            $response['code'] = 400;
+            $response['msg'] = '无任何勾选';
+        }
+        try {
+            foreach($id as $key=>$val){
+                if($val){
+                    $pay = $this->findOne($val);
+                    $pay->status = 3;
+                    $pay->time_payment = date("Y-m-d H:i:s");
+                    $pay->admin_uid_payment = yii::$app->user->identity->getId();
+
+                    $pay->save();
+                }
+            }
+        }catch (Exception $e){
+            throw new HttpException(400, print_r($e, true));
+        }
+        $response['msg'] = '付款成功';
+        return $response;
     }
 }

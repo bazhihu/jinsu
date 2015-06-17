@@ -175,7 +175,7 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
     public static function debit($worker_id,$money){
         try {
             $account = WorkerAccount::findOne(['worker_id'=>$worker_id]);
-            
+
             $account->balance = $account->balance - $money;
             $account->withdraw_amount = $account->withdraw_amount + $money;
 

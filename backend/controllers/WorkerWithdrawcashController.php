@@ -163,6 +163,20 @@ class WorkerWithdrawcashController extends Controller
     }
 
     /**
+     * 提现记录
+     * @return string
+     */
+    public function actionRecord(){
+        $searchModel = new WorkerWithdrawcashSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('record', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    /**
      * Finds the WorkerCard model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id

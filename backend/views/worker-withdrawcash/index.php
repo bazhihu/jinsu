@@ -9,7 +9,7 @@ use kartik\widgets\DatePicker;
 /* @var $searchModel backend\models\WalletUserDetailSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '护工提现记录';
+$this->title = '护工提现';
 ?>
 <style>
     .panel-body .form-group{
@@ -36,7 +36,7 @@ $this->title = '护工提现记录';
             </div>
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['record'],
+                    'action' => ['index'],
                     'method' => 'get',
 
                     'type' => ActiveForm::TYPE_VERTICAL,
@@ -107,7 +107,10 @@ $this->title = '护工提现记录';
                         'url'=>\yii\helpers\Url::to(['hospitals/list/']),
                     ]
                 ])?>
-
+                <?= $form->field(
+                    $searchModel,
+                    'status'
+                )->dropDownList(['0'=>'待审核','1'=>'已拒绝','2'=>'待付款','3'=>'已付款'],['prompt'=>'选择'])->label("状态") ?>
                 <div class="form-group" style="padding-top: 25px">
                     <?= Html::submitButton('检索', ['class' => 'btn btn-primary']) ?>
                     <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
@@ -123,6 +126,10 @@ $this->title = '护工提现记录';
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
+            [
+                'class'=>'kartik\grid\CheckboxColumn',
+                'headerOptions'=>['class'=>'kartik-sheet-style'],
+            ],
             ['class' => 'yii\grid\SerialColumn'],
             'withdrawcash_no',
             'worker_id',
@@ -151,10 +158,11 @@ $this->title = '护工提现记录';
                 }
             ],
             'time_apply',
-            /*['class' => 'yii\grid\ActionColumn',
+            'remark_apply',
+            ['class' => 'yii\grid\ActionColumn',
                 'header'=>'操作',
                 'buttons' => [
-                    'pay' => function ($url, $model) {
+                    'agree' => function ($url, $model) {
                         return $model->status==0?Html::button('同意', [
                             'title' => Yii::t('yii', '同意'),
                             'class' => 'btn btn-default jsAgree',
@@ -166,14 +174,37 @@ $this->title = '护工提现记录';
                         ]):"";
                     },
                 ],
-                'template'=>'{pay}',
-            ],*/
-            'remark_apply'
+                'template'=>'{agree}',
+            ],
+            'time_audit',
+            [
+                'header'=>'审核管理员',
+                'attribute'=>'admin_uid_audit',
+                'value'=>function($model){
+                    return $model->admin_uid_audit?\backend\models\AdminUser::getInfo($model->admin_uid_audit):'';
+                },
+            ],
+            'payee_id_card',
+            'payee_bank_card',
+            [
+                'header'=>'审核管理员',
+                'attribute'=>'admin_uid_payment',
+                'value'=>function($model){
+                    return $model->admin_uid_payment?\backend\models\AdminUser::getInfo($model->admin_uid_payment):'';
+                },
+            ],
+            'time_payment',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'showFooter'=>true
+            'showFooter'=>true,
+            'before'=>
+                Html::button('付款', [
+                    'title' => Yii::t('yii', '付款'),
+                    'class' => 'btn btn-success jsPay',
+                    'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/pay']),
+                ]),
         ],
     ]); ?>
 </div>
@@ -212,8 +243,8 @@ $this->title = '护工提现记录';
             },
             success: function(json){
                 if(json.code == '200'){
-                    it.parent().prev().html('已同意');
-                    it.parent().empty();
+                    alert('操作成功');
+                    location.reload();
                 }else{
                     alert(json.msg);
                 }
@@ -253,12 +284,62 @@ $this->title = '护工提现记录';
             },
             success: function(json){
                 if(json.code == '200'){
-                    it.parent().prev().html('已拒绝');
-                    it.parent().empty();
+                    alert('操作成功');
+                    location.reload();
                 }else{
                     alert(json.msg);
                 }
             }
         });
+    });
+    $('body').on('click', 'button.jsPay', function () {
+        var it = $(this),
+            url = it.attr('data-url'),
+            id = it.parent().parent().attr('data-key'),
+            box = $("input[name='selection[]']:checked"),
+            arr = new Array();
+        box.each(function(){
+            var it = $(this);
+            arr.push(it.val());
+        });
+        if(arr.length != 0){
+            $.ajax({
+                type    : "POST",
+                dataType: "json",
+                async   :false,
+                cache   :false,
+                timeout :30000,
+                url     : url,
+                data    : {'id':arr},
+                error:function(jqXHR, textStatus, errorThrown){
+                    switch (jqXHR.status){
+                        case(500):
+                            alert("服务器系统内部错误");
+                            break;
+                        case(401):
+                            alert("未登录");
+                            break;
+                        case(403):
+                            alert("无权限执行此操作");
+                            break;
+                        case(408):
+                            alert("请求超时");
+                            break;
+                        default:
+                            alert("未知错误");
+                    }
+                },
+                success: function(json){
+                    if(json.code == '200'){
+                        alert('操作成功');
+                        location.reload();
+                    }else{
+                        alert(json.msg);
+                    }
+                }
+            });
+        }else{
+            alert('无任何勾选！');
+        }
     });
 </script>

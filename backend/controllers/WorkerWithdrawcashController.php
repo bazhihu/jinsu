@@ -57,6 +57,21 @@ class WorkerWithdrawcashController extends Controller
     }
 
     /**
+     * 申请提现
+     * @return string
+     */
+    public function actionIndex(){
+        $searchModel = new WorkerWithdrawcashSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * Lists all WorkerWithdrawcash models.
      * @return mixed
      */

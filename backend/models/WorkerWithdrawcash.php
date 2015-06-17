@@ -148,7 +148,7 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
             foreach($id as $key=>$val){
                 if($val){
                     $pay = $this->findOne($val);
-                    if($pay->status != 3){
+                    if($pay->status == 2){
                         $pay->status = 3;
                         $pay->time_payment = date("Y-m-d H:i:s");
                         $pay->admin_uid_payment = yii::$app->user->identity->getId();

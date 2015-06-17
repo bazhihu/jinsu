@@ -87,7 +87,7 @@ echo $form->field($model, 'pay_from')
             success: function(json){
                 if(json.code == '200'){
                     alert(json.msg);
-                    location.reload();
+                    location.href='<?=Yii::$app->urlManager->createUrl(['order/index']);?>';
                 }
             }
         });

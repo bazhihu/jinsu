@@ -42,18 +42,18 @@ AppAsset::register($this);
             [
                 'label' => '护工',
                 'items' => [
-                    ['label' => '添加护工', 'url' => ['/worker/create']],
-                    ['label' => '护工列表', 'url' => ['/worker/index']],
+                    ['label' => '添加', 'url' => ['/worker/create']],
+                    ['label' => '列表', 'url' => ['/worker/index']],
+                    ['label' => '请假', 'url' => ['/worker-leave/index']],
                     ['label' => '工资卡', 'url' => ['/worker-card/index']],
-                    ['label' => '请假申请', 'url' => ['/worker-leave/index']],
                 ]
             ],
             [
                 'label' => '订单',
                 'items' => [
-                    ['label' => '创建订单', 'url' => ['/order/create']],
-                    ['label' => '订单列表', 'url' => ['/order/index']],
-                    ['label' => '订单统计', 'url' => ['/order/chart']]
+                    ['label' => '创建', 'url' => ['/order/create']],
+                    ['label' => '列表', 'url' => ['/order/index']],
+                    ['label' => '统计', 'url' => ['/order/chart']]
                 ]
             ],
             [

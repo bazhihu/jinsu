@@ -50,10 +50,22 @@ class WorkController extends Controller
     {
         $model = $this->findModel($id);
         $orderInfo = OrderMaster::findOne($model['order_id']);
-        return $this->render('view', [
-            'model' => $model,
-            'orderInfo'=>$orderInfo
-        ]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model['solve_date'] = date('Y-m-d H:i:s');
+            $model['solver'] =  yii::$app->user->getId();
+            $model['status'] =2;
+            if ($model->save()){
+                return $this->render('view', [
+                    'model' => $model,
+                    'orderInfo'=>$orderInfo
+                ]);
+            }else{
+                return $this->render('view', [
+                    'model' => $model,
+                    'orderInfo'=>$orderInfo
+                ]);
+            }
+        }
     }
 
     /**

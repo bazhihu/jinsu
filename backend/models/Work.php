@@ -38,8 +38,8 @@ class Work extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['worker_id', 'adder', 'solver', 'status'], 'integer'],
-            [['content', 'solver_content'], 'string'],
+            [['order_id','worker_id', 'adder', 'solver', 'status','type'], 'integer'],
+            [['order_no','content', 'solver_content'], 'string'],
             [['add_date', 'solve_date','add_date_begin','add_date_end'], 'safe'],
             [['worker_name', 'user_name'], 'string', 'max' => 20],
             [['from_where'], 'string', 'max' => 10],
@@ -54,12 +54,13 @@ class Work extends \yii\db\ActiveRecord
     {
         return [
             'work_id' => '工单编号',
+            'order_no' => '订单编号',
             'worker_id' => '员工号',
             'worker_name' => '员工姓名',
             'content' => '内容',
             'from_where' => '渠道',
-            'mobile' => '用户账号',
-            'user_name' => '用户姓名',
+            'mobile' => '联系电话',
+            'user_name' => '联系人姓名',
             'add_date' => '时间',
             'adder' => '添加人',
             'solve_date' => '解决时间',
@@ -68,6 +69,7 @@ class Work extends \yii\db\ActiveRecord
             'status' => '状态',
             'add_date_begin'=>'时间',
             'add_date_end'=>'至',
+            'type'=>'类型'
         ];
     }
 }

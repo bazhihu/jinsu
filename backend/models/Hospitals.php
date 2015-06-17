@@ -173,7 +173,6 @@ class Hospitals extends \yii\db\ActiveRecord
             $data = ArrayHelper::toArray(self::findOne($id));
             $data && Redis::set($cacheKey, $data);
         }
-
         if(!empty($data)) {
             return $data['phone'];
         }

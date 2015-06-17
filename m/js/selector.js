@@ -109,7 +109,7 @@
 		$(ok)[selected ? 'removeClass' : 'addClass']('ok-disabled');
 	});
 	$('.filter-category .subcategory li[data-value]').live(CLICK,function () {
-		var items = this.parentNode.children;
+		var items = this.parentNode.parentNode.parentNode.querySelectorAll('.subcategory li[data-value]');
 		var t = this;
 		[].forEach.call(items, function (item) {
 			$(item)[item === t ? 'addClass' : 'removeClass']('selected');

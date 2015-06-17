@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=320,user-scalable=no" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
+    <div id='wx_pic' style='margin:0 auto;display:none;'>
+        <img src='/images/pic300.jpg' />
+    </div>
 </head>
 <body id="page-reserve">
 <header id="header">
     <a class="back" href="javascript:history.back(1)">返回</a>
     <h2 class="title">预约</h2>
-    <a class="home" href="1.index.html">首页</a>
+    <a class="home" href="/">首页</a>
 </header>
 <div class="card">
     <div class="nurses-photo" style="background-image: url(http://img.youaiyihu.com/default-avatar.jpg)"></div>
@@ -65,7 +68,7 @@
         <ul class="category">
             {{each areas as value i}}
             {{if i==0}}
-            <li data-id="{{value.id}}" class="selected">{{value.name}}</li>
+            <li data-id='{{value.id}}' class="selected">{{value.name}}</li>
             {{else}}
             <li data-id="{{value.id}}">{{value.name}}</li>
             {{/if}}
@@ -120,6 +123,6 @@
 <script src="../js/express.js"></script>
 <script type='text/javascript' src='../js/public.js'></script>
 <script type="text/javascript" src='../js/order/reserve.js'></script>
-<script src="../js/selector.js"></script>
+<script src="../js/selector.js?v=1.0"></script>
 </body>
 </html>

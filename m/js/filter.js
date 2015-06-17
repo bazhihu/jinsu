@@ -17,7 +17,7 @@
     var end_time = getUrlQueryString('end_time');
     if(end_time) {
         $('.nurses-filter-tips').html("服务时间:"+start_time);
-        select_url+="&start_time="+start_time;
+        select_url+="&end_time="+end_time;
     }
 
     //性别
@@ -65,6 +65,7 @@
 	}
 
 	$labels.tap(function () {
+        $('#launch-app').hide();
 		var cid = this.htmlFor, $option = $('#' + cid), t = this, $this = $(this);
 		if ($this.hasClass('filter-label-selected')) {
 			$option.removeClass('filter-options-expanded');
@@ -161,7 +162,8 @@
 		// TODO 将参数拼接到适当的 URL 后进行跳转。
         location.href = select_url+"&"+parameters;
 	});
-	$('#service-time input[type="date"]').jdate(false).forEach(function (input) {
+
+    $('#service-time input[type="date"]').jdate(false).forEach(function (input) {
 		input.addEventListener('focus', function () { this.blur(); });
 		input.addEventListener('tap', function () {
 			var parent = this.parentNode;
@@ -170,13 +172,15 @@
 			});
 		});
 		input.readOnly = true;
+        input.type = 'button';
 	});
+
 
 	document.getElementById('service-time').addEventListener('submit', function (e) {
 		e.preventDefault();
 		var start = new Date(Date.parse(document.getElementById('start-time').value));
 		var end = new Date(Date.parse(document.getElementById('end-time').value));
-		document.querySelector('.nurses-filter-tips').innerHTML = '\u670d\u52a1\u65f6\u95f4\uff1a' + start.getFullYear() + '\u5e74' + (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + end.getFullYear() + '\u5e74' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5';
+		//document.querySelector('.nurses-filter-tips').innerHTML = '\u670d\u52a1\u65f6\u95f4\uff1a' + start.getFullYear() + '\u5e74' + (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + end.getFullYear() + '\u5e74' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5';
 		$('#jdate-btn-remove').trigger('click');
 		$('.nurses-filters label[for="service-time"]').trigger('tap');
 
@@ -213,6 +217,8 @@
 			var cityWiz = document.createElement('div'), timeWiz = document.createElement('div');
 			cityWiz.className = 'filter-wiz-visible filter-wiz-city filter-wiz';
 			timeWiz.className = 'filter-wiz-time filter-wiz';
+            document.body.style.pointerEvents='none';
+            cityWiz.style.pointerEvents='all';
 			document.body.appendChild(timeWiz);
 			document.body.appendChild(cityWiz);
 			timeWiz.addEventListener('touchmove', preventDefault);
@@ -221,17 +227,21 @@
 				$(cityWiz).removeClass('filter-wiz-visible');
 				$(timeWiz).addClass('filter-wiz-visible');
 				setTimeout(function () {
+                    timeWiz.style.pointerEvents='all';
 					document.body.removeChild(cityWiz);
-				}, 300);
+				}, 500);
 			});
 			$(timeWiz).tap(function () {
 				$(timeWiz).removeClass('filter-wiz-visible');
 				setTimeout(function () {
-					document.body.removeChild(timeWiz);
-				}, 300);
+                    document.body.removeChild(timeWiz);
+                    document.body.style.pointerEvents='';
+                    document.body.style.removeProperty('point-events');
+				}, 500);
 				// 使用本地存储设置已经提示过了
 				localStorage.setItem('filter-wiz', 'closed');
 			});
 		}
 	} catch (error) { }
 }();
+

@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8" />
@@ -8,9 +8,22 @@
     <meta name="viewport" content="width=320,user-scalable=no" />
 	<meta content="telephone=no" name="format-detection" />
 	<link href="./css/style.css" rel="stylesheet" />
+    <link href="../css/launch-app.css" rel="stylesheet" />
     <link href="./css/zepto.jdate-min.css" rel="stylesheet" />
+    <div id='wx_pic' style='margin:0 auto;display:none;'>
+        <img src='/images/pic300.jpg' />
+    </div>
 </head>
 <body id="page-nurses-filter">
+    <div id="launch-app">
+        <span role="button" class="close">关闭</span>
+        <img class="app-icon" src="../images/app-icon-72x72.png" width="36" height="36" alt="图标" />
+        <h2 class="title">优爱医护手机客户端</h2>
+        <p class="slogan">手机充值，余额支付更快捷</p>
+        <a href="yayhapp://www.youaiyihu.com" data-myapp="http://a.app.qq.com/o/simple.jsp?pkgname=com.youaiyihu.yihu" data-apk='http://download.youaiyihu.com/youaiyihu-android-release.apk'
+           data-appstore="https://itunes.apple.com/cn/app/you-ai-yi-hu-nin-tie-xin-hu/id993561967?l=zh&ls=1&mt=8"
+           class="launch-app-button">立即体验</a>
+    </div>
     <header id="header">
         <label for="city" class="city-label filter-label">北京</label>
         <h2 class="title">优爱医护</h2>
@@ -18,8 +31,8 @@
     </header>
     <div class="nurses-filters">
         <label for="service-time" class="filter-label">服务时间</label>
-        <label for="sort" class="filter-label">智能排序</label>
-        <label for="more" class="filter-label" data-badge="0" id="select_num">筛选</label>
+        <label for="sort" class="filter-label" id="sort_tab">好评最多</label>
+        <label for="more" class="filter-label" id="select_num">筛选</label>
     </div>
 
     <div id="city" class="filter-options">
@@ -61,8 +74,10 @@
         </div>
     </form>
     <p class="nurses-filter-tips">请先设置服务开始时间与结束时间</p>
-    <ul class="nurses-list" id="body"></ul>
-    <div class="loading-more loading"></div>
+    <div id="content">
+        <ul class="nurses-list" id="body"></ul>
+        <div class="loading-more loading"></div>
+    </div>
     <div id="foot"></div>
     <script src="/js/zepto-with-touch.min.js"></script>
     <script type='text/javascript' src='/js/public.js'></script>
@@ -73,6 +88,22 @@
     <script src="/js/iscroll-lite.min.js"></script>
     <script src="/js/zepto.fx.min.js"></script>
     <script src="/js/zepto.jdate.js"></script>
-    <script src="/js/filter.js"></script>
+    <script src="/js/filter.js?v=2015061507"></script>
+    <script type="text/javascript" src="/js/launch-app.js"></script>
+    <script>
+        var focusSlides;
+        window.addEventListener('load', function () {
+            focusSlides = new Swiper('.swiper-container', {
+                mode: 'horizontal',
+                autoplay: 5000,
+                createPagination: true,
+                pagination: '.swiper-pagination',
+                loop: true
+            });;
+        });
+        //    if(!getCookie(firstEntered)){
+        //        location.href = host+'/about.html'
+        //    }
+    </script>
 </body>
 </html>

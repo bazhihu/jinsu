@@ -24,16 +24,17 @@ $.getJSON(getOrderUrl,function(response){
     if(response.code == 200){
         var digital =  response.data;
         getConfigs(function(configs) {
+            console.log(configs)
             var hospitals = map(configs.hospitals, 'id', 'name'),
                 sections = map(configs.departments, 'id', 'name'),
                 worker_levels = map(configs.worker_levels, 'id', 'name'),
-                patient_state = map(configs.patient_states, 'id', 'name'),
+                //patient_state = map(configs.patient_states, 'id', 'name'),
                 hospitals_name = hospitals[digital.hospital_id],
                 sections_name = sections[digital.department_id];
 
             digital.hospitals_name = hospitals_name+'/'+sections_name;
             digital.worker_levels_name = worker_levels[digital.worker_level];
-            digital.patient_states_name = patient_state[digital.patient_state];
+           // digital.patient_states_name = patient_state[digital.patient_state];
 
             //假期
             var holidays_lenth =configs.holidays.length,

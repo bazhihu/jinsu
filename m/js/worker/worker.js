@@ -31,6 +31,7 @@ function ages(str)
 function get_workelist() {
     ~function () {
         var list = document.querySelector('.nurses-list'), loading = document.querySelector('.loading'), isLoading = 0;
+        var total_num = 0;
         function load() {
             if (loading && !isLoading) {
                 var bounds = loading.getBoundingClientRect();
@@ -116,29 +117,34 @@ function get_workelist() {
                         var sort_html = ' <ul class="options">';
                         if(sort=='star_down' || !sort){
                             sort_html+='<li><a href="'+sort_url+'&sort=star_down" class="selected">好评最多</a></li> ';
+                            sort_tab = "好评最多";
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=star_down">好评最多</a></li> ';
                         }
 
                         if(sort=='price_down'){
                             sort_html+='<li><a href="'+sort_url+'&sort=price_down" class="selected">等级最高</a></li> ';
+                            sort_tab = "等级最高";
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=price_down">等级最高</a></li> ';
                         }
 
                         if(sort=='price_up'){
                             sort_html+='<li><a href="'+sort_url+'&sort=price_up" class="selected">价格最低</a></li>';
+                            sort_tab = "价格最低";
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=price_up">价格最低</a></li>';
                         }
 
                         if(sort=='birth_down'){
+                            sort_tab = "年龄最小";
                             sort_html+='<li><a href="'+sort_url+'&sort=birth_down" class="selected">年龄最小</a></li>';
                         }else{
                             sort_html+='<li><a href="'+sort_url+'&sort=birth_down">年龄最小</a></li> ';
                         }
                         sort_html+='</ul>';
                         $('#sort').html(sort_html);
+                        $("#sort_tab").html(sort_tab);
                         //排序 end
 
                         //性别 start
@@ -157,7 +163,6 @@ function get_workelist() {
                             gender_html+='<li data-value="1">男</li><li data-value="2">女</li> ';
                         }
                         gender_html+= '</ul>';
-                        console.log(gender_html);
                         $('.gender').html(gender_html);
                         //性别 end
 
@@ -174,11 +179,11 @@ function get_workelist() {
                             }else{
                                 native_province_html+= '<li data-value="'+provinces[i].id+'">'+provinces[i].name+'</li> ' ;
                             }
-
                         }
                         native_province_html+= '</ul>';
                         $('.native_province').html(native_province_html);
                         //籍贯 end
+
 
                         //护理员级别 start
                         if(worker_level){
@@ -200,7 +205,8 @@ function get_workelist() {
                         $('.worker_level').html(worker_level_html);
                         //护理员级别 end
 
-                        $('#select_num').attr('data-badge',select_num);
+                        if(select_num>0)
+                            $('#select_num').attr('data-badge',select_num);
 
                         //设置时间控件默认的开始和结束时间
                         if(!start_time && !end_time){
@@ -238,15 +244,25 @@ function get_workelist() {
                             },
                             type: 'get',
                             success: function (response) {
-                                console.log(response);
                                 if (response.data.items.length<1) {
                                     window.removeEventListener('scroll', load);
                                     loading.classList.remove('loading');
-                                    loading.innerHTML = '\u5df2\u7ecf\u5230\u6700\u540e\u4e86~';
+                                    if(total_num==0){
+                                        loading.innerHTML = '<div class="nurses-list-none nurses-list"></div>';
+                                    }else{
+                                        loading.innerHTML = '';
+                                    }
+
                                     loading = null;
                                 } else {
                                     var responseHtml="";
+                                    var this_load_num=0;
                                     for(var i=0;i<response.data.items.length;i++){
+                                        total_num++;
+                                        this_load_num++;
+                                        if(response.data.items.length<10){
+                                            loading.classList.remove('loading');
+                                        }
                                         if(response.data.items[i].office_id!=null) {
                                             var office_str=response.data.items[i].office_id;
                                         }else{
@@ -257,7 +273,21 @@ function get_workelist() {
                                         responseHtml+='<div class="nurses-photo" style="background-image: url('+response.data.items[i].pic+')"></div>';
                                         responseHtml+='<div class="nurses-detail">';
                                         responseHtml+='<span class="nurses-price"><em>'+parseInt(response.data.items[i].price)+'</em>元/天</span>';
-                                        responseHtml+='<span class="nurses-rate">★★★★★</span>';
+                                        responseHtml+='<span class="nurses-rate">';
+                                            if(response.data.items[i].star>4 || !response.data.items[i].star){
+                                                responseHtml+='★★★★★';
+                                            } else if(response.data.items[i].star>3){
+                                                responseHtml+='★★★★';
+                                            }else if(response.data.items[i].star>2){
+                                                responseHtml+='★★★';
+                                            }else if(response.data.items[i].star>1){
+                                                responseHtml+='★★';
+                                            }else if(response.data.items[i].star>0){
+                                                responseHtml+='★';
+                                            }
+
+
+                                        responseHtml+='</span>';
                                         responseHtml+='<h4 class="nurses-name">'+response.data.items[i].name+'</h4>';
                                         responseHtml+='<p class="nurses-intro">'+ages(response.data.items[i].birth)+'岁 | '+response.data.items[i].native_province+' | '+ages(response.data.items[i].start_work)+'年护理经验</p>';
                                         responseHtml+='<p class="nurses-reserve">';
@@ -312,7 +342,7 @@ function get_workedetail() {
     var start_time = getUrlQueryString("start_time");
     var end_time = getUrlQueryString("end_time");
     var in_service = getUrlQueryString("in_service");
-    var workeDetailUrl=workerUrl+"/"+worker_id;
+    var workeDetailUrl=workerUrl_v2+"/"+worker_id;
     $.getJSON(workeDetailUrl, function (response) {
         if (response.code == 200) {console.log(response.data);
             template.helper('dateFormat', function (str) {

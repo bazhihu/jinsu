@@ -21,13 +21,15 @@ class WorkerWithdrawcashSearch extends WorkerWithdrawcash
 
     public $start;      //起始状态
     public $end;        //结束状态
+
+    public $city_id;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'worker_id', 'status', 'payee_type', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
+            [['id', 'worker_id', 'city_id', 'status', 'payee_type', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
             [['withdrawcash_no', 'worker_name', 'remark_audit', 'remark_apply', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
             [['money'], 'number'],
             [['fromDate','toDate','payStartDate','payEndDate','start','end'],'safe']

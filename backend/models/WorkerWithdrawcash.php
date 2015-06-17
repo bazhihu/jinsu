@@ -143,21 +143,46 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
             $response['code'] = 400;
             $response['msg'] = '无任何勾选';
         }
+        $transaction = \Yii::$app->db->beginTransaction();
         try {
             foreach($id as $key=>$val){
                 if($val){
                     $pay = $this->findOne($val);
-                    $pay->status = 3;
-                    $pay->time_payment = date("Y-m-d H:i:s");
-                    $pay->admin_uid_payment = yii::$app->user->identity->getId();
+                    if($pay->status != 3){
+                        $pay->status = 3;
+                        $pay->time_payment = date("Y-m-d H:i:s");
+                        $pay->admin_uid_payment = yii::$app->user->identity->getId();
 
-                    $pay->save();
+                        if($pay->save()){
+                            self::debit($pay->worker_id,$pay->money);
+                        }
+                    }
                 }
             }
+            $transaction->commit();
         }catch (Exception $e){
+            $transaction->rollBack();
             throw new HttpException(400, print_r($e, true));
         }
         $response['msg'] = '付款成功';
         return $response;
+    }
+
+    /**
+     * 扣款
+     * @return bool
+     */
+    public static function debit($worker_id,$money){
+        try {
+            $account = WorkerAccount::findOne(['worker_id'=>$worker_id]);
+
+            $account->balance = $account->balance - $money;
+            $account->withdraw_amount = $account->withdraw_amount + $money;
+
+            $account->save();
+        }catch (Exception $e){
+            throw new HttpException(400, print_r($e, true));
+        }
+        return true;
     }
 }

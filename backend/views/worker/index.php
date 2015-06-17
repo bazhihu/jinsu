@@ -106,12 +106,22 @@ $this->title = '护工管理';
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{view}&nbsp;&nbsp;{update}',
+                'template' => '{calendar}&nbsp;&nbsp;{update}',
                 'buttons' => [
-                'update' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Yii::$app->urlManager->createUrl(['worker/update','id' => $model->worker_id]), [
-                                    'title' => Yii::t('yii', 'Edit'),
-                                  ]);}
+                    'calendar' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-calendar"></span>',
+                            Yii::$app->urlManager->createUrl(['worker/schedule','id' => $model->worker_id]),
+                            ['title' => '排期']
+                        );
+                    },
+                    'update' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-pencil"></span>',
+                            Yii::$app->urlManager->createUrl(['worker/update','id' => $model->worker_id]),
+                            ['title' => '编辑']
+                        );
+                    }
 
                 ],
             ],

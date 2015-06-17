@@ -12,31 +12,66 @@ $this->title = '护工排期';
 <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
 <script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui/datepicker-zh-TW.js"></script>
-<div class="worker-schedule">
-    <div class="page-header">
-        <h1><?= Html::encode($this->title) ?></h1>
-    </div>
-
-    <div id="schedule"></div>
-</div>
 <style>
-    body{line-height: 5}
+
+    .schedule{
+        height: 570px;
+        width: 800px;
+        line-height: 50px;
+        float: left;
+    }
     .ui-datepicker {
         display: none;
         padding: 0.2em 0.2em 0;
-        width: 1024px;
+        width: 800px;
     }
     .ui-datepicker table {
         border-collapse: collapse;
         font-size: 1em;
     }
-    .ui-state-highlight-leave{
-        padding:2px;
-        background: #ff0000;
-        color: #fff;
+    .ui-datepicker td a {
+        text-align: center;
+    }
+    .schedule .leave a{
+        background: #e0e0e0;
+    }
+
+    .schedule .service a{
+        background: #2aabd2;
+        color: #fff0f0;
+    }
+
+    .schedule .order a{
+        background: #419641;
+        color: #fff0f0;
+    }
+    .dl-horizontal dd {
+        margin-left: 100px;
     }
 
 </style>
+<div class="worker-schedule">
+    <div class="page-header">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
+
+    <div id="schedule" class="schedule"></div>
+    <div style="float: left;margin-left: 50px;width: 300px;">
+        <dl class="dl-horizontal">
+            <dt style="width:80px;height: 30px;background: #e0e0e0;"></dt>
+            <dd><strong>请假</strong></dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt style="width:80px;height: 30px;background: #419641;"></dt>
+            <dd><strong>可预约</strong></dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt style="width:80px;height: 30px;background: #2aabd2;"></dt>
+            <dd><strong>服务中</strong></dd>
+        </dl>
+    </div>
+</div>
+
 <script type="text/javascript">
     Date.prototype.Format = function (fmt) { //author: meizz
         var o = {
@@ -54,16 +89,21 @@ $this->title = '护工排期';
         return fmt;
     }
 
-    var leave = ['2015-06-01','2015-06-02','2015-06-03'];
-    $("#schedule").datepicker({
+    var leave = <?php echo json_encode($leave)?>;
+    var service = <?php echo json_encode($service)?>;
+        $("#schedule").datepicker({
         beforeShowDay: function(date) {
            // console.log(date);
             var d = date.Format("yyyy-MM-dd");
             console.log(d);
             if($.inArray(d, leave) >= 0){
-                return [false, 'ui-state-highlight-leave','请假'];
+                return [true, 'leave','请假'];
+            }else if($.inArray(d, service) >= 0){
+                return [true, 'service','服务中'];
+            }else{
+                return [true, 'order', '可预约'];
             }
-            return [true, '', ''];
+
         }
     });
 

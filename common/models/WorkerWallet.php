@@ -53,6 +53,7 @@ class WorkerWallet
         $identity_card = $workerCard->identity_card;
         $bank = $workerCard->bank;
         $bank_card = $workerCard->bank_card;
+        $bank_sub_account = $workerCard->bank_sub_account;
 
         $params = array(
             'withdrawcash_no'=>self::generateWorkerNo(),
@@ -64,6 +65,7 @@ class WorkerWallet
             'payee_hospital'=>$hospital_id,
             'payee_id_card'=>$identity_card,
             'payee_bank'=>$bank,
+            'payee_bank_sub'=>$bank_sub_account,
             'payee_bank_card'=>$bank_card,
             'time_apply'=>date("Y-m-d H:i:s"),
             'admin_uid_apply'=>yii::$app->user->identity->getId()?yii::$app->user->identity->getId():'',

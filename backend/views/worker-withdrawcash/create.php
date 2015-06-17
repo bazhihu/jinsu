@@ -45,6 +45,10 @@ $this->title = '护工提现申请';
                         'value'=>$model->bank_card,
                     ],
                     [
+                        'attribute'=>'bank_sub_account',
+                        'value'=>$model->bank_sub_account,
+                    ],
+                    [
                         'attribute'=>'money',
                         'label'=>'余额',
                         'value'=>\backend\models\WorkerAccount::findOne(['worker_id'=>$model->worker_id])?\backend\models\WorkerAccount::findOne(['worker_id'=>$model->worker_id])->balance:0,
@@ -70,6 +74,7 @@ $this->title = '护工提现申请';
         <?php }else{?>
             <div class="panel-body">
                <span>暂无工资卡</span>
+                <a class="button" href="index.php?r=worker-card/create&id=<?=$id?>">新建工资卡</a>
             </div>
         <?php }?>
     </div>

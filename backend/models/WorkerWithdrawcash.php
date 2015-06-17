@@ -21,6 +21,7 @@ use yii\web\HttpException;
  * @property integer $payee_hospital
  * @property string $payee_id_card
  * @property string $payee_bank
+ * @property string $payee_bank_sub
  * @property string $payee_bank_card
  * @property string $time_apply
  * @property string $time_audit
@@ -45,11 +46,11 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['withdrawcash_no', 'worker_id', 'worker_name', 'status', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_card', 'time_apply', 'admin_uid_apply'], 'required'],
+            [['withdrawcash_no', 'worker_id', 'worker_name', 'status', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_sub', 'payee_bank_card', 'time_apply', 'admin_uid_apply'], 'required'],
             [['worker_id', 'status', 'payee_type', 'payee_hospital', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
             [['money'], 'number'],
             [['time_apply', 'time_audit', 'time_payment'], 'safe'],
-            [['withdrawcash_no', 'worker_name', 'payee_id_card', 'payee_bank', 'payee_bank_card'], 'string', 'max' => 50],
+            [['withdrawcash_no', 'worker_name', 'payee_id_card', 'payee_bank','payee_bank_sub', 'payee_bank_card'], 'string', 'max' => 50],
             [['remark_audit', 'remark_apply'], 'string', 'max' => 255]
         ];
     }
@@ -72,6 +73,7 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
             'payee_hospital' => '所属医院',
             'payee_id_card' => '身份证',
             'payee_bank' => '开户行',
+            'payee_bank_sub' => '子账户',
             'payee_bank_card' => '银行卡',
             'time_apply' => '申请时间',
             'time_audit' => '审核时间',

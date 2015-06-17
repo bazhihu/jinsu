@@ -141,7 +141,27 @@ $this->title = '护工提现';
                     return $model->payee_hospital?\backend\models\Hospitals::getName($model->payee_hospital):'';
                 },
             ],
+            'payee_id_card',
+            'payee_bank_card',
+            'payee_bank_sub',
             'money',
+            'time_apply',
+            'time_audit',
+            [
+                'header'=>'审核管理员',
+                'attribute'=>'admin_uid_audit',
+                'value'=>function($model){
+                    return $model->admin_uid_audit?\backend\models\AdminUser::getInfo($model->admin_uid_audit):'';
+                },
+            ],
+            [
+                'header'=>'审核管理员',
+                'attribute'=>'admin_uid_payment',
+                'value'=>function($model){
+                    return $model->admin_uid_payment?\backend\models\AdminUser::getInfo($model->admin_uid_payment):'';
+                },
+            ],
+            'time_payment',
             [
                 'header'=>'状态',
                 'attribute'=>'status',
@@ -157,43 +177,24 @@ $this->title = '护工提现';
                     }
                 }
             ],
-            'time_apply',
-            'remark_apply',
             ['class' => 'yii\grid\ActionColumn',
                 'header'=>'操作',
                 'buttons' => [
                     'agree' => function ($url, $model) {
                         return $model->status==0?Html::button('同意', [
-                            'title' => Yii::t('yii', '同意'),
-                            'class' => 'btn btn-default jsAgree',
-                            'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/agree']),
-                        ]).Html::button('拒绝', [
-                            'title' => Yii::t('yii', '拒绝'),
-                            'class' => 'btn btn-default jsRefuse',
-                            'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/refuse']),
-                        ]):"";
+                                'title' => Yii::t('yii', '同意'),
+                                'class' => 'btn btn-default jsAgree',
+                                'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/agree']),
+                            ]).Html::button('拒绝', [
+                                'title' => Yii::t('yii', '拒绝'),
+                                'class' => 'btn btn-default jsRefuse',
+                                'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/refuse']),
+                            ]):"";
                     },
                 ],
                 'template'=>'{agree}',
             ],
-            'time_audit',
-            [
-                'header'=>'审核管理员',
-                'attribute'=>'admin_uid_audit',
-                'value'=>function($model){
-                    return $model->admin_uid_audit?\backend\models\AdminUser::getInfo($model->admin_uid_audit):'';
-                },
-            ],
-            'payee_id_card',
-            'payee_bank_card',
-            [
-                'header'=>'审核管理员',
-                'attribute'=>'admin_uid_payment',
-                'value'=>function($model){
-                    return $model->admin_uid_payment?\backend\models\AdminUser::getInfo($model->admin_uid_payment):'';
-                },
-            ],
-            'time_payment',
+            'remark_apply',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',

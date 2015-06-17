@@ -42,7 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'value'=>function ($model) {
                     if($model->recommend_amount > 0){
-                        return Html::a($model->recommend_amount, Yii::$app->urlManager->createUrl(['worker-bill/index','WorkerBillSearch[worker_id]' => $model->worker_id]));
+                        $params = [
+                            'worker-bill/index',
+                            'WorkerBillSearch[worker_id]' => $model->worker_id,
+                            'WorkerBillSearch[type]' => 'referral'
+                        ];
+                        return Html::a($model->recommend_amount, Yii::$app->urlManager->createUrl($params));
                     }else{
                         return $model->recommend_amount;
                     }
@@ -53,7 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'value'=>function ($model) {
                     if($model->order_amount > 0){
-                        return Html::a($model->order_amount, Yii::$app->urlManager->createUrl(['worker-bill/index','WorkerBillSearch[worker_id]' => $model->worker_id]));
+                        $params = [
+                            'worker-bill/index',
+                            'WorkerBillSearch[worker_id]' => $model->worker_id,
+                            'WorkerBillSearch[type]' => 'order'
+                        ];
+                        return Html::a($model->order_amount, Yii::$app->urlManager->createUrl($params));
                     }else{
                         return $model->order_amount;
                     }

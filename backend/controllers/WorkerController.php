@@ -3,6 +3,8 @@
 namespace backend\controllers;
 
 use backend\models\OrderMaster;
+use backend\models\WorkerSchedule;
+use common\models\Order;
 use Yii;
 use backend\models\Worker;
 use backend\models\WorkerSearch;
@@ -326,8 +328,29 @@ class WorkerController extends Controller
         ]);
     }
 
-    public function actionSchedule(){
+    public function actionSchedule($id){
+        $schedule = WorkerSchedule::findAll(['worker_id' => $id]);
 
-        return $this->render('schedule');
+        $leave = [];
+        $service = [];
+        if(!empty($schedule)){
+            foreach($schedule as $item){
+                if($item->type == 2){
+                    //请假
+                    $leaveArr = Order::getDateList($item->start_date, $item->end_date);
+                    $leave = array_merge($leave, $leaveArr);
+                }elseif($item->type == 1){
+                    //服务中
+                    $statDate = date('Y-m-d', strtotime($item->start_date));
+                    $endDate = date('Y-m-d', strtotime($item->end_date));
+                    $serviceArr = Order::getDateList($statDate, $endDate);
+                    $service = array_merge($service, $serviceArr);
+                }
+            }
+        }
+        return $this->render('schedule', [
+            'leave' => $leave,
+            'service' => $service
+        ]);
     }
 }

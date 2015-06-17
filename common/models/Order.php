@@ -343,7 +343,7 @@ class Order extends \yii\db\ActiveRecord{
         $holidaysList = ArrayHelper::map(Holidays::find()->all(), 'id', 'date');
 
         //获取日期列表
-        $dates = $this->getDateList($startDate, $endDate);
+        $dates = self::getDateList($startDate, $endDate);
         //print_r($dates);exit;
 
         //价格明细
@@ -388,7 +388,7 @@ class Order extends \yii\db\ActiveRecord{
      * @return array
      * @author zhangbo
      */
-    public function getDateList($startDate, $endDate){
+    static public function getDateList($startDate, $endDate){
         $dateList = [];
         $number = 0;
         $startDay = date("d", strtotime($startDate));

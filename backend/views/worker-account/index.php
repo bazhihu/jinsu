@@ -74,9 +74,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{withdraw}',
                 'buttons' => [
                     'withdraw' => function ($url, $model) {
-                        return Html::button('提现',[
-                            'data-url'=>$url,
-                            'class'=>'btn btn-sm btn-primary jsPayOrder'
+                        $params = [
+                            'worker-withdrawcash/create',
+                            'id' => $model->worker_id
+                        ];
+                        return Html::a('提现申请', Yii::$app->urlManager->createUrl($params), [
+                            'class'=>'btn btn-sm btn-primary'
                         ]);
 
                     },

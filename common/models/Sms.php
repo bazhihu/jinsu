@@ -25,8 +25,8 @@ const SMS_ORDERS_NOT_PAID               = '2'; //登录时的验证码
     const SMS_WITHDRAW_APPLICATION          = '8'; //订单已完成
     const SMS_SUCCESS_RECHARGE              = '9'; //提现申请
     const SMS_SANSANDEJIU = 'http://GATEWAY.IEMS.NET.CN/GsmsHttp'; //充值成功
-const SMS_MANDAOKEJI = 'http://sdk.entinfo.cn/webservice.asmx/mdSmsSend';//客服热线
-public static $hotLine = '400-630-9860';
+    const SMS_MANDAOKEJI = 'http://sdk.entinfo.cn/webservice.asmx/mdSmsSend';//客服热线
+    public static $hotLine = '400-630-9860';
     /**
      * 漫道科技序列号&密码
      * @var array

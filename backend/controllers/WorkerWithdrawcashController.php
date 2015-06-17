@@ -2,6 +2,9 @@
 
 namespace backend\controllers;
 
+use backend\models\WorkerAccount;
+use backend\models\WorkerCard;
+use common\models\WorkerWallet;
 use Yii;
 use backend\models\WorkerWithdrawcash;
 use backend\models\WorkerWithdrawcashSearch;
@@ -26,6 +29,31 @@ class WorkerWithdrawcashController extends Controller
                 ],
             ],
         ];
+    }
+
+    /**
+     * Creates a new WorkerWithdrawcash model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate($id)
+    {
+        $card = WorkerCard::findOne(['worker_id'=>$id,'status'=>0]);
+
+        $balance = WorkerAccount::findOne(['worker_id'=>$id]);
+
+        $model = new WorkerWallet();
+
+        if (Yii::$app->request->post()) {
+            $create = $model->withdrawal(Yii::$app->request->post());
+            if($create['code'] == 200){
+                return $this->redirect(['check']);
+            }
+        }
+        return $this->render('create', [
+            'model' => $card,
+            'balance'=>$balance,
+        ]);
     }
 
     /**
@@ -132,24 +160,6 @@ class WorkerWithdrawcashController extends Controller
     }
 
     /**
-     * Creates a new WorkerWithdrawcash model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new WorkerWithdrawcash();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
      * Updates an existing WorkerWithdrawcash model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -179,5 +189,20 @@ class WorkerWithdrawcashController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the WorkerCard model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return WorkerCard the loaded model
+     * @throws HttpException if the model cannot be found
+     */
+    protected function findCardModel($id){
+        if (($model = WorkerCard::findOne(['worker_id'=>$id,'status'=>'0'])) !== null) {
+            return $model;
+        } else {
+            throw new HttpException('The requested page does not exist.');
+        }
     }
 }

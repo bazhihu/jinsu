@@ -98,9 +98,14 @@ $this->title = '护工提现支付';
         <!--?= Html::a('Create Wallet User Detail', ['create'], ['class' => 'btn btn-success']) ?-->
     </p>
 
-    <?= GridView::widget([
+    <?php
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
+            [
+                'class'=>'kartik\grid\CheckboxColumn',
+                'headerOptions'=>['class'=>'kartik-sheet-style'],
+            ],
             ['class' => 'yii\grid\SerialColumn'],
             'time_apply',
             'worker_id',
@@ -145,95 +150,74 @@ $this->title = '护工提现支付';
             ],
             'remark_apply'
         ],
+        'responsive'=>true,
+        'hover'=>true,
+        'condensed'=>true,
+        'floatHeader'=>true,
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'showFooter'=>true
+            'showFooter'=>true,
+            'before'=>
+                Html::button('付款', [
+                    'title' => Yii::t('yii', '付款'),
+                    'class' => 'btn btn-success jsPay',
+                    'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/pay']),
+                ]),
         ],
     ]); ?>
 </div>
 
 <script>
-    //同意申请
-    $('body').on('click', 'button.jsAgree', function () {
+    $('body').on('click', 'button.jsPay', function () {
         var it = $(this),
             url = it.attr('data-url'),
-            id = it.parent().parent().attr('data-key');
-        $.ajax({
-            type    : "POST",
-            dataType: "json",
-            async   :false,
-            cache   :false,
-            timeout :30000,
-            url     : url,
-            data    : {'id':id},
-            error:function(jqXHR, textStatus, errorThrown){
-                switch (jqXHR.status){
-                    case(500):
-                        alert("服务器系统内部错误");
-                        break;
-                    case(401):
-                        alert("未登录");
-                        break;
-                    case(403):
-                        alert("无权限执行此操作");
-                        break;
-                    case(408):
-                        alert("请求超时");
-                        break;
-                    default:
-                        alert("未知错误");
-                }
-            },
-            success: function(json){
-                if(json.code == '200'){
-                    it.parent().prev().html('已同意');
-                    it.parent().empty();
-                }else{
-                    alert(json.msg);
-                }
-            }
-        });
-    });
-    //拒绝申请
-    $('body').on('click', 'button.jsRefuse', function () {
-        var it = $(this),
-            url = it.attr('data-url'),
-            id = it.parent().parent().attr('data-key');
-        $.ajax({
-            type    : "POST",
-            dataType: "json",
-            async   :false,
-            cache   :false,
-            timeout :30000,
-            url     : url,
-            data    : {'id':id},
-            error:function(jqXHR, textStatus, errorThrown){
-                switch (jqXHR.status){
-                    case(500):
-                        alert("服务器系统内部错误");
-                        break;
-                    case(401):
-                        alert("未登录");
-                        break;
-                    case(403):
-                        alert("无权限执行此操作");
-                        break;
-                    case(408):
-                        alert("请求超时");
-                        break;
-                    default:
-                        alert("未知错误");
-                }
-            },
-            success: function(json){
-                if(json.code == '200'){
-                    it.parent().prev().html('已拒绝');
-                    it.parent().empty();
-                }else{
-                    alert(json.msg);
-                }
-            }
-        });
+            id = it.parent().parent().attr('data-key'),
+            box = $("input[type=checkbox]:checked"),
+            arr = new Array();
+            box.each(function(){
+                var it = $(this);
+                arr.push(it.val());
+            });
+
+        if(arr.length != 0){
+            $.ajax({
+                 type    : "POST",
+                 dataType: "json",
+                 async   :false,
+                 cache   :false,
+                 timeout :30000,
+                 url     : url,
+                 data    : {'id':arr},
+                 error:function(jqXHR, textStatus, errorThrown){
+                     switch (jqXHR.status){
+                         case(500):
+                            alert("服务器系统内部错误");
+                            break;
+                         case(401):
+                            alert("未登录");
+                            break;
+                         case(403):
+                            alert("无权限执行此操作");
+                            break;
+                         case(408):
+                            alert("请求超时");
+                            break;
+                         default:
+                            alert("未知错误");
+                         }
+                     },
+                     success: function(json){
+                     if(json.code == '200'){
+                         it.parent().prev().html('已同意');
+                         it.parent().empty();
+                     }else{
+                         alert(json.msg);
+                     }
+                 }
+             });
+        }else{
+            alert('无任何勾选！');
+        }
     });
 </script>

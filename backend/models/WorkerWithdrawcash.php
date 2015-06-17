@@ -16,8 +16,7 @@ use Yii;
  * @property string $remark_audit
  * @property string $remark_apply
  * @property integer $payee_type
- * @property string $payee_time
- * @property string $payee_hospital
+ * @property integer $payee_hospital
  * @property string $payee_id_card
  * @property string $payee_bank
  * @property string $payee_bank_card
@@ -44,10 +43,10 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['withdrawcash_no', 'worker_id', 'worker_name', 'status', 'payee_type', 'payee_time', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_card', 'time_apply', 'time_audit', 'time_payment', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'required'],
+            [['withdrawcash_no', 'worker_id', 'worker_name', 'status', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_card', 'time_apply', 'admin_uid_apply'], 'required'],
             [['worker_id', 'status', 'payee_type', 'payee_hospital', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
             [['money'], 'number'],
-            [['payee_time', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
+            [['time_apply', 'time_audit', 'time_payment'], 'safe'],
             [['withdrawcash_no', 'worker_name', 'payee_id_card', 'payee_bank', 'payee_bank_card'], 'string', 'max' => 50],
             [['remark_audit', 'remark_apply'], 'string', 'max' => 255]
         ];
@@ -68,7 +67,6 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
             'remark_audit' => '备注',
             'remark_apply' => '申请备注',
             'payee_type' => '收款方式',
-            'payee_time' => '收款时间',
             'payee_hospital' => '所属医院',
             'payee_id_card' => '身份证',
             'payee_bank' => '开户行',

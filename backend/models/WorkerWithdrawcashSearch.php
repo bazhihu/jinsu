@@ -28,7 +28,7 @@ class WorkerWithdrawcashSearch extends WorkerWithdrawcash
     {
         return [
             [['id', 'worker_id', 'status', 'payee_type', 'admin_uid_payment', 'admin_uid_audit', 'admin_uid_apply'], 'integer'],
-            [['withdrawcash_no', 'worker_name', 'remark_audit', 'remark_apply', 'payee_time', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
+            [['withdrawcash_no', 'worker_name', 'remark_audit', 'remark_apply', 'payee_hospital', 'payee_id_card', 'payee_bank', 'payee_bank_card', 'time_apply', 'time_audit', 'time_payment'], 'safe'],
             [['money'], 'number'],
         ];
     }
@@ -71,7 +71,6 @@ class WorkerWithdrawcashSearch extends WorkerWithdrawcash
             'money' => $this->money,
             'status' => $this->status,
             'payee_type' => $this->payee_type,
-            'payee_time' => $this->payee_time,
             'time_apply' => $this->time_apply,
             'time_audit' => $this->time_audit,
             'time_payment' => $this->time_payment,

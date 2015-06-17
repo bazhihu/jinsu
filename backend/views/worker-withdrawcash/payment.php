@@ -107,9 +107,10 @@ $this->title = '护工提现支付';
                 'headerOptions'=>['class'=>'kartik-sheet-style'],
             ],
             ['class' => 'yii\grid\SerialColumn'],
-            'time_apply',
+            'time_audit',
             'worker_id',
             'worker_name',
+            'money',
             [
                 'header'=>'所属医院',
                 'attribute'=>'payee_hospital',
@@ -117,36 +118,18 @@ $this->title = '护工提现支付';
                     return $model->payee_hospital?\backend\models\Hospitals::getName($model->payee_hospital):'';
                 },
             ],
-            'money',
+            'payee_bank_card',
+            'payee_id_card',
             [
                 'header'=>'状态',
                 'attribute'=>'status',
                 'value'=>function($model){
-                    if($model->status ==0){
-                        return '待审核';
-                    }else if($model->status ==1){
-                        return '已拒绝';
+                    if($model->status ==3){
+                        return '已付款';
                     }else{
-                        return '已同意';
+                        return '待付款';
                     }
                 },
-            ],
-            ['class' => 'yii\grid\ActionColumn',
-                'header'=>'操作',
-                'buttons' => [
-                    'pay' => function ($url, $model) {
-                        return $model->status==0?Html::button('同意', [
-                                'title' => Yii::t('yii', '同意'),
-                                'class' => 'btn btn-default jsAgree',
-                                'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/agree']),
-                            ]).Html::button('拒绝', [
-                                'title' => Yii::t('yii', '拒绝'),
-                                'class' => 'btn btn-default jsRefuse',
-                                'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/refuse']),
-                            ]):"";
-                    },
-                ],
-                'template'=>'{pay}',
             ],
             'remark_apply'
         ],
@@ -173,13 +156,12 @@ $this->title = '护工提现支付';
         var it = $(this),
             url = it.attr('data-url'),
             id = it.parent().parent().attr('data-key'),
-            box = $("input[type=checkbox]:checked"),
+            box = $("input[name='selection[]']:checked"),
             arr = new Array();
             box.each(function(){
                 var it = $(this);
                 arr.push(it.val());
             });
-
         if(arr.length != 0){
             $.ajax({
                  type    : "POST",
@@ -209,8 +191,8 @@ $this->title = '护工提现支付';
                      },
                      success: function(json){
                      if(json.code == '200'){
-                         it.parent().prev().html('已同意');
-                         it.parent().empty();
+                         alert('操作成功');
+                         location.reload();
                      }else{
                          alert(json.msg);
                      }

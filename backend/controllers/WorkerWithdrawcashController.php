@@ -67,8 +67,8 @@ class WorkerWithdrawcashController extends Controller
         $queryParams = Yii::$app->request->queryParams;
 
         #限定列表区间为申请审核
-        $queryParams['WorkerWithdrawcashSearch']['start'] = 0;
-        $queryParams['WorkerWithdrawcashSearch']['end'] = 3;
+        $queryParams['WorkerWithdrawcashSearch']['start'] = '0';
+        $queryParams['WorkerWithdrawcashSearch']['end'] = '3';
 
         $dataProvider = $searchModel->search($queryParams);
 
@@ -136,8 +136,8 @@ class WorkerWithdrawcashController extends Controller
         $queryParams = Yii::$app->request->queryParams;
 
         #限定列表区间为申请审核
-        $queryParams['WorkerWithdrawcashSearch']['start'] = 2;
-        $queryParams['WorkerWithdrawcashSearch']['end'] = 3;
+        $queryParams['WorkerWithdrawcashSearch']['start'] = '2';
+        $queryParams['WorkerWithdrawcashSearch']['end'] = '3';
 
         $dataProvider = $searchModel->search($queryParams);
 
@@ -148,47 +148,18 @@ class WorkerWithdrawcashController extends Controller
     }
 
     /**
-     * Displays a single WorkerWithdrawcash model.
-     * @param integer $id
-     * @return mixed
+     * 付款
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Updates an existing WorkerWithdrawcash model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+    public function actionPay(){
+        try {
+            $id = Yii::$app->request->post()['id'];
+            $pay = new WorkerWithdrawcash();
+            $return  = $pay->pay($id);
+            echo Json::encode($return);
+            exit;
+        }catch (Exception $e){
+            throw new HttpException(400, print_r($e, true));
         }
-    }
-
-    /**
-     * Deletes an existing WorkerWithdrawcash model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

@@ -58,7 +58,7 @@ use kartik\datecontrol\DateControl;
             <?= $form->field(
                 $model,
                 'status'
-            )->dropDownList(['1'=>'未解决','2'=>'已解决','3'=>'关闭'],['prompt'=>'请选择'])->label("状态") ?>
+            )->dropDownList(['1'=>'未解决','2'=>'已解决'],['prompt'=>'请选择'])->label("状态") ?>
 
             <?= $form->field(
                 $model,

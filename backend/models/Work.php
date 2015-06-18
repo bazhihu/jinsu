@@ -40,7 +40,7 @@ class Work extends \yii\db\ActiveRecord
         return [
             [['order_id','worker_id', 'adder', 'solver', 'status','type'], 'integer'],
             [['order_no','content', 'solver_content'], 'string'],
-            [['add_date', 'solve_date','add_date_begin','add_date_end'], 'safe'],
+            [['work_no','add_date', 'solve_date','add_date_begin','add_date_end'], 'safe'],
             [['worker_name', 'user_name'], 'string', 'max' => 20],
             [['from_where'], 'string', 'max' => 10],
             [['mobile'], 'string', 'max' => 11]
@@ -53,7 +53,7 @@ class Work extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'work_id' => '工单编号',
+            'work_no' => '工单编号',
             'order_no' => '订单编号',
             'worker_id' => '员工号',
             'worker_name' => '员工姓名',

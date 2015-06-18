@@ -19,7 +19,7 @@ class WorkSearch extends Work
     {
         return [
             [['work_id', 'worker_id', 'adder', 'solver', 'status'], 'integer'],
-            [['worker_name', 'content', 'from_where', 'mobile', 'user_name', 'add_date', 'solve_date', 'solver_content'], 'safe'],
+            [['worker_name', 'content', 'from_where', 'mobile', 'user_name', 'add_date', 'add_date_begin','add_date_end','solve_date', 'solver_content'], 'safe'],
         ];
     }
 
@@ -57,15 +57,20 @@ class WorkSearch extends Work
 
         $query->andFilterWhere([
             'from_where' => $this->from_where,
+            'type' => $this->type,
             'status' => $this->status
         ]);
 
+        if(!$this->add_date_end)
+            $this->add_date_end = date('Y-m-d H:i:s');
         $query->andFilterWhere(['like', 'worker_id', $this->worker_id])
             ->andFilterWhere(['like', 'worker_name', $this->worker_name])
             ->andFilterWhere(['like', 'mobile', $this->mobile])
             ->andFilterWhere(['like', 'user_name', $this->user_name])
             ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'user_name', $this->user_name]);
+            ->andFilterWhere(['like', 'user_name', $this->user_name])
+            ->andFilterWhere(['between', 'add_date', $this->add_date_begin, $this->add_date_end]);
+        $query->orderBy('work_id DESC');
 
         return $dataProvider;
     }

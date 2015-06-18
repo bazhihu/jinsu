@@ -7,11 +7,12 @@ use common\models\Order;
 use backend\models\Hospitals;
 use backend\models\Departments;
 use yii\widgets\ActiveForm;
+use backend\models\AdminUser;
 
 /* @var $this yii\web\View */
 /* @var $model backend\Models\Work */
 
-$this->title = $model->work_id."工单详情";
+$this->title = $model->work_no."工单详情";
 $this->params['breadcrumbs'][] = ['label' => 'Works', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -94,26 +95,45 @@ $this->params['breadcrumbs'][] = $this->title;
                         <h3 class="panel-title">解决信息</h3>
                     </div>
                     <div class="panel-body" style="height: 416px">
-                        <?php $form = ActiveForm::begin(); ?>
-                        <?
-                        echo $form->field($model, 'type')->widget(Select2::classname(), [
-                        'data' => ['1'=>'1','2'=>'2'],
-                        'options' => ['placeholder' => '请选择类型','style'=>'width:30%'],
-                        'pluginOptions' => [
-                        'allowClear' => true
-                        ],
-                        ])->label('类型');
-                        ?>
-                        <?= $form->field($model, 'solver_content')->textarea(['rows' => 6]) ?>
-                        <tr>
-                            <td height="35"><b>状态：</b><? if($model['status']==1) echo "未解决"; if($model['status']==2) echo "已解决";if($model['status']==3) echo "关闭";?></td>
-                        </tr>
-                        <tr>
-                            <td height="35"><b>解决时间：</b><?=$model['solve_date']?></td>
-                        </tr>
+                        <?php
+                        if($create==1){
+                            $form = ActiveForm::begin(); ?>
+                            <?
+                            echo $form->field($model, 'type')->widget(Select2::classname(), [
+                            'data' => ['0'=>'请选择','1'=>'投诉','2'=>'表扬','3'=>'咨询','4'=>'建议'],
+                            'options' => ['placeholder' => '请选择类型','style'=>'width:30%'],
+                            'pluginOptions' => [
+                            'allowClear' => true
+                            ],
+                            ])->label('类型');
+                            ?>
+                            <?= $form->field($model, 'solver_content')->textarea(['rows' => 6])?>
+                        <?}?>
+                        <Table>
+                            <tr>
+                                <td height="35"><b>状态：</b><? if($model['status']==1) echo "未解决"; if($model['status']==2) echo "已解决";if($model['status']==3) echo "关闭";?></td>
+                            </tr>
+                            <tr>
+                                <td height="35"><b>解决时间：</b><?=$model['solve_date']?></td>
+                            </tr>
+                            <tr>
+                                <td height="35"><b>解决人：</b><?=AdminUser::findOne(['admin_uid',$model['solver']])['username'] ?></td>
+                            </tr>
+
+                            <?if(!$create){?>
+                                <tr>
+                                    <td height="35"><b>类型：</b><? if($model['type']==1) echo "投诉"; if($model['type']==2) echo "表扬";if($model['type']==3) echo "咨询";if($model['type']==4) echo "建议"?></td>
+                                </tr>
+                                <tr>
+                                    <td height="35"><b>解决办法：</b><?=$model['solver_content']?></td>
+                                </tr>
+                            <?}?>
+                        </Table>
+                        <? if($create){?>
                         <div class="form-group">
                             <?= Html::submitButton('解决', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                         </div>
+                        <?}?>
                     </div>
                 </div>
             </div>

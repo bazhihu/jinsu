@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('新增工单', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建工单', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -29,10 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute'=>'work_id',
+                'attribute'=>'work_no',
                 'format'=>'raw',
                 'value'=>function ($model) {
-                    return Html::a($model->work_id, Yii::$app->urlManager->createUrl(['work/view','id'=>$model->work_id]));
+                    return Html::a($model->work_no, Yii::$app->urlManager->createUrl(['work/view','id'=>$model->work_id]));
                 },
             ],
             [
@@ -42,7 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->order_no, Yii::$app->urlManager->createUrl(['order/view','id'=>$model->order_id]));
                 },
             ],
-            'worker_id',
+            [
+                'attribute'=>'worker_id',
+                'format'=>'raw',
+                'value'=>function ($model) {
+                    return Html::a($model->worker_id, Yii::$app->urlManager->createUrl(['worker/view','id'=>$model->worker_id]));
+                },
+            ],
             'worker_name',
             'mobile',
             'user_name',
@@ -63,8 +69,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '未解决';
                     elseif ($model->status==2)
                         return '已解决';
-                    elseif ($model->status==3)
-                        return '关闭';
                 }
             ],
             [
@@ -98,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'office' => function ($url, $model) {
                         //判断是否是TQ
                         $juese = \backend\models\AdminUser::findOne(['admin_uid'=>Yii::$app->user->id])->staff_role;
-                        if($juese=='客服') {
+                        if($juese=='客服' && $model->order_id) {
                             $hospital_id = Order::findOne($model->order_id)['hospital_id'];
                             return Html::button('呼出办公室', [
                                 'title' => '呼出办公室',

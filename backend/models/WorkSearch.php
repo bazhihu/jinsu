@@ -18,7 +18,7 @@ class WorkSearch extends Work
     public function rules()
     {
         return [
-            [['work_id', 'worker_id', 'adder', 'solver', 'status'], 'integer'],
+            [['work_id', 'worker_id', 'adder', 'solver', 'status','type'], 'integer'],
             [['worker_name', 'content', 'from_where', 'mobile', 'user_name', 'add_date', 'add_date_begin','add_date_end','solve_date', 'solver_content'], 'safe'],
         ];
     }

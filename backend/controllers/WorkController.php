@@ -3,8 +3,8 @@
 namespace backend\controllers;
 use backend\models\OrderMaster;
 use Yii;
-use backend\Models\Work;
-use backend\Models\WorkSearch;
+use backend\models\Work;
+use backend\models\WorkSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

@@ -79,6 +79,13 @@ AppAsset::register($this);
                 ]
             ],
             [
+                'label' => '工单',
+                'items' => [
+                    ['label' => '工单列表', 'url' => ['/work/']],
+                    ['label' => '创建工单', 'url' => ['/work/create']]
+                ]
+            ],
+            [
                 'label' => '帐号',
                 'url' => ['/admin-user/index']
             ],

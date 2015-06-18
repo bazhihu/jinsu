@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\Models\Work */
 
-$this->title = 'Create Work';
+$this->title = '创建工单';
 $this->params['breadcrumbs'][] = ['label' => 'Works', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

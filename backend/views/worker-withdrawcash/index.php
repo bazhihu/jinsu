@@ -183,11 +183,11 @@ $this->title = '护工提现';
                     'agree' => function ($url, $model) {
                         return $model->status==0?Html::button('同意', [
                                 'title' => Yii::t('yii', '同意'),
-                                'class' => 'btn btn-default jsAgree',
+                                'class' => 'btn btn-primary jsAgree',
                                 'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/agree']),
                             ]).Html::button('拒绝', [
                                 'title' => Yii::t('yii', '拒绝'),
-                                'class' => 'btn btn-default jsRefuse',
+                                'class' => 'btn btn-danger jsRefuse',
                                 'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/refuse']),
                             ]):"";
                     },

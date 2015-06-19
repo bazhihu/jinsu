@@ -16,12 +16,7 @@ $this->title = '护工提现';
         float:left;
         margin:5px;
     }
-    .field-workerwithdrawcashsearch-fromdate{
-        width:250px
-    }
-    .field-workerwithdrawcashsearch-todate{
-        width:250px
-    }
+
 </style>
 <div class="worker-withdrawcash-index">
 
@@ -45,13 +40,10 @@ $this->title = '护工提现';
                     ],
                 ]); ?>
                 <?php
-                echo $form->field(
-                    $searchModel,
-                    'fromDate'
-                )->widget(
+                echo $form->field($searchModel,'fromDate')->widget(
                     DatePicker::classname(),
                     [
-                        'options' => ['placeholder' => '请输入开始时间 ...'],
+                        'options' => ['placeholder' => '请输入开始时间 ...','style'=>'width:130px'],
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,
@@ -59,13 +51,10 @@ $this->title = '护工提现';
                         ]
                     ]
                 )->label('时间范围');
-                echo $form->field(
-                    $searchModel,
-                    'toDate'
-                )->widget(
-                    DatePicker::classname(),
+
+                echo $form->field($searchModel,'toDate')->widget(DatePicker::classname(),
                     [
-                        'options' => ['placeholder' => '请输入结束时间 ...'],
+                        'options' => ['placeholder' => '请输入结束时间 ...','style'=>'width:130px'],
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,
@@ -74,20 +63,14 @@ $this->title = '护工提现';
                     ]
                 )->label('至');
                 ?>
-                <?= $form->field(
-                    $searchModel,
-                    'worker_name',
-                    [
-                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                    ]
-                )->input('text',['placeholder'=>'请输入护工姓名...'])->label('姓名') ?>
-                <?= $form->field(
-                    $searchModel,
-                    'worker_id',
-                    [
-                        'labelOptions'=>['class'=>'col-sm-4 col-md-4 col-lg-4']
-                    ]
-                )->input('text',['placeholder'=>'请输入护工编号...'])->label('编号') ?>
+                <?= $form->field($searchModel,'worker_name')
+                    ->input('text',['placeholder'=>'请输入姓名...','style'=>'width:110px'])
+                    ->label('姓名')
+                ?>
+
+                <?= $form->field($searchModel,'worker_id')
+                    ->input('text',['placeholder'=>'请输入编号...','style'=>'width:110px'])
+                    ->label('编号') ?>
 
                 <?= $form->field($searchModel, 'city_id')->widget(\kartik\widgets\Select2::classname(),[
                     'data' => \backend\models\City::getList(null, 3),

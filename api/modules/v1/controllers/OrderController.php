@@ -197,7 +197,7 @@ class OrderController extends ActiveController {
         $payment = null;
         if($action == 'cancel'){
             //取消订单
-            $response = $orderModel->cancel();
+            $response = $orderModel->cancel('用户取消', 2);
             $this->responseCode = $response['code'];
             $this->responseMsg = $response['msg'];
         }elseif($action == 'payment'){

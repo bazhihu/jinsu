@@ -7,6 +7,7 @@ use backend\models\Hospitals;
 use backend\models\Departments;
 use backend\models\Worker;
 use backend\models\City;
+use backend\models\AdminUser;
 
 /**
  * @var yii\web\View $this
@@ -180,12 +181,12 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
             'cancel_time',
             [
                 'attribute'=>'customer_service_id',
-                'value'=>\backend\models\AdminUser::getInfo($model->customer_service_id, 'staff_name').'('.$model->customer_service_id.')'
+                'value'=>AdminUser::getInfo($model->customer_service_id, 'staff_name').'('.$model->customer_service_id.')'
             ],
             'remark',
             [
                 'attribute'=>'operator_id',
-                'value'=>\backend\models\AdminUser::getInfo($model->operator_id, 'staff_name').'('.$model->operator_id.')'
+                'value'=>$model->operator_type == 1 ? AdminUser::getInfo($model->operator_id, 'staff_name').'('.$model->operator_id.')' : $model->operator_id
             ],
             'create_order_ip',
             [

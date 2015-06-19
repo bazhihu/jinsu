@@ -137,7 +137,7 @@ class Order extends \yii\db\ActiveRecord{
     {
         return [
             [['order_no', 'mobile', 'city_id','hospital_id', 'department_id', 'base_price', 'patient_state', 'start_time', 'end_time', 'reality_end_time', 'order_type'], 'required'],
-            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_id', 'is_continue', 'order_type'], 'integer'],
+            [['uid', 'worker_no', 'worker_level', 'hospital_id', 'department_id', 'patient_state', 'pay_way', 'customer_service_id', 'operator_type', 'operator_id', 'is_continue', 'order_type'], 'integer'],
             [['base_price', 'patient_state_coefficient', 'total_amount', 'real_amount'], 'number'],
             [['reality_end_time', 'create_time', 'pay_time', 'confirm_time', 'begin_service_time', 'evaluate_time', 'cancel_time'], 'safe'],
             [['order_no'], 'string', 'max' => 50],
@@ -490,9 +490,10 @@ class Order extends \yii\db\ActiveRecord{
     /**
      * 订单取消
      * @param string $reason 取消原因
+     * @param int $operatorType 操作者类型
      * @return array
      */
-    public function cancel($reason = null){
+    public function cancel($reason = null, $operatorType = 1){
         $response = ['code' => 200];
         if(!self::checkOrderStatusAction($this->order_status, 'cancel')){
             $response['code'] = 212;
@@ -525,6 +526,7 @@ class Order extends \yii\db\ActiveRecord{
 
             $this->order_status = self::ORDER_STATUS_CANCEL;
             $this->cancel_time = date('Y-m-d H:i:s');
+            $this->operator_type = $operatorType;
             $this->operator_id = Yii::$app->user->id;
             if(!$this->save()){
                 throw new HttpException(400, print_r($this->getErrors(), true));

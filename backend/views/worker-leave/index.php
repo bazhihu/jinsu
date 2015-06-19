@@ -143,13 +143,13 @@ $this->title = '护工请假列表';
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',
             'type'=>'info',
-            'before'=>
-                Html::a('<i class="glyphicon glyphicon-plus"></i> 添加请假信息', ['worker-leave/create'], ['class' => 'btn btn-success']/*[
-                    'data-url'=>Yii::$app->urlManager->createUrl(['worker/leave-create']),
-                    'class'=>'btn btn-sm btn-success myModal jsLeaveCreate',
-                    'data-toggle'=>'modal',
-                    'data-target'=>'#myModal',
-                ]*/),
+            /*'before'=>
+            Html::a('<i class="glyphicon glyphicon-plus"></i> 添加请假信息', ['worker-leave/create'], ['class' => 'btn btn-success'][
+                'data-url'=>Yii::$app->urlManager->createUrl(['worker/leave-create']),
+                'class'=>'btn btn-sm btn-success myModal jsLeaveCreate',
+                'data-toggle'=>'modal',
+                'data-target'=>'#myModal',
+            ]),*/
             'showFooter'=>true
         ],
     ]); ?>

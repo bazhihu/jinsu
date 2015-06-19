@@ -31,13 +31,14 @@ class WorkerLeaveController extends Controller
      * 请假申请
      * @return string|\yii\web\Response
      */
-    public function actionCreate(){
+    public function actionCreate($id){
         $model = new WorkerLeave();
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['index', 'id' => $model->id]);
         }else{
             return $this->render('create', [
                 'model' => $model,
+                'worker'=>\backend\models\Worker::findOne(['worker_id'=>$id])
             ]);
         }
     }

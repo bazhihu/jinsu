@@ -72,10 +72,6 @@ class WorkerWithdrawcashController extends Controller
         ]);
     }
 
-    public function actionView($id){
-
-    }
-
     /**
      * Lists all WorkerWithdrawcash models.
      * @return mixed

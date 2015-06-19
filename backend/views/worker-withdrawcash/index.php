@@ -141,9 +141,9 @@ $this->title = '护工提现';
                     return $model->payee_hospital?\backend\models\Hospitals::getName($model->payee_hospital):'';
                 },
             ],
-            'payee_id_card',
+            /*'payee_id_card',
             'payee_bank_card',
-            'payee_bank_sub',
+            'payee_bank_sub',*/
             'money',
             'time_apply',
             'time_audit',

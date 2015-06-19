@@ -63,8 +63,7 @@ class WorkerCardController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'id'=>$id,
-                'name'=>$id?\backend\models\Worker::findOne(['worker_id'=>$id])->name:''
+                'worker'=>\backend\models\Worker::findOne(['worker_id'=>$id])
             ]);
         }
     }

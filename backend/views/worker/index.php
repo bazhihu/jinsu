@@ -106,7 +106,7 @@ $this->title = '护工管理';
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{calendar}&nbsp;&nbsp;{update}',
+                'template' => '{calendar}&nbsp;&nbsp;{update}&nbsp;&nbsp;{card}',
                 'buttons' => [
                     'calendar' => function ($url, $model) {
                         return Html::a(
@@ -121,7 +121,14 @@ $this->title = '护工管理';
                             Yii::$app->urlManager->createUrl(['worker/update','id' => $model->worker_id]),
                             ['title' => '编辑']
                         );
-                    }
+                    },
+                    'card' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-credit-card"></span>',
+                            Yii::$app->urlManager->createUrl(['worker-card/create','id' => $model->worker_id]),
+                            ['title' => '工资卡']
+                        );
+                    },
 
                 ],
             ],

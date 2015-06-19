@@ -142,7 +142,7 @@ td .btn{margin: 2px}
         [
             'class' => 'yii\grid\ActionColumn',
             'header' => '订单操作',
-            'template' => '{pay}{confirm}{update}{begin_service}{evaluate}{finish}{continue}{cancel}{copy}',
+            'template' => '{pay}{confirm}{update}{begin_service}{evaluate}{finish}{continue}{cancel}{copy}{work}',
             'buttons' => [
                 'pay' => function ($url, $model) {
                     if(OrderMaster::checkOrderStatusAction($model->order_status, 'pay')){
@@ -222,6 +222,15 @@ td .btn{margin: 2px}
                             ])
                         ]);
                     }
+                },
+                'work' => function ($url, $model) {
+                    return Html::button('工单', [
+                        'class'=>'btn btn-sm btn-primary jsContinueOrder',
+                        'data-url'=>Yii::$app->urlManager->createUrl([
+                            'work/create',
+                            'order_id' => $model->order_id
+                        ])
+                    ]);
                 },
             ]
         ]

@@ -47,12 +47,28 @@ class WorkerWithdrawcashController extends Controller
         if (Yii::$app->request->post()) {
             $create = $model->withdrawal(Yii::$app->request->post());
             if($create['code'] == 200){
-                return $this->redirect(['check']);
+                return $this->redirect(['index']);
             }
         }
         return $this->render('create', [
             'model' => $card,
             'balance'=>$balance,
+            'id'=>$id,
+        ]);
+    }
+
+    /**
+     * 申请提现
+     * @return string
+     */
+    public function actionIndex(){
+        $searchModel = new WorkerWithdrawcashSearch();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

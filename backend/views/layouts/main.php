@@ -73,6 +73,16 @@ AppAsset::register($this);
                     '<li class="divider"></li>',
                     ['label' => '护工账户', 'url' => ['/worker-account']],
                     ['label' => '护工账单', 'url' => ['/worker-bill']],
+                    ['label' => '护工提现', 'url' => ['/worker-withdrawcash']],
+                    ['label' => '护工工资卡', 'url' => ['/worker-card']],
+                    ['label' => '护工请假列表', 'url' => ['/worker-card']],
+                ]
+            ],
+            [
+                'label' => '工单',
+                'items' => [
+                    ['label' => '工单列表', 'url' => ['/work/']],
+                    ['label' => '创建工单', 'url' => ['/work/create']]
                 ]
             ],
             [

@@ -58,7 +58,12 @@ use kartik\datecontrol\DateControl;
             <?= $form->field(
                 $model,
                 'status'
-            )->dropDownList(['1'=>'未解决','2'=>'已解决','3'=>'关闭'],['prompt'=>'请选择'])->label("状态") ?>
+            )->dropDownList([1=>'未解决',2=>'已解决'],['prompt'=>'请选择'])->label("状态") ?>
+
+            <?= $form->field(
+                $model,
+                'type'
+            )->dropDownList([1=>'投诉',2=>'表扬',3=>'咨询',4=>'建议'],['prompt'=>'请选择'])->label("类型") ?>
 
             <?= $form->field($model, 'add_date_begin')->widget(DateControl::classname(), [
                 'type'=>DateControl::FORMAT_DATE,

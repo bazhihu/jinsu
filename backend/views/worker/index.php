@@ -106,7 +106,7 @@ $this->title = '护工管理';
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{calendar}&nbsp;&nbsp;{update}&nbsp;&nbsp;{card}',
+                'template' => '{calendar}&nbsp;&nbsp;{update}&nbsp;&nbsp;{card}&nbsp;&nbsp;{leave}',
                 'buttons' => [
                     'calendar' => function ($url, $model) {
                         return Html::a(
@@ -129,6 +129,13 @@ $this->title = '护工管理';
                             ['title' => '工资卡']
                         );
                     },
+                    'leave' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-home"></span>',
+                            Yii::$app->urlManager->createUrl(['worker-leave/create','id' => $model->worker_id]),
+                            ['title' => '请假']
+                        );
+                    }
 
                 ],
             ],

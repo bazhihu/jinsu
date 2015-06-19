@@ -16,7 +16,12 @@ $this->title = '护工提现';
         float:left;
         margin:5px;
     }
-
+    .field-workerwithdrawcashsearch-fromdate{
+        width:250px
+    }
+    .field-workerwithdrawcashsearch-todate{
+        width:250px
+    }
 </style>
 <div class="worker-withdrawcash-index">
 

@@ -136,14 +136,14 @@ $this->title = '护工提现';
             'time_apply',
             'time_audit',
             [
-                'header'=>'审核管理员',
+                'header'=>'审核者',
                 'attribute'=>'admin_uid_audit',
                 'value'=>function($model){
                     return $model->admin_uid_audit?\backend\models\AdminUser::getInfo($model->admin_uid_audit):'';
                 },
             ],
             [
-                'header'=>'审核管理员',
+                'header'=>'付款者',
                 'attribute'=>'admin_uid_payment',
                 'value'=>function($model){
                     return $model->admin_uid_payment?\backend\models\AdminUser::getInfo($model->admin_uid_payment):'';

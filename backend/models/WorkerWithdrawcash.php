@@ -112,7 +112,7 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
      * 拒绝审核
      * @return array
      */
-    public function refuse(){
+    public function refuse($reason){
         $response = [
             'code'=>'200',
             'msg'=>''
@@ -120,6 +120,7 @@ class WorkerWithdrawcash extends \yii\db\ActiveRecord
         $this->status = 1;
         $this->time_audit = date("Y-m-d H:i:s");
         $this->admin_uid_audit = yii::$app->user->identity->getId();
+        $this->remark_audit = $reason;
         if($this->save()){
             $response['msg'] = '拒绝成功';
             return $response;

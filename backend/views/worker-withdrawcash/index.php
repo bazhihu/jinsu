@@ -145,7 +145,7 @@ $this->title = '护工提现';
                 },
             ],
             'time_payment',
-            'remark_apply',
+            'remark_audit',
             [
                 'header'=>'状态',
                 'attribute'=>'status',
@@ -171,8 +171,10 @@ $this->title = '护工提现';
                                 'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/agree']),
                             ]).Html::button('拒绝', [
                                 'title' => Yii::t('yii', '拒绝'),
-                                'class' => 'btn btn-danger jsRefuse',
+                                'class' => 'btn btn-danger myModal',
                                 'data-url'=>Yii::$app->urlManager->createUrl(['worker-withdrawcash/refuse']),
+                                'data-toggle'=>'modal',
+                                'data-target'=>'#myModal',
                             ]):"";
                     },
                 ],
@@ -192,7 +194,25 @@ $this->title = '护工提现';
         ],
     ]); ?>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">拒绝原因</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="refusal" data-url="">
+                <textarea class="form-control rejectReason" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary jsRefuse">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     //同意申请
     $('body').on('click', 'button.jsAgree', function () {
@@ -237,9 +257,9 @@ $this->title = '护工提现';
     });
     //拒绝申请
     $('body').on('click', 'button.jsRefuse', function () {
-        var it = $(this),
-            url = it.attr('data-url'),
-            id = it.parent().parent().attr('data-key');
+        var id = $('.refusal').val(),
+            url = $('.refusal').attr('data-url'),
+            reason = $('.rejectReason').val();
         $.ajax({
             type    : "POST",
             dataType: "json",
@@ -247,7 +267,7 @@ $this->title = '护工提现';
             cache   :false,
             timeout :30000,
             url     : url,
-            data    : {'id':id},
+            data    : {'id':id,'reason':reason},
             error:function(jqXHR, textStatus, errorThrown){
                 switch (jqXHR.status){
                     case(500):
@@ -325,5 +345,14 @@ $this->title = '护工提现';
         }else{
             alert('无任何勾选！');
         }
+    });
+    $('body').on('click', 'button.myModal', function () {
+        var myModal = $(this);
+
+        var dataUrl = myModal.attr('data-url'),
+            uid = myModal.parent().parent().attr('data-key');
+
+        $('.refusal').val(uid);
+        $('.refusal').attr('data-url',dataUrl);
     });
 </script>

@@ -162,6 +162,7 @@ $this->title = '护工提现';
                 },
             ],
             'time_payment',
+            'remark_apply',
             [
                 'header'=>'状态',
                 'attribute'=>'status',
@@ -194,7 +195,6 @@ $this->title = '护工提现';
                 ],
                 'template'=>'{agree}',
             ],
-            'remark_apply',
         ],
         'panel' => [
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> '.Html::encode($this->title).' </h3>',

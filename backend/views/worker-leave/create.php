@@ -10,7 +10,7 @@ $this->title = '新增请假信息';
         padding: 0 15% 0 0;
     }
 </style>
-<div class="panel panel-info" style="margin: 2% 8% 0 8%;">
+<div style="margin: 2% 8% 0 8%;">
     <div class="worker-leave-list">
         <div class="panel panel-info">
             <div class="panel-heading">

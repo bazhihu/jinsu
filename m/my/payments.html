@@ -101,7 +101,7 @@
             });
         }
         pay.on(CLICK, function(){
-            var orderUrls = orderUrl+'/'+order_no+'?access-token='+user.token,
+            var orderUrls = orderUrlV2+'/'+order_no+'?access-token='+user.token,
                 payWay = $('input[name=payment]:checked').val();
             if(payWay == '3'){
                 $.ajax({

@@ -20,6 +20,7 @@ $this->title = '新增银行卡';
                 <div class="panel-body">
                     <span class="btn-lg">姓名：<?=$worker->name?></span>
                     <span class="btn-lg">工号：<?=$worker->worker_id?></span>
+                    <span class="btn-lg">开户行：中国工商银行</span>
                 </div>
             </div>
         </div>
@@ -40,13 +41,13 @@ $this->title = '新增银行卡';
                                 'form'          => $form,
                                 'columns'       => 1,
                                 'attributes'    => [
-                                    'bank'=>[
+                                    /*'bank'=>[
                                         'type'=> Form::INPUT_DROPDOWN_LIST,
                                         'items'=>\backend\models\WorkerCard::$_BANK,
                                         'options'=>[
                                             'prompt'=>'选择'
                                         ]
-                                    ],
+                                    ],*/
                                     'bank_card'=>[
                                         'type'=> Form::INPUT_TEXT,
                                         'options'=>[
@@ -64,6 +65,7 @@ $this->title = '新增银行卡';
                                 ]
                             ]);
                             ?>
+                            <input type="hidden" id="workercard-bank" class="form-control" name="WorkerCard[bank]" value="ICBC">
                             <input type="hidden" id="workercard-worker_id" class="form-control" name="WorkerCard[worker_id]" value="<?=$worker->worker_id?>">
                             <input type="hidden" id="workercard-worker_name" class="form-control" name="WorkerCard[worker_name]" value="<?=$worker->name?>">
                             <input type="hidden" id="workercard-identity_card" class="form-control" name="WorkerCard[identity_card]" value="<?=$worker->idcard?>">

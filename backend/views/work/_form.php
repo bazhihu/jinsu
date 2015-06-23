@@ -40,7 +40,7 @@ use common\models\Order;
                             <td height="35"><b>员工姓名：</b><?=$orderInfo['worker_name']?></td>
                         </tr>
                         <tr>
-                            <td height="35"><b>订单价格：</b><?=$orderInfo['real_amount']?></td>
+                            <td height="35"><b>订单价格：</b><?=$orderInfo['total_amount']?></td>
                         </tr>
                         <tr>
                             <td height="35"><b>订单时间：</b><?=$orderInfo['start_time']."--".$orderInfo['reality_end_time']?></td>

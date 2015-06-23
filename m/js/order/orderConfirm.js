@@ -3,7 +3,7 @@ var orderDate = getLocal(orderDate),
     type = getUrlQueryString('type'),
     worker_no = date.workerId,
     userInfo = getStatus(),
-    orderCreate = orderUrl+'?access-token='+userInfo.token,
+    orderCreate = orderUrlV2+'?access-token='+userInfo.token,
     userUrl = userUrl+'/'+userInfo.id+'?access-token='+userInfo.token,
     careMsg = date.patient;
     //病患信息

@@ -115,6 +115,25 @@ $this->registerJsFile('js/order.js?v=20150330', ['position'=>yii\web\View::POS_E
         </div>
     </div>
 
+    <?php if($model->order_status == OrderMaster::ORDER_STATUS_CANCEL):?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">取消原因</h3>
+        </div>
+        <div class="panel-body">
+            <?php
+            if($model->operator_type == 2){
+                echo '用户取消订单';
+            }else{
+                $findArr = ['order_no' => $model->order_no, 'action' => 'cancel'];
+                $reason = \backend\models\OrderOperatorLog::findOne($findArr)->remark;
+                echo empty($reason) ? '后台取消订单' : $reason;
+            }
+            ?>
+        </div>
+    </div>
+    <?php endif;?>
+
     <?php
     if($model->order_status == OrderMaster::ORDER_STATUS_WAIT_PAY){
         $payButton = Html::button(

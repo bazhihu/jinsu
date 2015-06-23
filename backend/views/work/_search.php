@@ -14,6 +14,12 @@ use kartik\datecontrol\DateControl;
         float:left;
         margin:5px;
     }
+    .field-worksearch-add_date_begin{
+        float:left;width:230px
+    }
+    .field-worksearch-add_date_end{
+        float:left;width:230px
+    }
 </style>
 <div class="work-search">
     <?php $form = ActiveForm::begin([

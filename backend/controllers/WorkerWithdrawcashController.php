@@ -133,8 +133,9 @@ class WorkerWithdrawcashController extends Controller
     public function actionRefuse(){
         try {
             $id = Yii::$app->request->post()['id'];
+            $reason = Yii::$app->request->post()['reason'];
             $cash = $this->findModel($id);
-            $return  = $cash->refuse();
+            $return  = $cash->refuse($reason);
             echo Json::encode($return);
             exit;
         }catch (Exception $e){

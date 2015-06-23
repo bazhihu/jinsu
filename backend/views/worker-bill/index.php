@@ -41,31 +41,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute'=>'add_time',
-                'filterType'=>GridView::FILTER_DATETIME,
-                'filterWidgetOptions'=>[
-                    'type' => DateTimePicker::TYPE_INPUT,
-                    'pluginOptions'=>['allowClear'=>true]
-                ],
             ],
             'worker_id',
             'worker_name',
             //'order_id',
             'order_no',
             [
-                'attribute'=>'start_time',
-                'filterType'=>GridView::FILTER_DATETIME,
-                'filterWidgetOptions'=>[
-                    'type' => DateTimePicker::TYPE_INPUT,
-                    'pluginOptions'=>['allowClear'=>true]
-                ]
+                'attribute'=>'start_time'
             ],
             [
-                'attribute'=>'end_time',
-                'filterType'=>GridView::FILTER_DATETIME,
-                'filterWidgetOptions'=>[
-                    'type' => DateTimePicker::TYPE_INPUT,
-                    'pluginOptions'=>['allowClear'=>true]
-                ]
+                'attribute'=>'end_time'
             ],
             'amount',
 

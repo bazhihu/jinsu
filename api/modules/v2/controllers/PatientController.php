@@ -27,7 +27,7 @@ class PatientController extends ActiveController {
 
         return ArrayHelper::merge($behaviors, [
             'authenticator' => [
-                'class' => QueryParamAuth::className()
+                //'class' => QueryParamAuth::className()
             ],
         ]);
     }

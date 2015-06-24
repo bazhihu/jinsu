@@ -77,7 +77,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{solve}&nbsp;{user}&nbsp;{office}',
                 'buttons' => [
                     'solve' => function ($url, $model) {
-                        return Html::button('解决', [
+                        if($model->status==2){
+                            $button_name = '编辑';
+                        }else{
+                            $button_name = '解决';
+                        }
+                        return Html::button($button_name, [
                             'class'=>'btn btn-sm btn-primary jsSolveOrder',
                             'solve-url'=>Yii::$app->urlManager->createUrl([
                                 'work/view',

@@ -111,15 +111,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?}?>
                         <Table>
                             <tr>
-                                <td height="35"><b>状态：</b><? if($model['status']==1) echo "未解决"; if($model['status']==2) echo "已解决";if($model['status']==3) echo "关闭";?></td>
+                                <td height="35"><b>状态：</b><? if($model['status']==1) echo "未解决"; if($model['status']==2) echo "已解决";if($model['status']==3) echo "关闭";?> &nbsp; &nbsp;&nbsp;&nbsp;<b>解决人：</b><?=AdminUser::findOne(['admin_uid',$model['solver']])['username'] ?></td>
                             </tr>
                             <tr>
                                 <td height="35"><b>解决时间：</b><?=$model['solve_date']?></td>
                             </tr>
-                            <tr>
-                                <td height="35"><b>解决人：</b><?=AdminUser::findOne(['admin_uid',$model['solver']])['username'] ?></td>
-                            </tr>
-
                             <?if(!$create){?>
                                 <tr>
                                     <td height="35"><b>类型：</b><? if($model['type']==1) echo "投诉"; if($model['type']==2) echo "表扬";if($model['type']==3) echo "咨询";if($model['type']==4) echo "建议"?></td>
@@ -129,9 +125,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </tr>
                             <?}?>
                         </Table>
-                        <? if($create){?>
+                        <? if($create){
+                            ?>
                         <div class="form-group">
-                            <?= Html::submitButton('解决', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                            <?
+                            if($model['status']==2){
+                                $button_name = '编辑';
+                            }else{
+                                $button_name = '解决';
+                            }
+                            echo Html::submitButton($button_name, ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                         </div>
                         <?}?>
                     </div>

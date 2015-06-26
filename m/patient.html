@@ -19,7 +19,6 @@
 </ul>
 <script id="patient" type="text/html">
     {{each list as value i}}
-
     <li class="{{if !i}}default{{/if}} menuitem save">
         <a href="32.patient-detail.html">
             <div class="patient-photo">
@@ -27,16 +26,6 @@
             </div>
             <em class="name">{{value.name}}<span class="years">{{value.age}}岁</span></em>
             <i class="about">{{value.create_time}}</i>
-            <i class="about">入住北京朝阳骨科医院</i>
-        </a>
-    </li>
-    <li class="menuitem back">
-        <a class="back">
-            <div class="patient-photo">
-                <img src="../images/patient-simple.jpg" width="62" height="62" alt="" />
-            </div>
-            <em class="name">{{value.name}}</em>
-            <i class="about">更新时间：2015-04-28 19:24:17</i>
         </a>
     </li>
     {{/each}}

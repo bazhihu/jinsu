@@ -82,7 +82,6 @@
             dep = $('#department');
 
         var hospitalList  = new Object();
-        console.log(areas);
 
         var bro = new Object();
         for(var K = 0;K<hospitalsLen;K++){

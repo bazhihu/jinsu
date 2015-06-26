@@ -1,3 +1,19 @@
+loggedIn();
+var user = getStatus();
+    patientUrl = patientUrl_v2+'?user_id='+user.id;
+$.getJSON(patientUrl, function(backData){
+    if(backData.data.length){
+        var patient = backData.data,
+            data = {
+                title: '被护理人',
+                list: patient
+            },
+            html = template('patient', data);console.log(patient);
+        document.getElementById('content').innerHTML = html;
+    }else{
+        $(".add-button").attr('style','display:none');
+    }
+});
 $('.save').on('click', function () {
     var name = $('#name').val(),
         gender = $('#gender').val(),
@@ -37,7 +53,6 @@ $('.save').on('click', function () {
 
 ; ~function () {
 var patient =  $("#patient").val();
-    console.log(patient);
 }();
 
 $('#header .back').click(function (e) {

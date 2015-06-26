@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>被护理人详情</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-patient-detail">
+
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">被护理人详情</h2>
+    <a class="home" href="1.index.html">首页</a>
+</header>
+
+<div class="patient-detail-header">
+    <div class="patient-photo">
+        <img src="../images/patient-simple.jpg" width="62" height="62" alt="" />
+    </div>
+</div>
+
+<div class="patient-detail menu">
+    <p class="menuitem">
+        <label>姓名：</label>
+        <span class="value name"></span>
+    </p>
+    <p class="menuitem">
+        <label>性别：</label>
+        <span class="value gender"></span>
+    </p>
+    <p class="menuitem">
+        <label>年龄：</label>
+        <span class="value age"></span>
+    </p>
+    <p class="menuitem">
+        <label>身高：</label>
+        <span class="value height"></span>
+    </p>
+    <p class="menuitem">
+        <label>体重：</label>
+        <span class="value weight"></span>
+    </p>
+    <p class="menuitem">
+        <label>关系：</label>
+        <span class="value relation"></span>
+    </p>
+</div>
+<div class="operations">
+    <a class="edit-button edit" role="button" href="patientEdit.html">编辑</a>
+    <span class="edit-button del" role="button" data-text="#">删除</span>
+</div>
+<div id="foot"></div>
+<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
+<script type="text/javascript" src="../js/public.js"></script>
+<script type="text/javascript">
+    loggedIn();
+    var age = getUrlQueryString('age'),
+        gender = getUrlQueryString('gender'),
+        height = getUrlQueryString('height'),
+        name = getUrlQueryString('name'),
+        relation = getUrlQueryString('relation'),
+        weight = getUrlQueryString('weight'),
+        id = getUrlQueryString('id');
+
+    if(gender == '1'){
+        $('.gender').html('男');
+    }else{
+        $('.gender').html('女');
+    }
+    $('.name').html(unescape(name.replace(/\\u/gi, '%u')));
+    $('.height').html(height+'cm');
+    $('.age').html(age+'岁');
+    $('.weight').html(weight+'kg');
+    $('.relation').html(relation);
+
+    $('.edit').attr('href','patientEdit.html?age='+age+'&gender='+gender+'&height='+height+'&name='+name+'&weight='+weight+'&relation='+relation+'&id='+id);
+    $('.del').attr('data-text',id);
+
+    $('.del').on(CLICK, function(){
+        var it = $(this),
+            id = it.attr('data-text');
+        var deleteUrl = patientUrl_v2+'/'+id;
+        $.ajax({
+            data: {'id':id} ,
+            type: "DELETE",
+            dataType: "json",
+            url: deleteUrl,
+            async:false,
+            cache:false,
+            crossDomain:true,
+            timeout:30000,
+            success: function(data){
+                if(data.code == 200){
+                    alert('删除成功');
+                    history.go(-1);
+                    location.reload();
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                alert('网络超时!')
+            }
+        })
+    });
+</script>
+</body>
+</html>

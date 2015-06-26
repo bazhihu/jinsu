@@ -795,3 +795,31 @@ body > .app-download .app-icon { display: block; float: left; margin: 0 10px 0 1
 #page-account .swiper-wrapper:after { content: ""; display: table; clear: both; }
 #page-account .swiper-slide { display: block; float: left; width: 10%; max-width: 414px; -webkit-transform: translate3d(0,0,0,0); }
 #page-account .swiper-container img { display: block; position: relative; width: 100%; border: 0 none; }
+
+#page-reserve .agreement { position: relative; margin-left: 10px; padding-left: 24px; font-size: 12px; color: #777; line-height: 17px; }
+#page-reserve .agreement input { position: absolute; left: 0; top: -1px; width: 16px; height: 16px; -webkit-appearance: none; border: 1px solid #999; margin: 0; padding: 0; background: #fff; -webkit-box-sizing: border-box; -webkit-border-radius: 0; border-radius: 0; -webkit-box-shadow: none; box-shadow: none; }
+#page-reserve .agreement input:checked { background: #fff url(data:image/gif;base64,R0lGODlhGgAUAMQfAPz+/ur59onhy/b9+zzNqUTPrM3y6VbUtOT487bs33HbwVnVtjTLpbzu4pzm1JHjztP07DjMp6To10vRsGbYvLDr3HXcwpXk0F7WuG/av9328PH7+fP8+mDWuTPLpf///yH5BAEAAB8ALAAAAAAaABQAAAWS4CeOZGl+HEVUZ2sCmecRbi0+stfZbpUXCN7JEJFFDEITopBjJUmDQ+7xJAEUOQWgOsLJDgOSZHLZ1hK/QIkgU4RbkKInAjFhZRi1KcD0MBInAzEyExolAws5Fy4AAj9IIxY5FjwSDEaAHxc5GG82DWx+DgmXHhN6QhB9fjIEdVUIUjkMDVwiGxQ5DrYjjQRUQiEAOw==) no-repeat 50% 50%; -webkit-background-size: 13px 10px; background-size: 13px 10px; }
+#page-reserve .agreement a, #page-reserve .agreement a:visited { color: #33cba5; text-decoration: none; font-style: italic; }
+
+#page-patient-list #header .add { position: absolute; right: 0; top: 0; width: 44px; height: 100%; line-height: 44px; text-align: center; font-size: 12px; }
+#page-patient-list #header .add, #page-patient-list #header .add:visited { color: #fff; }
+.patient-list { border-bottom: 1px solid #d9d9d9; }
+.patient-list:empty, .patient-list-none { border: 0 none; }
+.patient-list:empty:before, .patient-list-none:before { content: "\8fd8\6ca1\6709\4efb\4f55\88ab\62a4\7406\4eba\4fe1\606f"; display: block; margin: 50px 0 30px 0; font-size: 14px; color: #aaa; text-align: center; }
+.patient-list li { background-color: #fff; padding: 0; }
+.patient-list a { display: block; position: relative; height: 70px; padding: 10px 19px; overflow: hidden; }
+.patient-list .default a:after { content: "\9ed8\8ba4"; display: block; position: absolute; right: -32px; bottom: 7px; width: 100px; height: 20px; font-size: 12px; line-height: 20px; text-align: center; color: #fff; background: #33cba5; -webkit-transform: rotate(-45deg); }
+.patient-list .name { display: block; font-size: 15px; line-height: 26px; color: #777; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.patient-list .name .years { display: inline-block; margin-left: 1ex; font-size: 12px; color: #c3c3c3; }
+.patient-list .about { display: block; font-size: 12px; line-height: 18px; color: #b8b8b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.patient-photo { display: block; width: 64px; height: 64px; overflow: hidden; border: 1px solid #40cead; -webkit-border-radius: 99px; border-radius: 99px; -webkit-box-sizing: border-box; box-sizing: border-box; background: #40cead url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAgMAAAC+UIlYAAAADFBMVEXb9vK47eWg59z///84LaZoAAADV0lEQVR4Xu3VP2jcVhzAcblJKKQFFeJ0uA4d0sHVlO4NL0s7hargqoVbXEih9fOQtpBMBoXOgXfGoUNJkeHpetLPhgMP3UpsTI72lgxxcKuOntrp9MK94PDe/SrdWUSqXu6mdCj3uEHDR1/9fsf9sXDGeflgDuZAXbSngx6EU4GiAMwIBp+M0wIAuAmo5iTdb1PYNgEJAG4G3rX3ITaBBsA4wREdMAAF+fFR30fsg18HAmKLAseU5Nf360ACwxRiHGRYm0AfSD6He5ABZQJ/R5i32zdyYJrB4ZN3keWakjqgwWRXkoNVrAE1uVVGaAbF4Hp5rKM6GBVzjcH2VKBczQ3g+eqamQErgGQiqAP9HCSkz0xrdourVUz8OkDKixZXFA3AKVaTgYyMIC5GaNGOCSRATiVAYAJ9YAUAZgKi+DJQAGICGuICxGgCCOCego4ZOBCegsAM+qcJCr4ZpDBJOBHWQTH+Zg64ARTPiAli4r8IpDBOHOKLADbGiYdmUCQYohkUCT4VKArRVIA9iKcDNQtgMgvIWUBHMwCuzQKXZoG3ZwH75f4lzcGDK8sT8GQCUoKLFZBc4V/iY8/z1lIvO6708asKcDRfQgcg/kxAdgJ5zQOvDFY1P8T9q4sLrtiyLIs072asBFT0adtzR8GSZKL7ByLSMEJaAjrMu2+2afOu6FIAIq9to1MCvc4C3yPU89qxuNeGH4hcrxb+6uitbLGhj4tiw3UQ5Xq1sNcZAUOrcduyxCbm4Ha1oDriJ4aQH9HyqOc2otiLquD7rLBqZYWNTN2BFsBmBcjvGKrYsmzBFXVVMxsSK+DZzwx1G4ALriFAWQP9Wwx7W1YSiO75VkTqIJHMds4H1Bc/xqTB8jWrYEne2QlTCFHs2Khcud6pgpDLjR13H0J7FGar2L1f+L8AE5C9Ws1YQXa69FtWBR8TtEh6FQcX0coLi+l//qk+GKgzTwbKPbAfXlaXFRnYe8QelIA8+e3cr1IHxzfu7eqbI/LOhc8vXU9KQF8/Eq8O00fHj9d3X7mpyYpiR2tOCWDwp3htePLWsVS7C1lhBdnRBx+Wwcrw7PDs7+eOh2pXf7Pw9PDMGxc+ulUGtlrWy48G2bBfq/e/eJq6D/zX3/uf/gTNwRz8A1sIu7pu5EE+AAAAAElFTkSuQmCC) no-repeat 50% 50%; -webkit-background-size: 64px 64px; background-size: 64px 64px; }
+.patient-photo img:not([src]) { visibility: hidden; }
+.patient-list .patient-photo { float: left; margin-right: 10px; }
+
+.patient-detail-header { }
+.patient-detail-header .patient-photo { margin: 26px auto 0 auto; }
+.patient-detail-header .set-photo { display: block; position: relative; width: 6em; line-height: 28px; margin: 0 auto; font-size: 12px; text-align: center; }
+.patient-detail-header .set-photo input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; }
+.patient-detail-header .set-photo, .patient-detail-header .set-photo:visited { color: #ccc; text-decoration: none; }
+
+#page-account .patients { padding-left: 26px; background: url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACb0lEQVR42rWWf2hNYRjHz7m7RnQpKAmpoIqoVVRbKUCiSKkCBfwlAoAkSU2KZBGFUP7TbW1JRKSyLJpWawabUFRJhd27zeep763Tcc49P+w+9ek9nfc5z/fc9z4/jlvTctuJYbNgA6yAGb69TsjDDWiLCpSNIbYJDsF0+A4X4bXnRewl9sBKOA3X0wq6sB3OQQYOQBO0Q7/Hx15gCZyCSzAMLsNAUsGFcBY+w2Z4EuAzoCM1XunX2TNd8CAoaCZELAfHoQC7AsSqhdeeybegZ3NJBEdALbRCY8D+O+G3Rj1TqxiJk6Y35P6QFM/EztKSzYSJuh6qdanWT/AmTpAkgpati3z3mrVagiwebEFL/+e63qe1Xmtr3CBRgv2e67ww26H1REipJBY0oT4YJZ+ib39MmZjD5d+XRPAPdMB4mAJvffuzQ54z/7FqFsUkdfgLHsNkqAnYbxd+q4Op8FQxYgv26v+yeltVxs8fa5lK5h78TiJYyrwXsFxE2XxNjk61OSep4Dc4pp55BKaV8Z2gjLVkOglf0wiaPVIjngt7Q5JsEtyEeRK9G3Xu5cxq6otngrgBPnbcC+CnstNNI5hVcTdpxnXDNY0ev7VoFo7WAM5rcGfjCm5VWjeoP9brVzwMebmXsAa2wEdN/wbN0G1qBP8UvnWUnbBWdVStyX1V07sYcfRd4j7Mgf2qSavh3XAHLsAPl6+29VycgXFqaVfgvI6x4KSznD66DsNqxbGsP2iCRRX6LX11dfua9v9YlbqVffWts5PL6OZRnfeHQRRz1MDfK7ZpVJWSpsepvPV4k8aycGSFBetKgjaGNopKW8dfI7WQFZCBtO0AAAAASUVORK5CYII=) no-repeat 0 50%; -webkit-background-size: 14px 14px; background-size: 14px 14px; }

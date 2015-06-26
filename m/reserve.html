@@ -34,7 +34,7 @@
             <input type="hidden" id="start" name="start" value="" />
             <input type="hidden" id="end" name="end" value="" />
         </label>
-        <a href="patient.html" id="patient-menuitem" target="popup" class="menuitem" role="menuitem">
+        <a href="patient.html?v=1.5" id="patient-menuitem" target="popup" class="menuitem" role="menuitem">
             <em class="title">被护理人：</em>
             <label class="value" data-placeholder="请选择"></label>
             <input type="hidden" id="patient" name="patient" />
@@ -49,15 +49,16 @@
             <i class="value" data-placeholder="请选择服务科室"></i>
             <input type="hidden" id="disease" name="department" value="" />
         </label>
-        <div class="menuiteminput menuitem">
+        <!--<div class="menuiteminput menuitem">
             <label class="title" for="room">病　　房：</label>
             <input type="text" name="room" id="room" value="" placeholder="请输入所在病房及床位号" />
-        </div>
+        </div>-->
         <div class="menuiteminput menuitem">
             <label class="title" for="misc">备注信息：</label>
             <input type="text" name="misc" id="misc" value="" placeholder="其他要求 (非必填)" />
         </div>
     </div>
+    <label for="agreement" class="agreement"><input type="checkbox" id="agreement" name="agreement" checked="checked">我已阅读并同意<a href="#agreement">《优爱医护服务协议》</a></label>
     <input type="button" id="submit" value="确定预约" />
 </form>
 <div id="hospitals" class="filter-category filter-options">

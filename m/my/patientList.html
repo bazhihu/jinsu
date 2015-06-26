@@ -10,7 +10,7 @@
 <body id="page-patient-list">
 
 <header id="header">
-    <a class="back">返回</a>
+    <a class="back" href="javascript:history.back(1)">返回</a>
     <h2 class="title">被护理人</h2>
     <a class="add" href="/addPatient.html">添加</a>
 </header>
@@ -19,24 +19,13 @@
 </ul>
 <script id="patient" type="text/html">
     {{each list as value i}}
-
     <li class="{{if !i}}default{{/if}} menuitem save">
-        <a href="32.patient-detail.html">
+        <a href="patientDetail.html?age={{value.age}}&gender={{value.gender}}&height={{value.height}}&name={{(value.nameUrl)}}&relation={{value.relation}}&weight={{value.weight}}&id={{value.id}}">
             <div class="patient-photo">
                 <img src="../images/patient-simple.jpg" width="62" height="62" alt="">
             </div>
             <em class="name">{{value.name}}<span class="years">{{value.age}}岁</span></em>
             <i class="about">{{value.create_time}}</i>
-            <i class="about">入住北京朝阳骨科医院</i>
-        </a>
-    </li>
-    <li class="menuitem back">
-        <a class="back">
-            <div class="patient-photo">
-                <img src="../images/patient-simple.jpg" width="62" height="62" alt="" />
-            </div>
-            <em class="name">{{value.name}}</em>
-            <i class="about">更新时间：2015-04-28 19:24:17</i>
         </a>
     </li>
     {{/each}}
@@ -46,8 +35,7 @@
 <div id="foot"></div>
 <script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/template.js" type="text/javascript"></script>
-<script src="../js/right-selector.js"></script>
 <script type='text/javascript' src='../js/public.js'></script>
-<script type="text/javascript" src="../js/patient.js?v=1.1"></script>
+<script type="text/javascript" src="../js/my/patientList.js?v=1.1"></script>
 </body>
 </html>

@@ -45,6 +45,7 @@ var UA = window.navigator.userAgent.toLowerCase(),
     walletUrlV2 = url+version_v2+'wallets',
     workerUrl = url+version+'workers',
     workerUrl_v2 = url+version_v2+'workers',
+    patientUrl_v2 = url+version_v2+'patients',
     urlToLogin = host+'/login.html',
     INDEX = host,
     firstEntered = 'firstEntered';

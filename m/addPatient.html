@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>被护理人信息编辑</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-patient-edit">
+
+<header id="header">
+    <a class="back" href="javascript:history.back(1)">返回</a>
+    <h2 class="title">被护理人信息编辑</h2>
+    <a class="home" href="/">首页</a>
+</header>
+
+<form class="patient-edit menu-form">
+    <div class="patient-detail-header">
+        <div class="patient-photo">
+            <img width="62" height="62" alt="" />
+        </div>
+        <span class="set-photo">点击设置头像<input type="file" name="photo" /></span>
+    </div>
+
+    <div class="menu">
+        <div class="menuiteminput menuitem">
+            <label class="title" for="name">姓名：</label>
+            <input type="text" name="name" id="name" value="" placeholder="点击填写" />
+        </div>
+        <label for="gender" class="menuitem">
+            <em class="title">性别：</em>
+            <select class="value right-selector" id="gender" title="">
+                <option value="">请选择</option>
+                <option value="1">男</option>
+                <option value="2">女</option>
+            </select>
+        </label>
+        <div class="menuiteminput menuitem">
+            <label class="title" for="age">年龄：</label>
+            <input type="text" name="age" id="age" value="" placeholder="点击填写" />
+        </div>
+        <div class="menuiteminput menuitem">
+            <label class="title" for="height">身高：</label>
+            <input type="text" name="height" id="height" value="" placeholder="点击填写" />
+        </div>
+        <div class="menuiteminput menuitem">
+            <label class="title" for="weight">体重：</label>
+            <input type="text" name="weight" id="weight" value="" placeholder="点击填写" />
+        </div>
+        <div class="menuiteminput menuitem">
+            <label class="title" for="relation">关系：</label>
+            <input type="text" name="relation" id="relation" value="" placeholder="点击填写" />
+        </div>
+
+    </div>
+    <input type="button" id="save" value="确认保存">
+</form>
+
+<div class="patient-edit-tips">认真完善被护理人信息，我们将为您安排最合适的护理人员</div>
+<div id="foot"></div>
+<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
+<script type="text/javascript" src="../js/right-selector.js"></script>
+<script type="text/javascript" src="../js/public.js"></script>
+<script type="text/javascript">
+    loggedIn();
+    $('#save').on(CLICK, function(){
+        var name = $('#name').val(),
+            gender = $('#gender').val(),
+            age = $('#age').val(),
+            height = $('#height').val(),
+            weight = $('#weight').val(),
+            relation = $('#relation').val(),
+            regName = /^([\u4e00-\u9fa5]){2,7}$/,
+            reg = /^\d+$/,
+            user=getStatus();
+
+        if(!name || !regName.test(name)){
+            alert('请输入正确的名字！');
+            return false;
+        }
+        if(!gender || !reg.test(gender)){
+            alert('请输入正确的性别！');
+            return false;
+        }
+        if(!age || !reg.test(age) || age<1 || age>150){//1-150
+            alert('请输入正确的年龄！');
+            return false;
+        }
+        if(!height || !reg.test(height) || height<10 || height>300){//10-300
+            alert('请输入正确的身高！');
+            return false;
+        }
+        if(!weight || !reg.test(weight) || weight<1 || weight>500){//1-500
+            alert('请输入正确的体重！');
+            return false;
+        }
+        /*if(!relation || !regName.test(relation)){
+            alert('请输入正确的关系！');
+            return false;
+        }*/
+        var createUrl = patientUrl_v2;
+        $.ajax({
+            data: {'user_id':user.id,'name':name,'gender':gender,'age':age,'height':height,'weight':weight,'relation':relation} ,
+            type: "POST",
+            dataType: "json",
+            url: createUrl,
+            async:false,
+            cache:false,
+            crossDomain:true,
+            timeout:30000,
+            success: function(data){
+                if(data.code == 200){
+                    alert('创建成功');
+                    location.href = '/my/patientList.html';
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                alert('网络超时!')
+            }
+        })
+    });
+    document.querySelector('.set-photo input').addEventListener('change', function () {
+        var file = this.files[0];
+        if (!file) return;
+        var fileType = file.type;
+        var mimeTypes = {
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.png': 'image/png',
+            '.gif': 'image/gif'
+        };
+        if (!fileType) {
+            var regexp = fileName.match(/\.\w+$/);
+            if (regexp && (regexp = regexp[0]))
+                fileType = mimeTypes[(regexp + '').toLowerCase()];
+        };
+        if (fileType.indexOf('image') < 0) {
+            return;
+        };
+        var img = this.parentNode.parentNode.querySelector('.patient-photo img');
+
+        var reader = new FileReader();
+        reader.onload = function () {
+            img.src = this.result;
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
+</body>
+</html>

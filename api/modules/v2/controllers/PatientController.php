@@ -104,6 +104,11 @@ class PatientController extends ActiveController {
         $this->responseMsg = '删除成功';
     }
 
+    public function actionOptions(){
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: X-Requested-With");
+        header("Access-Control-Allow-Methods: PUT,POST,GET,DELETE,OPTIONS");
+    }
 
     /**
      * 返回数据处理

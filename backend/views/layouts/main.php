@@ -84,6 +84,13 @@ AppAsset::register($this);
                 ]
             ],
             [
+                'label' => '短信',
+                'items' => [
+                    ['label' => '发送短信', 'url' => ['/send-message/create']],
+                    ['label' => '短信记录', 'url' => ['/send-message/index']]
+                ]
+            ],
+            [
                 'label' => '帐号',
                 'url' => ['/admin-user/index']
             ],

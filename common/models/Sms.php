@@ -94,16 +94,21 @@ const SMS_ORDERS_NOT_PAID               = '2'; //登录时的验证码
      * @author HZQ
      */
     public static function send($params){
-        #2015/4/28 屏蔽发送短信
+        /*#2015/4/28 屏蔽发送短信
         if($params['type'] != self::SMS_LOGIN_CODE){
             $response = [
                 'code'=>200,
                 'msg'=>'发送短信成功'
             ];
             return $response;
+        }*/
+        if(isset($params['type']) && $params['type'] == self::SMS_LOGIN_CODE){
+            $content = self::smsScene($params);  //内容
+        }else{
+            $content = $params['content'];  //内容
         }
 
-        $content = self::smsScene($params);  //内容
+
         if(!$content)
         {
             $response['code'] =400;

@@ -42,17 +42,27 @@
         }
 
         function search() {
-            ;
+            var searchUrl = '';
             // 这里添加搜索的逻辑
-
-            //$.ajax({
-            //	url: '',
-            //	data: { q: input.value },
-            //	success: function (result) {
-            //		list.querySelector('ul').innerHTML = result;
-            //	}
-            //});
-
+            $.ajax({
+                data: {q: input.value} ,
+                type: "GET",
+                dataType: "json",
+                url: cancelUrl,
+                async:false,
+                cache:false,
+                crossDomain:true,
+                timeout:30000,
+                success: function(data){
+                    if(data.code == 200){
+                        list.querySelector('ul').innerHTML = result;
+                        window.location.reload();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    alert('网络超时!')
+                }
+            });
         }
         onInput();
 

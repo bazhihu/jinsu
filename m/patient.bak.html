@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>被护理人信息编辑</title>
+	<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+	<meta content="telephone=no" name="format-detection" />
+	<link href="../css/style.css" rel="stylesheet" />
+    <div id='wx_pic' style='margin:0 auto;display:none;'>
+        <img src='/images/pic300.jpg' />
+    </div>
+</head>
+<body id="page-patient-edit">
+
+	<header id="header">
+		<a class="back">返回</a>
+		<h2 class="title">被护理人信息编辑</h2>
+		<a class="home" href="/">首页</a>
+	</header>
+
+	<form class="patient-edit menu-form">
+
+		<div class="menu">
+			<div class="menuiteminput menuitem">
+				<label class="title" for="name">姓名：</label>
+				<input type="text" name="name" id="name" value="" placeholder="点击填写" />
+			</div>
+			<label for="gender" class="menuitem">
+				<em class="title">性别：</em>
+				<select class="value right-selector" id="gender" title="">
+					<option value="">请选择</option>
+					<option value="1">男</option>
+					<option value="2">女</option>
+				</select>
+			</label>
+            <div class="menuiteminput menuitem">
+                <label class="title" for="name">年龄：</label>
+                <input type="text" name="age" id="age" value="" placeholder="点击填写" />
+            </div>
+            <div class="menuiteminput menuitem">
+                <label class="title" for="name">身高(cm)：</label>
+                <input type="text" name="height" id="height" value="" placeholder="点击填写" />
+            </div>
+            <div class="menuiteminput menuitem">
+                <label class="title" for="name">体重(kg)：</label>
+                <input type="text" name="weight" id="weight" value="" placeholder="点击填写" />
+            </div>
+		</div>
+		<input type="button" class="save" value="确认保存" />
+	</form>
+
+	<div class="patient-edit-tips">认真完善被护理人信息，我们将为您安排最合适的护理人员</div>
+    <div id="foot"></div>
+	<script src="../js/zepto-with-touch.min.js"></script>
+	<script src="../js/right-selector.js"></script>
+	<script src="../js/patient.js"></script>
+</body>
+</html>

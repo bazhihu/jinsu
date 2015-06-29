@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>搜索</title>
+    <meta name="viewport" content="width=320,user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <link href="../css/style.css" rel="stylesheet" />
+</head>
+<body id="page-search">
+<form id="header">
+    <input type="search" name="q" autocomplete="off" autofocus="autofocus" id="q" value="" placeholder="请输入护理员姓名" />
+    <a class="cancel" href="javascript:history.back(1)">取消</a>
+</form>
+<div class="search-history">
+    <ul>
+        <li>
+            <a href="?q=李华荣">李华荣</a>
+        </li>
+        <li>
+            <a href="?q=648321">648321</a>
+        </li>
+        <li>
+            <a href="?q=二狗子">二狗子</a>
+        </li>
+    </ul>
+    <span class="clear">清空历史</span>
+</div>
+<div class="nurses-list">
+    <ul>
+        <li>
+            <a href="12.nurses-detail.html">
+                <div class="nurses-photo" style="background-image: url(../images/nurses-simple.jpg)"></div>
+                <div class="nurses-detail">
+                    <span class="nurses-price"><em>20</em>元/天</span>
+                    <span class="nurses-rate">★★★★★</span>
+                    <h4 class="nurses-name"><span class="key">宋智</span>孝</h4>
+                    <p class="nurses-intro">56岁 | 陕西 | 7年从业经验</p>
+                    <p class="nurses-reserve">
+                        <span class="care-level-special">特级护理师 骨科</span>
+                        <span class="status-busy nurses-status">服务中</span>
+                    </p>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="12.nurses-detail.html">
+                <div class="nurses-photo" style="background-image: url(../images/nurses-simple.jpg)"></div>
+                <div class="nurses-detail">
+                    <span class="nurses-price"><em>20</em>元/天</span>
+                    <span class="nurses-rate">★★★★★</span>
+                    <h4 class="nurses-name"><span class="key">宋智</span>孝</h4>
+                    <p class="nurses-intro">56岁 | 陕西 | 7年从业经验</p>
+                    <p class="nurses-reserve">
+                        <span class="care-level-high">特级护理师 骨科</span>
+                        <span class="nurses-status">空闲</span>
+                    </p>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="12.nurses-detail.html">
+                <div class="nurses-photo" style="background-image: url(../images/nurses-simple.jpg)"></div>
+                <div class="nurses-detail">
+                    <span class="nurses-price"><em>20</em>元/天</span>
+                    <span class="nurses-rate">★★★★★</span>
+                    <h4 class="nurses-name"><span class="key">宋智</span>孝</h4>
+                    <p class="nurses-intro">56岁 | 陕西 | 7年从业经验</p>
+                    <p class="nurses-reserve">
+                        <span class="care-level-middle">特级护理师 骨科</span>
+                        <span class="status-busy nurses-status">服务中</span>
+                    </p>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<script src="../js/zepto-with-touch.min.js"></script>
+<script src="../js/search.js"></script>
+</body>
+</html>

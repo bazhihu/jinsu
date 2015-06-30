@@ -12,7 +12,7 @@
 <header id="header">
     <a class="back" href="javascript:history.back(1)">返回</a>
     <h2 class="title">被护理人详情</h2>
-    <a class="home" href="1.index.html">首页</a>
+    <a class="home" href="/">首页</a>
 </header>
 
 <div class="patient-detail-header">
@@ -73,7 +73,9 @@
     $('.height').html(height+'cm');
     $('.age').html(age+'岁');
     $('.weight').html(weight+'kg');
-    $('.relation').html(relation);
+    if(relation){
+        $('.relation').html(unescape(relation.replace(/\\u/gi, '%u')));
+    }
 
     $('.edit').attr('href','patientEdit.html?age='+age+'&gender='+gender+'&height='+height+'&name='+name+'&weight='+weight+'&relation='+relation+'&id='+id);
     $('.del').attr('data-text',id);

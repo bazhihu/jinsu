@@ -7,6 +7,7 @@ $.getJSON(patientUrl, function(backData){
         var patient = backData.data;
         for(var i=0;i<patient.length;i++){
             patient[i].nameUrl =escape(patient[i].name).toLocaleLowerCase().replace(/%u/gi, '\\u');
+            patient[i].relation =escape(patient[i].relation).toLocaleLowerCase().replace(/%u/gi, '\\u');
         }
         var data = {
                 title: '被护理人',

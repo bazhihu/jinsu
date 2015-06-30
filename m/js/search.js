@@ -79,9 +79,9 @@
                                 result+='<span class="nurses-rate">★</span>';
                             }
                             result +=
-                                '<h4 class="nurses-name"><span class="key">'+items[i]['name']+'</span></h4>' +
+                                '<h4 class="nurses-name">'+items[i]['name']+'</h4>' +
                                 '<p class="nurses-intro">'+ages(items[i].birth)+'岁 | '+items[i].native_province+' | '+ages(items[i].start_work)+'年从业经验</p>' +
-                                '<p class="nurses-reserve"><span class="care-level-special">'+items[i].level_name+'</span>';
+                                '<p class="nurses-reserve">'+items[i].level_name;
                             if(items[i].in_service)
                                 result+='<span class="status-busy nurses-status">服务中</span>';
                             else

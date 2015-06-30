@@ -7,7 +7,8 @@
     if(!workerNo){
         location.href = "/";
     }
-    if(start && end){
+    if((start && end) && (start!=0 || end!=0)){
+        $('.noHours').attr('style','display:none');
         //服务时间
         var cycle = getOrderCycle(start,end),
             startData = start.substr(5,2)+'月'+start.substr(8,2)+'日',
@@ -17,9 +18,22 @@
         $('#end').val(end);
         $('#workerId').val(workerNo);
     }else{
-        $('.noHours').attr('style');
+        $('.hasHours').attr('style','display:none');
     }
-
+    if(hospital_id){
+        var hospitalName = '';
+        getConfigs(function(back){
+            var hospital = back.hospitals,
+                hosLen = hospital.length;
+            for(var i=0;i<hosLen;i++){
+                if(hospital[i].id ==hospital_id){
+                    hospitalName = hospital[i].name;
+                }
+            }
+            $('.hospitalsVal').html(hospitalName);
+            $('#service-site').val(hospital_id);
+        });
+    }
     //护工信息
     getWorker(function(back){
         var pic = $('.nurses-photo'),

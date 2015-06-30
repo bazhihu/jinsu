@@ -29,9 +29,10 @@
     <div class="menu">
         <input type="hidden" id="workerId" name="workerId" value="" />
         <label class="menu-header">预约信息</label>
-        <label class="menuitem filter-label" role="menuitem" for="service-time">
+        <label class="menuitem" role="menuitem" id="servicetime-menuitem" for="service-time">
             <em class="title">服务时间：</em>
-            <span class="value hours" style="max-width: 200px;">6月3日-6月5日 <em class="nurses-days">共2天</em></span>
+            <label class="value noHours" data-placeholder="请选择"></label>
+            <span class="value hasHours" style="max-width: 200px;">6月3日-6月5日 <em class="nurses-days">共2天</em></span>
             <input type="hidden" id="start" name="start" value="" />
             <input type="hidden" id="end" name="end" value="" />
         </label>
@@ -42,7 +43,7 @@
         </a>
         <label for="hospitals" class="filter-label menuitem" role="menuitem">
             <em class="title">医　　院：</em>
-            <i class="value" data-placeholder="请选择服务医院"></i>
+            <i class="value hospitalsVal" data-placeholder="请选择服务医院"></i>
             <input type="hidden" id="service-site" name="hospitals" value="" />
         </label>
         <label for="department" class="filter-label menuitem" role="menuitem">
@@ -64,13 +65,7 @@
 </form>
 <div id="hospitals" class="filter-category filter-options">
 </div>
-<!--<form id="service-time" class="filter-options">
-    <input type="submit" value="确定" id="service-time-submit"/>
-    <div class="times">
-        <label for="start-time" class="selected">开始时间<input type="date" id="start-time" value="" /></label>
-        <label for="end-time">结束时间<input type="date" id="end-time" value="" /></label>
-    </div>
-</form>-->
+
 <script id="contentHospital" type="text/html">
     <div class="container" style="width: 32%">
         <ul class="category">
@@ -121,7 +116,13 @@
     {{/each}}
     <span role="button" class="ok ok-disabled">确定</span>
 </script>
-
+<form id="service-time" class="filter-options">
+    <input type="submit" value="确定" />
+    <div class="times">
+        <label for="start-time" class="selected">开始时间<input type="date" id="start-time" value="2015-06-10" /></label>
+        <label for="end-time">结束时间<input type="date" id="end-time" value="2015-06-20" /></label>
+    </div>
+</form>
 <div id="foot"></div>
 <script src="../js/zepto-with-touch.min.js"></script>
 <script src="../js/zepto.fx.min.js"></script>

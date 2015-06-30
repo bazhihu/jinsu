@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>被护理人</title>
-    <meta name="viewport" content="width=320,user-scalable=no" />
+    <title>选择被护理人</title>
+    <meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
     <meta content="telephone=no" name="format-detection" />
     <link href="../css/style.css" rel="stylesheet" />
 </head>
@@ -12,31 +12,60 @@
 <header id="header">
     <a class="back">返回</a>
     <h2 class="title">被护理人</h2>
-    <a class="add" href="/addPatient.html">添加</a>
+    <a class="add" href="33.patient-edit.html">添加</a>
 </header>
 
-<ul class="patient-list" id="content">
-</ul>
-<script id="patient" type="text/html">
-    {{each list as value i}}
-    <li class="{{if !i}}default{{/if}} menuitem save">
-        <a href="32.patient-detail.html">
-            <div class="patient-photo">
-                <img src="../images/patient-simple.jpg" width="62" height="62" alt="">
-            </div>
-            <em class="name">{{value.name}}<span class="years">{{value.age}}岁</span></em>
-            <i class="about">{{value.create_time}}</i>
-        </a>
-    </li>
-    {{/each}}
+<form>
+    <ul class="patient-list">
+        <li class="menuitem menuitemradio menuitemradio-checked" role="menuitemradio">
+            <label for="patient-112">
+					<span class="patient-photo">
+						<img src="../images/patient-simple.jpg" width="62" height="62" alt="" />
+					</span>
+                <em class="name">妈妈<span class="years"> 王女士 60岁</span></em>
+                <i class="about">2015-06-18 至 2015-06-28</i>
+                <i class="about">入住北京朝阳骨科医院</i>
+                <input type="radio" name="patient" title="妈妈" value="112" id="patient-112" />
+            </label>
+        </li>
+        <li class="menuitem menuitemradio" role="menuitemradio">
+            <label for="patient-192">
+					<span class="patient-photo">
+						<img src="../images/patient-simple.jpg" width="62" height="62" alt="" />
+					</span>
+                <em class="name">尚志坤</em>
+                <i class="about">更新时间：2015-04-28 19:24:17</i>
+                <input type="radio" name="patient" title="尚志坤" value="192" id="patient-192" />
+            </label>
+        </li>
+    </ul>
+</form>
+<script src="../js/zepto-with-touch.min.js"></script>
+<script>
+    function setValueByHash(value) {
+        value && [].forEach.call(document.getElementsByName('patient'), function (radio) {
+            $(radio).parent().parent()[(radio.checked = value == radio.value) ? 'addClass' : 'removeClass']('menuitemradio-checked');
+        });
+    }
+    $('#header .back').click(function (e) {
+        var value, text;
+        [].forEach.call(document.getElementsByName('patient'), function (radio) {
+            if (radio.checked) {
+                value = radio.value;
+                text = radio.title;
+            }
+        });
+        try {
+            window.parent.$.dismissPopup({ value: value, text: text });
+        } catch (error) {
+            window.history.back(1);
+        }
+    });
+    $('.menuitemradio input[type="radio"]').on('click', function () {
+        [].forEach.call(this.form.elements[this.name], function (radio) {
+            $(radio).parent().parent()[radio === this ? 'addClass' : 'removeClass']('menuitemradio-checked');
+        }, this);
+    });
 </script>
-<a class="add-button" role="button" href="/addPatient.html">马上添加</a>
-
-<div id="foot"></div>
-<script type="text/javascript" src="../js/zepto-with-touch.min.js"></script>
-<script src="../js/template.js" type="text/javascript"></script>
-<script src="../js/right-selector.js"></script>
-<script type='text/javascript' src='../js/public.js'></script>
-<script type="text/javascript" src="../js/patient.js?v=1.1"></script>
 </body>
 </html>

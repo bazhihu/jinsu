@@ -6,6 +6,13 @@
     var time_url = "?city_id="+city_id;
     var select_url = "?city_id="+city_id;
 
+    //医院
+    var hospital_id = getUrlQueryString('hospital_id');
+    if(hospital_id){
+        select_url+= "&hospital_id="+hospital_id;
+        time_url+= "&hospital_id="+hospital_id;
+    }
+
     //开始时间
     var start_time = getUrlQueryString('start_time');
     if(start_time) {
@@ -85,7 +92,7 @@
 			$('#jdate-btn-remove').trigger('click');
 			if ($option.hasClass('filter-category')) {
 				var category = $option[0].querySelector('.category'), subcategory = $option[0].querySelector('.subcategory-selected');
-				if (category) {
+                if (category) {
 					if (!category.scroller || !category.scroller.refresh) {
 						category.scroller = new iScroll(category);
 					} else {
@@ -106,9 +113,9 @@
 			}
 		}
 	});
-	$('.filter-category .category li').tap(function () {
+    $('.filter-category .category li').live(CLICK,function(){
 		var id = this.getAttribute('data-id'), t = this, filter = this.parentNode.parentNode.parentNode, subcategory;
-		[].forEach.call(this.parentNode.children, function (option) {
+        [].forEach.call(this.parentNode.children, function (option) {
 			$(option)[option === t ? 'addClass' : 'removeClass']('selected');
 		});
 		[].forEach.call(filter.querySelectorAll('.subcategory'), function (sub) {

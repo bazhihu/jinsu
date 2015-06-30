@@ -121,7 +121,7 @@
         {{if data.in_service=='true'}}
             <span role="button" class="busy">服务中</span>
         {{else}}
-            <button role="button" class="pay" id="pay" onclick="pay('{{data.worker_id}}','{{data.start_time}}','{{data.end_time}}')">立即预约</button>
+            <button role="button" class="pay" id="pay" onclick="pay('{{data.worker_id}}','{{data.hospital_id}}','{{data.start_time}}','{{data.end_time}}')">立即预约</button>
         {{/if}}
         <span class="price"><i class="currency">&yen;</i><em id="price"></em>元/天</span>
     </div>

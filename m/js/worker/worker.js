@@ -43,18 +43,29 @@ function get_workelist() {
                         pageNum =Math.ceil(list.children.length/10)+1;
                     }
 
-                    getConfigs(function(configs) {
-                        worker_levels=configs.worker_levels;
-                        provinces = configs.provinces;
+                    //城市
+                    var city_id = getUrlQueryString('city_id');
+                    if(!city_id) city_id=110100;
 
-                        //城市
-                        var city_id = getUrlQueryString('city_id');
-                        if(!city_id) city_id=110100;
+                    getConfigs(function(configs) {
                         sort_url= "?city_id="+city_id;
+                        hospital_url= "?city_id="+city_id;
                         if(city_id==120100){
                             $('.city-label').html('天津');
                             $('#city_id_'+city_id).attr("class","selected");
                             $('#city_id_'+110100).attr("class","");
+                        }
+                        defaultCity(city_id);
+
+                        areas=configs.areas;
+                        hospitals=configs.hospitals;
+                        worker_levels=configs.worker_levels;
+                        provinces = configs.provinces;
+
+                        //地区
+                        var area_id = getUrlQueryString('area_id');
+                        if(area_id){
+                            sort_url+= "&area_id="+area_id;
                         }
 
                         //医院
@@ -67,12 +78,14 @@ function get_workelist() {
                         var department_id = getUrlQueryString('department_id');
                         if(department_id){
                             sort_url+= "&department_id="+department_id;
+                            hospital_url+= "&department_id="+department_id;
                         }
 
                         //开始时间
                         var start_time = getUrlQueryString('start_time');
                         if(start_time) {
                             sort_url+= "&start_time="+start_time;
+                            hospital_url+= "&start_time="+start_time;
                         }else{
                             start_time = 0;
                         }
@@ -80,6 +93,7 @@ function get_workelist() {
                         var end_time = getUrlQueryString('end_time');
                         if(end_time) {
                             sort_url+= "&end_time="+end_time;
+                            hospital_url+= "&end_time="+end_time;
                         }else{
                             end_time=0;
                         }
@@ -95,18 +109,21 @@ function get_workelist() {
                         var gender = getUrlQueryString('gender');
                         if(gender){
                             sort_url+= "&gender="+gender;
+                            hospital_url+= "&gender="+gender;
                         }
 
                         //籍贯
                         var native_province = getUrlQueryString('native_province');
                         if(native_province){
                             sort_url+= "&native_province="+native_province;
+                            hospital_url+= "&native_province="+native_province;
                         }
 
                         //护工等级
                         var worker_level = getUrlQueryString('worker_level');
                         if(worker_level){
                             sort_url+= "&worker_level="+worker_level;
+                            hospital_url+= "&worker_level="+worker_level;
                         }
 
                         //排序 price_down price_up star_down star_up start_work_down start_work_up birth_down birth_up score_down score_up
@@ -184,7 +201,6 @@ function get_workelist() {
                         $('.native_province').html(native_province_html);
                         //籍贯 end
 
-
                         //护理员级别 start
                         if(worker_level){
                             select_num++;
@@ -199,7 +215,6 @@ function get_workelist() {
                             }else{
                                 worker_level_html+= '<li data-value="'+worker_levels[i].id+'">'+worker_levels[i].name+'</li> ' ;
                             }
-
                         }
                         worker_level_html+= '</ul>';
                         $('.worker_level').html(worker_level_html);
@@ -222,6 +237,61 @@ function get_workelist() {
                             $('#end-time').val(end_time);
                             var free = 'yes';
                         }
+
+                        //医院
+                        var hospitalList  = new Object();
+                        for(var i = 0;i<areas.length;i++){
+                            var areas_i  = areas[i], options = new Object(), index = 1;
+                            for(var j = 0;j<hospitals.length;j++){
+                                var hospitals_j = hospitals[j], news_object = new Object();
+                                if(areas_i.id == hospitals_j.area_id){
+                                    news_object.id = hospitals_j.id;
+                                    news_object.name = hospitals_j.name;
+                                    index ++;
+                                    options[index] = news_object;
+                                }
+                            }
+                            hospitalList[areas_i.id] = options;
+                        }
+
+                        //地区
+                        if(!area_id || (area_id==0)){
+                            areas_html='<div class="container" style="overflow:hidden;width:32%"><ul class="category"><li data-id="0" class="selected">全部</a></li>';
+                            hospital_html= '<div class="subcategory-selected container subcategory" data-category="0" style="width:68%;overflow:hidden;"><ul class="options">';
+                        }else{
+                            areas_html='<div class="container" style="overflow:hidden;width:32%"><ul class="category"><li data-id="0">全部</a></li>';
+                            hospital_html= '<div class="container subcategory" data-category="0" style="width:68%;overflow:hidden;"><ul class="options">';
+                        }
+                         $.each(hospitals,function(n,value) {
+                            if(hospital_id==value.id){
+                                hospital_html+= '<li  class="selected"  style="overflow:hidden"><a href="'+hospital_url+'&area_id=0&hospital_id='+value.id+'">'+value.name+'</a></li>';
+                            }else{
+                                hospital_html+= '<li  style="overflow:hidden"><a href="'+hospital_url+'&area_id=0&hospital_id='+value.id+'">'+value.name+'</a></li>';
+                            }
+                        });
+                        hospital_html+= '</ul></div>';
+
+                        for(var i=0;i<areas.length;i++){
+                            if(area_id==areas[i].id){
+                                areas_html+= '<li data-id="'+areas[i].id+'" class="selected">'+areas[i].name+'</li> ' ;
+                                hospital_html+= '<div class="subcategory-selected container subcategory" data-category="'+areas[i].id+'" style="width:68%;overflow:hidden;"><ul class="options">';
+                            }else{
+                                areas_html+= '<li data-id="'+areas[i].id+'">'+areas[i].name+'</li> ' ;
+                                hospital_html+= '<div class="container subcategory" data-category="'+areas[i].id+'" style="width:68%;overflow:hidden;"><ul class="options">';
+                            }
+
+                             var area_hospital = hospitalList[areas[i].id];
+                            $.each(area_hospital,function(n,value) {
+                                if(hospital_id==value.id){
+                                    hospital_html+= '<li class="selected"  style="overflow:hidden"><a href="'+hospital_url+'&area_id='+areas[i].id+'&hospital_id='+value.id+'">'+value.name+'</a></li>';
+                                }else{
+                                    hospital_html+= '<li  style="overflow:hidden"><a href="'+hospital_url+'&area_id='+areas[i].id+'&hospital_id='+value.id+'">'+value.name+'</a></li>';
+                                }
+                            });
+                            hospital_html+= '</ul></div>';
+                        }
+                        areas_html+='</ul></div>';
+                        $('#hospitals').html(areas_html+hospital_html);
 
                         if(gender==1)
                             gender_value = "男";
@@ -269,7 +339,7 @@ function get_workelist() {
                                             var office_str="";
                                         }
                                         responseHtml+='<li>';
-                                        responseHtml+='<a href="./nursesDetail.html?worker_id='+response.data.items[i].worker_id+'&start_time='+start_time+'&end_time='+end_time+'&in_service='+response.data.items[i].in_service+'">';
+                                        responseHtml+='<a href="./nursesDetail.html?worker_id='+response.data.items[i].worker_id+'&hospital_id='+hospital_id+'&start_time='+start_time+'&end_time='+end_time+'&in_service='+response.data.items[i].in_service+'">';
                                         responseHtml+='<div class="nurses-photo" style="background-image: url('+response.data.items[i].pic+')"></div>';
                                         responseHtml+='<div class="nurses-detail">';
                                         responseHtml+='<span class="nurses-price"><em>'+parseInt(response.data.items[i].price)+'</em>元/天</span>';
@@ -326,7 +396,7 @@ function get_workelist() {
                                 isLoading = 0;
                             }
                         });
-                    });
+                    },city_id);
                 }
             }
         }
@@ -339,6 +409,7 @@ function get_workelist() {
  */
 function get_workedetail() {
     var worker_id = getUrlQueryString("worker_id");
+    var hospital_id = getUrlQueryString("hospital_id");
     var start_time = getUrlQueryString("start_time");
     var end_time = getUrlQueryString("end_time");
     var in_service = getUrlQueryString("in_service");
@@ -348,6 +419,7 @@ function get_workedetail() {
             template.helper('dateFormat', function (str) {
                 return ages(str);
             });
+            response.data.hospital_id = hospital_id;
             response.data.start_time = start_time;
             response.data.end_time = end_time;
             response.data.in_service = in_service;
@@ -364,11 +436,11 @@ function get_workedetail() {
  * @param start_time
  * @param end_time
  */
-function pay(worker_id,start_time,end_time){
-    if(start_time!=0 && end_time!=0){
-        location.href="/reserve.html?worker_id="+worker_id+"&start_time="+start_time+"&end_time="+end_time;
-    }else{
-        alert("请先设置服务开始时间和服务结束时间！");
-        location.href="/";
-    }
+function pay(worker_id,hospital_id,start_time,end_time){
+   // if(start_time!=0 && end_time!=0){
+        location.href="/reserve.html?worker_id="+worker_id+"&hospital_id="+hospital_id+"&start_time="+start_time+"&end_time="+end_time;
+    //}else{
+    //    alert("请先设置服务开始时间和服务结束时间！");
+    //    location.href="/";
+    //}
 }

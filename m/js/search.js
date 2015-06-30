@@ -44,7 +44,7 @@
         function search() {
             var searchUrl = workerUrl_v2+'?name='+input.value;
             // 这里添加搜索的逻辑
-
+console.log(input.value);
             $.ajax({
                 data: {q: input.value} ,
                 type: "GET",

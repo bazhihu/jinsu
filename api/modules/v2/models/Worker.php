@@ -56,6 +56,11 @@ class Worker extends ActiveRecord{
             $query->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
             $countQuery->andFilterWhere(['NOT IN', 'worker_id', $workerIds]);
         }
+        //护工姓名
+        if(!empty($params['name'])){
+            $query->andFilterWhere(['like', 'name', $params['name']]);
+            $countQuery->andFilterWhere(['like', 'name', $params['name']]);
+        }
 
         //医院
         if(!empty($params['hospital_id'])){

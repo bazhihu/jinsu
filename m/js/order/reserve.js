@@ -2,19 +2,24 @@
     loggedIn();
     var start = getUrlQueryString('start_time'),
         end = getUrlQueryString('end_time'),
+        hospital_id = getUrlQueryString('hospital_id'),
         workerNo = getUrlQueryString('worker_id');
-    if(!start || !end || !workerNo){
+    if(!workerNo){
         location.href = "/";
     }
+    if(start && end){
+        //服务时间
+        var cycle = getOrderCycle(start,end),
+            startData = start.substr(5,2)+'月'+start.substr(8,2)+'日',
+            endData = end.substr(5,2)+'月'+end.substr(8,2)+'日';
+        $('.hours').html(startData+'-'+endData+' <em class="nurses-days">共'+cycle+'天</em>');
+        $('#start').val(start);
+        $('#end').val(end);
+        $('#workerId').val(workerNo);
+    }else{
+        $('.noHours').attr('style');
+    }
 
-    //服务时间
-    var cycle = getOrderCycle(start,end),
-        startData = start.substr(5,2)+'月'+start.substr(8,2)+'日',
-        endData = end.substr(5,2)+'月'+end.substr(8,2)+'日';
-    $('.hours').html(startData+'-'+endData+' <em class="nurses-days">共'+cycle+'天</em>');
-    $('#start').val(start);
-    $('#end').val(end);
-    $('#workerId').val(workerNo);
     //护工信息
     getWorker(function(back){
         var pic = $('.nurses-photo'),

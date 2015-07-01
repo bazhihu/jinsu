@@ -1,14 +1,17 @@
 loggedIn();
 var user = getStatus();
     patientUrl = patientUrl_v2+'?user_id='+user.id;
-$.getJSON(patientUrl, function(backData){
+$.getJSON(patientUrl, function(backData){console.log(backData);
     if(backData.data.length){
+        for(var i=0;i<backData.data.length;i++){
+            backData.data[i].val = '{"name":"'+backData.data[i].name+'","gender":"'+backData.data[i].gender+'","age":"'+backData.data[i].age+'","height":"'+backData.data[i].height+'","weight":"'+backData.data[i].weight+'"}';
+        }
         var patient = backData.data,
             data = {
                 title: '被护理人',
                 list: patient
             },
-            html = template('patient', data);console.log(patient);
+            html = template('patient', data);
         document.getElementById('content').innerHTML = html;
     }else{
         $(".add-button").attr('style','display:none');
@@ -51,10 +54,11 @@ $('.save').on('click', function () {
     }
 });
 
-; ~function () {
+/*; ~function () {
 var patient =  $("#patient").val();
-}();
+}();*/
 
+/*
 $('#header .back').click(function (e) {
     var selected = document.querySelector('.departments .selected');
     try {
@@ -62,4 +66,4 @@ $('#header .back').click(function (e) {
     } catch (error) {
         window.history.back(1);
     }
-});
+});*/

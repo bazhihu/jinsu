@@ -3,20 +3,20 @@
     var start = getUrlQueryString('start_time'),
         end = getUrlQueryString('end_time'),
         hospital_id = getUrlQueryString('hospital_id'),
-        workerNo = getUrlQueryString('worker_id');
+        workerNo = getUrlQueryString('worker_id'),
+        hasRead = 1;
     if(!workerNo){
         location.href = "/";
     }
+    $('#workerId').val(workerNo);
     if((start && end) && (start!=0 || end!=0)){
-        $('.noHours').attr('style','display:none');
         //服务时间
         var cycle = getOrderCycle(start,end),
             startData = start.substr(5,2)+'月'+start.substr(8,2)+'日',
             endData = end.substr(5,2)+'月'+end.substr(8,2)+'日';
-        $('.hours').html(startData+'-'+endData+' <em class="nurses-days">共'+cycle+'天</em>');
+        $('.shitTime').html(startData+'-'+endData+' <em class="nurses-days">共'+cycle+'天</em>');
         $('#start').val(start);
         $('#end').val(end);
-        $('#workerId').val(workerNo);
     }else{
         $('.hasHours').attr('style','display:none');
     }
@@ -34,6 +34,18 @@
             $('#service-site').val(hospital_id);
         });
     }
+
+    $('#agreement').on(CLICK,function(){
+
+        if(hasRead ==1){
+            hasRead = 0;
+            $('#submit').attr('style','background: #ccc;border-top: #ccc;');
+        }else{
+            hasRead = 1;
+            $('#submit').attr('style','background: #34cba8;border-top: 1px solid #3be1bb;');
+        }
+    });
+
     //护工信息
     getWorker(function(back){
         var pic = $('.nurses-photo'),
@@ -49,13 +61,16 @@
     });
 
     $("#submit").on(CLICK, function(e){
+        if(hasRead ==0){
+            return false;
+        }
+
         var workerId = $('#workerId').val(),
             startData = $('#start').val(),
             endData = $('#end').val(),
             patient = $('#patient').val(),
             serviceSite = $('#service-site').val(),
             disease = $('#disease').val(),
-            room = $('#room').val(),
             misc = $('#misc').val();
         //护工编号
         if(!workerId){
@@ -64,7 +79,7 @@
         }
         //开始时间和结束时间
         if(!startData || !endData){
-            location.href = '/';
+            alert('请选择开始结束时间');
             return false;
         }
         //被护理人
@@ -77,12 +92,7 @@
             alert('请选择医院');
             return false;
         }
-        //科室
-        if(!disease){
-            alert('请选择科室');
-            return false;
-        }
-        var data = {"workerId":workerId,"startData":startData,"endData":endData,"patient":patient,"serviceSite":serviceSite,"disease":disease,"room":room,"misc":misc};
+        var data = {"workerId":workerId,"startData":startData,"endData":endData,"patient":patient,"serviceSite":serviceSite,"disease":disease,"misc":misc};
         var toData = JSON.stringify(data);
         //保存订单信息
         setLocal(orderDate,toData);

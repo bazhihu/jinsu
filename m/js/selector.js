@@ -41,6 +41,7 @@
 			$('.filter-label-selected').forEach(function (label) {
 				$(label).removeClass('filter-label-selected');
 			});
+            $('#jdate-btn-remove').trigger('click');
 			return false;
 		}
 	});

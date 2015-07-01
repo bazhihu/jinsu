@@ -31,15 +31,14 @@
         <label class="menu-header">预约信息</label>
         <label class="menuitem" role="menuitem" id="servicetime-menuitem" for="service-time">
             <em class="title">服务时间：</em>
-            <label class="value noHours" data-placeholder="请选择"></label>
-            <span class="value hasHours" style="max-width: 200px;">6月3日-6月5日 <em class="nurses-days">共2天</em></span>
+            <label class="value shitTime" data-placeholder="请选择"></label>
             <input type="hidden" id="start" name="start" value="" />
             <input type="hidden" id="end" name="end" value="" />
         </label>
-        <a href="patient.html?v=1.7" id="patient-menuitem" target="popup" class="menuitem" role="menuitem">
+        <a href="patient.html?v=5.0" id="patient-menuitem" target="popup" class="menuitem" role="menuitem">
             <em class="title">被护理人：</em>
             <label class="value" data-placeholder="请选择"></label>
-            <input type="hidden" id="patient" name="patient" />
+            <input type="hidden" id="patient" name="patient" value="" />
         </a>
         <label for="hospitals" class="filter-label menuitem" role="menuitem">
             <em class="title">医　　院：</em>
@@ -60,7 +59,7 @@
             <input type="text" name="misc" id="misc" value="" placeholder="其他要求 (非必填)" />
         </div>
     </div>
-    <label for="agreement" class="agreement"><input type="checkbox" id="agreement" name="agreement" checked="checked">我已阅读并同意<a href="#agreement">《优爱医护服务协议》</a></label>
+    <label for="agreement" class="agreement"><input type="checkbox" id="agreement" name="agreement" checked="checked">我已阅读并同意<a href="/protocol.html">《优爱医护服务协议》</a></label>
     <input type="button" id="submit" value="确定预约" />
 </form>
 <div id="hospitals" class="filter-category filter-options">

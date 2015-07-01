@@ -117,10 +117,30 @@
         var start = new Date(Date.parse(document.getElementById('start-time').value));
         var end = new Date(Date.parse(document.getElementById('end-time').value));
         if (end < start) {
-            var tmp = end;
-            end = start;
-            start = tmp;
+            var today = new Date().format("yyyy-MM-dd");
+            dateOne = document.getElementById('start-time').value;
+            dateTwo = document.getElementById('end-time').value;
+            if ((dateOne > dateTwo)) {
+                alert("服务开始时间不能大于服务结束时间！");
+                return false;
+            }
+            if ((dateOne < today)) {
+                alert("服务开始时间不能小于当天！");
+                return false;
+            }
+
+            if ((dateTwo < today)) {
+                alert("服务结束时间不能小于当天！");
+                return false;
+            }
+
+            if (dateOne == dateTwo) {
+                alert("服务开始时间和服务结束时间不能为同一天！");
+                return false;
+            }
         }
+        document.getElementById('start').value=document.getElementById('start-time').value;
+        document.getElementById('end').value=document.getElementById('end-time').value;
         document.querySelector('#servicetime-menuitem .value').innerHTML = (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5 <em class="nurses-days">\u5171' + ((end - start) / 86400000 + 1) + '\u5929</em>';
         $('#jdate-btn-remove').trigger('click');
         $('#servicetime-menuitem').trigger('tap');

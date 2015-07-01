@@ -25,7 +25,6 @@ getConfigs(function(configs) {
                 end_time = date.endData,
                 hospital_id = date.serviceSite,
                 department_id = date.disease,
-                room = date.room,
                 misc = date.misc,
                 patient_state= 1;
             walletMoney=blance;
@@ -122,12 +121,12 @@ getConfigs(function(configs) {
                 var startData = start_time.substr(5,2)+'月'+start_time.substr(8,2)+'日',
                     endData = end_time.substr(5,2)+'月'+end_time.substr(8,2)+'日',
                     time  = startData+'-'+endData,
-                    locations;
-                if(room != ''){
+                    locations = hospitals_name+'/'+departments_name;
+                /*if(room != ''){
                     locations = hospitals_name+'/'+departments_name+'/'+room;
                 }else{
                     locations = hospitals_name+'/'+departments_name;
-                }
+                }*/
                 var data = {
                     'type':type,
                     'uid':userInfo.id,
@@ -143,7 +142,7 @@ getConfigs(function(configs) {
                     'end_time': end_time,
                     'days':days,
                     'locations':locations,//服务地点
-                    'room':room,
+                    //'room':room,
                     'remark':misc,
                     'hospital_id':hospital_id,
                     'hospitals_name':hospitals_name,
@@ -178,7 +177,7 @@ getConfigs(function(configs) {
                 var careAge = $('input[name="careAge"]').val();
                 var careHeight = $('input[name="careHeight"]').val();
                 var careWeight = $('input[name="careWeight"]').val();
-                var room = $('input[name="room"]').val();
+                //var room = $('input[name="room"]').val();
                 var remark = $('input[name="remark"]').val();
                 var department_id = $('input[name="department_id"]').val();
                 if(need_pay<0) {
@@ -205,7 +204,7 @@ getConfigs(function(configs) {
                         'age':careAge,
                         'height':careHeight,
                         'weight':careWeight,
-                        'room_no':room,
+                        //'room_no':room,
                         'remark':remark
                     };
 
@@ -245,7 +244,7 @@ getConfigs(function(configs) {
                             'age':careAge,
                             'height':careHeight,
                             'weight':careWeight,
-                            'room_no':room,
+                            //'room_no':room,
                             'remark':remark
                         },
                         dataType: 'json',
@@ -288,7 +287,7 @@ getConfigs(function(configs) {
                             'age':careAge,
                             'height':careHeight,
                             'weight':careWeight,
-                            'room_no':room,
+                            //'room_no':room,
                             'remark':remark
                         },
                         dataType: 'json',

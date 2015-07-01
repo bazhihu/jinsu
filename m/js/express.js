@@ -141,7 +141,7 @@
         }
         document.getElementById('start').value=document.getElementById('start-time').value;
         document.getElementById('end').value=document.getElementById('end-time').value;
-        document.querySelector('#servicetime-menuitem .value').innerHTML = (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5 <em class="nurses-days">\u5171' + ((end - start) / 86400000 + 1) + '\u5929</em>';
+        document.querySelector('#servicetime-menuitem .value').innerHTML = (start.getMonth() + 1) + '\u6708' + start.getDate() + '\u65e5 - ' + (end.getMonth() + 1) + '\u6708' + end.getDate() + '\u65e5 <em class="nurses-days">\u5171' + ((end - start) / 86400000) + '\u5929</em>';
         $('#jdate-btn-remove').trigger('click');
         $('#servicetime-menuitem').trigger('tap');
     });

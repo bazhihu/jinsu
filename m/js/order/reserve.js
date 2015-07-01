@@ -17,9 +17,15 @@
         $('.shitTime').html(startData+'-'+endData+' <em class="nurses-days">共'+cycle+'天</em>');
         $('#start').val(start);
         $('#end').val(end);
-    }else{
-        $('.hasHours').attr('style','display:none');
     }
+    //设置时间控件默认的开始和结束时间
+    $('#start-time').val(new Date().format("yyyy-MM-dd"));
+    var nd = new Date();
+    nd = nd.valueOf();
+    nd = nd + 10 * 24 * 60 * 60 * 1000;
+    nd = new Date(nd).format("yyyy-MM-dd");
+    $('#end-time').val(nd);
+
     if(hospital_id){
         var hospitalName = '';
         getConfigs(function(back){
